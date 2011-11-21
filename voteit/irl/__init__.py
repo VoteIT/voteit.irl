@@ -1,3 +1,7 @@
+from pyramid.i18n import TranslationStringFactory
+
+VoteIT_IRL_MF = TranslationStringFactory('voteit.irl')
+
 
 
 def includeme(config):
