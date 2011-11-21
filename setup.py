@@ -29,6 +29,8 @@ setup(name='voteit.irl',
       tests_require=requires,
       test_suite="voteit.irl",
       entry_points = """\
+      [fanstatic.libraries]
+      voteit_irl_lib = voteit.irl.fanstaticlib:voteit_irl_lib
       """,
       paster_plugins=['pyramid'],
       )

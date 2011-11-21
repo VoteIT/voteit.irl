@@ -4,95 +4,60 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="voteit.irl">
-
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>${context.title} - VoteIT</title>
-    <link href="${request.application_url}/static/reset.css" rel="stylesheet" type="text/css" />
-    <link href="${request.application_url}/static/main.css" rel="stylesheet" type="text/css" />
-    <link href="${request.application_url}/static/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css" />
-
-    <script type="text/javascript" tal:content="structure api.get_js_config_template()">js config code</script>
-    <script type="text/javascript" src="${request.application_url}/deform/scripts/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="${request.application_url}/static/jquery-ui-1.8.15.custom.min.js"></script>
-    <script type="text/javascript" src="${request.application_url}/static/jquery.qtip.js"></script>
-    <script type="text/javascript" src="${request.application_url}/static/jquery.easy-confirm-dialog.js"></script>
-    <script type="text/javascript" src="${request.application_url}/static/ajax.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('a.activate').live('click', function(event) {
-                /* stop form from submitting normally 
-                IE might throw an error calling preventDefault(), so use a try/catch block. */
-                try { event.preventDefault(); } catch(e) {}
-                
-                $(this).parents('li').appendTo($('#active'));
-            });
-             $('a.inactivate').live('click', function(event) {
-                /* stop form from submitting normally 
-                IE might throw an error calling preventDefault(), so use a try/catch block. */
-                try { event.preventDefault(); } catch(e) {}
-                
-                $(this).parents('li').appendTo($('#inactive'));
-            });
-        });
-    </script>
-    <style type="text/css">
-        .cogwheel .menu_body {
-            right: 18px !important;
-        }
-        #active .cogwheel {
-            display: none;
-        }
-        #active .inactivate,
-        #inactive .activate {
-            display: block;
-        }
-        #active .activate,
-        #inactive .inactivate {
-            display: none;
-        }
-        #active .inactivate {
-            float: right;
-        }
-        #inactive .activate {
-            float; left;
-        }
-    </style>
+        <metal:page_title define-slot="page_title">
+           <title>VoteIT</title>
+        </metal:page_title>
+    <meta name="keywords" content="python web application" />
+    <meta name="description" content="pyramid web application" />
+    <metal:head define-slot="head"></metal:head>
 </head>
 <body>
-    <div class="content_wrapper">
-        <h1>${context.title}</h1>
+<div id="page_wrapper">
+    <div id="main-content-wrapper">
+        <div id="header">
+            <div id="agenda-item-actions">
+                <ul id="agenda-item-actions-menu">
+                    <li id="agenda-items-menu" class="tab dropdown_menu">
+                        <a class="menu_header" href="#">
+                            <span class="iconpadding icon cog-light" i18n:translate="">Agenda Items</span> &raquo;
+                        </a>
+                        <ul class="menu_body">
+                        <tal:iterate condition="ai_brains" repeat="ai_brain ai_brains">
+                            <li>
+                            <a href="${ai_brain['path']}/projector" tal:content="ai_brain['title']">Title</a>
+                            </li>
+                        </tal:iterate>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="logo-meeting-wrapper">
+                <a id="logo-space"
+                   href="#">
+                    <img tal:replace="structure api.render_single_view_component(context, request, 'main', 'logo_tag')" />
+                </a>
+                
+                <h1 id="meeting-name-space" tal:condition="api.meeting">
+                    <a href="#" tal:content="context.title">Meeting</a>
+                </h1>
+            </div>
+        </div>
+    
+    <div id="projector" class="content_wrapper">
+
         <div id="proposals" class="col-50-50">
             <div id="active" class="column column-1">
-                <h2 i18n:translate="">Processed proposals</h2>
+                <h2 class="iconpadding icon poll" i18n:translate="">Polls</h2>
                 <ul>
                 </ul>
             </div>
             <div id="inactive" class="column column-2">
-                <h2 i18n:translate="">All proposals</h2>
+                <h2 class="iconpadding icon proposal" i18n:translate="">Proposals</h2>
                 <ul tal:condition="proposals">
                 <tal:iterate repeat="proposal proposals" >
-                    <li tal:define="state_id proposal.get_workflow_state();
-                                    css_class 'listing_block wf-state-%s' % state_id;"
-                        tal:attributes="class css_class">
-                        
-                        <a href="#" class="activate" i18n:translate="">Activate</a>
-                        <a href="#" class="inactivate" i18n:translate="">Dectivate</a>
-                        
-                        <span tal:condition="api.show_moderator_actions" tal:replace="structure api.get_moderator_actions(proposal, request)">
-                            Cogwheel menu
-                        </span>
-                        
-                        <tal:creators tal:replace="structure api.get_creators_info(proposal.creators, request, portrait=False)">Creators</tal:creators>
-                        <span i18n:translate="">propose</span>:
-                        <span class="body" tal:content="structure proposal.title">Title</span>
-                        
-                        <div class="meta">
-                            <span class="wf-state"
-                                    tal:content="api.tstring(proposal.current_state_title(request))">private</span>
-                        </div>
-                        <div class="clear"><!-- --></div>
-                    </li>
+                    <span tal:replace="structure render_proposal(proposal, request)">Proposal</span>
                 </tal:iterate>
                 </ul>
             </div>

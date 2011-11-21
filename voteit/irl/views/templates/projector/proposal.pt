@@ -1,0 +1,38 @@
+<li tal:define="state_id proposal.get_workflow_state();
+                css_class 'listing_block wf-state-%s' % state_id;"
+    tal:attributes="class css_class">
+    
+    <a href="#" class="inactivate" i18n:translate=""><img src="/static/images/arrow_right.png" alt="Deactivate"></a>
+    
+    <div class="states">
+        <div class="state approved">
+            <a href="${api.resource_url(proposal, request)}@@projector_state?state=approved"><span i18n:translate="">Approve</span></a>
+        </div>
+        <div class="state published">
+            <a href="${api.resource_url(proposal, request)}@@projector_state?state=published"><span  i18n:translate="">Published</span></a>
+        </div>
+        <div class="state denied">
+            <a href="${api.resource_url(proposal, request)}@@projector_state?state=denied"><span  i18n:translate="">Denie</span></a>
+        </div>
+    </div>
+
+    <span tal:condition="api.show_moderator_actions" tal:replace="structure api.get_moderator_actions(proposal, request)">
+        Cogwheel menu
+    </span>
+
+    <a href="#" class="activate" i18n:translate=""><img src="/static/images/arrow_left.png" alt="Activate"></a>
+    
+    <div class="proposal_number top"><span i18n:translate="">Proposal</span> ${proposal.get_field_value('proposal_number')}</div>
+    
+    <tal:creators tal:replace="structure api.get_creators_info(proposal.creators, request, portrait=True)">Creators</tal:creators>
+    <span i18n:translate="">propose</span>:
+    <span class="body" tal:content="structure proposal.title">Title</span>
+    
+    <div class="meta">
+        <span class="${state_id} icon iconpadding"
+              tal:content="api.tstring(state_id.title())">private</span>
+        <span class="hyphen">&#45;</span>
+        <span class="proposal_number bottom"><span i18n:translate="">Proposal</span> ${proposal.get_field_value('proposal_number')}</span>
+    </div>
+    <div class="clear"><!-- --></div>
+</li>
