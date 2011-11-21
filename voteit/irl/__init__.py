@@ -8,5 +8,10 @@ def includeme(config):
     from voteit.irl.models.proposal_numbers import ProposalNumbers
     from voteit.irl.interfaces import IProposalNumbers
     config.registry.registerAdapter(ProposalNumbers, required = (IAgendaItem,), provided = IProposalNumbers)
-    
+
+    cache_ttl_seconds = int(config.registry.settings.get('cache_ttl_seconds', 7200))
+    config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_ttl_seconds)
+
+    #config.add_translation_dirs('voteit.irl:locale/')
+
     config.scan('voteit.irl')
