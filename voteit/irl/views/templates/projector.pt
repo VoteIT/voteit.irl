@@ -6,12 +6,7 @@
       i18n:domain="voteit.core">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <metal:page_title define-slot="page_title">
-           <title>VoteIT</title>
-        </metal:page_title>
-    <meta name="keywords" content="python web application" />
-    <meta name="description" content="pyramid web application" />
-    <metal:head define-slot="head"></metal:head>
+    <title>VoteIT</title>
 </head>
 <body>
 <div id="page_wrapper">
@@ -21,7 +16,7 @@
                 <ul id="agenda-item-actions-menu">
                     <li id="agenda-items-menu" class="tab dropdown_menu">
                         <a class="menu_header" href="#">
-                            <span class="iconpadding icon cog-light" i18n:translate="">Agenda item</span> &raquo;
+                            <span class="iconpadding icon cog-light" i18n:domain="voteit.irl" i18n:translate="">Agenda items</span> &raquo;
                         </a>
                         <ul class="menu_body">
                         <tal:iterate condition="ai_brains" repeat="ai_brain ai_brains">
