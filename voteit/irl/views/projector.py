@@ -60,10 +60,9 @@ class ProjectorView(BaseView):
         return render_to_response("templates/projector/agenda_items.pt", response, request=request)
 
 
-@view_action('moderator_menu', 'projector', title = _(u"Projector view"), link = u"@@projector")
+@view_action('context_actions', 'projector', title = _(u"Projector view"), viewname = u"@@projector", interface = IAgendaItem)
 def projector_menu_link(context, request, va, **kw):
-    """ Visible in the moderator menu """
-    #FIXME: Doesn't work in meeting root
+    """ Visible in the moderator menu, but doesn't work for the meeting root """
     api = kw['api']
-    url = u"%s/%s" % (request.path_url, va.kwargs['link'])
+    url = u"%s%s" % (api.resource_url(context, request), va.kwargs['viewname'])
     return """<li><a href="%s">%s</a></li>""" % (url, api.translate(va.title))
