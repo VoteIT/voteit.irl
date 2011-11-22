@@ -88,7 +88,7 @@
 }
 
 .proposal_number.top {
-    font-size: 180%;
+    font-size: 220%;
     font-weight: bold;
 }
 #active .proposal_number.bottom {
@@ -100,7 +100,7 @@
 
 #active .creators,
 #active .body {
-    font-size: 150%;
+    font-size: 200%;
 }
 
 #active > ul > li {
@@ -116,8 +116,8 @@
 #active .state {
     float: right;
     padding: 2px;
-    background: #8B8378;
-    border: black solid 1px;
+    background: #E5ECF0;
+    border: #A9BECE solid 1px;
 }
 
 #active .state.published,
@@ -128,7 +128,7 @@
 #active .wf-state-approved .state.approved,
 #active .wf-state-published .state.published,
 #active .wf-state-denied .state.denied {
-    background: #EEDFCC !important;
+    background: #6D7073 !important;
 }
 
 #active .state a {
@@ -154,3 +154,12 @@
 #main-content-wrapper {
     background: none;
 }
+.col-50-50 .column-1 {
+    margin-left: -100%;
+    width: 60%;
+}
+.col-50-50 .column-2 {
+    margin-left: -40%;
+    width: 40%;
+}
+.icon.poll { background: url(/static/icons/icon_poll_lb.png) no-repeat left 35%; }
