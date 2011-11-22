@@ -1,6 +1,5 @@
 from pyramid.view import view_config
 from pyramid.renderers import render
-from pyramid.renderers import render_to_response
 from pyramid.traversal import resource_path
 from pyramid.traversal import find_interface
 from voteit.core.views.base_view import BaseView
@@ -53,12 +52,6 @@ class ProjectorView(BaseView):
         
         self.response['proposal'] = self.context
         return self.response
-        
-    @view_config(context=IMeeting, name="projector_agenda_items", permission=MODERATE_MEETING)
-    def agenda_items(self):
-    
-        return render_to_response("templates/projector/agenda_items.pt", response, request=request)
-
 
 @view_action('context_actions', 'projector', title = _(u"Projector view"), viewname = u"@@projector", interface = IAgendaItem)
 def projector_menu_link(context, request, va, **kw):
