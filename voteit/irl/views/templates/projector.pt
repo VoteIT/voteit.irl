@@ -34,8 +34,8 @@
                     <img tal:replace="structure api.render_single_view_component(context, request, 'main', 'logo_tag')" />
                 </a>
                 
-                <h1 id="meeting-name-space" tal:condition="api.meeting">
-                    <a href="#" tal:content="context.title">Meeting</a>
+                <h1 id="meeting-name-space" tal:condition="context">
+                    <a href="${api.resource_url(context, request)}" target="_blank" tal:content="context.title">Agenda Item</a>
                 </h1>
             </div>
         </div>

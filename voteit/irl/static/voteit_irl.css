@@ -59,6 +59,7 @@
 .column.column-2 > ul,
 .column.column-2 > h2 {
     margin-left: 20px;
+    padding-bottom: 0.3em;
 }
 
 .cogwheel .menu_body {
@@ -93,13 +94,19 @@
 }
 
 .proposal_number.top {
-    font-size: 150%;
+    font-size: 180%;
+    font-weight: bold;
 }
 #active .proposal_number.bottom {
     display: none;
 }
 #inactive .proposal_number.top {
     display: none;
+}
+
+#active .creators,
+#active .body {
+    font-size: 150%;
 }
 
 #active > ul > li {
@@ -153,5 +160,3 @@
 #main-content-wrapper {
     background: none;
 }
-
-
