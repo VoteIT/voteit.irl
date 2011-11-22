@@ -16,7 +16,7 @@
                 <ul id="agenda-item-actions-menu">
                     <li id="agenda-items-menu" class="tab dropdown_menu">
                         <a class="menu_header" href="#">
-                            <span class="iconpadding icon cog-light" i18n:domain="voteit.irl" i18n:translate="">Agenda items</span> &raquo;
+                            <span i18n:domain="voteit.irl" i18n:translate="">Agenda items</span> &raquo;
                         </a>
                         <ul class="menu_body">
                         <tal:iterate condition="ai_brains" repeat="ai_brain ai_brains">

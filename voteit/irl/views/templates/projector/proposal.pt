@@ -17,10 +17,6 @@
         </div>
     </div>
 
-    <span tal:condition="api.show_moderator_actions" tal:replace="structure api.get_moderator_actions(proposal, request)">
-        Cogwheel menu
-    </span>
-
     <a href="#" class="activate" i18n:translate=""><img src="/voteit_irl/images/arrow_left.png" alt="Activate"></a>
     
     <div class="proposal_number top"><span i18n:translate="">Proposal</span> ${proposal.get_field_value('proposal_number')}</div>
