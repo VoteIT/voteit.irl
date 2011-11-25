@@ -35,7 +35,7 @@
                 </a>
                 
                 <h1 id="meeting-name-space" tal:condition="context">
-                    <a href="${api.resource_url(context, request)}" target="_blank" tal:content="context.title">Agenda Item</a>
+                    <a href="${api.resource_url(context, request)}" tal:content="context.title">Agenda Item</a>
                 </h1>
             </div>
         </div>
