@@ -29,6 +29,8 @@ setup(name='voteit.irl',
       tests_require=requires,
       test_suite="voteit.irl",
       entry_points = """\
+      [console_scripts]
+      add_proposal_number = voteit.irl.scripts.add_proposal_number:add_proposal_number
       [fanstatic.libraries]
       voteit_irl_lib = voteit.irl.fanstaticlib:voteit_irl_lib
       """,
