@@ -23,8 +23,9 @@ class ProjectorView(BaseView):
         context_path = resource_path(self.api.meeting)
         query = dict(
             content_type = 'AgendaItem',
-            workflow_state = 'ongoing',
+            workflow_state = ('ongoing', 'upcoming'),
             path = context_path,
+            sort_index = 'start_time',
         )
         self.response['ai_brains'] = self.api.get_metadata_for_query(**query)
         self.response['proposals'] = self.api.get_restricted_content(self.context, iface=IProposal, sort_on='created', states=('published', 'approved', 'denied', ))

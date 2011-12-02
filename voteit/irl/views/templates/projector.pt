@@ -21,7 +21,7 @@
                         <ul class="menu_body">
                         <tal:iterate condition="ai_brains" repeat="ai_brain ai_brains">
                             <li>
-                            <a href="${ai_brain['path']}/projector" tal:content="ai_brain['title']">Title</a>
+                                <a href="${ai_brain['path']}/projector" tal:content="ai_brain['title']">Title</a>
                             </li>
                         </tal:iterate>
                         </ul>
