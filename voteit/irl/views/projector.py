@@ -23,7 +23,7 @@ class ProjectorView(BaseView):
         context_path = resource_path(self.api.meeting)
         query = dict(
             content_type = 'AgendaItem',
-            workflow_state = ('ongoing', 'upcoming'),
+            workflow_state = ('ongoing', ),
             path = context_path,
             sort_index = 'start_time',
         )
