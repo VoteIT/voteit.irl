@@ -38,16 +38,13 @@ class ElectoralRegisterTests(unittest.TestCase):
         obj = self._make_adapted_obj()
         obj.context.__register_closed__ = False
         
-        obj.add('50')
-        obj.add('150')
-        obj.add('250')
+        obj.add('robin')
         
         obj.close()
         self.assertTrue(obj.register_closed)
         
-        self.assertFalse('role:Voter' in self.meeting.get_groups('50'))
-        self.assertTrue('role:Voter' in self.meeting.get_groups('150'))
-        self.assertTrue('role:Voter' in self.meeting.get_groups('250'))
+        self.assertTrue(obj.context.__register_closed__)
+        self.assertTrue('role:Voter' in self.meeting.get_groups('robin'))
 
     def test_clear(self):
         obj = self._make_adapted_obj()
@@ -67,69 +64,3 @@ class ElectoralRegisterTests(unittest.TestCase):
         self.assertFalse('role:Voter' in self.meeting.get_groups('robin'))
         self.assertFalse('role:Voter' in self.meeting.get_groups('anders'))
         self.assertFalse('role:Voter' in self.meeting.get_groups('hanna'))
-        
-    def test_sverok_all_delegates(self):
-        obj = self._make_adapted_obj()
-        obj.context.__register_closed__ = False
-        
-        obj.add('admin')
-        
-        # delegates
-        for n in range(101, 202):
-            obj.add("%s" % n)
-        
-        # reserves
-        for n in range(202, 298):
-            obj.add("%s" % n)
-        
-        # clerks
-        for n in range(1, 54):
-            obj.add("%s" % n)
-        
-        obj.close()
-        
-        self.assertFalse('role:Voter' in self.meeting.get_groups('admin'))
-        
-        self.assertTrue('role:Voter' in self.meeting.get_groups('101'))
-        self.assertTrue('role:Voter' in self.meeting.get_groups('201'))
-        
-        self.assertFalse('role:Voter' in self.meeting.get_groups('202'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('297'))
-        
-        self.assertFalse('role:Voter' in self.meeting.get_groups('1'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('53'))
-        
-    def test_sverok_missing_delegates(self):
-        obj = self._make_adapted_obj()
-        obj.context.__register_closed__ = False
-        
-        obj.add('admin')
-        
-        # delegates
-        for n in range(101, 200):
-            obj.add("%s" % n)
-        
-        # reserves
-        for n in range(202, 298):
-            obj.add("%s" % n)
-        
-        # clerks
-        for n in range(1, 54):
-            obj.add("%s" % n)
-        
-        obj.close()
-        
-        self.assertFalse('role:Voter' in self.meeting.get_groups('admin'))
-        
-        self.assertTrue('role:Voter' in self.meeting.get_groups('101'))
-        self.assertTrue('role:Voter' in self.meeting.get_groups('199'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('200'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('201'))
-        
-        self.assertTrue('role:Voter' in self.meeting.get_groups('202'))
-        self.assertTrue('role:Voter' in self.meeting.get_groups('203'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('204'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('297'))
-        
-        self.assertFalse('role:Voter' in self.meeting.get_groups('1'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('53'))

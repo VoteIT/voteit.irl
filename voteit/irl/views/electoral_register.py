@@ -49,7 +49,7 @@ class ElectoralRegisterView(BaseView):
         """
         self.api.flash_messages.add(_(u"Closed"))
         self.register.close()
-        return HTTPFound(location=resource_url(self.context, self.request)+'view_electoral_register')
+        return HTTPFound(location=resource_url(self.context, self.request, 'view_electoral_register'))
 
     @view_config(name="view_electoral_register", context=IMeeting, renderer="templates/electoral_register.pt", permission=VIEW)
     def view(self):

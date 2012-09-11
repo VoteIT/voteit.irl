@@ -56,21 +56,6 @@ class ElectoralRegister(object):
 
     def close(self):
         self.context.__register_closed__ = True
-        register = []
-        # remove non numeric userids
         for userid in self.register:
-            try:
-                int(userid)
-                register.append(userid)
-            except ValueError:
-                pass
-        # sort register on userid
-        register.sort(key=lambda x: int(x))
-        # loop through register starting from 101 and give the first 101 the voter role
-        loops = 1
-        for userid in register:
-            if int(userid) >= 101:
-                self.context.add_groups(userid, (ROLE_VOTER, ))
-                loops += 1
-            if loops > 101:
-                break;
+            self.context.add_groups(userid, (ROLE_VOTER, ))
+                
