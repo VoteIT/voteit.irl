@@ -31,7 +31,7 @@
     
     <div class="proposal_number top"><span i18n:translate="">Proposal</span> ${proposal.get_field_value('proposal_number')}</div>
     
-    <tal:creators tal:replace="structure api.get_creators_info(proposal.creators, request, portrait=True)">Creators</tal:creators>
+    <tal:creators tal:replace="structure api.get_creators_info(proposal.creators, portrait=True)">Creators</tal:creators>
     <span class="body" i18n:translate="">propose</span>
 	<span class="body">:</span>
 	<br>
