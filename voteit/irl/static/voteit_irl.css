@@ -163,3 +163,7 @@
     width: 40%;
 }
 .icon.poll { background: url(/static/icons/icon_poll_lb.png) no-repeat left 35%; }
+
+table.electoral-register {
+    width: 50%;
+}

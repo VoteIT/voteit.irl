@@ -6,7 +6,12 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
-requires = ('voteit.core',)
+requires = (
+    'pyramid',
+    'voteit.core',
+    'Babel',
+    'lingua',
+    )
 
 setup(name='voteit.irl',
       version='0.0',
@@ -18,9 +23,9 @@ setup(name='voteit.irl',
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
         ],
-      author='',
-      author_email='',
-      url='',
+      author='VoteIT development team + contributors',
+      author_email='info@voteit.se',
+      url='http://www.voteit.se',
       keywords='web pyramid pylons voteit',
       packages=find_packages(),
       include_package_data=True,
@@ -34,6 +39,10 @@ setup(name='voteit.irl',
       [fanstatic.libraries]
       voteit_irl_lib = voteit.irl.fanstaticlib:voteit_irl_lib
       """,
-      paster_plugins=['pyramid'],
+      message_extractors = { '.': [
+              ('**.py',   'lingua_python', None ),
+              ('**.pt',   'lingua_xml', None ),
+              ('**.zcml',   'lingua_zcml', None ),
+              ]},
       )
 
