@@ -3,7 +3,7 @@ from zope.component import adapts
 from zope.interface.declarations import implements
 from voteit.core.models.interfaces import IAgendaItem
 
-from voteit.irl.interfaces import IProposalNumbers
+from voteit.irl.models.interfaces import IProposalNumbers
 
 
 class ProposalNumbers(object):

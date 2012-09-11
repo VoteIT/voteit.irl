@@ -5,7 +5,7 @@ from pyramid.events import subscriber
 from pyramid.traversal import find_interface
 from zope.component import getAdapter
 
-from voteit.irl.interfaces import IProposalNumbers
+from voteit.irl.models.interfaces import IProposalNumbers
 
 
 @subscriber([IProposal, IObjectAddedEvent])

@@ -10,7 +10,7 @@ def includeme(config):
     """
     from voteit.core.models.interfaces import IAgendaItem
     from voteit.irl.models.proposal_numbers import ProposalNumbers
-    from voteit.irl.interfaces import IProposalNumbers
+    from voteit.irl.models.interfaces import IProposalNumbers
     config.registry.registerAdapter(ProposalNumbers, required = (IAgendaItem,), provided = IProposalNumbers)
     
     from voteit.core.models.interfaces import IMeeting

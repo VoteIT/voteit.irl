@@ -6,11 +6,11 @@ from zope.interface.verify import verifyObject
 from voteit.core.models.agenda_item import AgendaItem
 from voteit.core.models.proposal import Proposal
 
-from voteit.irl.interfaces import IProposalNumbers
+from voteit.irl.models.interfaces import IProposalNumbers
 
 
 class ProposalNumberTests(TestCase):
-    """ Dutt poll unit and integration tests """
+    """ unit tests """
 
     def setUp(self):
         self.config = testing.setUp()
@@ -47,9 +47,3 @@ class ProposalNumberTests(TestCase):
         obj.add(prop2)
         self.assertEqual(prop2.get_field_value('proposal_number', object()), 2)
         self.failUnless(2 in obj.propnums)
-
-    def test_subscriber_adds(self):
-        self.config.include('voteit.irl')
-        ai = AgendaItem()
-        prop = ai['p'] = Proposal()
-        self.assertEqual(prop.get_field_value('proposal_number', object()), 1)

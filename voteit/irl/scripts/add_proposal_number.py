@@ -9,7 +9,7 @@ from voteit.core.models.catalog import metadata_for_query
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IProposal
 from voteit.core.scripts.worker import ScriptWorker
-from voteit.irl.interfaces import IProposalNumbers
+from voteit.irl.models.interfaces import IProposalNumbers
 
 
 def add_proposal_number(*args):
