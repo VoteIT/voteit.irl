@@ -13,6 +13,7 @@ from voteit.core.security import ROLE_VOTER
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.fanstaticlib import voteit_irl
 from voteit.irl.models.interfaces import IElectoralRegister
+from voteit.irl.models.interfaces import IDelegates
 
 
 class ElectoralRegisterView(BaseView):
@@ -22,6 +23,7 @@ class ElectoralRegisterView(BaseView):
     def __init__(self, context, request):
         super(ElectoralRegisterView, self).__init__(context, request)
         self.register = self.request.registry.getAdapter(self.context, IElectoralRegister)
+        self.delegates = self.request.registry.getAdapter(self.context, IDelegates)
         voteit_irl.need()
 
     @view_config(name="clear_electoral_register", context=IMeeting, permission=MODERATE_MEETING)
@@ -37,8 +39,7 @@ class ElectoralRegisterView(BaseView):
     def add(self):
         """ Set someone as attending
         """
-        userid = authenticated_userid(self.request)
-        self.register.add(userid)
+        self.register.add(self.api.userid)
         
         self.api.flash_messages.add(_(u"Thanks, you have registered your attendance."))
         return HTTPFound(location=resource_url(self.context, self.request))
@@ -58,42 +59,40 @@ class ElectoralRegisterView(BaseView):
         def _get_user(userid):
             return root['users'][userid]
             
-        voters = 0
-        delegates = []
-        reserves = []
+        voters = []
+        nonvoters = []
+        others = []
         
-        for userid in root.users.keys():
-            try:
-                id = int(userid)
+        for userid in self.register.register:
+            if userid in self.delegates.list:
                 groups = self.context.get_groups(userid)
                 if ROLE_VOTER in groups:
-                    voters += 1
-                if 101 <= id and id <= 201:
-                    if ROLE_VOTER not in groups:
-                        delegates.append(userid)
-                if id >= 202:
-                    if ROLE_VOTER in groups:
-                        reserves.append(userid)
-            except Exception:
-                pass
+                    voters.append(userid)
+                else:
+                    nonvoters.append(userid)
+            else:
+                others.append(userid)
+                
+        for userid in (set(self.delegates.list) - set(self.register.register)):
+            nonvoters.append(userid)
         
         # total number of users with voting rights
         self.response['voters'] = voters
         # delegates without voting rights
-        self.response['delegates'] = delegates
-        # reserves with voting right
-        self.response['reserves'] = reserves
+        self.response['nonvoters'] = nonvoters
+        # users that attended but is not delegates
+        self.response['others'] = others
         
         self.response['get_user'] = _get_user
         
         return self.response
 
 
-@view_action('moderator_menu', 'clear_electoral_register', title = _(u"Clear electoral register"),
+@view_action('meeting', 'clear_electoral_register', title = _(u"Clear electoral register"),
              link = "clear_electoral_register")
-@view_action('moderator_menu', 'close_electoral_register', title = _(u"Close electoral register"),
+@view_action('meeting', 'close_electoral_register', title = _(u"Close electoral register"),
              link = "close_electoral_register")
-@view_action('moderator_menu', 'view_electoral_register', title = _(u"View electoral register"),
+@view_action('meeting', 'view_electoral_register', title = _(u"View electoral register"),
              link = "view_electoral_register")
 def electoral_register_moderator_menu_link(context, request, va, **kw):
     api = kw['api']
@@ -102,17 +101,13 @@ def electoral_register_moderator_menu_link(context, request, va, **kw):
     url = request.resource_url(api.meeting, va.kwargs['link']) 
     return """<li><a href="%s">%s</a></li>""" % (url, api.translate(va.title))
 
-@view_action('meeting_actions', 'add_electoral_register', title = _(u"Set yourself as present"))
+@view_action('participants_menu', 'add_electoral_register', title = _(u"Set yourself as present"))
 def electoral_register_link(context, request, va, **kw):
     api = kw['api']
     if not api.userid or not api.meeting:
         return ''
     register = request.registry.getAdapter(api.meeting, IElectoralRegister)
     if register.register_closed:
-        return ''
-    try:
-        int(api.userid)
-    except ValueError:
         return ''
     if api.userid in register.register:
         return ''

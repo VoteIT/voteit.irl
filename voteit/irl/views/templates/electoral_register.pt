@@ -2,16 +2,16 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="api.main_template.macros['master']"
+      metal:use-macro="load: ${api.template_dir}content.pt"
 	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
 	  i18n:domain="voteit.irl">
 <body>
-<h1 metal:fill-slot="page_heading" i18n:translate="">Electoral Register</h1>
+<h1 metal:fill-slot="page_heading">Electoral Register</h1>
 <div metal:fill-slot="content" class="content_wrapper">
-    <h2><strong i18n:translate="">Total number of voters:</strong>&nbsp;${voters}</h2>
-    <h2 i18n:translate="">Reserves with voting rights</h2>
+    <h2><strong i18n:translate="">Total number of voters:</strong>&nbsp;${len(voters)}</h2>
+    <h2 i18n:translate="">Delegates with voting rights</h2>
     <table class="electoral-register listing">
-    <tal:iterate repeat="userid reserves">
+    <tal:iterate repeat="userid voters">
         <tr>
         <tal:user define="user get_user(userid)">
             <td>${user.userid}</td>
@@ -23,7 +23,19 @@
     </table>
     <h2 i18n:translate="">Delegates without voting rights</h2>
     <table class="electoral-register">
-    <tal:iterate repeat="userid delegates">
+    <tal:iterate repeat="userid nonvoters">
+        <tr>
+        <tal:user define="user get_user(userid)">
+            <td>${user.userid}</td>
+            <td>${user.get_field_value('first_name')}</td>
+            <td>${user.get_field_value('last_name')}</td>
+        </tal:user>
+        </tr>
+    </tal:iterate>
+    </table>
+    <h2 i18n:translate="">Other attending</h2>
+    <table class="electoral-register">
+    <tal:iterate repeat="userid others">
         <tr>
         <tal:user define="user get_user(userid)">
             <td>${user.userid}</td>
