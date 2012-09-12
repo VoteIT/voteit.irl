@@ -6,6 +6,7 @@ from voteit.core.security import ROLE_VOTER
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
+from voteit.irl.models.delegates import Delegates
 
 
 class ElectoralRegister(object):
@@ -56,6 +57,11 @@ class ElectoralRegister(object):
 
     def close(self):
         self.context.__register_closed__ = True
+
+        delegates = Delegates(self.context) # get the delegates in the meering
+        
+        # set voting rights if user is present and is a delegate
         for userid in self.register:
-            self.context.add_groups(userid, (ROLE_VOTER, ))
+            if userid in delegates.list:
+                self.context.add_groups(userid, (ROLE_VOTER, ))
                 

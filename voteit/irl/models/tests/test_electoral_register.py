@@ -17,8 +17,11 @@ class ElectoralRegisterTests(unittest.TestCase):
 
     def _make_adapted_obj(self):
         from voteit.irl.models.electoral_register import ElectoralRegister
+        from voteit.irl.models.delegates import Delegates
         from voteit.core.models.meeting import Meeting
         self.meeting = Meeting()
+        delegates = Delegates(self.meeting)
+        delegates.list.update(ALL_TEST_USERS)
         return ElectoralRegister(self.meeting)
 
     def test_interface(self):
@@ -39,12 +42,14 @@ class ElectoralRegisterTests(unittest.TestCase):
         obj.context.__register_closed__ = False
         
         obj.add('robin')
+        obj.add('kalle')
         
         obj.close()
         self.assertTrue(obj.register_closed)
         
         self.assertTrue(obj.context.__register_closed__)
         self.assertTrue('role:Voter' in self.meeting.get_groups('robin'))
+        self.assertFalse('role:Voter' in self.meeting.get_groups('kalle'))
 
     def test_clear(self):
         obj = self._make_adapted_obj()
@@ -53,6 +58,7 @@ class ElectoralRegisterTests(unittest.TestCase):
         obj.add('fredrik')
         obj.add('robin')
         obj.add('anders')
+        obj.add('kalle')
         
         obj.close()
         
@@ -64,3 +70,4 @@ class ElectoralRegisterTests(unittest.TestCase):
         self.assertFalse('role:Voter' in self.meeting.get_groups('robin'))
         self.assertFalse('role:Voter' in self.meeting.get_groups('anders'))
         self.assertFalse('role:Voter' in self.meeting.get_groups('hanna'))
+        self.assertFalse('role:Voter' in self.meeting.get_groups('kalle'))

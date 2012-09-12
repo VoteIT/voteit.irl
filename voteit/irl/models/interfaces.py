@@ -16,3 +16,8 @@ class IProposalNumbers(Interface):
 class IElectoralRegister(Interface):
     """ 
     """
+    
+    
+class IDelegates(Interface):
+    """ 
+    """
