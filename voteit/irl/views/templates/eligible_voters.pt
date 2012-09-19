@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="load: ${api.template_dir}content.pt"
+	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+	  i18n:domain="voteit.irl">
+<body>
+<h1 metal:fill-slot="page_heading">Eligible Voters</h1>
+<div metal:fill-slot="content" class="content_wrapper">
+    <table class="eligible-voters listing">
+	<thead>
+		<tr>
+			<th i18n:translate="" class="heading">UserID</th>
+            <th i18n:translate="" class="heading">First name</th>
+            <th i18n:translate="" class="heading">Last name</th>
+            <th i18n:translate="" class="heading">Email</th>
+            <th class="heading"></th>
+		</tr>
+	</thead>
+	<tbody>
+    <tal:iterate repeat="userid eligible_voters">
+        <tr tal:attributes="class repeat.userid.odd and 'odd' or '';">
+        <tal:user define="user get_user(userid)">
+            <td><a class="inlineinfo" href="${request.resource_url(context, '_userinfo', query={'userid': userid})}">
+            	${user.userid}</a></td>
+            <td>${user.get_field_value('first_name')}</td>
+            <td>${user.get_field_value('last_name')}</td>
+            <td><a href="mailto:${user.get_field_value('email')}">${user.get_field_value('email')}</a></td>
+            <td><a class="buttonize" 
+            	   href="${request.resource_url(context, 'remove_eligible_voter', query={'userid': userid})}"
+            	   i18n:translate="">
+            	   Remove
+            </a></td>
+        </tal:user>
+        </tr>
+    </tal:iterate>
+   	</tbody>
+    </table>
+    <p><a class="buttonize" 
+        	   href="${request.resource_url(context, 'add_eligible_voter')}"
+        	   i18n:translate="">
+        	   Add participant</a></p>
+</div>
+</body>
+</html>
