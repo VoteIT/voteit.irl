@@ -30,7 +30,7 @@ class EligibleVotersView(BaseView):
         self.eligible_voters = self.request.registry.getAdapter(self.context, IEligibleVoters)
         voteit_irl.need()
 
-    @view_config(name="view_eligible_voters", context=IMeeting, renderer="templates/eligible_voters.pt", permission=MODERATE_MEETING)
+    @view_config(name="view_eligible_voters", context=IMeeting, renderer="templates/eligible_voters.pt", permission=VIEW)
     def view(self):
         root = self.api.root
         

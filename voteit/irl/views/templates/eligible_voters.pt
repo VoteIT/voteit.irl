@@ -15,7 +15,7 @@
             <th i18n:translate="" class="heading">First name</th>
             <th i18n:translate="" class="heading">Last name</th>
             <th i18n:translate="" class="heading">Email</th>
-            <th class="heading"></th>
+            <th tal:condition="api.context_has_permission('Moderate Meeting', context)" class="heading"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -27,7 +27,7 @@
             <td>${user.get_field_value('first_name')}</td>
             <td>${user.get_field_value('last_name')}</td>
             <td><a href="mailto:${user.get_field_value('email')}">${user.get_field_value('email')}</a></td>
-            <td><a class="buttonize" 
+            <td tal:condition="api.context_has_permission('Moderate Meeting', context)"><a class="buttonize" 
             	   href="${request.resource_url(context, 'remove_eligible_voter', query={'userid': userid})}"
             	   i18n:translate="">
             	   Remove
@@ -37,7 +37,7 @@
     </tal:iterate>
    	</tbody>
     </table>
-    <p><a class="buttonize" 
+    <p tal:condition="api.context_has_permission('Moderate Meeting', context)"><a class="buttonize" 
         	   href="${request.resource_url(context, 'add_eligible_voter')}"
         	   i18n:translate="">
         	   Add participant</a></p>
