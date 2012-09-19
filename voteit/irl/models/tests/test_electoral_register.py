@@ -17,11 +17,11 @@ class ElectoralRegisterTests(unittest.TestCase):
 
     def _make_adapted_obj(self):
         from voteit.irl.models.electoral_register import ElectoralRegister
-        from voteit.irl.models.delegates import Delegates
+        from voteit.irl.models.eligible_voters import EligibleVoters
         from voteit.core.models.meeting import Meeting
         self.meeting = Meeting()
-        delegates = Delegates(self.meeting)
-        delegates.list.update(ALL_TEST_USERS)
+        eligible_voters = EligibleVoters(self.meeting)
+        eligible_voters.list.update(ALL_TEST_USERS)
         return ElectoralRegister(self.meeting)
 
     def test_interface(self):

@@ -18,6 +18,6 @@ class IElectoralRegister(Interface):
     """
     
     
-class IDelegates(Interface):
+class IEligibleVoters(Interface):
     """ 
     """

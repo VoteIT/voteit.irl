@@ -4,7 +4,7 @@ from pyramid import testing
 from zope.interface.verify import verifyObject
 
 
-class DelegatesTests(unittest.TestCase):
+class EligibleVotersTests(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp()
 
@@ -12,15 +12,15 @@ class DelegatesTests(unittest.TestCase):
         testing.tearDown()
 
     def _make_adapted_obj(self):
-        from voteit.irl.models.delegates import Delegates
+        from voteit.irl.models.eligible_voters import EligibleVoters
         from voteit.core.models.meeting import Meeting
         self.meeting = Meeting()
-        return Delegates(self.meeting)
+        return EligibleVoters(self.meeting)
 
     def test_interface(self):
-        from voteit.irl.models.interfaces import IDelegates
+        from voteit.irl.models.interfaces import IEligibleVoters
         obj = self._make_adapted_obj()
-        self.assertTrue(verifyObject(IDelegates, obj))
+        self.assertTrue(verifyObject(IEligibleVoters, obj))
 
     def test_add(self):
         obj = self._make_adapted_obj()

@@ -13,7 +13,7 @@ from voteit.core.security import ROLE_VOTER
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.fanstaticlib import voteit_irl
 from voteit.irl.models.interfaces import IElectoralRegister
-from voteit.irl.models.interfaces import IDelegates
+from voteit.irl.models.interfaces import IEligibleVoters
 
 
 class ElectoralRegisterView(BaseView):
@@ -23,7 +23,7 @@ class ElectoralRegisterView(BaseView):
     def __init__(self, context, request):
         super(ElectoralRegisterView, self).__init__(context, request)
         self.register = self.request.registry.getAdapter(self.context, IElectoralRegister)
-        self.delegates = self.request.registry.getAdapter(self.context, IDelegates)
+        self.eligible_voters = self.request.registry.getAdapter(self.context, IEligibleVoters)
         voteit_irl.need()
 
     @view_config(name="clear_electoral_register", context=IMeeting, permission=MODERATE_MEETING)
@@ -64,7 +64,7 @@ class ElectoralRegisterView(BaseView):
         others = []
         
         for userid in self.register.register:
-            if userid in self.delegates.list:
+            if userid in self.eligible_voters.list:
                 groups = self.context.get_groups(userid)
                 if ROLE_VOTER in groups:
                     voters.append(userid)
@@ -73,7 +73,7 @@ class ElectoralRegisterView(BaseView):
             else:
                 others.append(userid)
                 
-        for userid in (set(self.delegates.list) - set(self.register.register)):
+        for userid in (set(self.eligible_voters.list) - set(self.register.register)):
             nonvoters.append(userid)
         
         # total number of users with voting rights

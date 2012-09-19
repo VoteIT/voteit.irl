@@ -6,9 +6,9 @@ from voteit.core.testing_helpers import bootstrap_and_fixture
 from voteit.core.models.interfaces import IMeeting
 
 from voteit.irl.models.interfaces import IElectoralRegister
-from voteit.irl.models.interfaces import IDelegates
+from voteit.irl.models.interfaces import IEligibleVoters
 from voteit.irl.models.electoral_register import ElectoralRegister
-from voteit.irl.models.delegates import Delegates
+from voteit.irl.models.eligible_voters import EligibleVoters
 
 
 class ViewTests(TestCase):
@@ -36,10 +36,10 @@ class ViewTests(TestCase):
         from voteit.core.models.meeting import Meeting
         root['m'] = meeting = Meeting()
     
-        self.config.registry.registerAdapter(Delegates, (IMeeting,), IDelegates)
+        self.config.registry.registerAdapter(Delegates, (IMeeting,), IEligibleVoters)
         
-        delegates = self.request.registry.getAdapter(meeting, IDelegates)
-        delegates.list.update(('fredrik', 'anders', 'hanna', 'robin'))
+        eligible_voters = self.request.registry.getAdapter(meeting, IEligibleVoters)
+        eligible_voters.list.update(('fredrik', 'anders', 'hanna', 'robin'))
         
         self.config.registry.registerAdapter(ElectoralRegister, (IMeeting,), IElectoralRegister)
         

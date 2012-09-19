@@ -18,9 +18,9 @@ def includeme(config):
     from voteit.irl.models.interfaces import IElectoralRegister
     config.registry.registerAdapter(ElectoralRegister, (IMeeting,), IElectoralRegister)
     
-    from voteit.irl.models.delegates import Delegates
-    from voteit.irl.models.interfaces import IDelegates
-    config.registry.registerAdapter(Delegates, (IMeeting,), IDelegates)
+    from voteit.irl.models.eligible_voters import EligibleVoters
+    from voteit.irl.models.interfaces import IEligibleVoters
+    config.registry.registerAdapter(EligibleVoters, (IMeeting,), IEligibleVoters)
 
     cache_ttl_seconds = int(config.registry.settings.get('cache_ttl_seconds', 7200))
     config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_ttl_seconds)
