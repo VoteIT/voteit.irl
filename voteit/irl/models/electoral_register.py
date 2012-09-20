@@ -1,6 +1,9 @@
-from zope.interface import implements
-from BTrees.OOBTree import OOSet
+from copy import deepcopy
 
+from zope.interface import implements
+from BTrees.OOBTree import OOSet, OOBTree
+
+from voteit.core.models.date_time_util import utcnow
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.security import ROLE_VOTER
 
@@ -32,36 +35,31 @@ class ElectoralRegister(object):
         except AttributeError:
             self.context.__register_closed__ = True
             return self.context.__register_closed__
+        
+    @property
+    def archive(self):
+        try:
+            return self.context.__archive__
+        except AttributeError:
+            self.context.__archive__ = OOBTree()
+            return self.context.__archive__
 
     def add(self, userid):
         if self.register_closed:
-            #FIXME: translations
             raise Exception(_(u"Electoral register is closed"))
 
-        if userid not in self.register:
-            self.register.add(userid)
+        self.register.add(userid)
 
     def clear(self):
         self.context.__register_closed__ = False
         if hasattr(self.context, '__register__'):
-            delattr(self.context, '__register__')
-        
-        userids_and_groups = []
-        for permissions in self.context.get_security():
-            groups = list(permissions['groups'])
-            if ROLE_VOTER in groups:
-                groups.remove(ROLE_VOTER)
-            userids_and_groups.append({'userid':permissions['userid'], 'groups':groups})
-        
-        self.context.set_security(userids_and_groups)
+            delattr(self.context, '__register__')        
 
     def close(self):
         self.context.__register_closed__ = True
 
-        eligible_voters = EligibleVoters(self.context) # get the eligible voters in the meering
+        self.add_archive(deepcopy(self.register))
         
-        # set voting rights if user is present and is a eligible voter
-        for userid in self.register:
-            if userid in eligible_voters.list:
-                self.context.add_groups(userid, (ROLE_VOTER, ))
-                
+    def add_archive(self, userids):
+        id = "%s" % (len(self.archive)+1)
+        self.archive[id] = {'time': utcnow(), 'userids': userids}

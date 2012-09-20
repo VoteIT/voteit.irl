@@ -17,11 +17,8 @@ class ElectoralRegisterTests(unittest.TestCase):
 
     def _make_adapted_obj(self):
         from voteit.irl.models.electoral_register import ElectoralRegister
-        from voteit.irl.models.eligible_voters import EligibleVoters
         from voteit.core.models.meeting import Meeting
         self.meeting = Meeting()
-        eligible_voters = EligibleVoters(self.meeting)
-        eligible_voters.list.update(ALL_TEST_USERS)
         return ElectoralRegister(self.meeting)
 
     def test_interface(self):
@@ -48,8 +45,9 @@ class ElectoralRegisterTests(unittest.TestCase):
         self.assertTrue(obj.register_closed)
         
         self.assertTrue(obj.context.__register_closed__)
-        self.assertTrue('role:Voter' in self.meeting.get_groups('robin'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('kalle'))
+        self.assertEqual(len(obj.archive), 1)
+        self.assertIn('robin', obj.archive['1']['userids'])
+        self.assertIn('kalle', obj.archive['1']['userids'])
 
     def test_clear(self):
         obj = self._make_adapted_obj()
@@ -65,9 +63,13 @@ class ElectoralRegisterTests(unittest.TestCase):
         obj.clear()
         self.assertFalse(obj.register_closed)
         self.assertEqual(len(obj.register), 0)
+
+    def test_add_archive(self):
+        obj = self._make_adapted_obj()
         
-        self.assertFalse('role:Voter' in self.meeting.get_groups('fredrik'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('robin'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('anders'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('hanna'))
-        self.assertFalse('role:Voter' in self.meeting.get_groups('kalle'))
+        obj.add_archive(ALL_TEST_USERS)
+        
+        self.assertEqual(len(obj.archive), 1)
+        self.assertIn('robin', obj.archive['1']['userids'])
+        self.assertIn('anders', obj.archive['1']['userids'])
+        
