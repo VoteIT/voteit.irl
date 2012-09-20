@@ -33,7 +33,7 @@ class ElectoralRegisterView(BaseView):
         self.register.clear()
         
         self.api.flash_messages.add(_(u"Electoral register is cleared."))
-        return HTTPFound(location=resource_url(self.context, self.request))
+        return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
         
     @view_config(name="add_electoral_register", context=IMeeting, permission=VIEW)
     def add(self):
@@ -50,50 +50,40 @@ class ElectoralRegisterView(BaseView):
         """
         self.api.flash_messages.add(_(u"Closed"))
         self.register.close()
-        return HTTPFound(location=resource_url(self.context, self.request, 'view_electoral_register'))
+        return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
 
-    @view_config(name="view_electoral_register", context=IMeeting, renderer="templates/electoral_register.pt", permission=VIEW)
+    @view_config(name="electoral_register", context=IMeeting, renderer="templates/electoral_register.pt", permission=VIEW)
     def view(self):
-        root = self.api.root
-        
-        def _get_user(userid):
-            return root['users'][userid]
-            
-        voters = []
-        nonvoters = []
-        others = []
-        
-        for userid in self.register.register:
-            if userid in self.eligible_voters.list:
-                groups = self.context.get_groups(userid)
-                if ROLE_VOTER in groups:
-                    voters.append(userid)
-                else:
-                    nonvoters.append(userid)
-            else:
-                others.append(userid)
-                
-        for userid in (set(self.eligible_voters.list) - set(self.register.register)):
-            nonvoters.append(userid)
-        
-        # total number of users with voting rights
-        self.response['voters'] = voters
-        # delegates without voting rights
-        self.response['nonvoters'] = nonvoters
-        # users that attended but is not delegates
-        self.response['others'] = others
-        
-        self.response['get_user'] = _get_user
+        self.response['register'] = self.register
+        self.response['archive'] = self.register.archive
         
         return self.response
+    
+    @view_config(name="view_electoral_register", context=IMeeting, renderer="templates/view_electoral_register.pt", permission=VIEW)
+    def view_electoral_register(self):
+        id = self.request.GET.get('id', None)
+        try:
+            if id in self.register.archive:
+                root = self.api.root
+                
+                def _get_user(userid):
+                    return root['users'][userid]
+        
+                self.response['get_user'] = _get_user
+                self.response['time'] = self.register.archive[id]['time']
+                self.response['userids'] = self.register.archive[id]['userids']
+                
+                return self.response
+        
+        except:
+            pass
+        
+        self.api.flash_messages.add(_(u"No electoral register with that number"))
+        return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
 
 
-@view_action('meeting', 'clear_electoral_register', title = _(u"Clear electoral register"),
-             link = "clear_electoral_register")
-@view_action('meeting', 'close_electoral_register', title = _(u"Close electoral register"),
-             link = "close_electoral_register")
-@view_action('meeting', 'view_electoral_register', title = _(u"View electoral register"),
-             link = "view_electoral_register")
+@view_action('participants_menu', 'electoral_register', title = _(u"Electoral register"),
+             link = "electoral_register", permission=MODERATE_MEETING)
 def electoral_register_moderator_menu_link(context, request, va, **kw):
     api = kw['api']
     if not api.context_has_permission(MODERATE_MEETING, api.meeting):

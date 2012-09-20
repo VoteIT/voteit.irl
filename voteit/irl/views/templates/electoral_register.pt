@@ -8,42 +8,60 @@
 <body>
 <h1 metal:fill-slot="page_heading">Electoral Register</h1>
 <div metal:fill-slot="content" class="content_wrapper">
-    <h2><strong i18n:translate="">Total number of voters:</strong>&nbsp;${len(voters)}</h2>
-    <h2 i18n:translate="">Delegates with voting rights</h2>
+	<p>
+		<a href="${request.resource_url(context, 'view_eligible_voters')}" i18n:translate="">List of eligible voters</a>
+	</p>
+	<p i18n:translate="">
+		To get on the list, the user must at some time have had the right to vote in the 
+		meeting. Moderator can add and remove people from the list.
+	</p>
+	<tal:open_register tal:condition="api.context_has_permission('Moderate Meeting', context)">
+		<h2 i18n:translate="">Adjust the electoral register</h2>
+		<p i18n:translate="adjust_the_electoral_register_description">
+			
+		</p>
+		<p>
+			<a class="buttonize" 
+			   href="${request.resource_url(context, 'clear_electoral_register')}" 
+			   tal:condition="register.register_closed" 
+			   i18n:translate="">
+			   		Open</a>
+			<a class="buttonize" 
+			   href="${request.resource_url(context, 'close_electoral_register')}" 
+			   tal:condition="not register.register_closed" 
+			   i18n:translate="">
+			   		Close</a>
+		</p>
+	</tal:open_register>
+	<tal:update_voteing_rights condition="api.context_has_permission('Moderate Meeting', context)">
+		<h2 i18n:translate="">Update voting rights based on latest electoral register</h2>
+		<p i18n:translate="update_voting_rights_description">
+			Update voting rights changes voting rights to only include those who are entitled to 
+			vote on the basis of latest electoral register and selected rösträttsmetod below.
+		</p>
+	</tal:update_voteing_rights>
+    <h2 i18n:translate="">Electoral registers</h2>
     <table class="electoral-register listing">
-    <tal:iterate repeat="userid voters">
-        <tr>
-        <tal:user define="user get_user(userid)">
-            <td>${user.userid}</td>
-            <td>${user.get_field_value('first_name')}</td>
-            <td>${user.get_field_value('last_name')}</td>
-        </tal:user>
-        </tr>
-    </tal:iterate>
-    </table>
-    <h2 i18n:translate="">Delegates without voting rights</h2>
-    <table class="electoral-register">
-    <tal:iterate repeat="userid nonvoters">
-        <tr>
-        <tal:user define="user get_user(userid)">
-            <td>${user.userid}</td>
-            <td>${user.get_field_value('first_name')}</td>
-            <td>${user.get_field_value('last_name')}</td>
-        </tal:user>
-        </tr>
-    </tal:iterate>
-    </table>
-    <h2 i18n:translate="">Other attending</h2>
-    <table class="electoral-register">
-    <tal:iterate repeat="userid others">
-        <tr>
-        <tal:user define="user get_user(userid)">
-            <td>${user.userid}</td>
-            <td>${user.get_field_value('first_name')}</td>
-            <td>${user.get_field_value('last_name')}</td>
-        </tal:user>
-        </tr>
-    </tal:iterate>
+    	<thead>
+    		<tr>
+    			<th class="heading" i18n:translate="">
+    				Time
+    			</th>
+    			<th class="heading" i18n:translate="">
+    				Number of users
+    			</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+		    <tal:iterate repeat="id archive.keys()">
+		        <tr tal:attributes="class repeat.id.odd and 'odd' or '';">
+		            <td><a href="${request.resource_url(context, 'view_electoral_register', query={'id': id})}">
+		            	${archive[id]['time']}</a></td>
+		            <td><a href="${request.resource_url(context, 'view_electoral_register', query={'id': id})}">
+		            	${len(archive[id]['userids'])}</a></td>
+		        </tr>
+		    </tal:iterate>
+	    </tbody>
     </table>
 </div>
 </body>
