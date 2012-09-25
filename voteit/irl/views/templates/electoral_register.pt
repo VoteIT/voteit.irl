@@ -53,7 +53,7 @@
     		</tr>
     	</thead>
     	<tbody>
-		    <tal:iterate repeat="id archive.keys()">
+		    <tal:iterate repeat="id reversed(archive.keys())">
 		        <tr tal:attributes="class repeat.id.odd and 'odd' or '';">
 		            <td><a href="${request.resource_url(context, 'view_electoral_register', query={'id': id})}">
 		            	${archive[id]['time']}</a></td>
