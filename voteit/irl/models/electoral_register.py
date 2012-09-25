@@ -62,4 +62,4 @@ class ElectoralRegister(object):
         
     def add_archive(self, userids):
         id = "%s" % (len(self.archive)+1)
-        self.archive[id] = {'time': utcnow(), 'userids': userids}
+        self.archive[id] = {'time': utcnow(), 'userids': OOSet(userids)}
