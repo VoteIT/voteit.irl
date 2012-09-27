@@ -4,7 +4,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       metal:use-macro="load: ${api.template_dir}content.pt"
 	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-	  i18n:domain="voteit.core">
+	  i18n:domain="voteit.irl">
 <body>
 <h1 metal:fill-slot="page_heading" i18n:translate="">Electoral register <span i18n:name="time">${time}</span></h1>
 <div metal:fill-slot="content" class="content_wrapper">

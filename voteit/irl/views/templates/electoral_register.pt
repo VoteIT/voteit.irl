@@ -57,7 +57,7 @@
 		    <tal:iterate repeat="id sorted(archive.keys(), key=int, reverse=True)">
 		        <tr tal:attributes="class repeat.id.odd and 'odd' or '';">
 		            <td><a href="${request.resource_url(context, 'view_electoral_register', query={'id': id})}">
-		            	${archive[id]['time']}</a></td>
+		            	${api.dt_util.dt_format(archive[id]['time'])}</a></td>
 		            <td><a href="${request.resource_url(context, 'view_electoral_register', query={'id': id})}">
 		            	${len(archive[id]['userids'])}</a></td>
 		        </tr>
