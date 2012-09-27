@@ -36,7 +36,7 @@ class ViewTests(TestCase):
         from voteit.core.models.meeting import Meeting
         root['m'] = meeting = Meeting()
     
-        self.config.registry.registerAdapter(Delegates, (IMeeting,), IEligibleVoters)
+        self.config.registry.registerAdapter(EligibleVoters, (IMeeting,), IEligibleVoters)
         
         eligible_voters = self.request.registry.getAdapter(meeting, IEligibleVoters)
         eligible_voters.list.update(('fredrik', 'anders', 'hanna', 'robin'))
@@ -56,8 +56,7 @@ class ViewTests(TestCase):
         
         result = obj.view()
         
-        self.assertTrue('robin' in result['nonvoters'])
-        self.assertTrue('admin' in result['others'])
-        self.assertEqual(result['voters'], ['anders', 'fredrik', 'hanna'])
+        self.assertIn('archive', result)
+        self.assertIn('register', result)
                          
                          

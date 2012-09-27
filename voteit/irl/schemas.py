@@ -1,14 +1,16 @@
 import colander
 import deform
 from betahaus.pyracont.decorators import schema_factory
-from voteit.core.models.interfaces import IMeeting
 from pyramid.traversal import find_interface
+
+from voteit.core.models.interfaces import IMeeting
 from voteit.core.security import context_effective_principals
 from voteit.core.security import ROLE_VIEWER
 from voteit.core.security import VIEW
 from voteit.core.security import find_authorized_userids
 
 from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl.models.interfaces import IElectoralRegisterMethod
 
 
 @colander.deferred
@@ -37,6 +39,19 @@ def deferred_autocompleting_viewer_userid_widget(node, kw):
         size=15,
         values = choices,
         min_length=1)
+    
+@colander.deferred
+def electoral_register_method_choices_widget(node, kw):
+    context = kw['context']
+    request = kw['request']
+
+    #Add all selectable plugins to schema. This chooses the poll method to use
+    method_choices = set()
+
+    for (name, method) in request.registry.getAdapters([context], IElectoralRegisterMethod):
+        method_choices.add((name, method.title))
+
+    return deform.widget.SelectWidget(values=method_choices)
 
 
 @schema_factory('AddEligibleVoter',
@@ -53,3 +68,11 @@ class AddEligibleVoterSchema(colander.Schema):
     )
     
     
+@schema_factory('ElectoralRegisterHandler')
+class ElectoralRegisterMethodSchema(colander.Schema):
+    method = colander.SchemaNode(colander.String(),
+                                  title = _(u"electoral_register_method", default=u"Method"),
+                                  description = _(u"electoral_register_method_description",
+                                                      default=u""),
+                                  widget = electoral_register_method_choices_widget,
+                                  )
