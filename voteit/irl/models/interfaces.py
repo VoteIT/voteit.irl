@@ -21,3 +21,12 @@ class IElectoralRegister(Interface):
 class IEligibleVoters(Interface):
     """ 
     """
+    
+    
+class IElectoralRegisterMethod(Interface):
+    """
+    """
+    
+    def apply(userids):
+        """ Apply voteing rights to context, based on the list of userids
+        """
