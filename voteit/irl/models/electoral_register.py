@@ -4,8 +4,6 @@ from zope.interface import implements
 from BTrees.OOBTree import OOSet, OOBTree
 
 from voteit.core.models.date_time_util import utcnow
-from voteit.core.models.interfaces import IMeeting
-from voteit.core.security import ROLE_VOTER
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
