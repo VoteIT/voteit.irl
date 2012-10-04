@@ -4,6 +4,7 @@ from pyramid.security import authenticated_userid
 from pyramid.url import resource_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.traversal import find_root
+from pyramid.decorator import reify
 from zope.component import getAdapter
 from betahaus.viewcomponent import view_action
 
@@ -17,7 +18,6 @@ from voteit.core.security import MODERATE_MEETING
 from voteit.core.security import ROLE_VOTER
 
 from voteit.irl import VoteIT_IRL_MF as _
-from voteit.irl.fanstaticlib import voteit_irl
 from voteit.irl.models.interfaces import IElectoralRegister
 from voteit.irl.models.interfaces import IEligibleVoters
 from voteit.irl.models.interfaces import IElectoralRegisterMethod
@@ -27,12 +27,14 @@ from voteit.irl.schemas import ElectoralRegisterMethodSchema
 class ElectoralRegisterView(BaseView):
     """ Handle electoral register
     """
-    
-    def __init__(self, context, request):
-        super(ElectoralRegisterView, self).__init__(context, request)
-        self.register = self.request.registry.getAdapter(self.context, IElectoralRegister)
-        self.eligible_voters = self.request.registry.getAdapter(self.context, IEligibleVoters)
-        voteit_irl.need()
+
+    @reify
+    def register(self):
+        return self.request.registry.getAdapter(self.context, IElectoralRegister)
+
+    @reify
+    def eligible_voters(self):
+        return self.request.registry.getAdapter(self.context, IEligibleVoters)
 
     @view_config(name="clear_electoral_register", context=IMeeting, permission=MODERATE_MEETING)
     def clear(self):

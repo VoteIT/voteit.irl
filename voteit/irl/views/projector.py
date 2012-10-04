@@ -9,7 +9,7 @@ from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
 from betahaus.viewcomponent.decorators import view_action
 
-from voteit.irl.fanstaticlib import voteit_irl
+from voteit.irl.fanstaticlib import voteit_irl_projector
 from voteit.irl import VoteIT_IRL_MF as _
 
 
@@ -18,7 +18,7 @@ class ProjectorView(BaseView):
     @view_config(context=IAgendaItem, name="projector", renderer="templates/projector.pt", permission=MODERATE_MEETING)
     def view(self):
         """ """
-        voteit_irl.need()
+        voteit_irl_projector.need()
         
         context_path = resource_path(self.api.meeting)
         query = dict(

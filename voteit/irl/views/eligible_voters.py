@@ -1,9 +1,11 @@
 from deform import Form
+from deform.exception import ValidationFailure
 from pyramid.view import view_config
 from pyramid.security import authenticated_userid
 from pyramid.url import resource_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.traversal import find_root
+from pyramid.decorator import reify
 from betahaus.viewcomponent import view_action
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.views.base_view import BaseView
@@ -15,20 +17,17 @@ from voteit.core.security import context_effective_principals
 from voteit.core.models.schemas import add_csrf_token
 from voteit.core.models.schemas import button_add
 from voteit.core.models.schemas import button_cancel
-from deform.exception import ValidationFailure
-
 
 from voteit.irl import VoteIT_IRL_MF as _
-from voteit.irl.fanstaticlib import voteit_irl
 from voteit.irl.models.interfaces import IEligibleVoters
 from voteit.irl.schemas import AddEligibleVoterSchema
 
+
 class EligibleVotersView(BaseView):
-    
-    def __init__(self, context, request):
-        super(EligibleVotersView, self).__init__(context, request)
-        self.eligible_voters = self.request.registry.getAdapter(self.context, IEligibleVoters)
-        voteit_irl.need()
+
+    @reify
+    def eligible_voters(self):
+        return self.request.registry.getAdapter(self.context, IEligibleVoters)
 
     @view_config(name="view_eligible_voters", context=IMeeting, renderer="templates/eligible_voters.pt", permission=VIEW)
     def view(self):
