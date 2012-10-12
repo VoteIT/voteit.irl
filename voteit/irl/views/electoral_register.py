@@ -1,4 +1,5 @@
 from deform import Form
+from deform.exception import ValidationFailure
 from pyramid.view import view_config
 from pyramid.security import authenticated_userid
 from pyramid.url import resource_url
@@ -118,12 +119,15 @@ class ElectoralRegisterView(BaseView):
                 self.response['form'] = e.render()
                 return self.response
             
-            list = self.register.archive["%s" % len(self.register.archive)]
+            if len(self.register.archive) > 0:
+                list = self.register.archive["%s" % len(self.register.archive)]
 
-            method = getAdapter(self.context, name=appstruct['method'], interface=IElectoralRegisterMethod)
-            method.apply(list['userids'])
+                method = getAdapter(self.context, name=appstruct['method'], interface=IElectoralRegisterMethod)
+                method.apply(list['userids'])
 
-            self.api.flash_messages.add(_(u"Successfully updated"))
+                self.api.flash_messages.add(_(u"Successfully updated"))
+            else:
+                self.api.flash_messages.add(_(u"No register to apply method on"))
             
             return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
 
