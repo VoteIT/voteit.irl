@@ -39,7 +39,7 @@
 			Update voting rights changes voting rights to only include those who are entitled to 
 			vote on the basis of latest electoral register and selected rösträttsmetod below.
 		</p>
-		<div tal:content="structure method_form">Form</div>
+		<div tal:content="structure method_form">Method Form</div>
 	</tal:update_voteing_rights>
     <h2 i18n:translate="">Electoral registers</h2>
     <table class="electoral-register listing">
@@ -64,6 +64,7 @@
 		    </tal:iterate>
 	    </tbody>
     </table>
+    <div tal:condition="diff_form and len(archive) > 1" tal:replace="structure diff_form">Diff form</div>
 </div>
 </body>
 </html>

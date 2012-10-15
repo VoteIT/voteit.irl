@@ -27,6 +27,11 @@ class ViewTests(TestCase):
         return ElectoralRegisterView
     
     def _fixture(self):
+        settings = self.config.registry.settings
+        settings['default_locale_name'] = 'sv'
+        settings['default_timezone_name'] = 'Europe/Stockholm'
+        self.config.include('voteit.core.models.date_time_util')
+        
         root = bootstrap_and_fixture(self.config)
 
         from voteit.core.models.user import User
@@ -58,5 +63,21 @@ class ViewTests(TestCase):
         
         self.assertIn('archive', result)
         self.assertIn('register', result)
-                         
-                         
+        
+    def test_diff_electoral_register(self):
+        context = self._fixture()
+        
+        register = self.request.registry.getAdapter(context, IElectoralRegister)
+        register.register.update(('fredrik', 'anders'))
+        register.close()
+        
+        register.register.update(('fredrik', 'hanna', 'robin'))
+        register.close()
+        
+        self.request.POST = {'view': 'view', 'archive1': '1', 'archive2': '2'}
+        obj = self._cut(context, self.request)
+        result = obj.diff_electoral_register()
+        
+        self.assertEqual(result['archive1'], register.archive['1'])
+        self.assertEqual(result['archive2'], register.archive['2'])
+        self.assertEqual(result['union'], set(['anders', 'hanna', 'fredrik', 'robin']))

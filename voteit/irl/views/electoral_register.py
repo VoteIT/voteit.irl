@@ -1,3 +1,4 @@
+import deform
 from deform import Form
 from deform.exception import ValidationFailure
 from pyramid.view import view_config
@@ -23,6 +24,7 @@ from voteit.irl.models.interfaces import IElectoralRegister
 from voteit.irl.models.interfaces import IEligibleVoters
 from voteit.irl.models.interfaces import IElectoralRegisterMethod
 from voteit.irl.schemas import ElectoralRegisterMethodSchema
+from voteit.irl.schemas import ElectoralRegisterDiffSchema
 
 
 class ElectoralRegisterView(BaseView):
@@ -65,17 +67,26 @@ class ElectoralRegisterView(BaseView):
 
     @view_config(name="electoral_register", context=IMeeting, renderer="templates/electoral_register.pt", permission=VIEW)
     def view(self):
-        schema = ElectoralRegisterMethodSchema().bind(context=self.context, request=self.request)
-        add_csrf_token(self.context, self.request, schema)
+        method_schema = ElectoralRegisterMethodSchema().bind(context=self.context, request=self.request, api=self.api)
+        add_csrf_token(self.context, self.request, method_schema)
 
-        form = Form(schema,
-                    action=self.request.resource_url(self.context, 'apply_electoral_register_method'), 
-                    buttons=(button_update,))
-        self.api.register_form_resources(form)
+        method_form = Form(method_schema,
+                           action=self.request.resource_url(self.context, 'apply_electoral_register_method'), 
+                           buttons=(button_update,))
+        self.api.register_form_resources(method_form)
         
-        self.response['method_form'] = form.render()
+        diff_schema = ElectoralRegisterDiffSchema().bind(context=self.context, request=self.request, api=self.api)
+        add_csrf_token(self.context, self.request, diff_schema)
+
+        diff_form = Form(diff_schema,
+                         action=self.request.resource_url(self.context, 'diff_electoral_register'), 
+                         buttons=(deform.Button('view', _(u"View")),))
+        self.api.register_form_resources(diff_form)
+        
+        self.response['method_form'] = method_form.render()
         self.response['register'] = self.register
         self.response['archive'] = self.register.archive
+        self.response['diff_form'] = diff_form.render()
         
         return self.response
     
@@ -100,6 +111,43 @@ class ElectoralRegisterView(BaseView):
         
         self.api.flash_messages.add(_(u"No electoral register with that number"))
         return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
+    
+    @view_config(name="diff_electoral_register", context=IMeeting, renderer="templates/diff_electoral_register.pt", permission=VIEW)
+    def diff_electoral_register(self):
+        schema = ElectoralRegisterDiffSchema().bind(context=self.context, request=self.request, api=self.api)
+        add_csrf_token(self.context, self.request, schema)
+
+        form = Form(schema,
+                    action=self.request.resource_url(self.context), 
+                    buttons=(deform.Button('view', _(u"View")),))
+        self.api.register_form_resources(form)
+        
+        post = self.request.POST
+        if 'view' in post:
+            controls = post.items()
+            try:
+                appstruct = form.validate(controls)
+            except ValidationFailure, e:
+                self.response['form'] = e.render()
+                return self.response
+            
+            archive1 = self.register.archive[appstruct['archive1']]
+            archive2 = self.register.archive[appstruct['archive2']]
+            
+            def _get_user(userid):
+                root = self.api.root
+                return root['users'][userid]
+        
+            self.response['get_user'] = _get_user
+            self.response['archive1'] = archive1
+            self.response['archive2'] = archive2
+            self.response['union'] = set(archive1['userids']) | set(archive2['userids'])
+             
+            self.response['form'] = form.render(controls)
+            
+            return self.response
+        
+        return HTTPFound(location=self.request.resource_url(self.context, 'electoral_register'))
     
     @view_config(name="apply_electoral_register_method", context=IMeeting, renderer="voteit.core.views:templates/base_edit.pt", permission=MODERATE_MEETING)
     def apply_method(self):

@@ -11,6 +11,7 @@ from voteit.core.security import find_authorized_userids
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegisterMethod
+from voteit.irl.models.interfaces import IElectoralRegister
 
 
 @colander.deferred
@@ -53,6 +54,20 @@ def electoral_register_method_choices_widget(node, kw):
 
     return deform.widget.SelectWidget(values=method_choices)
 
+@colander.deferred
+def register_diff_choices_widget(node, kw):
+    context = kw['context']
+    request = kw['request']
+    api = kw['api']
+    register = request.registry.getAdapter(context, IElectoralRegister)
+    archive = register.archive
+
+    choices = set()
+    for id in sorted(archive.keys(), key=int, reverse=True):
+        choices.add((id, api.dt_util.dt_format(archive[id]['time']), ))
+
+    return deform.widget.SelectWidget(values=choices)
+
 
 @schema_factory('AddEligibleVoter',
                 title = _(u"add_eligible_voter_to_meeting",
@@ -75,4 +90,20 @@ class ElectoralRegisterMethodSchema(colander.Schema):
                                   description = _(u"electoral_register_method_description",
                                                       default=u""),
                                   widget = electoral_register_method_choices_widget,
+                                  )
+    
+    
+@schema_factory('ElectoralRegisterDiff')
+class ElectoralRegisterDiffSchema(colander.Schema):
+    archive1 = colander.SchemaNode(colander.String(),
+                                  title = _(u"electoral_register_diff_archive1", default=u"First register"),
+                                  description = _(u"electoral_register_diff_archive1_description",
+                                                    default=u""),
+                                  widget = register_diff_choices_widget,
+                                  )
+    archive2 = colander.SchemaNode(colander.String(),
+                                  title = _(u"electoral_register_diff_archive2", default=u"Second register"),
+                                  description = _(u"electoral_register_diff_archive2_description",
+                                                    default=u""),
+                                  widget = register_diff_choices_widget,
                                   )
