@@ -64,6 +64,7 @@
 		    </tal:iterate>
 	    </tbody>
     </table>
+    <h2 i18n:translate="">View difference between selected electoral registers</h2>
     <div tal:condition="diff_form and len(archive) > 1" tal:replace="structure diff_form">Diff form</div>
 </div>
 </body>
