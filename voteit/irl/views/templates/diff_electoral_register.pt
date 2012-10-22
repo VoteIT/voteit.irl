@@ -21,10 +21,8 @@
 	        <tal:user define="user get_user(userid)">
 	            <td><a tal:condition="userid in archive1['userids']" class="inlineinfo" href="${request.resource_url(context, '_userinfo', query={'userid': userid})}">
 	            	${user.title} (${user.userid})</a></td>
-	            <td></td>
 	            <td><a tal:condition="userid in archive2['userids']" class="inlineinfo" href="${request.resource_url(context, '_userinfo', query={'userid': userid})}">
 	            	${user.title} (${user.userid})</a></td>
-	            <td></td>
 	        </tal:user>
 	        </tr>
 	    </tal:iterate>
