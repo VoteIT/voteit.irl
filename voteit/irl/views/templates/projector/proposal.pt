@@ -29,7 +29,7 @@
 			 i18n:attributes="alt" />
     </a>
     
-    <div class="proposal_number top"><span i18n:translate="">Proposal</span> ${proposal.get_field_value('proposal_number')}</div>
+    <div class="proposal_number top">#${proposal.get_field_value('aid')}</div>
     
     <tal:creators tal:replace="structure api.get_creators_info(proposal.creators, portrait=True)">Creators</tal:creators>
     <span class="body" i18n:translate="">propose</span>
@@ -41,7 +41,7 @@
         <span class="${state_id} icon iconpadding"
               tal:content="api.tstring(state_id.title())">private</span>
         <span class="hyphen">&#45;</span>
-        <span class="proposal_number bottom"><span i18n:translate="">Proposal</span> ${proposal.get_field_value('proposal_number')}</span>
+        <span class="proposal_number bottom">#${proposal.get_field_value('aid')}</span>
     </div>
     <div class="clear"><!-- --></div>
 </li>
