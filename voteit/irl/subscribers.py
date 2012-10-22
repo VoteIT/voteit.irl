@@ -1,30 +1,13 @@
-from copy import deepcopy
-
 from pyramid.events import subscriber
 from pyramid.threadlocal import get_current_request
-from pyramid.traversal import find_interface
-from repoze.folder.interfaces import IObjectAddedEvent
 from zope.component import getAdapter
 
-from voteit.core.interfaces import IObjectUpdatedEvent
-from voteit.core.models.interfaces import IAgendaItem, IMeeting, IProposal
+from voteit.core.interfaces import IObjectUpdatedEvent 
+from voteit.core.models.interfaces import IMeeting
 from voteit.core.security import ROLE_VOTER
-from voteit.core.security import find_authorized_userids
 
 from voteit.irl.models.interfaces import IElectoralRegister
 from voteit.irl.models.interfaces import IEligibleVoters 
-from voteit.irl.models.interfaces import IProposalNumbers
-
-from pyramid.security import has_permission
-
-
-@subscriber([IProposal, IObjectAddedEvent])
-def add_proposal_number(obj, event):
-    """ Add a number to a new Proposal.
-    """
-    ai = find_interface(obj, IAgendaItem)
-    numbers = getAdapter(ai, IProposalNumbers)
-    numbers.add(obj)
 
 
 @subscriber([IMeeting, IObjectUpdatedEvent])

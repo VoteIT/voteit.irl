@@ -3,8 +3,6 @@ from unittest import TestCase
 from pyramid import testing
 from voteit.core.models.user import User
 from voteit.core.models.meeting import Meeting
-from voteit.core.models.agenda_item import AgendaItem
-from voteit.core.models.proposal import Proposal
 from voteit.core.security import ROLE_VIEWER
 from voteit.core.security import ROLE_VOTER
 from voteit.core.testing_helpers import bootstrap_and_fixture
@@ -25,18 +23,10 @@ class SubscriberTests(TestCase):
     def setUp(self):
         self.request = testing.DummyRequest()
         self.config = testing.setUp(request=self.request)
-        
         self.m = Meeting()
-        
-        self.ai = self.m['ai'] = AgendaItem()
 
     def tearDown(self):
         testing.tearDown()
-
-    def test_subscriber_adds(self):
-        self.config.include('voteit.irl')
-        p = self.ai['p'] = Proposal()
-        self.assertEqual(p.get_field_value('proposal_number', object()), 1)
 
     def test_update_eligible_voters(self):
         register_security_policies(self.config)
