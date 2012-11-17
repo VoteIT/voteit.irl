@@ -1,7 +1,7 @@
 <li tal:define="state_id proposal.get_workflow_state();
                 css_class 'listing_block wf-state-%s' % state_id;"
     tal:attributes="class css_class"
-    i18n:domain="voteit.core">
+    i18n:domain="voteit.irl">
     
     <a href="#" class="inactivate">
     	<img src="${request.application_url}/voteit_irl/images/arrow_right.png"
@@ -12,13 +12,13 @@
     
     <div class="states" tal:define="proposal_url api.resource_url(proposal, request)">
         <div class="state approved">
-            <a href="${proposal_url}@@projector_state?state=approved"><span i18n:translate="">Approve</span></a>
+            <a href="${proposal_url}@@projector_state?state=approved"><span i18n:translate="">Set approved</span></a>
         </div>
         <div class="state published">
-            <a href="${proposal_url}@@projector_state?state=published"><span i18n:translate="">Published</span></a>
+            <a href="${proposal_url}@@projector_state?state=published"><span i18n:translate="">Set published</span></a>
         </div>
         <div class="state denied">
-            <a href="${proposal_url}@@projector_state?state=denied"><span i18n:translate="">Denie</span></a>
+            <a href="${proposal_url}@@projector_state?state=denied"><span i18n:translate="">Set denied</span></a>
         </div>
     </div>
 
