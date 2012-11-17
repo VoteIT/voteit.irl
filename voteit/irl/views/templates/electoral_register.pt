@@ -37,7 +37,7 @@
 		<h2 i18n:translate="">Update voting rights based on latest electoral register</h2>
 		<p i18n:translate="update_voting_rights_description">
 			Update voting rights changes voting rights to only include those who are entitled to 
-			vote on the basis of latest electoral register and selected rösträttsmetod below.
+			vote on the basis of latest electoral register and selected electorial register method below.
 		</p>
 		<div tal:content="structure method_form">Method Form</div>
 	</tal:update_voteing_rights>

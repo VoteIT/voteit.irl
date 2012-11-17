@@ -15,19 +15,19 @@
             <th i18n:translate="" class="heading">First name</th>
             <th i18n:translate="" class="heading">Last name</th>
             <th i18n:translate="" class="heading">Email</th>
-            <th tal:condition="api.context_has_permission('Moderate Meeting', context)" class="heading"></th>
+            <th tal:condition="api.show_moderator_actions" class="heading"></th>
 		</tr>
 	</thead>
 	<tbody>
     <tal:iterate repeat="userid eligible_voters">
         <tr tal:attributes="class repeat.userid.odd and 'odd' or '';">
-        <tal:user define="user get_user(userid)">
-            <td><a class="inlineinfo" href="${request.resource_url(context, '_userinfo', query={'userid': userid})}">
+        <tal:user define="user api.get_user(userid)">
+            <td><a class="inlineinfo" href="${api.get_userinfo_url(userid)}">
             	${user.userid}</a></td>
             <td>${user.get_field_value('first_name')}</td>
             <td>${user.get_field_value('last_name')}</td>
             <td><a href="mailto:${user.get_field_value('email')}">${user.get_field_value('email')}</a></td>
-            <td tal:condition="api.context_has_permission('Moderate Meeting', context)"><a class="buttonize" 
+            <td tal:condition="api.show_moderator_actions"><a class="buttonize" 
             	   href="${request.resource_url(context, 'remove_eligible_voter', query={'userid': userid})}"
             	   i18n:translate="">
             	   Remove
@@ -37,7 +37,7 @@
     </tal:iterate>
    	</tbody>
     </table>
-    <p tal:condition="api.context_has_permission('Moderate Meeting', context)"><a class="buttonize" 
+    <p tal:condition="api.show_moderator_actions"><a class="buttonize" 
         	   href="${request.resource_url(context, 'add_eligible_voter')}"
         	   i18n:translate="">
         	   Add participant</a></p>

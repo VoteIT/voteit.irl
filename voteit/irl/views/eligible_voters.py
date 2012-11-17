@@ -31,14 +31,7 @@ class EligibleVotersView(BaseView):
 
     @view_config(name="view_eligible_voters", context=IMeeting, renderer="templates/eligible_voters.pt", permission=VIEW)
     def view(self):
-        root = self.api.root
-        
-        def _get_user(userid):
-            return root['users'][userid]
-        
-        self.response['get_user'] = _get_user
         self.response['eligible_voters'] = self.eligible_voters.list
-        
         return self.response
     
     @view_config(name="add_eligible_voter", context=IMeeting, renderer="voteit.core.views:templates/base_edit.pt", permission=MODERATE_MEETING)
