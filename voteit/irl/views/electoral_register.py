@@ -2,11 +2,11 @@ import deform
 from deform import Form
 from deform.exception import ValidationFailure
 from pyramid.view import view_config
-from pyramid.security import authenticated_userid
 from pyramid.url import resource_url
 from pyramid.httpexceptions import HTTPFound
-from pyramid.traversal import find_root
 from pyramid.decorator import reify
+from pyramid.response import Response
+from pyramid.renderers import render
 from zope.component import getAdapter
 from betahaus.viewcomponent import view_action
 
@@ -17,7 +17,6 @@ from voteit.core.models.schemas import button_cancel
 from voteit.core.views.base_view import BaseView
 from voteit.core.security import VIEW
 from voteit.core.security import MODERATE_MEETING
-from voteit.core.security import ROLE_VOTER
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -25,6 +24,7 @@ from voteit.irl.models.interfaces import IEligibleVoters
 from voteit.irl.models.interfaces import IElectoralRegisterMethod
 from voteit.irl.schemas import ElectoralRegisterMethodSchema
 from voteit.irl.schemas import ElectoralRegisterDiffSchema
+from voteit.irl.fanstaticlib import voteit_irl_set_as_present
 
 
 class ElectoralRegisterView(BaseView):
@@ -48,15 +48,27 @@ class ElectoralRegisterView(BaseView):
         self.api.flash_messages.add(_(u"Electoral register is cleared."))
         return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
         
-    @view_config(name="add_electoral_register", context=IMeeting, permission=VIEW)
-    def add(self):
-        """ Set someone as attending
+    @view_config(name="register_meeting_presence", context=IMeeting, permission=VIEW,
+                 renderer = "templates/register_meeting_presence.pt")
+    def register_meeting_presence(self):
+        """ Controls for setting yourself as attending
         """
+        voteit_irl_set_as_present.need()
+        self.response['current'] = self.register_current_status()
+        return self.response
+
+    def register_current_status(self, msg = u""):
+        self.response['register_closed'] = self.register.register_closed
+        self.response['is_registered'] = self.api.userid in self.register.register
+        self.response['msg'] = msg
+        return render("templates/meeting_presence_status.pt", self.response, request = self.request)
+
+    @view_config(name="_register_set_attending", context=IMeeting, permission=VIEW, xhr=True)
+    def register_set_attending(self):
         self.register.add(self.api.userid)
-        
-        self.api.flash_messages.add(_(u"Thanks, you have registered your attendance."))
-        return HTTPFound(location=resource_url(self.context, self.request))
-        
+        msg = _(u"Successfully updated.")
+        return Response(self.register_current_status(msg))
+
     @view_config(name="close_electoral_register", context=IMeeting, permission=MODERATE_MEETING)
     def close(self):
         """ Close registry
@@ -196,15 +208,10 @@ def electoral_register_moderator_menu_link(context, request, va, **kw):
     url = request.resource_url(api.meeting, va.kwargs['link']) 
     return """<li><a href="%s">%s</a></li>""" % (url, api.translate(va.title))
 
-@view_action('participants_menu', 'add_electoral_register', title = _(u"Set yourself as present"))
+@view_action('participants_menu', 'register_meeting_presence', title = _(u"Set yourself as present"))
 def electoral_register_link(context, request, va, **kw):
     api = kw['api']
     if not api.userid or not api.meeting:
         return ''
-    register = request.registry.getAdapter(api.meeting, IElectoralRegister)
-    if register.register_closed:
-        return ''
-    if api.userid in register.register:
-        return ''
-    link = request.resource_url(api.meeting, 'add_electoral_register')
+    link = request.resource_url(api.meeting, 'register_meeting_presence')
     return """ <li class="tab"><a href="%s">%s</a></li>"""  % (link, api.translate(va.title))

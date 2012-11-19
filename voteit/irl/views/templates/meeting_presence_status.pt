@@ -1,0 +1,26 @@
+<div xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     i18n:domain="voteit.irl">
+    
+    <div id="meeting_presence_msg">${msg|''}</div>
+
+    <div tal:condition="register_closed"
+         i18n:translate="register_closed_cant_set_status">The register is closed, you can't set your status right now.</div>
+
+    <div tal:condition="is_registered and not register_closed"
+         i18n:translate="presence_registered_register_not_closed_yet">Your presence is registered, but the register hasn't closed yet. You don't need to do anything else.</div>
+
+    <div tal:condition="is_registered and register_closed"
+         i18n:translate="presence_registered_and_now_active">Your presence was registered and is now part of the currently active register.</div>
+
+    <div tal:condition="not is_registered"
+         i18n:translate="not_registered_as_presentin_meeting">You're not registered as present within this meeting.</div>
+
+    <br/><br/>
+
+    <div tal:condition="not register_closed and not is_registered">
+        <a class="buttonize" id="register_set_attending"
+           href="${request.resource_url(context, '_register_set_attending')}"
+           i18n:translate="set_as_present_button">Set yourself as present</a>
+    </div>
+</div>

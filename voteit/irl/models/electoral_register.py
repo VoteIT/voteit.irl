@@ -7,7 +7,6 @@ from voteit.core.models.date_time_util import utcnow
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
-from voteit.irl.models.eligible_voters import EligibleVoters
 
 
 class ElectoralRegister(object):
@@ -59,5 +58,7 @@ class ElectoralRegister(object):
         self.add_archive(deepcopy(self.register))
         
     def add_archive(self, userids):
+        #FIXME: This should be an int key and it should check maxKey
+        #Refactor and do a migration
         id = "%s" % (len(self.archive)+1)
         self.archive[id] = {'time': utcnow(), 'userids': OOSet(userids)}

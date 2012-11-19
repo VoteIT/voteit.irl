@@ -25,5 +25,13 @@ def includeme(config):
     config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_ttl_seconds)
 
     config.add_translation_dirs('voteit.irl:locale/')
-
+    #Add translations used within javascript
+    from voteit.core.models.interfaces import IJSUtil
+    _ = VoteIT_IRL_MF
+    js_trans = config.registry.getUtility(IJSUtil)
+    js_trans.add_translations(
+        register_meeting_presence_error_notice = _(u"register_meeting_presence_error_notice",
+                                                   default = u"VoteIT wasn't able to set you as present. This might be due to server load, "
+                                                   u"please try again in a short while."),
+    )
     config.scan('voteit.irl')

@@ -12,5 +12,5 @@ voteit_irl_lib = Library('voteit_irl', 'static')
 
 voteit_irl_projector_js = Resource(voteit_irl_lib, 'voteit_irl_projector.js', depends=(voteit_common_js, qtip))
 voteit_irl_projector_css = Resource(voteit_irl_lib, 'voteit_irl_projector.css', depends=(voteit_main_css,))
-
+voteit_irl_set_as_present = Resource(voteit_irl_lib, 'voteit_irl_set_as_present.js', depends=(voteit_common_js,))
 voteit_irl_projector = Group((voteit_irl_projector_js, voteit_irl_projector_css))
