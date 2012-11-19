@@ -66,7 +66,7 @@ class ElectoralRegisterView(BaseView):
     @view_config(name="_register_set_attending", context=IMeeting, permission=VIEW, xhr=True)
     def register_set_attending(self):
         self.register.add(self.api.userid)
-        msg = _(u"Successfully updated.")
+        msg = _(u"Successfully updated")
         return Response(self.register_current_status(msg))
 
     @view_config(name="close_electoral_register", context=IMeeting, permission=MODERATE_MEETING)
