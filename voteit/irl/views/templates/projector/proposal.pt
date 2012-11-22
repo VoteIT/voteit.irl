@@ -6,7 +6,6 @@
     <a href="#" class="inactivate">
     	<img src="${request.application_url}/voteit_irl/images/arrow_right.png"
 		     alt="Deactivate"
-			 i18n:domain="voteit.irl"
 			 i18n:attributes="alt" />
 	</a>
     
@@ -25,7 +24,6 @@
     <a href="#" class="activate">
     	<img src="${request.application_url}/voteit_irl/images/arrow_left.png"
 	         alt="Activate"
-			 i18n:domain="voteit.irl"
 			 i18n:attributes="alt" />
     </a>
     
@@ -34,7 +32,7 @@
     <tal:creators tal:replace="structure api.get_creators_info(proposal.creators, portrait=True)">Creators</tal:creators>
     <span class="body" i18n:translate="">propose</span>
 	<span class="body">:</span>
-	<br>
+	<br/>
     <span class="body" tal:content="structure proposal.title">Title</span>
     
     <div class="meta">

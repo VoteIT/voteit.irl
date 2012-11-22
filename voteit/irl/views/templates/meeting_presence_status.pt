@@ -14,7 +14,7 @@
          i18n:translate="presence_registered_and_now_active">Your presence was registered and is now part of the currently active register.</div>
 
     <div tal:condition="not is_registered"
-         i18n:translate="not_registered_as_presentin_meeting">You're not registered as present within this meeting.</div>
+         i18n:translate="not_registered_as_present_in_meeting">You're not registered as present within this meeting.</div>
 
     <br/><br/>
 

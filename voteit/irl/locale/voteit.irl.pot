@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-11-19 12:57+0100\n"
+"POT-Creation-Date: 2012-11-22 10:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -238,11 +238,11 @@ msgstr ""
 msgid "Agenda items"
 msgstr ""
 
-#: voteit/irl/views/templates/projector.pt:47
+#: voteit/irl/views/templates/projector.pt:48
 msgid "Polls"
 msgstr ""
 
-#: voteit/irl/views/templates/projector.pt:52
+#: voteit/irl/views/templates/projector.pt:53
 msgid "Proposals"
 msgstr ""
 
@@ -254,23 +254,23 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#: voteit/irl/views/templates/projector/proposal.pt:15
+#: voteit/irl/views/templates/projector/proposal.pt:14
 msgid "Set approved"
 msgstr ""
 
-#: voteit/irl/views/templates/projector/proposal.pt:18
+#: voteit/irl/views/templates/projector/proposal.pt:17
 msgid "Set published"
 msgstr ""
 
-#: voteit/irl/views/templates/projector/proposal.pt:21
+#: voteit/irl/views/templates/projector/proposal.pt:20
 msgid "Set denied"
 msgstr ""
 
-#: voteit/irl/views/templates/projector/proposal.pt:26
+#: voteit/irl/views/templates/projector/proposal.pt:25
 msgid "Activate"
 msgstr ""
 
-#: voteit/irl/views/templates/projector/proposal.pt:35
+#: voteit/irl/views/templates/projector/proposal.pt:33
 msgid "propose"
 msgstr ""
 

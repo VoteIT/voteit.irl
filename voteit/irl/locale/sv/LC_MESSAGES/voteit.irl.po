@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-11-19 12:57+0100\n"
-"PO-Revision-Date: 2012-11-19 12:58+0100\n"
+"POT-Creation-Date: 2012-11-22 10:43+0100\n"
+"PO-Revision-Date: 2012-11-22 10:46+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -126,15 +126,16 @@ msgstr "Röstlängd"
 
 #: voteit/irl/views/electoral_register.py:211
 msgid "Set yourself as present"
-msgstr ""
+msgstr "Sätt dig som närvarande"
 
 #: voteit/irl/views/eligible_voters.py:55
+#, fuzzy
 msgid "Successfully added"
-msgstr ""
+msgstr "Tillagd"
 
 #: voteit/irl/views/projector.py:57
 msgid "Projector view"
-msgstr ""
+msgstr "Projektorvy"
 
 #: voteit/irl/views/templates/diff_electoral_register.pt:9
 msgid "Differences between electoral register ${time1} and ${time2}"
@@ -176,7 +177,7 @@ msgstr ""
 
 #: voteit/irl/views/templates/electoral_register.pt:44
 msgid "Electoral registers"
-msgstr ""
+msgstr "Röstlängder"
 
 #: voteit/irl/views/templates/electoral_register.pt:48
 msgid "Time"
@@ -246,11 +247,11 @@ msgstr "Sätt dig själv som närvarande"
 msgid "Agenda items"
 msgstr "Dagordningspunkter"
 
-#: voteit/irl/views/templates/projector.pt:47
+#: voteit/irl/views/templates/projector.pt:48
 msgid "Polls"
 msgstr "Omröstningar"
 
-#: voteit/irl/views/templates/projector.pt:52
+#: voteit/irl/views/templates/projector.pt:53
 msgid "Proposals"
 msgstr "Förslag"
 
@@ -262,22 +263,22 @@ msgstr "Röstlängd ${time}"
 msgid "Deactivate"
 msgstr "Deaktivera"
 
-#: voteit/irl/views/templates/projector/proposal.pt:15
+#: voteit/irl/views/templates/projector/proposal.pt:14
 msgid "Set approved"
 msgstr "Sätt bifallen"
 
-#: voteit/irl/views/templates/projector/proposal.pt:18
+#: voteit/irl/views/templates/projector/proposal.pt:17
 msgid "Set published"
 msgstr "Sätt publicerad"
 
-#: voteit/irl/views/templates/projector/proposal.pt:21
+#: voteit/irl/views/templates/projector/proposal.pt:20
 msgid "Set denied"
 msgstr "Sätt avslagen"
 
-#: voteit/irl/views/templates/projector/proposal.pt:26
+#: voteit/irl/views/templates/projector/proposal.pt:25
 msgid "Activate"
 msgstr "Aktiv"
 
-#: voteit/irl/views/templates/projector/proposal.pt:35
+#: voteit/irl/views/templates/projector/proposal.pt:33
 msgid "propose"
 msgstr "föreslå"
