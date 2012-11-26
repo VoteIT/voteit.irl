@@ -54,7 +54,7 @@ class ProjectorView(BaseView):
         self.response['proposal'] = self.context
         return self.response
 
-@view_action('context_actions', 'projector', title = _(u"Projector view"), viewname = u"@@projector", interface = IAgendaItem)
+@view_action('context_actions', 'projector', title = _(u"Projector view"), viewname = u"projector", interface = IAgendaItem)
 def projector_menu_link(context, request, va, **kw):
     """ Visible in the moderator menu, but doesn't work for the meeting root """
     api = kw['api']
