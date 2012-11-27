@@ -21,33 +21,38 @@ class MeetingPresenceTests(unittest.TestCase):
         from voteit.irl.models.meeting_presence import MeetingPresence
         return MeetingPresence
 
+    @property
+    def _meeting(self):
+        from voteit.core.models.meeting import Meeting
+        return Meeting
+
     def test_verify_class(self):
         self.assertTrue(verifyClass(IMeetingPresence, self._cut))
 
     def test_verify_object(self):
-        self.assertTrue(verifyObject(IMeetingPresence, self._cut()))
+        self.assertTrue(verifyObject(IMeetingPresence, self._cut(self._meeting())))
 
     def test_add_when_open(self):
-        obj = self._cut()
+        obj = self._cut(self._meeting())
         obj.start_check()
         obj.add('hello')
 
     def test_add_when_closed(self):
-        obj = self._cut()
+        obj = self._cut(self._meeting())
         self.assertRaises(HTTPForbidden, obj.add, 'valid')
 
     def test_add_bad_type(self):
-        obj = self._cut()
+        obj = self._cut(self._meeting())
         obj.start_check()
         self.assertRaises(AssertionError, obj.add, 1)
 
     def test_start_sets_start_time(self):
-        obj = self._cut()
+        obj = self._cut(self._meeting())
         obj.start_check()
         self.assertIsInstance(obj.start_time, datetime)
         
     def test_end_sets_end_time(self):
-        obj = self._cut()
+        obj = self._cut(self._meeting())
         obj.start_check()
         self.assertEqual(obj.end_time, None)
         obj.end_check()

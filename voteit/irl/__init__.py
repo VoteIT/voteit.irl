@@ -23,7 +23,7 @@ def includeme(config):
 
     from voteit.irl.models.meeting_presence import MeetingPresence
     from voteit.irl.models.interfaces import IMeetingPresence
-    config.registry.registerUtility(MeetingPresence(), IMeetingPresence)
+    config.registry.registerAdapter(MeetingPresence, (IMeeting,), IMeetingPresence)
 
     cache_ttl_seconds = int(config.registry.settings.get('cache_ttl_seconds', 7200))
     config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_ttl_seconds)

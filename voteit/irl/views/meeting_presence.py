@@ -19,7 +19,8 @@ class MeetingPresenceView(BaseView):
 
     @reify
     def mp_util(self):
-        return self.request.registry.getUtility(IMeetingPresence)
+        """ Note that this only works for IMeeting views. Change this later if we need to update. """
+        return self.request.registry.getAdapter(self.context, IMeetingPresence)
 
     @view_config(name="register_meeting_presence", context=IMeeting, permission=VIEW,
                  renderer = "templates/register_meeting_presence.pt")

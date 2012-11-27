@@ -18,11 +18,13 @@ class IMeetingPresence(Interface):
     """ Utility to check who's present. It only stores users in memory during check,
         but other systems might store and use the information.
     """
-
     open = Attribute("Is the process currently open? True or False.")
     present_userids = Attribute("Set of present userids")
     start_time = Attribute("Time when the check was started, or None")
     end_time = Attribute("Time when the check ended, or None")
+
+    def __init__(context):
+        """ Context to adapt """
 
     def start_check():
         """ Start or enable the check for user presence. """
