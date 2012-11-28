@@ -4,6 +4,7 @@ from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IMeetingPresence
 from voteit.irl.models.elegible_voters_method import ElegibleVotersMethod
 
+
 class MakePresentUsersVoters(ElegibleVotersMethod):
     name = u'present_users_voters'
     title = _(u"Set present users as voters")
@@ -11,8 +12,7 @@ class MakePresentUsersVoters(ElegibleVotersMethod):
 
     def get_voters(self, **kw):
         request = kw['request']
-        context = kw['context']
-        meeting_presence = request.registry.getAdapter(context, IMeetingPresence)
+        meeting_presence = request.registry.getAdapter(self.context, IMeetingPresence)
         return frozenset(meeting_presence.present_userids)
 
 
