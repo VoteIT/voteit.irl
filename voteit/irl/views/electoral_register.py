@@ -1,202 +1,92 @@
 import deform
-from deform import Form
-from deform.exception import ValidationFailure
 from pyramid.view import view_config
-from pyramid.url import resource_url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.decorator import reify
-from pyramid.response import Response
-from pyramid.renderers import render
-from zope.component import getAdapter
 from betahaus.viewcomponent import view_action
+from betahaus.pyracont.factories import createSchema
 
 from voteit.core.models.interfaces import IMeeting
-from voteit.core.models.schemas import add_csrf_token
-from voteit.core.models.schemas import button_update
-from voteit.core.models.schemas import button_cancel
 from voteit.core.views.base_view import BaseView
-from voteit.core.security import VIEW
 from voteit.core.security import MODERATE_MEETING
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
-from voteit.irl.models.interfaces import IEligibleVoters
-from voteit.irl.models.interfaces import IElectoralRegisterMethod
-from voteit.irl.schemas import ElectoralRegisterMethodSchema
-from voteit.irl.schemas import ElectoralRegisterDiffSchema
-from voteit.irl.fanstaticlib import voteit_irl_set_as_present
 
 
 class ElectoralRegisterView(BaseView):
-    """ Handle electoral register
+    """ Handle electoral register. Note that all view methods for this must use the
+        meeting as a context, otherwise some things might not work. (Like the adapter)
     """
 
     @reify
-    def register(self):
+    def electoral_register(self):
         return self.request.registry.getAdapter(self.context, IElectoralRegister)
 
-    @reify
-    def eligible_voters(self):
-        return self.request.registry.getAdapter(self.context, IEligibleVoters)
+    def _registers_reverse(self):
+        registers = [(k, v) for (k, v) in self.electoral_register.registers.items()]
+        registers.reverse()
+        return registers
 
-    @view_config(name="clear_electoral_register", context=IMeeting, permission=MODERATE_MEETING)
-    def clear(self):
-        """ Remove vote permissions and clear registry
-        """
-        self.register.clear()
-        
-        self.api.flash_messages.add(_(u"Electoral register is cleared."))
-        return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
-        
-    @view_config(name="register_meeting_presence", context=IMeeting, permission=VIEW,
-                 renderer = "templates/register_meeting_presence.pt")
-    def register_meeting_presence(self):
-        """ Controls for setting yourself as attending
-        """
-        voteit_irl_set_as_present.need()
-        self.response['current'] = self.register_current_status()
+    def _view_reg_link(self, id):
+        return self.request.resource_url(self.context, 'view_electoral_register', query={'id': id})
+
+    @view_config(name="electoral_register", context=IMeeting, permission=MODERATE_MEETING,
+                 renderer="templates/electoral_register.pt")
+    def electoral_register_view(self):
+        if self.request.GET.get('update_register', False):
+            userids = self.electoral_register.currently_set_voters()
+            self.electoral_register.new_register(userids)
+            msg = _(u"New electoral register added")
+            self.api.flash_messages.add(msg)
+            url = self.request.resource_url(self.context, 'electoral_register')
+            return HTTPFound(location = url)
+        self.response['current_reg'] = self.electoral_register.current
+        self.response['new_reg_needed'] = self.electoral_register.new_register_needed()
+        self.response['electoral_register'] = self.electoral_register
+        self.response['registers_list'] = self._registers_reverse()
+        self.response['view_reg_link'] = self._view_reg_link
         return self.response
 
-    def register_current_status(self, msg = u""):
-        self.response['register_closed'] = self.register.register_closed
-        self.response['is_registered'] = self.api.userid in self.register.register
-        self.response['msg'] = msg
-        return render("templates/meeting_presence_status.pt", self.response, request = self.request)
-
-    @view_config(name="_register_set_attending", context=IMeeting, permission=VIEW, xhr=True)
-    def register_set_attending(self):
-        self.register.add(self.api.userid)
-        msg = _(u"Successfully updated")
-        return Response(self.register_current_status(msg))
-
-    @view_config(name="close_electoral_register", context=IMeeting, permission=MODERATE_MEETING)
-    def close(self):
-        """ Close registry
-        """
-        self.api.flash_messages.add(_(u"Closed"))
-        self.register.close()
-        return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
-
-    @view_config(name="electoral_register", context=IMeeting, renderer="templates/electoral_register.pt", permission=VIEW)
-    def view(self):
-        method_schema = ElectoralRegisterMethodSchema().bind(context=self.context, request=self.request, api=self.api)
-        add_csrf_token(self.context, self.request, method_schema)
-
-        method_form = Form(method_schema,
-                           action=self.request.resource_url(self.context, 'apply_electoral_register_method'), 
-                           buttons=(button_update,))
-        self.api.register_form_resources(method_form)
-        
-        diff_schema = ElectoralRegisterDiffSchema().bind(context=self.context, request=self.request, api=self.api)
-        add_csrf_token(self.context, self.request, diff_schema)
-
-        diff_form = Form(diff_schema,
-                         action=self.request.resource_url(self.context, 'diff_electoral_register'), 
-                         buttons=(deform.Button('view', _(u"View")),))
-        self.api.register_form_resources(diff_form)
-        
-        self.response['method_form'] = method_form.render()
-        self.response['register'] = self.register
-        self.response['archive'] = self.register.archive
-        self.response['diff_form'] = diff_form.render()
-        
-        return self.response
-    
-    @view_config(name="view_electoral_register", context=IMeeting, renderer="templates/view_electoral_register.pt", permission=VIEW)
+    @view_config(name="view_electoral_register", context=IMeeting, renderer="templates/view_electoral_register.pt",
+                 permission=MODERATE_MEETING)
     def view_electoral_register(self):
-        id = self.request.GET.get('id', None)
-        try:
-            if id in self.register.archive:
-                root = self.api.root
-                
-                def _get_user(userid):
-                    return root['users'][userid]
-        
-                self.response['get_user'] = _get_user
-                self.response['time'] = self.register.archive[id]['time']
-                self.response['userids'] = self.register.archive[id]['userids']
-                
-                return self.response
-        
-        except:
-            pass
-        
-        self.api.flash_messages.add(_(u"No electoral register with that number"))
-        return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
-    
-    @view_config(name="diff_electoral_register", context=IMeeting, renderer="templates/diff_electoral_register.pt", permission=VIEW)
-    def diff_electoral_register(self):
-        schema = ElectoralRegisterDiffSchema().bind(context=self.context, request=self.request, api=self.api)
-        add_csrf_token(self.context, self.request, schema)
-
-        form = Form(schema,
-                    action=self.request.resource_url(self.context), 
-                    buttons=(deform.Button('view', _(u"View")),))
-        self.api.register_form_resources(form)
-        
-        post = self.request.POST
-        if 'view' in post:
-            controls = post.items()
-            try:
-                appstruct = form.validate(controls)
-            except ValidationFailure, e:
-                self.response['form'] = e.render()
-                return self.response
-            
-            archive1 = self.register.archive[appstruct['archive1']]
-            archive2 = self.register.archive[appstruct['archive2']]
-            
-            def _get_user(userid):
-                root = self.api.root
-                return root['users'][userid]
-        
-            self.response['get_user'] = _get_user
-            self.response['archive1'] = archive1
-            self.response['archive2'] = archive2
-            self.response['union'] = set(archive1['userids']) | set(archive2['userids'])
-             
-            self.response['form'] = form.render(controls)
-            
-            return self.response
-        
-        return HTTPFound(location=self.request.resource_url(self.context, 'electoral_register'))
-    
-    @view_config(name="apply_electoral_register_method", context=IMeeting, renderer="voteit.core.views:templates/base_edit.pt", permission=MODERATE_MEETING)
-    def apply_method(self):
-        schema = ElectoralRegisterMethodSchema().bind(context=self.context, request=self.request)
-        add_csrf_token(self.context, self.request, schema)
-
-        form = Form(schema, buttons=(button_update, button_cancel, ))
-        self.api.register_form_resources(form)
-
-        post = self.request.POST
-        if 'update' in post:
-            controls = post.items()
-            try:
-                #appstruct is deforms convention. It will be the submitted data in a dict.
-                appstruct = form.validate(controls)
-            except ValidationFailure, e:
-                self.response['form'] = e.render()
-                return self.response
-            
-            if len(self.register.archive) > 0:
-                list = self.register.archive["%s" % len(self.register.archive)]
-
-                method = getAdapter(self.context, name=appstruct['method'], interface=IElectoralRegisterMethod)
-                method.apply(list['userids'])
-
-                self.api.flash_messages.add(_(u"Successfully updated"))
-            else:
-                self.api.flash_messages.add(_(u"No register to apply method on"))
-            
-            return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
-
-        if 'cancel' in post:
-            self.api.flash_messages.add(_(u"Canceled"))
-            return HTTPFound(location=resource_url(self.context, self.request, 'electoral_register'))
-
-        self.response['form'] = form.render()
+        id = int(self.request.GET.get('id'))
+        self.response['id'] = id
+        self.response['register'] = self.electoral_register.registers[id]
         return self.response
+
+    @view_config(name="diff_electoral_register", context=IMeeting, renderer="templates/diff_electoral_register.pt",
+                 permission=MODERATE_MEETING)
+    def diff_electoral_register_view(self):
+        post = self.request.POST
+        if 'back' in post:
+            url = self.request.resource_url(self.context, 'electoral_register')
+            return HTTPFound(location = url)
+        
+        schema = createSchema('ElectoralRegisterDiff').bind(context = self.context, request = self.request, api = self.api)
+        form = deform.Form(schema, buttons=(deform.Button('diff', _(u"Diff")),
+                                            deform.Button('back', _(u"Back")),))
+        if 'diff' in post:
+            controls = post.items()
+            try:
+                appstruct = form.validate(controls)
+                self.response['form'] = form.render(appstruct = appstruct)
+                self.append_diff_info(appstruct['first'], appstruct['second'])
+            except deform.ValidationFailure, e:
+                self.response['form'] = e.render()
+        else:
+            self.response['form'] = form.render()
+        return self.response
+
+    def append_diff_info(self, first, second):
+        first_reg_users = self.electoral_register.registers[first]['userids']
+        second_reg_users = self.electoral_register.registers[second]['userids']
+        self.response.update({'show_diff': True,
+                              'first': first,
+                              'second': second,
+                              'api': self.api,
+                              'added_userids': first_reg_users - second_reg_users,
+                              'removed_userids': second_reg_users - first_reg_users})
 
 
 @view_action('participants_menu', 'electoral_register', title = _(u"Electoral register"),
@@ -207,11 +97,3 @@ def electoral_register_moderator_menu_link(context, request, va, **kw):
         return ""
     url = request.resource_url(api.meeting, va.kwargs['link']) 
     return """<li><a href="%s">%s</a></li>""" % (url, api.translate(va.title))
-
-@view_action('participants_menu', 'register_meeting_presence', title = _(u"Set yourself as present"))
-def electoral_register_link(context, request, va, **kw):
-    api = kw['api']
-    if not api.userid or not api.meeting:
-        return ''
-    link = request.resource_url(api.meeting, 'register_meeting_presence')
-    return """ <li class="tab"><a href="%s">%s</a></li>"""  % (link, api.translate(va.title))

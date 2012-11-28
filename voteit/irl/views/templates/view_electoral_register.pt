@@ -6,31 +6,30 @@
 	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
 	  i18n:domain="voteit.irl">
 <body>
-<h1 metal:fill-slot="page_heading" i18n:translate="">Electoral register <span i18n:name="time">${api.dt_util.dt_format(time)}</span></h1>
+<h1 metal:fill-slot="page_heading" i18n:translate="">
+    Electoral register <b i18n:name="id">${id}</b>: <span i18n:name="time">${api.dt_util.dt_format(register['time'])}</span>
+</h1>
 <div metal:fill-slot="content" class="content_wrapper">
-    <table class="electoral-register listing">
+    <table class="listing">
     	<thead>
 			<tr>
-				<th i18n:translate="" class="heading">UserID</th>
-	            <th i18n:translate="" class="heading">First name</th>
-	            <th i18n:translate="" class="heading">Last name</th>
-	            <th i18n:translate="" class="heading">Email</th>
+				<th class="heading">
+				    <span i18n:translate="">Users</span> (${len(register['userids'])})</th>
 			</tr>
 		</thead>
 	    <tbody>
-	    <tal:iterate repeat="userid userids">
+	    <tal:iterate repeat="userid register['userids']">
 	        <tr tal:attributes="class repeat.userid.odd and 'odd' or '';">
-	        <tal:user define="user get_user(userid)">
-	            <td><a class="inlineinfo" href="${request.resource_url(context, '_userinfo', query={'userid': userid})}">
-	            	${user.userid}</a></td>
-	            <td>${user.get_field_value('first_name')}</td>
-	            <td>${user.get_field_value('last_name')}</td>
-	            <td><a href="mailto:${user.get_field_value('email')}">${user.get_field_value('email')}</a></td>
-	        </tal:user>
+	            <td tal:content="structure api.get_creators_info((userid,), portrait=False)">User info</td>
 	        </tr>
 	    </tal:iterate>
 	    </tbody>
     </table>
+
+    <br/>
+    <p><a class="buttonize" 
+          href="${request.resource_url(context, 'electoral_register')}"
+          i18n:translate="">Back</a></p>
 </div>
 </body>
 </html>

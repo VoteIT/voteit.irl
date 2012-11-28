@@ -2,18 +2,6 @@ from zope.interface import Interface
 from zope.interface import Attribute
 
 
-class IProposalNumbers(Interface):
-    """ Adapts agenda items to create proposal numbering.
-        Makes sure each number is only used once.
-    """
-
-    def add(proposal):
-        """ Add numbering to this proposal. Will also add proposals uid to
-            record stored on adapted agenda item.
-            The agenda items record isn't displayed anywhere currently.
-        """
-
-
 class IMeetingPresence(Interface):
     """ Utility to check who's present. It only stores users in memory during check,
         but other systems might store and use the information.
@@ -37,19 +25,39 @@ class IMeetingPresence(Interface):
 
 
 class IElectoralRegister(Interface):
-    """ 
+    """ Create an electoral register from the currently set voters.
+        Adapter that adapts IMeeting.
     """
-    
-    
-class IEligibleVoters(Interface):
-    """ 
+    registers = Attribute("Stored registers.")
+    current = Attribute("Currently active register, IE the last one.")
+
+    def __init__(context):
+        """ Context to adapt, which must be meeting"""
+
+    def get_next_key():
+        """" Get next free key for register. """
+
+    def currently_set_voters():
+        """ Get a frozenset of userids who have the voter role currently.
+        """
+
+    def new_register(userids):
+        """ Create a new register from a list-like item of userids. """
+
+    def new_register_needed():
+        """ Return a bool of wether a new register is needed. """
+
+
+class IElegibleVotersMethod(Interface):
+    """ An adapter that will figure out who should be voter and who shouldn't.
     """
-    
-    
-class IElectoralRegisterMethod(Interface):
-    """
-    """
-    
-    def apply(userids):
-        """ Apply voteing rights to context, based on the list of userids
+    name = Attribute("Name or ID of the adapter. Should be used when registering it.")
+    title = Attribute("Readable title")
+    description = Attribute("Description of this method")
+
+    def __init__(context):
+        """ context to adapt, which should always be a meeting. """
+
+    def get_voters(**kw):
+        """ Return an iterable with userids of everyone who should be able to vote.
         """

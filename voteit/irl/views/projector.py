@@ -1,9 +1,7 @@
 from pyramid.view import view_config
 from pyramid.renderers import render
 from pyramid.traversal import resource_path
-from pyramid.traversal import find_interface
 from voteit.core.views.base_view import BaseView
-from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
@@ -15,7 +13,7 @@ from voteit.irl import VoteIT_IRL_MF as _
 
 class ProjectorView(BaseView):
 
-    @view_config(context=IAgendaItem, name="projector", renderer="templates/projector.pt", permission=MODERATE_MEETING)
+    @view_config(context=IAgendaItem, name="projector", renderer="templates/projector/projector.pt", permission=MODERATE_MEETING)
     def view(self):
         """ """
         voteit_irl_projector.need()

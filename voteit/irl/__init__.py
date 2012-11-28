@@ -9,17 +9,11 @@ def includeme(config):
         to the section "plugins" in your paster .ini file.
     """
     from voteit.core.models.interfaces import IMeeting
+    
     from voteit.irl.models.electoral_register import ElectoralRegister
+    
     from voteit.irl.models.interfaces import IElectoralRegister
     config.registry.registerAdapter(ElectoralRegister, (IMeeting,), IElectoralRegister)
-    
-    from voteit.irl.models.eligible_voters import EligibleVoters
-    from voteit.irl.models.interfaces import IEligibleVoters
-    config.registry.registerAdapter(EligibleVoters, (IMeeting,), IEligibleVoters)
-    
-    from voteit.irl.models.electoral_register_method import ElectoralRegisterMethod
-    from voteit.irl.models.interfaces import IElectoralRegisterMethod
-    config.registry.registerAdapter(ElectoralRegisterMethod, (IMeeting,), IElectoralRegisterMethod, ElectoralRegisterMethod.name)
 
     from voteit.irl.models.meeting_presence import MeetingPresence
     from voteit.irl.models.interfaces import IMeetingPresence

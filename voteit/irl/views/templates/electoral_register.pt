@@ -8,64 +8,54 @@
 <body>
 <h1 metal:fill-slot="page_heading">Electoral Register</h1>
 <div metal:fill-slot="content" class="content_wrapper">
-	<p>
-		<a href="${request.resource_url(context, 'view_eligible_voters')}" i18n:translate="">List of eligible voters</a>
-	</p>
-	<p i18n:translate="">
-		To get on the list, the user must at some time have had the right to vote in the 
-		meeting. Moderator can add and remove people from the list.
-	</p>
-	<tal:open_register tal:condition="api.context_has_permission('Moderate Meeting', context)">
-		<h2 i18n:translate="">Adjust the electoral register</h2>
-		<p i18n:translate="adjust_the_electoral_register_description">
-			
-		</p>
-		<p>
-			<a class="buttonize" 
-			   href="${request.resource_url(context, 'clear_electoral_register')}" 
-			   tal:condition="register.register_closed" 
-			   i18n:translate="">
-			   		Open</a>
-			<a class="buttonize" 
-			   href="${request.resource_url(context, 'close_electoral_register')}" 
-			   tal:condition="not register.register_closed" 
-			   i18n:translate="">
-			   		Close</a>
-		</p>
-	</tal:open_register>
-	<tal:update_voteing_rights condition="api.context_has_permission('Moderate Meeting', context)">
-		<h2 i18n:translate="">Update voting rights based on latest electoral register</h2>
-		<p i18n:translate="update_voting_rights_description">
-			Update voting rights changes voting rights to only include those who are entitled to 
-			vote on the basis of latest electoral register and selected electorial register method below.
-		</p>
-		<div tal:content="structure method_form">Method Form</div>
-	</tal:update_voteing_rights>
-    <h2 i18n:translate="">Electoral registers</h2>
-    <table class="electoral-register listing">
-    	<thead>
-    		<tr>
-    			<th class="heading" i18n:translate="">
-    				Time
-    			</th>
-    			<th class="heading" i18n:translate="">
-    				Number of users
-    			</th>
-    		</tr>
-    	</thead>
-    	<tbody>
-		    <tal:iterate repeat="id sorted(archive.keys(), key=int, reverse=True)">
-		        <tr tal:attributes="class repeat.id.odd and 'odd' or '';">
-		            <td><a href="${request.resource_url(context, 'view_electoral_register', query={'id': id})}">
-		            	${api.dt_util.dt_format(archive[id]['time'])}</a></td>
-		            <td><a href="${request.resource_url(context, 'view_electoral_register', query={'id': id})}">
-		            	${len(archive[id]['userids'])}</a></td>
-		        </tr>
-		    </tal:iterate>
-	    </tbody>
+
+    <a href="${request.resource_url(context, 'diff_electoral_register')}"
+       i18n:translate="">Diff electoral registers</a><br/>
+    
+    <div tal:condition="new_reg_needed" i18n:translate="">
+        A new electoral register is needed.
+        The curreny register differs from the users who've got the permission to vote.
+    </div>
+    <div tal:condition="not new_reg_needed" i18n:translate="">
+        No new electoral register needed.
+        The latest one has the same information as the users who're currently able to vote.
+    </div>
+
+    <div tal:condition="api.show_moderator_actions">
+        <a class="buttonize" 
+           href="${request.resource_url(context, 'electoral_register', query={'update_register': 1})}">
+           <span tal:condition="new_reg_needed" i18n:translate="">Update electoral register</span>
+           <span tal:condition="not new_reg_needed" i18n:translate="">Update electoral register anyway</span>
+        </a>
+    </div>
+
+    <h2 i18n:translate="">All electoral registers</h2>
+    <div i18n:translate="">Click the ID of a specific one to view it.</div>
+
+    <table class="listing">
+        <thead>
+            <tr>
+                <th class="heading" i18n:translate="">ID</th>
+                <th class="heading" i18n:translate="">Time</th>
+                <th class="heading" i18n:translate="">Voters</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tal:iterate repeat="item registers_list">
+            <tr tal:attributes="class repeat.item.odd and 'odd' or '';">
+                <td>
+                    <a href="${view_reg_link(item[0])}">
+                        ${item[0]}
+                    </a>
+                </td>
+                <td>${api.dt_util.dt_format(item[1]['time'])}</td>
+                <td>${len(item[1]['userids'])}</td>
+            </tr>
+        </tal:iterate>
+        </tbody>
     </table>
-    <h2 i18n:translate="">View difference between selected electoral registers</h2>
-    <div tal:condition="diff_form and len(archive) > 1" tal:replace="structure diff_form">Diff form</div>
+
+
 </div>
 </body>
 </html>

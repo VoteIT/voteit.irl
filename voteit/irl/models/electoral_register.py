@@ -1,9 +1,13 @@
 from copy import deepcopy
 
 from zope.interface import implements
-from BTrees.OOBTree import OOSet, OOBTree
-
+from zope.component import adapts
+from BTrees.IOBTree import IOBTree
+from BTrees.OOBTree import OOBTree
 from voteit.core.models.date_time_util import utcnow
+from voteit.core.models.interfaces import IMeeting
+from voteit.core.security import ROLE_VOTER
+
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -12,53 +16,45 @@ from voteit.irl.models.interfaces import IElectoralRegister
 class ElectoralRegister(object):
     __doc__ = IElectoralRegister.__doc__
     implements(IElectoralRegister)
+    adapts(IMeeting)
     
     def __init__(self, context):
-        """ Context to adapt """
         self.context = context
 
     @property
-    def register(self):
+    def registers(self):
         try:
-            return self.context.__register__
+            return self.context.__electoral_registers__
         except AttributeError:
-            self.context.__register__ = OOSet()
-            return self.context.__register__
+            self.context.__electoral_registers__ = IOBTree()
+            return self.context.__electoral_registers__
 
     @property
-    def register_closed(self):
+    def current(self):
         try:
-            return self.context.__register_closed__
-        except AttributeError:
-            self.context.__register_closed__ = True
-            return self.context.__register_closed__
-        
-    @property
-    def archive(self):
-        try:
-            return self.context.__archive__
-        except AttributeError:
-            self.context.__archive__ = OOBTree()
-            return self.context.__archive__
+            return self.registers[self.registers.maxKey()]
+        except ValueError: #When empty
+            return
 
-    def add(self, userid):
-        if self.register_closed:
-            raise Exception(_(u"Electoral register is closed"))
+    def get_next_key(self):
+        if len(self.registers):
+            return self.registers.maxKey() + 1
+        else:
+            return 0
 
-        self.register.add(userid)
+    def currently_set_voters(self):
+        userids = set()
+        for item in self.context.get_security():
+            if ROLE_VOTER in item['groups']:
+                userids.add(item['userid'])
+        return frozenset(userids)
 
-    def clear(self):
-        self.context.__register_closed__ = False
-        if hasattr(self.context, '__register__'):
-            delattr(self.context, '__register__')        
+    def new_register(self, userids):
+        reg = OOBTree()
+        reg.update({'userids': frozenset(userids), 'time': utcnow()})
+        self.registers[self.get_next_key()] = reg
 
-    def close(self):
-        self.context.__register_closed__ = True
-
-        self.add_archive(deepcopy(self.register))
-        
-    def add_archive(self, userids):
-        #FIXME: This should be an int key and it should check maxKey
-        #Refactor and do a migration
-        id = "%s" % (len(self.archive)+1)
-        self.archive[id] = {'time': utcnow(), 'userids': OOSet(userids)}
+    def new_register_needed(self):
+        if not self.current:
+            return True
+        return self.current['userids'] != self.currently_set_voters()
