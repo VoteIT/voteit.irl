@@ -3,7 +3,6 @@ from pyramid.i18n import TranslationStringFactory
 VoteIT_IRL_MF = TranslationStringFactory('voteit.irl')
 
 
-
 def includeme(config):
     """ Include required components. You can include this by simply adding voteit.irl
         to the section "plugins" in your paster .ini file.
@@ -26,10 +25,13 @@ def includeme(config):
     #Add translations used within javascript
     from voteit.core.models.interfaces import IJSUtil
     _ = VoteIT_IRL_MF
-    js_trans = config.registry.getUtility(IJSUtil)
-    js_trans.add_translations(
-        register_meeting_presence_error_notice = _(u"register_meeting_presence_error_notice",
-                                                   default = u"VoteIT wasn't able to set you as present. This might be due to server load, "
-                                                   u"please try again in a short while."),
-    )
+    js_trans = config.registry.queryUtility(IJSUtil)
+    if js_trans:
+        js_trans.add_translations(
+            register_meeting_presence_error_notice = _(u"register_meeting_presence_error_notice",
+                                                       default = u"VoteIT wasn't able to set you as present. This might be due to server load, "
+                                                       u"please try again in a short while."),
+        )
+    else:
+        print "Can't find util for JS translations."
     config.scan('voteit.irl')
