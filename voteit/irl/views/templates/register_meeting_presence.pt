@@ -6,7 +6,7 @@
 	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
 	  i18n:domain="voteit.irl">
 <body>
-<h1 metal:fill-slot="page_heading">Register meeting presence</h1>
+<h1 metal:fill-slot="page_heading" i18n:translate="">Register meeting presence</h1>
 <div metal:fill-slot="content" class="content_wrapper" id="register_current_status">
     <div tal:replace="structure current">Current status + possible form</div>
 </div>

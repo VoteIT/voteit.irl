@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-11-29 11:10+0100\n"
+"POT-Creation-Date: 2012-11-29 11:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -198,6 +198,10 @@ msgstr ""
 
 #: voteit/irl/views/templates/meeting_presence_status.pt:39
 msgid "Available participants"
+msgstr ""
+
+#: voteit/irl/views/templates/register_meeting_presence.pt:9
+msgid "Register meeting presence"
 msgstr ""
 
 #: voteit/irl/views/templates/view_electoral_register.pt:9

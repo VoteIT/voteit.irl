@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-11-29 11:10+0100\n"
-"PO-Revision-Date: 2012-11-29 11:12+0100\n"
-"Last-Translator: Anders Hultman <anders@betahaus.net>\n"
+"POT-Creation-Date: 2012-11-29 11:44+0100\n"
+"PO-Revision-Date: 2012-11-29 11:45+0100\n"
+"Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
@@ -216,6 +216,12 @@ msgstr "Stäng närvarokontroll"
 #: voteit/irl/views/templates/meeting_presence_status.pt:39
 msgid "Available participants"
 msgstr "Närvarande deltagare"
+
+#: voteit/irl/views/templates/register_meeting_presence.pt:9
+#, fuzzy
+#| msgid "Meeting presence"
+msgid "Register meeting presence"
+msgstr "Närvarokontroll"
 
 #: voteit/irl/views/templates/view_electoral_register.pt:9
 msgid "Electoral register ${id}: ${time}"
