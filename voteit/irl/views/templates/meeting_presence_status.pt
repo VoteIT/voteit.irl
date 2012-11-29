@@ -1,8 +1,6 @@
 <div xmlns:tal="http://xml.zope.org/namespaces/tal"
      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
      i18n:domain="voteit.irl">
-    
-    <div id="meeting_presence_msg">${msg|''}</div>
 
     <div tal:condition="not mp_util.open"
          i18n:translate="register_closed_cant_set_status">The register is closed, you can't set your status right now.</div>

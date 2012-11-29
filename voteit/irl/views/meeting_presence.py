@@ -31,18 +31,16 @@ class MeetingPresenceView(BaseView):
         self.response['current'] = self.register_current_status()
         return self.response
 
-    def register_current_status(self, msg = u""):
+    def register_current_status(self):
         self.response['mp_util'] = self.mp_util
         self.response['is_registered'] = self.api.userid in self.mp_util.present_userids
-        self.response['msg'] = msg
         return render("templates/meeting_presence_status.pt", self.response, request = self.request)
 
     @view_config(name="_register_set_attending", context=IMeeting, permission=VIEW, xhr=True)
     def register_set_attending(self):
         assert self.api.userid
         self.mp_util.add(self.api.userid)
-        msg = _(u"Your precence is received")
-        return Response(self.register_current_status(msg))
+        return Response(self.register_current_status())
 
     @view_config(name="_toggle_presence_check", context=IMeeting, permission=MODERATE_MEETING)
     def toggle_open_presence_check(self):
