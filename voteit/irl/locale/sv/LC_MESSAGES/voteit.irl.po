@@ -7,212 +7,176 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-11-22 10:43+0100\n"
+"POT-Creation-Date: 2012-11-29 09:21+0100\n"
 "PO-Revision-Date: 2012-11-22 10:46+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
-"X-Generator: Poedit 1.5.4\n"
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server
 #. load, please try again in a short while.
-#: voteit/irl/__init__.py:33
+#: voteit/irl/__init__.py:31
 msgid "register_meeting_presence_error_notice"
 msgstr ""
 "VoteIT kunde inte sätta dig som närvarande. Det kan bero på hög last på "
 "servern, prova igen om en liten stund."
 
-#: voteit/irl/schemas.py:30
+#. Default: Method to select elegible voters
+#: voteit/irl/schemas.py:24
+msgid "elegible_voters_method_name"
+msgstr ""
+
+#. Default: It will modify the voting permissions accoring to it's
+#. specifications.
+#: voteit/irl/schemas.py:25
+msgid "elegible_voters_method_description"
+msgstr ""
+
+#: voteit/irl/schemas.py:48
 #, fuzzy
-msgid "User must have at least view permission"
-msgstr "Användaren måste minst ha rättighet att se mötet"
+#| msgid "Electoral register"
+msgid "First register"
+msgstr "Röstlängd"
 
-#. Default: Add an eligible voter to meeting
-#: voteit/irl/schemas.py:73
-msgid "add_eligible_voter_to_meeting"
+#: voteit/irl/schemas.py:52
+#, fuzzy
+#| msgid "Electoral register"
+msgid "Second register"
+msgstr "Röstlängd"
+
+#: voteit/irl/models/meeting_presence.py:51
+msgid "Meeting presence check isn't open"
 msgstr ""
 
-#: voteit/irl/schemas.py:78 voteit/irl/views/templates/eligible_voters.pt:14
-#: voteit/irl/views/templates/view_electoral_register.pt:14
-msgid "UserID"
-msgstr "AnvändarID"
-
-#. Default: Start typing the first letters of the UserID you want to add. You
-#. should see a popup below if that UserID exists.
-#: voteit/irl/schemas.py:79
-msgid "single_permission_schema_userid_description"
+#: voteit/irl/plugins/present_users_voters.py:10
+msgid "Set present users as voters"
 msgstr ""
 
-#. Default: Method
-#: voteit/irl/schemas.py:89
-msgid "electoral_register_method"
+#: voteit/irl/plugins/present_users_voters.py:11
+msgid "Will remove voting permission for anyone not set as present."
 msgstr ""
 
-#. Default:
-#: voteit/irl/schemas.py:90
-msgid "electoral_register_method_description"
+#: voteit/irl/views/electoral_register.py:39
+#, fuzzy
+#| msgid "Electoral register"
+msgid "New electoral register added"
+msgstr "Röstlängd"
+
+#: voteit/irl/views/electoral_register.py:67
+msgid "Diff"
 msgstr ""
 
-#. Default: First register
-#: voteit/irl/schemas.py:99
-msgid "electoral_register_diff_archive1"
+#: voteit/irl/views/electoral_register.py:68
+#: voteit/irl/views/templates/view_electoral_register.pt:30
+msgid "Back"
 msgstr ""
 
-#. Default:
-#: voteit/irl/schemas.py:100
-msgid "electoral_register_diff_archive1_description"
-msgstr ""
-
-#. Default: Second register
-#: voteit/irl/schemas.py:105
-msgid "electoral_register_diff_archive2"
-msgstr ""
-
-#. Default:
-#: voteit/irl/schemas.py:106
-msgid "electoral_register_diff_archive2_description"
-msgstr ""
-
-#: voteit/irl/models/electoral_register.py:46
-msgid "Electoral register is closed"
-msgstr ""
-
-#. Default: Standard method
-#. Default:
-#: voteit/irl/models/electoral_register_method.py:13
-#: voteit/irl/models/electoral_register_method.py:14
-msgid "standard_electoral_register_method_description"
-msgstr ""
-
-#: voteit/irl/views/electoral_register.py:48
-msgid "Electoral register is cleared."
-msgstr ""
-
-#: voteit/irl/views/electoral_register.py:69
-#: voteit/irl/views/electoral_register.py:188
-msgid "Successfully updated"
-msgstr "Uppdatering"
-
-#: voteit/irl/views/electoral_register.py:76
-msgid "Closed"
-msgstr "Stängd"
-
-#: voteit/irl/views/electoral_register.py:95
-#: voteit/irl/views/electoral_register.py:134
-msgid "View"
-msgstr "Visa"
-
-#: voteit/irl/views/electoral_register.py:124
-msgid "No electoral register with that number"
-msgstr ""
-
-#: voteit/irl/views/electoral_register.py:190
-msgid "No register to apply method on"
-msgstr ""
-
-#: voteit/irl/views/electoral_register.py:195
-#: voteit/irl/views/eligible_voters.py:60
-msgid "Canceled"
-msgstr "Avbruten"
-
-#: voteit/irl/views/electoral_register.py:202
+#: voteit/irl/views/electoral_register.py:92
 msgid "Electoral register"
 msgstr "Röstlängd"
 
-#: voteit/irl/views/electoral_register.py:211
-msgid "Set yourself as present"
-msgstr "Sätt dig som närvarande"
+#. Default: Method '${method_title}' applied but it didn't need to change
+#. anything.
+#: voteit/irl/views/eligible_voters.py:54
+msgid "no_update_of_perms_needed_notice"
+msgstr ""
 
-#: voteit/irl/views/eligible_voters.py:55
-#, fuzzy
-msgid "Successfully added"
-msgstr "Tillagd"
+#. Default: Method '${method_title}' added ${added_count} and removed
+#. ${removed_count}.
+#: voteit/irl/views/eligible_voters.py:65
+msgid "updated_voter_permissions_notice"
+msgstr ""
 
-#: voteit/irl/views/projector.py:57
+#: voteit/irl/views/eligible_voters.py:73
+msgid "Update elegible voters"
+msgstr ""
+
+#: voteit/irl/views/meeting_presence.py:44
+msgid "Successfully updated"
+msgstr "Uppdatering"
+
+#: voteit/irl/views/meeting_presence.py:57
+msgid "Meeting presence"
+msgstr ""
+
+#: voteit/irl/views/projector.py:55
 msgid "Projector view"
 msgstr "Projektorvy"
 
 #: voteit/irl/views/templates/diff_electoral_register.pt:9
-msgid "Differences between electoral register ${time1} and ${time2}"
-msgstr ""
-
 #: voteit/irl/views/templates/electoral_register.pt:12
-msgid "List of eligible voters"
+#, fuzzy
+#| msgid "Electoral registers"
+msgid "Diff electoral registers"
+msgstr "Röstlängder"
+
+#: voteit/irl/views/templates/diff_electoral_register.pt:17
+msgid "Comparing ${first} and ${second}"
 msgstr ""
 
-#: voteit/irl/views/templates/electoral_register.pt:14
+#: voteit/irl/views/templates/diff_electoral_register.pt:21
+msgid "${count} added in ${first}"
+msgstr ""
+
+#: voteit/irl/views/templates/diff_electoral_register.pt:31
+#: voteit/irl/views/templates/diff_electoral_register.pt:48
+msgid "(No change)"
+msgstr ""
+
+#: voteit/irl/views/templates/diff_electoral_register.pt:38
+msgid "${count} removed in ${first}"
+msgstr ""
+
+#: voteit/irl/views/templates/electoral_register.pt:15
 msgid ""
-"To get on the list, the user must at some time have had the right to vote in "
-"the meeting. Moderator can add and remove people from the list."
+"A new electoral register is needed. The curreny register differs from the"
+" users who've got the permission to vote."
 msgstr ""
 
 #: voteit/irl/views/templates/electoral_register.pt:19
-msgid "Adjust the electoral register"
+msgid ""
+"No new electoral register needed. The latest one has the same information"
+" as the users who're currently able to vote."
 msgstr ""
 
-#: voteit/irl/views/templates/electoral_register.pt:24
-msgid "Open"
-msgstr "Öppna"
+#: voteit/irl/views/templates/electoral_register.pt:27
+#, fuzzy
+#| msgid "Electoral register"
+msgid "Update electoral register"
+msgstr "Röstlängd"
 
-#: voteit/irl/views/templates/electoral_register.pt:29
-msgid "Close"
-msgstr "Stäng"
+#: voteit/irl/views/templates/electoral_register.pt:28
+#, fuzzy
+#| msgid "Electoral register"
+msgid "Update electoral register anyway"
+msgstr "Röstlängd"
 
-#: voteit/irl/views/templates/electoral_register.pt:37
-msgid "Update voting rights based on latest electoral register"
-msgstr ""
-
-#. Default: Update voting rights changes voting rights to only include those
-#. who
-#. are entitled to vote on the basis of latest electoral register and selected
-#. electorial register method below.
-#: voteit/irl/views/templates/electoral_register.pt:38
-msgid "update_voting_rights_description"
-msgstr ""
-
-#: voteit/irl/views/templates/electoral_register.pt:44
-msgid "Electoral registers"
+#: voteit/irl/views/templates/electoral_register.pt:32
+#, fuzzy
+#| msgid "Electoral registers"
+msgid "All electoral registers"
 msgstr "Röstlängder"
 
-#: voteit/irl/views/templates/electoral_register.pt:48
+#: voteit/irl/views/templates/electoral_register.pt:33
+msgid "Click the ID of a specific one to view it."
+msgstr ""
+
+#: voteit/irl/views/templates/electoral_register.pt:38
+msgid "ID"
+msgstr ""
+
+#: voteit/irl/views/templates/electoral_register.pt:39
 msgid "Time"
 msgstr "Tid"
 
-#: voteit/irl/views/templates/electoral_register.pt:51
-msgid "Number of users"
-msgstr "Antal användare"
-
-#: voteit/irl/views/templates/electoral_register.pt:67
-msgid "View difference between selected electoral registers"
+#: voteit/irl/views/templates/electoral_register.pt:40
+msgid "Voters"
 msgstr ""
-
-#: voteit/irl/views/templates/eligible_voters.pt:15
-#: voteit/irl/views/templates/view_electoral_register.pt:15
-msgid "First name"
-msgstr "Förnamn"
-
-#: voteit/irl/views/templates/eligible_voters.pt:16
-#: voteit/irl/views/templates/view_electoral_register.pt:16
-msgid "Last name"
-msgstr "Efternamn"
-
-#: voteit/irl/views/templates/eligible_voters.pt:17
-#: voteit/irl/views/templates/view_electoral_register.pt:17
-msgid "Email"
-msgstr "Epost"
-
-#: voteit/irl/views/templates/eligible_voters.pt:30
-msgid "Remove"
-msgstr "Radera"
-
-#: voteit/irl/views/templates/eligible_voters.pt:40
-msgid "Add participant"
-msgstr "Lägg till deltagare"
 
 #. Default: The register is closed, you can't set your status right now.
 #: voteit/irl/views/templates/meeting_presence_status.pt:7
@@ -235,7 +199,7 @@ msgstr ""
 
 #. Default: You're not registered as present within this meeting.
 #: voteit/irl/views/templates/meeting_presence_status.pt:16
-msgid "not_registered_as_presentin_meeting"
+msgid "not_registered_as_present_in_meeting"
 msgstr ""
 
 #. Default: Set yourself as present
@@ -243,21 +207,40 @@ msgstr ""
 msgid "set_as_present_button"
 msgstr "Sätt dig själv som närvarande"
 
-#: voteit/irl/views/templates/projector.pt:19
+#. Default: Clear and restart check
+#. Default: Close check
+#: voteit/irl/views/templates/meeting_presence_status.pt:27
+#: voteit/irl/views/templates/meeting_presence_status.pt:32
+#, fuzzy
+#| msgid "set_as_present_button"
+msgid "start_presence_check_button"
+msgstr "Sätt dig själv som närvarande"
+
+#: voteit/irl/views/templates/meeting_presence_status.pt:39
+msgid "Registered"
+msgstr ""
+
+#: voteit/irl/views/templates/view_electoral_register.pt:9
+#, fuzzy
+#| msgid "Electoral register ${time}"
+msgid "Electoral register ${id}: ${time}"
+msgstr "Röstlängd ${time}"
+
+#: voteit/irl/views/templates/view_electoral_register.pt:17
+msgid "Users"
+msgstr ""
+
+#: voteit/irl/views/templates/projector/projector.pt:19
 msgid "Agenda items"
 msgstr "Dagordningspunkter"
 
-#: voteit/irl/views/templates/projector.pt:48
+#: voteit/irl/views/templates/projector/projector.pt:48
 msgid "Polls"
 msgstr "Omröstningar"
 
-#: voteit/irl/views/templates/projector.pt:53
+#: voteit/irl/views/templates/projector/projector.pt:53
 msgid "Proposals"
 msgstr "Förslag"
-
-#: voteit/irl/views/templates/view_electoral_register.pt:9
-msgid "Electoral register ${time}"
-msgstr "Röstlängd ${time}"
 
 #: voteit/irl/views/templates/projector/proposal.pt:7
 msgid "Deactivate"
@@ -279,6 +262,119 @@ msgstr "Sätt avslagen"
 msgid "Activate"
 msgstr "Aktiv"
 
-#: voteit/irl/views/templates/projector/proposal.pt:33
-msgid "propose"
-msgstr "föreslå"
+#~ msgid "User must have at least view permission"
+#~ msgstr "Användaren måste minst ha rättighet att se mötet"
+
+#~ msgid "add_eligible_voter_to_meeting"
+#~ msgstr ""
+
+#~ msgid "UserID"
+#~ msgstr "AnvändarID"
+
+#~ msgid "single_permission_schema_userid_description"
+#~ msgstr ""
+
+#~ msgid "electoral_register_method"
+#~ msgstr ""
+
+#~ msgid "electoral_register_method_description"
+#~ msgstr ""
+
+#~ msgid "electoral_register_diff_archive1"
+#~ msgstr ""
+
+#~ msgid "electoral_register_diff_archive1_description"
+#~ msgstr ""
+
+#~ msgid "electoral_register_diff_archive2"
+#~ msgstr ""
+
+#~ msgid "electoral_register_diff_archive2_description"
+#~ msgstr ""
+
+#~ msgid "Electoral register is closed"
+#~ msgstr ""
+
+#~ msgid "standard_electoral_register_method_description"
+#~ msgstr ""
+
+#~ msgid "Electoral register is cleared."
+#~ msgstr ""
+
+#~ msgid "Closed"
+#~ msgstr "Stängd"
+
+#~ msgid "View"
+#~ msgstr "Visa"
+
+#~ msgid "No electoral register with that number"
+#~ msgstr ""
+
+#~ msgid "No register to apply method on"
+#~ msgstr ""
+
+#~ msgid "Canceled"
+#~ msgstr "Avbruten"
+
+#~ msgid "Set yourself as present"
+#~ msgstr "Sätt dig som närvarande"
+
+#~ msgid "Successfully added"
+#~ msgstr "Tillagd"
+
+#~ msgid "Differences between electoral register ${time1} and ${time2}"
+#~ msgstr ""
+
+#~ msgid "List of eligible voters"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "To get on the list, the user "
+#~ "must at some time have had the "
+#~ "right to vote in the meeting. "
+#~ "Moderator can add and remove people "
+#~ "from the list."
+#~ msgstr ""
+
+#~ msgid "Adjust the electoral register"
+#~ msgstr ""
+
+#~ msgid "Open"
+#~ msgstr "Öppna"
+
+#~ msgid "Close"
+#~ msgstr "Stäng"
+
+#~ msgid "Update voting rights based on latest electoral register"
+#~ msgstr ""
+
+#~ msgid "update_voting_rights_description"
+#~ msgstr ""
+
+#~ msgid "Number of users"
+#~ msgstr "Antal användare"
+
+#~ msgid "View difference between selected electoral registers"
+#~ msgstr ""
+
+#~ msgid "First name"
+#~ msgstr "Förnamn"
+
+#~ msgid "Last name"
+#~ msgstr "Efternamn"
+
+#~ msgid "Email"
+#~ msgstr "Epost"
+
+#~ msgid "Remove"
+#~ msgstr "Radera"
+
+#~ msgid "Add participant"
+#~ msgstr "Lägg till deltagare"
+
+#~ msgid "not_registered_as_presentin_meeting"
+#~ msgstr ""
+
+#~ msgid "propose"
+#~ msgstr "föreslå"
+
