@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-11-29 09:21+0100\n"
+"POT-Creation-Date: 2012-11-29 11:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,7 +86,7 @@ msgid "Update elegible voters"
 msgstr ""
 
 #: voteit/irl/views/meeting_presence.py:44
-msgid "Successfully updated"
+msgid "Your precence is received"
 msgstr ""
 
 #: voteit/irl/views/meeting_presence.py:57
@@ -170,7 +170,7 @@ msgstr ""
 msgid "presence_registered_register_not_closed_yet"
 msgstr ""
 
-#. Default: Your presence was registered and is now part of the currently active
+#. Default: Your presence was registered and will be part of the next electoral
 #. register.
 #: voteit/irl/views/templates/meeting_presence_status.pt:13
 msgid "presence_registered_and_now_active"
@@ -186,15 +186,18 @@ msgstr ""
 msgid "set_as_present_button"
 msgstr ""
 
-#. Default: Clear and restart check
-#. Default: Close check
+#. Default: Clear and start availability check
 #: voteit/irl/views/templates/meeting_presence_status.pt:27
-#: voteit/irl/views/templates/meeting_presence_status.pt:32
 msgid "start_presence_check_button"
 msgstr ""
 
+#. Default: Close check
+#: voteit/irl/views/templates/meeting_presence_status.pt:32
+msgid "end_presence_check_button"
+msgstr ""
+
 #: voteit/irl/views/templates/meeting_presence_status.pt:39
-msgid "Registered"
+msgid "Available participants"
 msgstr ""
 
 #: voteit/irl/views/templates/view_electoral_register.pt:9

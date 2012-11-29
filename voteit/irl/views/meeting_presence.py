@@ -25,7 +25,7 @@ class MeetingPresenceView(BaseView):
     @view_config(name="register_meeting_presence", context=IMeeting, permission=VIEW,
                  renderer = "templates/register_meeting_presence.pt")
     def register_meeting_presence(self):
-        """ Controls for setting yourself as attending
+        """ Controls for setting yourself as present
         """
         voteit_irl_set_as_present.need()
         self.response['current'] = self.register_current_status()
@@ -41,7 +41,7 @@ class MeetingPresenceView(BaseView):
     def register_set_attending(self):
         assert self.api.userid
         self.mp_util.add(self.api.userid)
-        msg = _(u"Successfully updated")
+        msg = _(u"Your precence is received")
         return Response(self.register_current_status(msg))
 
     @view_config(name="_toggle_presence_check", context=IMeeting, permission=MODERATE_MEETING)
