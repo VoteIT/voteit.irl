@@ -32,6 +32,5 @@ def includeme(config):
                                                        default = u"VoteIT wasn't able to set you as present. This might be due to server load, "
                                                        u"please try again in a short while."),
         )
-    else:
-        print "Can't find util for JS translations."
+    #FIXME:Tests don't need to load js util but we want to have proper logging here
     config.scan('voteit.irl')
