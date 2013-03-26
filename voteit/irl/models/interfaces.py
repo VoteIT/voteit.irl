@@ -61,3 +61,50 @@ class IElegibleVotersMethod(Interface):
     def get_voters(**kw):
         """ Return an iterable with userids of everyone who should be able to vote.
         """
+
+
+class IParticipantNumbers(Interface):
+    """ An adapter that handles numbering of meeting participants.
+    """
+    tickets = Attribute("Storage for tickets")
+    userid_to_number = Attribute("Map userid -> number")
+    number_to_userid = Attribute("Map number -> userid")
+    token_to_number = Attribute("Map token -> number - good for validation too.")
+
+    def __init__(context):
+        """ context is always meeting. """
+
+    def new_tickets(start, end = None):
+        """ Create new tickets between start number to end number.
+            Returns a generator of all created numbers.
+            Note that this method won't overwrite any previously created numbers,
+            it will simply fill the gaps.
+
+            start
+                Number to start at
+
+            end
+                Number to end at. No arg means just do one number.
+        """
+
+    def claim_ticket(userid, token):
+        """ Claim a ticket for userid.
+        """
+
+    def clear_numbers(start, end = None):
+        """ Clear a range of numbers.
+            Removes all data including any registered tickets.
+            Method won't raise exceptions if number doesn't exist.
+            Returns a generator of cleared numbers.
+
+            start
+                Which number to start at
+
+            end
+                Number to end at. No arg means just do one number.
+        """
+
+    def clear_number(number):
+        """ Remove all data for this number. This includes any registered tickets etc.
+            Will return cleared number if anything was cleared.
+        """
