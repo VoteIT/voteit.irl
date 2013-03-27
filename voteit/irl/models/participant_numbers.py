@@ -85,6 +85,7 @@ class ParticipantNumbers(object):
         self.tickets[number].claim(userid)
         self.number_to_userid[number] = userid
         self.userid_to_number[userid] = number
+        return number
 
     def clear_number(self, number):
         userid = self.number_to_userid.get(number, None)

@@ -5,6 +5,7 @@ from betahaus.pyracont.decorators import schema_factory
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
 from voteit.irl.models.interfaces import IElegibleVotersMethod
+from voteit.irl.models.interfaces import IParticipantNumbers
 
 
 @colander.deferred
@@ -33,7 +34,6 @@ def register_diff_choices_widget(node, kw):
     request = kw['request']
     api = kw['api']
     electoral_register = request.registry.getAdapter(context, IElectoralRegister)
-
     choices = []
     for id in sorted(electoral_register.registers.keys(), key=int, reverse=True):
         timestamp = api.dt_util.dt_format(electoral_register.registers[id]['time'])
@@ -52,3 +52,31 @@ class ElectoralRegisterDiffSchema(colander.Schema):
                                   title = _(u"Second register"),
                                   widget = register_diff_choices_widget,
                                   )
+
+
+@colander.deferred
+def deferred_participant_number_token_validator(node, kw):
+    context = kw['context']
+    request = kw['request']
+    return PNTokenValidator(context, request)
+
+
+class PNTokenValidator(object):
+    """ For meetings """
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self, node, value):
+        participant_numbers = self.request.registry.getAdapter(self.context, IParticipantNumbers)
+        if value not in participant_numbers.token_to_number:
+            raise colander.Invalid(node, _(u"No match - remember that it's case sensitive!"))
+
+
+@schema_factory('ClaimParticipantNumber')
+class ClaimParticipantNumberSchema(colander.Schema):
+    token = colander.SchemaNode(colander.String(),
+                                validator = deferred_participant_number_token_validator,
+                                title = u"Participant code",
+                                description = u"Enter your code. Note that it's case sensitive and can only be used once.")
