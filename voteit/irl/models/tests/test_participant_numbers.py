@@ -29,7 +29,7 @@ class ParticipantNumbersTests(unittest.TestCase):
 
     def test_new_tickets(self):
         obj = self._cut(testing.DummyResource())
-        res = obj.new_tickets(0)
+        res = obj.new_tickets('c', 0)
         self.assertEqual(res, [0])
         self.assertEqual(len(obj.tickets), 1)
         token = obj.tickets[0].token
@@ -40,21 +40,21 @@ class ParticipantNumbersTests(unittest.TestCase):
 
     def test_new_tickets_several(self):
         obj = self._cut(testing.DummyResource())
-        res = obj.new_tickets(0, 9)
+        res = obj.new_tickets('creator', 0, 9)
         self.assertEqual(len(res), 10)
         self.assertEqual(len(obj.tickets), 10)
 
     def test_new_tickets_with_existing(self):
         obj = self._cut(testing.DummyResource())
-        res = obj.new_tickets(5, 7)
+        res = obj.new_tickets('creator', 5, 7)
         self.assertEqual(len(res), 3)
-        res = obj.new_tickets(1, 10)
+        res = obj.new_tickets('c', 1, 10)
         self.assertEqual(len(res), 7)
         self.assertEqual(len(obj.tickets), 10)
 
     def test_claim_ticket(self):
         obj = self._cut(testing.DummyResource())
-        obj.new_tickets(0)
+        obj.new_tickets('c', 0)
         ticket = obj.tickets[0]
         token = ticket.token
         obj.claim_ticket('jeff', token)
@@ -67,7 +67,7 @@ class ParticipantNumbersTests(unittest.TestCase):
 
     def test_clear_number(self):
         obj = self._cut(testing.DummyResource())
-        obj.new_tickets(0, 1)
+        obj.new_tickets('c', 0, 1)
         obj.clear_number(0)
         self.assertEqual(len(obj.tickets), 1)
         self.assertNotIn(0, obj.tickets)
@@ -75,7 +75,7 @@ class ParticipantNumbersTests(unittest.TestCase):
 
     def test_clear_numbers(self):
         obj = self._cut(testing.DummyResource())
-        obj.new_tickets(0, 5)
+        obj.new_tickets('c', 0, 5)
         res = obj.clear_numbers(1, 3)
         self.assertEqual(len(res), 3)
         self.assertEqual(len(obj.tickets), 3)
@@ -88,7 +88,7 @@ class ParticipantNumbersTests(unittest.TestCase):
 
     def test_clear_numbers_with_some_gaps(self):
         obj = self._cut(testing.DummyResource())
-        obj.new_tickets(1, 5)
+        obj.new_tickets('c', 1, 5)
         res = obj.clear_numbers(1)
         self.assertEqual(len(res), 1)
         self.assertEqual(len(obj.tickets), 4)
@@ -98,7 +98,7 @@ class ParticipantNumbersTests(unittest.TestCase):
 
     def test_clear_numbers_removes_userdata_too(self):
         obj = self._cut(testing.DummyResource())
-        obj.new_tickets(1, 5)
+        obj.new_tickets('c', 1, 5)
         obj.claim_ticket('jane', obj.tickets[1].token)
         obj.claim_ticket('joe', obj.tickets[2].token)
         obj.claim_ticket('jeff', obj.tickets[3].token)
@@ -116,7 +116,7 @@ class ParticipantNumbersTests(unittest.TestCase):
     def test_claim_ticket_already_claimed(self):
         from voteit.irl.models.participant_numbers import TicketAlreadyClaimedError
         obj = self._cut(testing.DummyResource())
-        obj.new_tickets(1)
+        obj.new_tickets('c', 1)
         token = obj.tickets[1].token
         obj.claim_ticket('jane', token)
         self.assertRaises(TicketAlreadyClaimedError, obj.claim_ticket, 'dummy', token)

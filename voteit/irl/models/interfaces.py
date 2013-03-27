@@ -74,11 +74,14 @@ class IParticipantNumbers(Interface):
     def __init__(context):
         """ context is always meeting. """
 
-    def new_tickets(start, end = None):
+    def new_tickets(creator, start, end = None):
         """ Create new tickets between start number to end number.
             Returns a generator of all created numbers.
             Note that this method won't overwrite any previously created numbers,
             it will simply fill the gaps.
+
+            creator
+                UserID of the person who created this ticket.
 
             start
                 Number to start at

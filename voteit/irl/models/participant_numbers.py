@@ -65,7 +65,7 @@ class ParticipantNumbers(object):
                 raise ValueError("Can't find any free token number. This should never happen.") #pragma : no cover
         return token
 
-    def new_tickets(self, start, end = None):
+    def new_tickets(self, creator, start, end = None):
         if end == None:
             end = start
         assert start <= end
@@ -74,7 +74,7 @@ class ParticipantNumbers(object):
             if i in self.tickets:
                 continue
             token = self.new_token()
-            ticket = ParticipantNumberTicket(i, token)
+            ticket = ParticipantNumberTicket(i, token, creator)
             self.tickets[i] = ticket
             self.token_to_number[token] = i
             results.append(i)
@@ -112,12 +112,13 @@ class ParticipantNumbers(object):
 
 class ParticipantNumberTicket(Persistent):
 
-    def __init__(self, number, token):
+    def __init__(self, number, token, creator):
         self.number = number
         self.created = utcnow()
         self.claimed = None
         self.claimed_by = None
         self.token = token
+        self.created_by = creator
 
     def claim(self, userid):
         if self.claimed or self.claimed_by:
