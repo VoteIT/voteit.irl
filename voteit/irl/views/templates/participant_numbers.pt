@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="load: ${api.template_dir}content.pt"
+         xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+         i18n:domain="voteit.irl">
+<body>
+<div metal:fill-slot="full_window" id="content">
+
+    <tal:messages replace="structure api.render_single_view_component(context, request, 'main', 'flash_messages')">Messages</tal:messages>
+    <div class="clear"><!-- --></div>
+    
+    <h1 id="page_heading" i18n:translate="">
+        Participant numbers
+    </h1>
+
+    <table class="listing">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Token</th>
+                <th>Created</th>
+                <th>Claimed</th>
+                <th>Claimed by</th>
+                <th>Created by</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tal:iterate repeat="ticket participant_numbers.tickets.values()">
+            <tr>
+                <td>${ticket.number}</td>
+                <td>${ticket.token}</td>
+                <td tal:content="api.dt_util.relative_time_format(ticket.created)"></td>
+                <td tal:content="ticket.claimed and api.dt_util.relative_time_format(ticket.claimed) or ''"></td>
+                <td tal:content="structure ticket.claimed_by and api.get_creators_info([ticket.claimed_by], portrait = False) or ''"></td>
+                <td tal:content="structure ticket.created_by and api.get_creators_info([ticket.created_by], portrait = False) or ''"></td>
+            </tr>
+            </tal:iterate>
+        </tbody>
+    </table>
+    
+    <br/>
+    <h3 i18n:translate="">Add or remove numbers</h3>
+    <p i18n:translate="ticket_creation_help">
+        Enter a start number (like 1) and possibly an end number if you wan to create several tickets.
+        If you want to create tickets between 1-200, enter 1 as start and 200 as end. If you don't specify an end number,
+        only one ticket will be created.
+    </p>
+    <br/>
+    <form method="POST">
+        <label for="start_number" i18n:translate="">Start</label>
+        <input type="text" id="start_number" name="start" size="2" />
+        <label for="end_number" i18n:translate="">End</label>
+        <input type="text" id="end_number" name="end" size="2" />
+        <button name="add" type="submit" value="add">
+            <span i18n:translate="">Add</span>
+        </button>
+        <button name="remove" type="submit" value="remove">
+            <span i18n:translate="">Remove</span>
+        </button>
+        <button name="back" type="submit" value="back">
+            <span i18n:translate="">Back</span>
+        </button>
+    </form>
+</div>
+</body>
+</html>
