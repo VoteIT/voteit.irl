@@ -120,4 +120,8 @@ class ParticipantNumbersTests(unittest.TestCase):
         token = obj.tickets[1].token
         obj.claim_ticket('jane', token)
         self.assertRaises(TicketAlreadyClaimedError, obj.claim_ticket, 'dummy', token)
-        
+
+    def test_integration(self):
+        self.config.include('voteit.irl')
+        meeting = Meeting()
+        self.failUnless(self.config.registry.queryAdapter(meeting, IParticipantNumbers))
