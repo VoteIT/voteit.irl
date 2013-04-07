@@ -111,3 +111,7 @@ class IParticipantNumbers(Interface):
         """ Remove all data for this number. This includes any registered tickets etc.
             Will return cleared number if anything was cleared.
         """
+
+
+class IParticipantCallback(Interface):
+    pass #FIXME

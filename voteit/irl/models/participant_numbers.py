@@ -5,10 +5,12 @@ from BTrees.OIBTree import OIBTree
 from persistent import Persistent
 from zope.interface import implements
 from zope.component import adapts
+from pyramid.threadlocal import get_current_registry
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.date_time_util import utcnow
 
 from .interfaces import IParticipantNumbers
+from voteit.irl.events import ParticipantNumberClaimed
 
 
 CHAR_POOL = u"23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
@@ -85,6 +87,8 @@ class ParticipantNumbers(object):
         self.tickets[number].claim(userid)
         self.number_to_userid[number] = userid
         self.userid_to_number[userid] = number
+        reg = get_current_registry()
+        reg.notify(ParticipantNumberClaimed(self.context, number, userid))
         return number
 
     def clear_number(self, number):

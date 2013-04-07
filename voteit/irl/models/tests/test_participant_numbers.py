@@ -7,6 +7,7 @@ from zope.interface.verify import verifyClass
 from voteit.core.models.meeting import Meeting
 
 from voteit.irl.models.interfaces import IParticipantNumbers
+from voteit.irl.interfaces import IParticipantNumberClaimed
 
 
 class ParticipantNumbersTests(unittest.TestCase):
@@ -125,3 +126,19 @@ class ParticipantNumbersTests(unittest.TestCase):
         self.config.include('voteit.irl')
         meeting = Meeting()
         self.failUnless(self.config.registry.queryAdapter(meeting, IParticipantNumbers))
+
+    def test_claim_ticket_sends_notification(self):
+        self.config.include('voteit.irl')
+        L = []
+        def subscriber(event):
+            L.append(event)
+        self.config.add_subscriber(subscriber, IParticipantNumberClaimed)
+        meeting = Meeting()
+        obj = self._cut(meeting)
+        obj.new_tickets('c', 1, 2)
+        token = obj.tickets[1].token
+        obj.claim_ticket('jane', token)
+        self.assertEqual(len(L), 1)
+        token = obj.tickets[2].token
+        obj.claim_ticket('sanna', token)
+        self.assertEqual(len(L), 2)
