@@ -26,8 +26,9 @@ class ElegibleVoters(BaseView):
         post = self.request.POST
         if 'cancel' in post:
             return HTTPFound(location = self.api.meeting_url)
-        schema = createSchema('ElegibleVotersMethodSchema').bind(context=self.context, request=self.request, api=self.api)        
+        schema = createSchema('ElegibleVotersMethodSchema')       
         add_csrf_token(self.context, self.request, schema)
+        schema = schema.bind(context=self.context, request=self.request, api=self.api) 
         form = deform.Form(schema, buttons=(button_update, button_cancel, ))
         self.api.register_form_resources(form)
         if 'update' in post:
