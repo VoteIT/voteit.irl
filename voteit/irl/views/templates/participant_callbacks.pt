@@ -46,6 +46,8 @@
         
         <br/>
         <form method="POST">
+            <label for="execute_for_existing" i18n:translate="">Execute callbacks for existing users (recommended)</label>
+            <input type="checkbox" name="execute_for_existing" id="execute_for_existing" checked="checked" /><br/>
             <label for="start_number" i18n:translate="">Start</label>
             <input type="text" id="start_number" name="start" size="2" />
             <label for="end_number" i18n:translate="">End</label>

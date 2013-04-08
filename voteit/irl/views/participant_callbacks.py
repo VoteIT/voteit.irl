@@ -54,17 +54,29 @@ class ParticipantCallbacksView(BaseView):
                 added, existed = self.participant_callbacks.add(callback, start, end)
                 msg = _(u"Added ${added} new callbacks and skipped ${existed} that already existed.",
                         mapping = {'added': len(added), 'existed': len(existed)})
+                self.api.flash_messages.add(msg)
+                if self.request.POST.get('execute_for_existing', True):
+                    callback_adapter = self.request.registry.getAdapter(self.api.meeting, IParticipantCallback, name = callback)
+                    executed = 0
+                    if end == None:
+                        end = start
+                    for i in range(start, end + 1): #Range  stops before end otherwise
+                        if i in self.participant_numbers.number_to_userid:
+                            callback_adapter(i, self.participant_numbers.number_to_userid[i])
+                            executed += 1
+                    msg = _(u"Executed callback for ${num} users that had already claimed a participant number.",
+                            mapping = {'num': executed})
+                    self.api.flash_messages.add(msg)
             if remove:
                 removed, nonexistent = self.participant_callbacks.remove(callback, start, end)
                 msg = _(u"Removed ${removed} callbacks and skipped ${nonexistent} that wasn't registered.",
                         mapping = {'removed': len(removed), 'nonexistent': len(nonexistent)})
-            self.api.flash_messages.add(msg)
+                self.api.flash_messages.add(msg)
             here_url = self.request.resource_url(self.context, 'manage_participant_callbacks')
             return HTTPFound(location = here_url)
         self.response['participant_numbers'] = self.participant_numbers
         self.response['participant_callbacks'] = self.participant_callbacks
         self.response['callback_adapters'] = [adapter for (name, adapter) in self.request.registry.getAdapters([self.api.meeting], IParticipantCallback)]
-        
         return self.response
 #
 #    @view_config(name = "claim_participant_number", context = IMeeting, permission = security.VIEW,

@@ -147,10 +147,6 @@ class IParticipantCallbacks(Interface):
                 Integer number to stop at, or None if you just want to add one number.
         """
 
-#    def execute_for(number, userid = None):
-#        """ Execute all set callbacks for a specific number.
-#        """
-
 
 class IParticipantCallback(Interface):
     """ A special adapter that performs actions when someone claims a participant number,

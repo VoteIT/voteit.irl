@@ -14,6 +14,7 @@ from .interfaces import IParticipantNumbers
 class ParticipantCallbacks(object):
     implements(IParticipantCallbacks)
     adapts(IMeeting)
+    #FIXME: This has to be tied together with a subscriber. It's otherwise finished!
 
     def __init__(self, context):
         self.context = context
@@ -45,7 +46,6 @@ class ParticipantCallbacks(object):
                 added.append(i)
             else:
                 existed.append(i)
-            #FIXME: If user existed, execute callback?
         return added, existed
 
     def remove(self, callback, start, end = None):
@@ -63,40 +63,6 @@ class ParticipantCallbacks(object):
             else:
                 nonexistent.append(i)
         return removed, nonexistent
-
-#    def execute_for(self, number, userid = None):
-#        reg = get_current_registry()
-#        #FIXME: Log fails
-#        for name in self.callbacks:
-#            if number not in self.callbacks[name]:
-#                continue
-#            callback = reg.queryAdapter(self.context, IParticipantCallback)
-#            if callback:
-#                callback(number, userid)
-            #else:
-                #FIXME: log fail
-
-#    def execute_if_exists(self, callback, start, end = None):
-#        assert isinstance(callback, basestring)
-#        if end == None:
-#            end = start
-#        assert start <= end
-#        reg = get_current_registry()
-#        participant_numbers = reg.getAdapter(self.context, IParticipantNumbers)
-#        executed = 0
-#        nonexistent = 0
-#        for i in range(start, end + 1): #Range  stops before end otherwise
-#            if i not in self.callbacks:
-#                continue
-#            if callback in self.callbacks[i]:
-#                
-#                self.callbacks[i].remove(callback)
-#                removed += 1
-#            else:
-#                nonexistent += 1
-#        return removed, nonexistent
-
-
 
 
 class ParticipantCallback(object):
