@@ -19,11 +19,11 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Token</th>
-                <th>Created</th>
-                <th>Claimed</th>
-                <th>Claimed by</th>
-                <th>Created by</th>
+                <th i18n:translate="">Token</th>
+                <th i18n:translate="">Created</th>
+                <th i18n:translate="">Claimed</th>
+                <th i18n:translate="">Claimed by</th>
+                <th i18n:translate="">Created by</th>
             </tr>
         </thead>
         <tbody>

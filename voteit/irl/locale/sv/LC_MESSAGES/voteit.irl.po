@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-04-08 15:15+0200\n"
-"PO-Revision-Date: 2013-04-08 15:23+0100\n"
+"POT-Creation-Date: 2013-04-08 19:41+0200\n"
+"PO-Revision-Date: 2013-04-08 19:43+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -55,6 +55,20 @@ msgstr "Andra röstlängd"
 msgid "No match - remember that it's case sensitive!"
 msgstr "Ingen matchning - kom ihåg att stora eller små bokstäver spelar roll!"
 
+#: voteit/irl/schemas.py:81
+#, fuzzy
+#| msgid "Participant numbers"
+msgid "Participant code"
+msgstr "Deltagarnummer"
+
+#. Default: Enter your code. Note that it's case sensitive and can only be used
+#. once.
+#: voteit/irl/schemas.py:82
+#, fuzzy
+#| msgid "elegible_voters_method_description"
+msgid "enter_token_description"
+msgstr "Förändrar rösträtten i enlighet med metodens specifikationer."
+
 #: voteit/irl/models/meeting_presence.py:51
 msgid "Meeting presence check isn't open"
 msgstr "Närvarokontroll är inte öppen"
@@ -88,19 +102,19 @@ msgstr "Röstlängd"
 
 #. Default: Method '${method_title}' applied but it didn't need to change
 #. anything.
-#: voteit/irl/views/eligible_voters.py:54
+#: voteit/irl/views/eligible_voters.py:55
 msgid "no_update_of_perms_needed_notice"
 msgstr "Metoden '${method_title}' tillämpades men inget behövde ändras."
 
 #. Default: Method '${method_title}' added ${added_count} and removed
 #. ${removed_count}.
-#: voteit/irl/views/eligible_voters.py:65
+#: voteit/irl/views/eligible_voters.py:66
 msgid "updated_voter_permissions_notice"
 msgstr ""
 "Metoden '${method_title}' la till ${added_count} och tog bort"
 "${removed_count} röstberättigade."
 
-#: voteit/irl/views/eligible_voters.py:73
+#: voteit/irl/views/eligible_voters.py:74
 msgid "Update elegible voters"
 msgstr "Uppdatera röstberättigade"
 
@@ -137,7 +151,7 @@ msgstr ""
 "Tog bort ${removed} callbacks och skippade ${nonexistent} som inte var "
 "registrerade."
 
-#: voteit/irl/views/participant_callbacks.py:118
+#: voteit/irl/views/participant_callbacks.py:87
 #: voteit/irl/views/templates/participant_callbacks.pt:14
 msgid "Participant callbacks"
 msgstr ""
@@ -172,7 +186,6 @@ msgid "Participant numbers"
 msgstr "Deltagarnummer"
 
 #: voteit/irl/views/participant_numbers.py:105
-#| msgid "Available participants"
 msgid "Claim participant number"
 msgstr "Registrera deltagarnummer"
 
@@ -323,6 +336,26 @@ msgstr "Lägg till"
 #: voteit/irl/views/templates/participant_numbers.pt:60
 msgid "Remove"
 msgstr "Ta bort"
+
+#: voteit/irl/views/templates/participant_numbers.pt:22
+msgid "Token"
+msgstr "Biljettkod"
+
+#: voteit/irl/views/templates/participant_numbers.pt:23
+msgid "Created"
+msgstr "Skapad"
+
+#: voteit/irl/views/templates/participant_numbers.pt:24
+msgid "Claimed"
+msgstr "Använd"
+
+#: voteit/irl/views/templates/participant_numbers.pt:25
+msgid "Claimed by"
+msgstr "Använd av"
+
+#: voteit/irl/views/templates/participant_numbers.pt:26
+msgid "Created by"
+msgstr "Skapad av"
 
 #: voteit/irl/views/templates/participant_numbers.pt:44
 msgid "Add or remove numbers"

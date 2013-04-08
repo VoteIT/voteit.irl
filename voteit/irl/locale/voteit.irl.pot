@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-04-08 15:15+0200\n"
+"POT-Creation-Date: 2013-04-08 19:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,6 +49,16 @@ msgstr ""
 msgid "No match - remember that it's case sensitive!"
 msgstr ""
 
+#: voteit/irl/schemas.py:81
+msgid "Participant code"
+msgstr ""
+
+#. Default: Enter your code. Note that it's case sensitive and can only be used
+#. once.
+#: voteit/irl/schemas.py:82
+msgid "enter_token_description"
+msgstr ""
+
 #: voteit/irl/models/meeting_presence.py:51
 msgid "Meeting presence check isn't open"
 msgstr ""
@@ -81,17 +91,17 @@ msgid "Electoral register"
 msgstr ""
 
 #. Default: Method '${method_title}' applied but it didn't need to change anything.
-#: voteit/irl/views/eligible_voters.py:54
+#: voteit/irl/views/eligible_voters.py:55
 msgid "no_update_of_perms_needed_notice"
 msgstr ""
 
 #. Default: Method '${method_title}' added ${added_count} and removed
 #. ${removed_count}.
-#: voteit/irl/views/eligible_voters.py:65
+#: voteit/irl/views/eligible_voters.py:66
 msgid "updated_voter_permissions_notice"
 msgstr ""
 
-#: voteit/irl/views/eligible_voters.py:73
+#: voteit/irl/views/eligible_voters.py:74
 msgid "Update elegible voters"
 msgstr ""
 
@@ -125,7 +135,7 @@ msgid ""
 "registered."
 msgstr ""
 
-#: voteit/irl/views/participant_callbacks.py:118
+#: voteit/irl/views/participant_callbacks.py:87
 #: voteit/irl/views/templates/participant_callbacks.pt:14
 msgid "Participant callbacks"
 msgstr ""
@@ -298,6 +308,26 @@ msgstr ""
 #: voteit/irl/views/templates/participant_callbacks.pt:60
 #: voteit/irl/views/templates/participant_numbers.pt:60
 msgid "Remove"
+msgstr ""
+
+#: voteit/irl/views/templates/participant_numbers.pt:22
+msgid "Token"
+msgstr ""
+
+#: voteit/irl/views/templates/participant_numbers.pt:23
+msgid "Created"
+msgstr ""
+
+#: voteit/irl/views/templates/participant_numbers.pt:24
+msgid "Claimed"
+msgstr ""
+
+#: voteit/irl/views/templates/participant_numbers.pt:25
+msgid "Claimed by"
+msgstr ""
+
+#: voteit/irl/views/templates/participant_numbers.pt:26
+msgid "Created by"
 msgstr ""
 
 #: voteit/irl/views/templates/participant_numbers.pt:44
