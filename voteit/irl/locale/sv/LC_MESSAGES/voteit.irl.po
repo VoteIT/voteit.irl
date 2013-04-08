@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-04-08 19:41+0200\n"
-"PO-Revision-Date: 2013-04-08 20:47+0100\n"
+"POT-Creation-Date: 2013-04-08 21:07+0200\n"
+"PO-Revision-Date: 2013-04-08 21:09+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -55,18 +55,17 @@ msgid "No match - remember that it's case sensitive!"
 msgstr "Ingen matchning - kom ihåg att stora eller små bokstäver spelar roll!"
 
 #: voteit/irl/schemas.py:81
-#| msgid "Participant numbers"
 msgid "Participant code"
 msgstr "Deltagarnummer"
 
-#. Default: Enter your code. Note that it's case sensitive and can only be used
-#. once.
+#. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
+#. that it's case sensitive and can only be used once.
 #: voteit/irl/schemas.py:82
-#| msgid "elegible_voters_method_description"
 msgid "enter_token_description"
 msgstr ""
-"Skriv in din kod. Observera att den gör skillnad på små och stora bokstäver, "
-"och kan bara användas en gång."
+"Skriv i koden som skickades till dig. Den har formatet xxxx-xxxx. Observera "
+"att den gör skillnad på små och stora bokstäver, och kan bara användas en "
+"gång."
 
 #: voteit/irl/models/meeting_presence.py:51
 msgid "Meeting presence check isn't open"

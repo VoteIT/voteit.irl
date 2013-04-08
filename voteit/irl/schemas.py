@@ -80,4 +80,5 @@ class ClaimParticipantNumberSchema(colander.Schema):
                                 validator = deferred_participant_number_token_validator,
                                 title = _(u"Participant code"),
                                 description = _(u"enter_token_description",
-                                                default = u"Enter your code. Note that it's case sensitive and can only be used once."))
+                                                default = u"Enter the code sent to you. It will have the format xxxx-xxxx. "
+                                                          u"Note that it's case sensitive and can only be used once."))
