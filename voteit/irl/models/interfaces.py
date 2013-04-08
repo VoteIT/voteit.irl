@@ -113,5 +113,55 @@ class IParticipantNumbers(Interface):
         """
 
 
+class IParticipantCallbacks(Interface):
+    """ Stores participant callbacks to be performed when a user claims a participant number.
+    """
+
+    def __init__(context):
+        """ Always adapts meetings. """
+
+    def add(callback, start, end = None):
+        """ Add a new callback.
+
+            callback
+                Name of the IParticipantCallback adapter to execute.
+
+            start
+                Integer number to start at.
+
+            end
+                Integer number to stop at, or None if you just want to add one number.
+        """
+
+    def remove(callback, start, end = None):
+        """ Remove a  callback. Note that callbacks already run will already have taken effect.
+            It doesn't undo this!
+
+            callback
+                Name of the IParticipantCallback adapter to remove.
+
+            start
+                Integer number to start at.
+
+            end
+                Integer number to stop at, or None if you just want to add one number.
+        """
+
+#    def execute_for(number, userid = None):
+#        """ Execute all set callbacks for a specific number.
+#        """
+
+
 class IParticipantCallback(Interface):
-    pass #FIXME
+    """ A special adapter that performs actions when someone claims a participant number,
+        or for users that have already claimed one.
+    """
+    name = Attribute("Name of this adapter. Must be unique.")
+    title = Attribute("Readable title.")
+    description = Attribute("Optional description of this callback.")
+    
+    def __init__(context):
+        """ Always adapts meetings. """
+
+    def __call__(number, userid):
+        """ Perform action on meeting conserning this number and userid. """

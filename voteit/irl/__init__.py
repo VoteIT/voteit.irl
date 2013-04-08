@@ -20,6 +20,8 @@ def includeme(config):
 
     from voteit.irl.models.participant_numbers import ParticipantNumbers
     config.registry.registerAdapter(ParticipantNumbers)
+    
+    config.include('voteit.irl.models.participant_callback') #Include standard adapters
 
     cache_ttl_seconds = int(config.registry.settings.get('cache_ttl_seconds', 7200))
     config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_ttl_seconds)
