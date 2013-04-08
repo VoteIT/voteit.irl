@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2013-04-08 19:41+0200\n"
-"PO-Revision-Date: 2013-04-08 19:43+0100\n"
+"PO-Revision-Date: 2013-04-08 20:47+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -51,12 +51,10 @@ msgid "Second register"
 msgstr "Andra röstlängd"
 
 #: voteit/irl/schemas.py:74
-#, fuzzy
 msgid "No match - remember that it's case sensitive!"
 msgstr "Ingen matchning - kom ihåg att stora eller små bokstäver spelar roll!"
 
 #: voteit/irl/schemas.py:81
-#, fuzzy
 #| msgid "Participant numbers"
 msgid "Participant code"
 msgstr "Deltagarnummer"
@@ -64,10 +62,11 @@ msgstr "Deltagarnummer"
 #. Default: Enter your code. Note that it's case sensitive and can only be used
 #. once.
 #: voteit/irl/schemas.py:82
-#, fuzzy
 #| msgid "elegible_voters_method_description"
 msgid "enter_token_description"
-msgstr "Förändrar rösträtten i enlighet med metodens specifikationer."
+msgstr ""
+"Skriv in din kod. Observera att den gör skillnad på små och stora bokstäver, "
+"och kan bara användas en gång."
 
 #: voteit/irl/models/meeting_presence.py:51
 msgid "Meeting presence check isn't open"
@@ -377,7 +376,6 @@ msgstr ""
 "bara en biljett."
 
 #: voteit/irl/views/templates/register_meeting_presence.pt:9
-#, fuzzy
 msgid "Register meeting presence"
 msgstr "Registrera närvaro"
 
