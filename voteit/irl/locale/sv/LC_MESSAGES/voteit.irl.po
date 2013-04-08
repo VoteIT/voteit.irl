@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-11-29 11:44+0100\n"
-"PO-Revision-Date: 2012-11-29 11:45+0100\n"
+"POT-Creation-Date: 2013-04-08 15:15+0200\n"
+"PO-Revision-Date: 2013-04-08 15:23+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -16,25 +16,29 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server
 #. load, please try again in a short while.
-#: voteit/irl/__init__.py:31
+#: voteit/irl/__init__.py:36
 msgid "register_meeting_presence_error_notice"
 msgstr ""
 "VoteIT kunde inte sätta dig som närvarande. Det kan bero på hög last på "
 "servern, prova igen om en liten stund."
 
+#: voteit/irl/__init__.py:39
+msgid "Your precence is received"
+msgstr "Din närvaro är mottagen"
+
 #. Default: Method to select elegible voters
-#: voteit/irl/schemas.py:24
+#: voteit/irl/schemas.py:25
 msgid "elegible_voters_method_name"
 msgstr "Metod för att välja röstberättigade"
 
 #. Default: It will modify the voting permissions accoring to it's
 #. specifications.
-#: voteit/irl/schemas.py:25
+#: voteit/irl/schemas.py:26
 msgid "elegible_voters_method_description"
 msgstr "Förändrar rösträtten i enlighet med metodens specifikationer."
 
@@ -45,6 +49,11 @@ msgstr "Första röstlängd"
 #: voteit/irl/schemas.py:52
 msgid "Second register"
 msgstr "Andra röstlängd"
+
+#: voteit/irl/schemas.py:74
+#, fuzzy
+msgid "No match - remember that it's case sensitive!"
+msgstr "Ingen matchning - kom ihåg att stora eller små bokstäver spelar roll!"
 
 #: voteit/irl/models/meeting_presence.py:51
 msgid "Meeting presence check isn't open"
@@ -67,6 +76,8 @@ msgid "Diff"
 msgstr "Diff"
 
 #: voteit/irl/views/electoral_register.py:68
+#: voteit/irl/views/templates/participant_callbacks.pt:63
+#: voteit/irl/views/templates/participant_numbers.pt:63
 #: voteit/irl/views/templates/view_electoral_register.pt:30
 msgid "Back"
 msgstr "Tillbaka"
@@ -93,13 +104,77 @@ msgstr ""
 msgid "Update elegible voters"
 msgstr "Uppdatera röstberättigade"
 
-#: voteit/irl/views/meeting_presence.py:44
-msgid "Your precence is received"
-msgstr "Din närvaro är mottagen"
-
-#: voteit/irl/views/meeting_presence.py:57
+#: voteit/irl/views/meeting_presence.py:55
 msgid "Meeting presence"
 msgstr "Närvarokontroll"
+
+#: voteit/irl/views/participant_callbacks.py:47
+#: voteit/irl/views/participant_numbers.py:41
+msgid "End must be higher than start"
+msgstr "Slutnummer måste vara högre än start"
+
+#: voteit/irl/views/participant_callbacks.py:49
+#: voteit/irl/views/participant_numbers.py:43
+msgid "Must be an integer value"
+msgstr "Måste vara ett heltal"
+
+#: voteit/irl/views/participant_callbacks.py:55
+msgid ""
+"Added ${added} new callbacks and skipped ${existed} that already existed."
+msgstr ""
+
+#: voteit/irl/views/participant_callbacks.py:67
+msgid ""
+"Executed callback for ${num} users that had already claimed a participant "
+"number."
+msgstr ""
+
+#: voteit/irl/views/participant_callbacks.py:72
+msgid ""
+"Removed ${removed} callbacks and skipped ${nonexistent} that wasn't "
+"registered."
+msgstr ""
+"Tog bort ${removed} callbacks och skippade ${nonexistent} som inte var "
+"registrerade."
+
+#: voteit/irl/views/participant_callbacks.py:118
+#: voteit/irl/views/templates/participant_callbacks.pt:14
+msgid "Participant callbacks"
+msgstr ""
+
+#: voteit/irl/views/participant_numbers.py:46
+msgid "Added ${count} new numbers"
+msgstr "La till ${count} nya nummer"
+
+#: voteit/irl/views/participant_numbers.py:50
+msgid "Removed ${count} numbers"
+msgstr "Tog bort ${count} nummer"
+
+#. Default: You've already been assigned the number ${number} so you don't need
+#. to
+#. do anything else.
+#: voteit/irl/views/participant_numbers.py:66
+msgid "already_assigned_number_error"
+msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
+
+#: voteit/irl/views/participant_numbers.py:73
+msgid "Submit"
+msgstr "Skicka"
+
+#. Default: You're now assigned number ${number}.
+#: voteit/irl/views/participant_numbers.py:82
+msgid "number_now_assigned_notice"
+msgstr "Du har tilldelats nummer ${number}."
+
+#: voteit/irl/views/participant_numbers.py:94
+#: voteit/irl/views/templates/participant_numbers.pt:14
+msgid "Participant numbers"
+msgstr "Deltagarnummer"
+
+#: voteit/irl/views/participant_numbers.py:105
+#| msgid "Available participants"
+msgid "Claim participant number"
+msgstr "Registrera deltagarnummer"
 
 #: voteit/irl/views/projector.py:55
 msgid "Projector view"
@@ -172,14 +247,14 @@ msgid "Voters"
 msgstr "Röstberättigade"
 
 #. Default: The register is closed, you can't set your status right now.
-#: voteit/irl/views/templates/meeting_presence_status.pt:7
+#: voteit/irl/views/templates/meeting_presence_status.pt:5
 msgid "register_closed_cant_set_status"
 msgstr "Närvarokontrollen är stängd. Du kan inte ange din närvaro just nu."
 
 #. Default: Your presence is registered, but the register hasn't closed yet.
 #. You
 #. don't need to do anything else.
-#: voteit/irl/views/templates/meeting_presence_status.pt:10
+#: voteit/irl/views/templates/meeting_presence_status.pt:8
 msgid "presence_registered_register_not_closed_yet"
 msgstr ""
 "Din närvaro har noterats men närvarokollen har inte stängt ännu. Du behöver "
@@ -187,41 +262,91 @@ msgstr ""
 
 #. Default: Your presence was registered and will be part of the next electoral
 #. register.
-#: voteit/irl/views/templates/meeting_presence_status.pt:13
+#: voteit/irl/views/templates/meeting_presence_status.pt:11
 msgid "presence_registered_and_now_active"
 msgstr ""
 "Din närvaro registrerades och kommer beaktas vid framtagande av nästa "
 "röstlängd."
 
 #. Default: You're not registered as present within this meeting.
-#: voteit/irl/views/templates/meeting_presence_status.pt:16
+#: voteit/irl/views/templates/meeting_presence_status.pt:14
 msgid "not_registered_as_present_in_meeting"
 msgstr "Du är inte noterad som nävarande i detta möte."
 
 #. Default: Set yourself as present
-#: voteit/irl/views/templates/meeting_presence_status.pt:22
+#: voteit/irl/views/templates/meeting_presence_status.pt:20
 msgid "set_as_present_button"
 msgstr "Sätt dig själv som närvarande"
 
 #. Default: Clear and start availability check
-#: voteit/irl/views/templates/meeting_presence_status.pt:27
+#: voteit/irl/views/templates/meeting_presence_status.pt:25
 msgid "start_presence_check_button"
 msgstr "Rensa och starta närvarokontroll"
 
 #. Default: Close check
-#: voteit/irl/views/templates/meeting_presence_status.pt:32
+#: voteit/irl/views/templates/meeting_presence_status.pt:30
 msgid "end_presence_check_button"
 msgstr "Stäng närvarokontroll"
 
-#: voteit/irl/views/templates/meeting_presence_status.pt:39
+#: voteit/irl/views/templates/meeting_presence_status.pt:37
 msgid "Available participants"
 msgstr "Närvarande deltagare"
 
+#. Default: This is an advanced feature that attaches callback code to an event
+#. that fires when a user claims a participant number. Don't touch this unless
+#. you
+#. know what you're doing.
+#: voteit/irl/views/templates/participant_callbacks.pt:18
+msgid "callback_code_explanation"
+msgstr ""
+
+#: voteit/irl/views/templates/participant_callbacks.pt:49
+msgid "Execute callbacks for existing users (recommended)"
+msgstr ""
+
+#: voteit/irl/views/templates/participant_callbacks.pt:51
+#: voteit/irl/views/templates/participant_numbers.pt:52
+msgid "Start"
+msgstr "Start"
+
+#: voteit/irl/views/templates/participant_callbacks.pt:53
+#: voteit/irl/views/templates/participant_numbers.pt:54
+msgid "End"
+msgstr "Slut"
+
+#: voteit/irl/views/templates/participant_callbacks.pt:57
+#: voteit/irl/views/templates/participant_numbers.pt:57
+msgid "Add"
+msgstr "Lägg till"
+
+#: voteit/irl/views/templates/participant_callbacks.pt:60
+#: voteit/irl/views/templates/participant_numbers.pt:60
+msgid "Remove"
+msgstr "Ta bort"
+
+#: voteit/irl/views/templates/participant_numbers.pt:44
+msgid "Add or remove numbers"
+msgstr "Lägg till eller ta bort nummer"
+
+#. Default: Enter a start number (like 1) and possibly an end number if you wan
+#. to
+#. create several tickets. If you want to create tickets between 1-200, enter 1
+#. as
+#. start and 200 as end. If you don't specify an end number, only one ticket
+#. will
+#. be created.
+#: voteit/irl/views/templates/participant_numbers.pt:45
+msgid "ticket_creation_help"
+msgstr ""
+"Ange ett startnummer (t.ex. 1) och eventuellt ett slutnummer om du vill "
+"skapa flera biljetter. Om du vill skapa biljetter mellan 1-200, skriv 1 som "
+"start och 200 som slutnummer. Om du inte skriver ett slutnummer så skapas "
+"bara en biljett."
+
 #: voteit/irl/views/templates/register_meeting_presence.pt:9
 #, fuzzy
-#| msgid "Meeting presence"
 msgid "Register meeting presence"
-msgstr "Närvarokontroll"
+msgstr "Registrera närvaro"
 
 #: voteit/irl/views/templates/view_electoral_register.pt:9
 msgid "Electoral register ${id}: ${time}"
