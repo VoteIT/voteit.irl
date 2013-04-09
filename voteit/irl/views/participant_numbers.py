@@ -4,10 +4,12 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.decorator import reify
 from pyramid.security import NO_PERMISSION_REQUIRED
+from pyramid.renderers import render
 from betahaus.viewcomponent import view_action
 from betahaus.pyracont.factories import createSchema
 from voteit.core import security
 from voteit.core.models.interfaces import IMeeting
+from voteit.core.models.interfaces import IUser
 from voteit.core.views.base_view import BaseView
 
 from voteit.irl import VoteIT_IRL_MF as _
@@ -103,3 +105,19 @@ def claim_participant_number_menu(context, request, va, **kw):
         return u""
     return """<li><a href="%s">%s</a></li>""" % ("%sclaim_participant_number" % api.meeting_url,
                                                  api.translate(_(u"Claim participant number")))
+
+
+
+@view_action('user_info', 'participant_number', interface = IUser)
+def participant_number_info(context, request, va, **kw):
+    api = kw['api']
+    if not api.meeting:
+        return u""
+    participant_numbers = request.registry.getAdapter(api.meeting, IParticipantNumbers)
+    if api.userid not in participant_numbers.userid_to_number:
+        return u""
+    response = dict(
+        api = api,
+        number = participant_numbers.userid_to_number[api.userid],
+        context = context)
+    return render("templates/user_participant_number_info.pt", response, request = request)

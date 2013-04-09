@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-04-08 21:07+0200\n"
-"PO-Revision-Date: 2013-04-08 21:09+0100\n"
+"POT-Creation-Date: 2013-04-09 14:14+0200\n"
+"PO-Revision-Date: 2013-04-09 14:15+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -121,12 +121,12 @@ msgid "Meeting presence"
 msgstr "Närvarokontroll"
 
 #: voteit/irl/views/participant_callbacks.py:47
-#: voteit/irl/views/participant_numbers.py:41
+#: voteit/irl/views/participant_numbers.py:43
 msgid "End must be higher than start"
 msgstr "Slutnummer måste vara högre än start"
 
 #: voteit/irl/views/participant_callbacks.py:49
-#: voteit/irl/views/participant_numbers.py:43
+#: voteit/irl/views/participant_numbers.py:45
 msgid "Must be an integer value"
 msgstr "Måste vara ett heltal"
 
@@ -154,36 +154,36 @@ msgstr ""
 msgid "Participant callbacks"
 msgstr ""
 
-#: voteit/irl/views/participant_numbers.py:46
+#: voteit/irl/views/participant_numbers.py:48
 msgid "Added ${count} new numbers"
 msgstr "La till ${count} nya nummer"
 
-#: voteit/irl/views/participant_numbers.py:50
+#: voteit/irl/views/participant_numbers.py:52
 msgid "Removed ${count} numbers"
 msgstr "Tog bort ${count} nummer"
 
 #. Default: You've already been assigned the number ${number} so you don't need
 #. to
 #. do anything else.
-#: voteit/irl/views/participant_numbers.py:66
+#: voteit/irl/views/participant_numbers.py:68
 msgid "already_assigned_number_error"
 msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
 
-#: voteit/irl/views/participant_numbers.py:73
+#: voteit/irl/views/participant_numbers.py:75
 msgid "Submit"
 msgstr "Skicka"
 
 #. Default: You're now assigned number ${number}.
-#: voteit/irl/views/participant_numbers.py:82
+#: voteit/irl/views/participant_numbers.py:84
 msgid "number_now_assigned_notice"
 msgstr "Du har tilldelats nummer ${number}."
 
-#: voteit/irl/views/participant_numbers.py:94
+#: voteit/irl/views/participant_numbers.py:96
 #: voteit/irl/views/templates/participant_numbers.pt:14
 msgid "Participant numbers"
 msgstr "Deltagarnummer"
 
-#: voteit/irl/views/participant_numbers.py:105
+#: voteit/irl/views/participant_numbers.py:107
 msgid "Claim participant number"
 msgstr "Registrera deltagarnummer"
 
@@ -377,6 +377,11 @@ msgstr ""
 #: voteit/irl/views/templates/register_meeting_presence.pt:9
 msgid "Register meeting presence"
 msgstr "Registrera närvaro"
+
+#: voteit/irl/views/templates/user_participant_number_info.pt:4
+#| msgid "Participant numbers"
+msgid "Participant number:"
+msgstr "Deltagarnummer:"
 
 #: voteit/irl/views/templates/view_electoral_register.pt:9
 msgid "Electoral register ${id}: ${time}"
