@@ -106,18 +106,16 @@ def claim_participant_number_menu(context, request, va, **kw):
     return """<li><a href="%s">%s</a></li>""" % ("%sclaim_participant_number" % api.meeting_url,
                                                  api.translate(_(u"Claim participant number")))
 
-
-
 @view_action('user_info', 'participant_number', interface = IUser)
 def participant_number_info(context, request, va, **kw):
     api = kw['api']
     if not api.meeting:
         return u""
     participant_numbers = request.registry.getAdapter(api.meeting, IParticipantNumbers)
-    if api.userid not in participant_numbers.userid_to_number:
+    if context.userid not in participant_numbers.userid_to_number:
         return u""
     response = dict(
         api = api,
-        number = participant_numbers.userid_to_number[api.userid],
+        number = participant_numbers.userid_to_number[context.userid],
         context = context)
     return render("templates/user_participant_number_info.pt", response, request = request)
