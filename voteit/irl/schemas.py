@@ -82,3 +82,33 @@ class ClaimParticipantNumberSchema(colander.Schema):
                                 description = _(u"enter_token_description",
                                                 default = u"Enter the code sent to you. It will have the format xxxx-xxxx. "
                                                           u"Note that it's case sensitive and can only be used once."))
+
+@colander.deferred
+def deferred_existing_participant_number_validator(node, kw):
+    context = kw['api'].meeting
+    request = kw['request']
+    return ExistingParticipantNumberValidator(context, request)
+
+
+class ExistingParticipantNumberValidator(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self, node, value):
+        pn = self.request.registry.getAdapter(self.context, IParticipantNumbers)
+        if value not in pn.number_to_userid.keys():
+            return colander.Invalid(node, _(u"Particpant number not found"))
+
+
+@colander.deferred
+def deferred_autocompleting_participant_number_widget(node, kw):
+    meeting = kw['api'].meeting
+    request = kw['request']
+    pn = request.registry.getAdapter(meeting, IParticipantNumbers)
+    choices = tuple(pn.number_to_userid.keys())
+    return deform.widget.AutocompleteInputWidget(
+        size=15,
+        values = choices,
+        min_length=1)
