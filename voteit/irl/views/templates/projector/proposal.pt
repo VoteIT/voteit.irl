@@ -2,42 +2,25 @@
                 css_class 'listing_block wf-state-%s' % state_id;"
     tal:attributes="class css_class"
     i18n:domain="voteit.irl">
-    
-    <a href="#" class="inactivate">
-    	<img src="${request.application_url}/voteit_irl/images/arrow_right.png"
-		     alt="Deactivate"
-			 i18n:attributes="alt" />
-	</a>
-    
-    <div class="states" tal:define="proposal_url api.resource_url(proposal, request)">
-        <div class="state approved">
-            <a href="${proposal_url}@@projector_state?state=approved"><span i18n:translate="">Set approved</span></a>
+    <div class="controls">
+        <div class="control states" tal:define="proposal_url api.resource_url(proposal, request)">
+            <a class="icon iconpadding approved" href="${proposal_url}@@projector_state?state=approved"></a>
+            <a class="icon iconpadding published" href="${proposal_url}@@projector_state?state=published"></a>
+            <a class="icon iconpadding denied" href="${proposal_url}@@projector_state?state=denied"></a>
         </div>
-        <div class="state published">
-            <a href="${proposal_url}@@projector_state?state=published"><span i18n:translate="">Set published</span></a>
-        </div>
-        <div class="state denied">
-            <a href="${proposal_url}@@projector_state?state=denied"><span i18n:translate="">Set denied</span></a>
-        </div>
+        <a href="#" class="control activate icon iconpadding arrow-left"></a>
+        <a href="#" class="control inactivate arrow-right icon-right"></a>
+        <span tal:replace="structure api.get_moderator_actions(proposal)" />
+        <div class="clear"><!-- --></div>
     </div>
 
-    <a href="#" class="activate">
-    	<img src="${request.application_url}/voteit_irl/images/arrow_left.png"
-	         alt="Activate"
-			 i18n:attributes="alt" />
-    </a>
-    
-    <div class="proposal_number top">#${proposal.get_field_value('aid')}</div>
-    
-    <tal:creators tal:replace="structure api.get_creators_info(proposal.creators, portrait=True)">Creators</tal:creators><span class="body">:</span>
-	<br/>
+    <div class="proposal_id">#${proposal.get_field_value('aid')}</div>
+
+    <tal:creators tal:replace="structure api.get_creators_info(proposal.creators, portrait=False)">Creators</tal:creators>
     <span class="body" tal:content="structure proposal.title">Title</span>
-    
+
     <div class="meta">
         <span class="${state_id} icon iconpadding"
               tal:content="api.tstring(state_id.title())">private</span>
-        <span class="hyphen">&#45;</span>
-        <span class="proposal_number bottom">#${proposal.get_field_value('aid')}</span>
     </div>
-    <div class="clear"><!-- --></div>
 </li>

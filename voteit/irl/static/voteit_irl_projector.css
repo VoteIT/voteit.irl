@@ -3,6 +3,9 @@ body {
     margin: 25px 0;
     color: #5c5a5d
 }
+#inactive {
+    padding-left: 20px;
+}
 #wrapper {
     width: 990px;
     margin: 0 auto;
@@ -20,7 +23,49 @@ body {
     position: relative;
     padding: 10px 0px;
 }
+.controls {
+    float: right;
+}
+.control {
+    float: left;
+}
+.activate, .inactivate {
+    display: block;
+    height: 20px;
+    margin-left: 10px;
+}
+.cogwheel {
+    margin-top: 0px;
+    margin-left: 10px;
+}
+.proposal_id {
+    padding-bottom: 5px;
+}
+.meta .icon {
+    line-height: 20px;
+    display: block;
+}
+/* Adjust sizes on active */
+#active .body,
+#active .creators {
+    font-size: 200%;
+}
+#active .proposal_id {
+    font-size: 150%;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
 
+/* Don't show the following controls when inactive */
+#inactive .states,
+#inactive .inactivate {
+    display: none;
+}
+/* Don't show the following controls when active */
+#active .activate,
+#active .cogwheel {
+    display: none;
+}
 
 /*
 #header {

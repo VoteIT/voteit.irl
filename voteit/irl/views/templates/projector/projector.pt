@@ -12,7 +12,7 @@
 <body>
 <div id="wrapper">
     <div id="header">
-        <h1>${context.title}</h1>
+        <h1 id="agenda_item_title" class="icon large-iconpadding">${context.title}</h1>
         <div id="ai_quick_menu" class="dropdown_menu">
             <a class="menu_header" href="#">
                 <span class="icon-right arrow-right" i18n:translate="">Agenda items</span>
@@ -27,20 +27,23 @@
         </div>
     </div>
 
-
     <div class="col-65-35">
-        <div id="active" class="column column-1">
-            <h3 i18n:translate="">Active</h3>
-            <ul>
-            </ul>
+        <div class="column column-1">
+            <div id="active">
+                <h3 i18n:translate="">Active</h3>
+                <ul>
+                </ul>
+            </div>
         </div>
-        <div id="inactive" class="column column-2">
-            <h3 i18n:translate="">Proposals</h3>
-            <ul tal:condition="proposals">
-            <tal:iterate repeat="proposal proposals" >
-                <span tal:replace="structure render_proposal(proposal, request)">Proposal</span>
-            </tal:iterate>
-            </ul>
+        <div class="column column-2">
+            <div id="inactive">
+                <h3 i18n:translate="">Proposals</h3>
+                <ul tal:condition="proposals">
+                <tal:iterate repeat="proposal proposals" >
+                    <span tal:replace="structure render_proposal(proposal, request)">Proposal</span>
+                </tal:iterate>
+                </ul>
+            </div>
         </div>
     </div>
 
