@@ -6,34 +6,48 @@
       i18n:domain="voteit.irl">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>VoteIT</title>
+    <title>${context.title}</title>
+    <script type="text/javascript" src="${request.application_url}/translations.js"></script>
 </head>
 <body>
-<div id="page_wrapper">
-    <div id="main-content-wrapper">
-        <div id="header">
-            <div id="agenda-item-actions">
-                <ul id="agenda-item-actions-menu">
-                    <li id="agenda-items-menu" class="tab dropdown_menu">
-                        <a class="menu_header" href="#">
-                            <span i18n:translate="">Agenda items</span> &raquo;
-                        </a>
-                        <ul class="menu_body">
-                        <tal:iterate condition="ai_brains" repeat="ai_brain ai_brains">
-                            <li>
-                                <a href="${ai_brain['path']}/projector" tal:content="ai_brain['title']">Title</a>
-                            </li>
-                        </tal:iterate>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div id="logo-meeting-wrapper">
-                <a id="logo-space"
-                   href="#">
-                    <img tal:replace="structure api.render_single_view_component(context, request, 'main', 'logo_tag')" />
-                </a>
-                
+<div id="wrapper">
+    <div id="header">
+        <h1>${context.title}</h1>
+        <div id="ai_quick_menu" class="dropdown_menu">
+            <a class="menu_header" href="#">
+                <span class="icon-right arrow-right" i18n:translate="">Agenda items</span>
+            </a>
+            <ul class="menu_body">
+            <tal:iterate condition="ai_brains" repeat="ai_brain ai_brains">
+                <li>
+                    <a href="${ai_brain['path']}/projector" tal:content="ai_brain['title']">Title</a>
+                </li>
+            </tal:iterate>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="col-65-35">
+        <div id="active" class="column column-1">
+            <h3 i18n:translate="">Active</h3>
+            <ul>
+            </ul>
+        </div>
+        <div id="inactive" class="column column-2">
+            <h3 i18n:translate="">Proposals</h3>
+            <ul tal:condition="proposals">
+            <tal:iterate repeat="proposal proposals" >
+                <span tal:replace="structure render_proposal(proposal, request)">Proposal</span>
+            </tal:iterate>
+            </ul>
+        </div>
+    </div>
+
+
+</div>
+
+<!--
                 <h1 id="meeting-name-space" tal:condition="context">
                     <a href="${api.resource_url(context, request)}" tal:content="context.title">Agenda Item</a>
                 </h1>
@@ -59,6 +73,6 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 </body>
 </html>

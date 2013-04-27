@@ -1,3 +1,28 @@
+body {
+    background-color: #fff;
+    margin: 25px 0;
+    color: #5c5a5d
+}
+#wrapper {
+    width: 990px;
+    margin: 0 auto;
+    display: block;
+}
+#header h1 {
+    font-size: 50px;
+    padding-bottom: 0.5em;
+    margin-bottom: 0;
+    border-bottom: 1px solid #5c5a5d;
+    background: url(/static/images/voteit_logo.png) right top no-repeat;
+}
+#ai_quick_menu {
+    float: right;
+    position: relative;
+    padding: 10px 0px;
+}
+
+
+/*
 #header {
     height: 50px;
 }
@@ -163,3 +188,4 @@
     width: 40%;
 }
 .icon.poll { background: url(/static/icons/icon_poll_lb.png) no-repeat left 35%; }
+*/
