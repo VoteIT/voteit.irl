@@ -12,8 +12,15 @@
 <body>
 <div id="wrapper">
     <div id="header">
-        <img id="voteit-logo" src="${request.application_url}/static/images/voteit_logo.png" />
-        <h1 id="agenda_item_title" class="icon large-iconpadding">${context.title}</h1>
+        <div id="heading-wrapper">
+            <img tal:condition="api.meeting and api.meeting.get_field_value('meeting_logo_url')"
+                 id="meeting-logo"
+                 src="${api.meeting.get_field_value('meeting_logo_url')}"
+                 alt="Meeting logo" i18n:attributes="alt" />
+            <img id="voteit-logo" src="${request.application_url}/static/images/voteit_logo.png" />
+            <h1 id="agenda_item_title" class="icon large-iconpadding">${context.title}</h1>
+            <div class="clear"><!-- --></div>
+        </div>
         <a class="icon iconpadding arrow-left" href="${request.resource_url(context)}"
            i18n:translate="">Back</a>
         <div id="ai_quick_menu" class="dropdown_menu">
