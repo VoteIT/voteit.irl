@@ -15,20 +15,18 @@ class ProjectorView(BaseView):
 
     @view_config(context=IAgendaItem, name="projector", renderer="templates/projector/projector.pt", permission=MODERATE_MEETING)
     def view(self):
-        """ """
+        """ Main projector view. """
         voteit_irl_projector.need()
-        
         context_path = resource_path(self.api.meeting)
         query = dict(
             content_type = 'AgendaItem',
             workflow_state = ('ongoing', ),
             path = context_path,
-            sort_index = 'start_time',
+            sort_index = 'order',
         )
         self.response['ai_brains'] = self.api.get_metadata_for_query(**query)
         self.response['proposals'] = self.api.get_restricted_content(self.context, iface=IProposal, sort_on='created', states=('published', 'approved', 'denied', ))
         self.response['render_proposal'] = self.render_proposal
-        
         return self.response
         
     def render_proposal(self, context, request):
@@ -48,13 +46,13 @@ class ProjectorView(BaseView):
         if (state == 'approved' or state == 'denied') and self.context.get_workflow_state() != 'published':
             self.context.set_workflow_state(self.request, 'published')
         self.context.set_workflow_state(self.request, state)
-        
         self.response['proposal'] = self.context
         return self.response
+
 
 @view_action('context_actions', 'projector', title = _(u"Projector view"), viewname = u"projector", interface = IAgendaItem)
 def projector_menu_link(context, request, va, **kw):
     """ Visible in the moderator menu, but doesn't work for the meeting root """
     api = kw['api']
-    url = u"%s%s" % (api.resource_url(context, request), va.kwargs['viewname'])
+    url = u"%s%s" % (request.resource_url(context), va.kwargs['viewname'])
     return """<li><a href="%s">%s</a></li>""" % (url, api.translate(va.title))
