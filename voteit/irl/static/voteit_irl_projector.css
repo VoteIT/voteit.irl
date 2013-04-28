@@ -14,14 +14,12 @@ body {
 #header h1 {
     font-size: 50px;
     padding-bottom: 0.5em;
-    margin-bottom: 0;
+    margin-bottom: 10px;
     border-bottom: 1px solid #5c5a5d;
     background: url(/static/images/voteit_logo.png) right top no-repeat;
 }
 #ai_quick_menu {
     float: right;
-    position: relative;
-    padding: 10px 0px;
 }
 .controls {
     float: right;
