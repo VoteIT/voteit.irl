@@ -12,6 +12,7 @@
 <body>
 <div id="wrapper">
     <div id="header">
+        <img id="voteit-logo" src="${request.application_url}/static/images/voteit_logo.png" />
         <h1 id="agenda_item_title" class="icon large-iconpadding">${context.title}</h1>
         <a class="icon iconpadding arrow-left" href="${request.resource_url(context)}"
            i18n:translate="">Back</a>

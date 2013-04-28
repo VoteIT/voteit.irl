@@ -11,6 +11,9 @@ body {
     margin: 0 auto;
     display: block;
 }
+#voteit-logo {
+    float: right;
+}
 #header h1 {
     font-size: 50px;
     padding-bottom: 0.5em;
