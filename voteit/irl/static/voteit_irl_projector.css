@@ -1,7 +1,7 @@
 body {
     background-color: #fff;
     margin: 25px 0;
-    color: #5c5a5d
+    color: #000;
 }
 #inactive {
     padding-left: 20px;
@@ -38,6 +38,7 @@ body {
 }
 .proposal_id {
     padding-bottom: 5px;
+    font-weight: bold;
 }
 .meta .icon {
     line-height: 20px;
@@ -51,7 +52,6 @@ body {
 }
 #active .proposal_id {
     font-size: 150%;
-    font-weight: bold;
     padding-bottom: 10px;
 }
 
