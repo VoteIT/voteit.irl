@@ -46,7 +46,8 @@ body {
 /* Adjust sizes on active */
 #active .body,
 #active .creators {
-    font-size: 200%;
+    font-size: 175%;
+    line-height: 125%;
 }
 #active .proposal_id {
     font-size: 150%;
