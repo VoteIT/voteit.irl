@@ -1,6 +1,8 @@
 import colander
 import deform
 from betahaus.pyracont.decorators import schema_factory
+from voteit.core.validators import deferred_existing_userid_validator
+from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -112,3 +114,23 @@ def deferred_autocompleting_participant_number_widget(node, kw):
         size=15,
         values = choices,
         min_length=1)
+
+@colander.deferred
+def deferred_pn_from_get(node, kw):
+    request = kw['request']
+    return int(request.GET['pn'])
+
+
+@schema_factory('AssignParticipantNumber')
+class AssignParticipantNumber(colander.Schema):
+    userid = colander.SchemaNode(
+        colander.String(),
+        title = _(u"UserID"),
+        validator = deferred_existing_userid_validator,
+        widget = deferred_autocompleting_userid_widget,
+    )
+    pn = colander.SchemaNode(
+        colander.Int(),
+        widget = deform.widget.HiddenWidget(),
+        default = deferred_pn_from_get,
+    )

@@ -29,7 +29,10 @@
         <tbody>
             <tal:iterate repeat="ticket participant_numbers.tickets.values()">
             <tr>
-                <td>${ticket.number}</td>
+                <td>
+                    <a tal:omit-tag="ticket.claimed_by"
+                       href="${'%sassign_participant_number?pn=%s' % (api.meeting_url, ticket.number)}">${ticket.number}</a>
+                </td>
                 <td>${ticket.token}</td>
                 <td tal:content="api.dt_util.relative_time_format(ticket.created)"></td>
                 <td tal:content="ticket.claimed and api.dt_util.relative_time_format(ticket.claimed) or ''"></td>

@@ -89,6 +89,51 @@ class ParticipantNumbersView(BaseView):
         self.response['form'] = form.render()
         return self.response
 
+    @view_config(name = "assign_participant_number", context = IMeeting, permission = security.MODERATE_MEETING,
+                 renderer = "voteit.core.views:templates/base_edit.pt")
+    def assign_participant_number(self):
+        schema = createSchema('AssignParticipantNumber')
+        schema = schema.bind(context = self.context, request  = self.request, api = self.api)
+        form = deform.Form(schema, buttons = [deform.Button('submit', title = _(u"Submit"))])
+        if 'submit' in self.request.POST:
+            controls = self.request.POST.items()
+            try:
+                appstruct = form.validate(controls)
+            except deform.ValidationFailure, e:
+                self.response['form'] = e.render()
+                return self.response
+            #Since this is a bit backwards, we need to fetch the token.
+            pn = appstruct['pn']
+            userid = appstruct['userid']
+            found = False
+            for (token, num) in self.participant_numbers.token_to_number.items():
+                if num == pn:
+                    found = True
+                    break
+            if not found:
+                raise HTTPForbidden(_(u"Participant number not found"))
+            #Clear old number?
+            if userid in self.participant_numbers.userid_to_number:
+                number = self.participant_numbers.userid_to_number[userid]
+                msg = _(u"participant_number_moved_warning",
+                        default = u"This user was already assigned number ${number} so that number was cleared.",
+                        mapping = {'number': number})
+                self.api.flash_messages.add(msg)
+                self.participant_numbers.clear_number(number)
+            #Assign
+            number = self.participant_numbers.claim_ticket(userid, token)
+            msg = _(u"number_now_assigned_notice",
+                    default = u"You're now assigned number ${number}.",
+                    mapping = {'number': number})
+            self.api.flash_messages.add(msg)
+            return HTTPFound(location = self.request.resource_url(self.context, "manage_participant_numbers"))
+        appstruct = {}
+        pn = int(self.request.GET['pn'])
+        appstruct['userid'] = self.participant_numbers.number_to_userid.get(pn, u"")
+        self.response['form'] = form.render(appstruct = appstruct)
+        return self.response
+
+
 @view_action('meeting', 'participant_numbers', permission = security.MODERATE_MEETING)
 def participant_numbers_menu(context, request, va, **kw):
     api = kw['api']
