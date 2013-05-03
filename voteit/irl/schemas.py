@@ -101,7 +101,7 @@ class ExistingParticipantNumberValidator(object):
     def __call__(self, node, value):
         pn = self.request.registry.getAdapter(self.context, IParticipantNumbers)
         if value not in pn.number_to_userid.keys():
-            return colander.Invalid(node, _(u"Particpant number not found"))
+            return colander.Invalid(node, _(u"Participant number not found"))
 
 
 @colander.deferred

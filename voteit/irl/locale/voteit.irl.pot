@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-04-09 14:14+0200\n"
+"POT-Creation-Date: 2013-05-03 15:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,35 +28,43 @@ msgid "Your precence is received"
 msgstr ""
 
 #. Default: Method to select elegible voters
-#: voteit/irl/schemas.py:25
+#: voteit/irl/schemas.py:27
 msgid "elegible_voters_method_name"
 msgstr ""
 
 #. Default: It will modify the voting permissions accoring to it's specifications.
-#: voteit/irl/schemas.py:26
+#: voteit/irl/schemas.py:28
 msgid "elegible_voters_method_description"
 msgstr ""
 
-#: voteit/irl/schemas.py:48
+#: voteit/irl/schemas.py:50
 msgid "First register"
 msgstr ""
 
-#: voteit/irl/schemas.py:52
+#: voteit/irl/schemas.py:54
 msgid "Second register"
 msgstr ""
 
-#: voteit/irl/schemas.py:74
+#: voteit/irl/schemas.py:76
 msgid "No match - remember that it's case sensitive!"
 msgstr ""
 
-#: voteit/irl/schemas.py:81
+#: voteit/irl/schemas.py:83
 msgid "Participant code"
 msgstr ""
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
-#: voteit/irl/schemas.py:82
+#: voteit/irl/schemas.py:84
 msgid "enter_token_description"
+msgstr ""
+
+#: voteit/irl/schemas.py:104 voteit/irl/views/participant_numbers.py:114
+msgid "Participant number not found"
+msgstr ""
+
+#: voteit/irl/schemas.py:128
+msgid "UserID"
 msgstr ""
 
 #: voteit/irl/models/meeting_presence.py:51
@@ -81,8 +89,9 @@ msgstr ""
 
 #: voteit/irl/views/electoral_register.py:68
 #: voteit/irl/views/templates/participant_callbacks.pt:63
-#: voteit/irl/views/templates/participant_numbers.pt:63
+#: voteit/irl/views/templates/participant_numbers.pt:66
 #: voteit/irl/views/templates/view_electoral_register.pt:30
+#: voteit/irl/views/templates/projector/projector.pt:24
 msgid "Back"
 msgstr ""
 
@@ -155,24 +164,32 @@ msgid "already_assigned_number_error"
 msgstr ""
 
 #: voteit/irl/views/participant_numbers.py:75
+#: voteit/irl/views/participant_numbers.py:97
 msgid "Submit"
 msgstr ""
 
 #. Default: You're now assigned number ${number}.
 #: voteit/irl/views/participant_numbers.py:84
+#: voteit/irl/views/participant_numbers.py:125
 msgid "number_now_assigned_notice"
 msgstr ""
 
-#: voteit/irl/views/participant_numbers.py:96
+#. Default: This user was already assigned number ${number} so that number was
+#. cleared.
+#: voteit/irl/views/participant_numbers.py:118
+msgid "participant_number_moved_warning"
+msgstr ""
+
+#: voteit/irl/views/participant_numbers.py:141
 #: voteit/irl/views/templates/participant_numbers.pt:14
 msgid "Participant numbers"
 msgstr ""
 
-#: voteit/irl/views/participant_numbers.py:107
+#: voteit/irl/views/participant_numbers.py:152
 msgid "Claim participant number"
 msgstr ""
 
-#: voteit/irl/views/projector.py:55
+#: voteit/irl/views/projector.py:53
 msgid "Projector view"
 msgstr ""
 
@@ -291,22 +308,22 @@ msgid "Execute callbacks for existing users (recommended)"
 msgstr ""
 
 #: voteit/irl/views/templates/participant_callbacks.pt:51
-#: voteit/irl/views/templates/participant_numbers.pt:52
+#: voteit/irl/views/templates/participant_numbers.pt:55
 msgid "Start"
 msgstr ""
 
 #: voteit/irl/views/templates/participant_callbacks.pt:53
-#: voteit/irl/views/templates/participant_numbers.pt:54
+#: voteit/irl/views/templates/participant_numbers.pt:57
 msgid "End"
 msgstr ""
 
 #: voteit/irl/views/templates/participant_callbacks.pt:57
-#: voteit/irl/views/templates/participant_numbers.pt:57
+#: voteit/irl/views/templates/participant_numbers.pt:60
 msgid "Add"
 msgstr ""
 
 #: voteit/irl/views/templates/participant_callbacks.pt:60
-#: voteit/irl/views/templates/participant_numbers.pt:60
+#: voteit/irl/views/templates/participant_numbers.pt:63
 msgid "Remove"
 msgstr ""
 
@@ -330,7 +347,7 @@ msgstr ""
 msgid "Created by"
 msgstr ""
 
-#: voteit/irl/views/templates/participant_numbers.pt:44
+#: voteit/irl/views/templates/participant_numbers.pt:47
 msgid "Add or remove numbers"
 msgstr ""
 
@@ -338,7 +355,7 @@ msgstr ""
 #. create several tickets. If you want to create tickets between 1-200, enter 1 as
 #. start and 200 as end. If you don't specify an end number, only one ticket will
 #. be created.
-#: voteit/irl/views/templates/participant_numbers.pt:45
+#: voteit/irl/views/templates/participant_numbers.pt:48
 msgid "ticket_creation_help"
 msgstr ""
 
@@ -358,35 +375,19 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
-#: voteit/irl/views/templates/projector/projector.pt:19
+#: voteit/irl/views/templates/projector/projector.pt:16
+msgid "Meeting logo"
+msgstr ""
+
+#: voteit/irl/views/templates/projector/projector.pt:28
 msgid "Agenda items"
 msgstr ""
 
-#: voteit/irl/views/templates/projector/projector.pt:48
-msgid "Polls"
+#: voteit/irl/views/templates/projector/projector.pt:43
+msgid "Active"
 msgstr ""
 
-#: voteit/irl/views/templates/projector/projector.pt:53
+#: voteit/irl/views/templates/projector/projector.pt:50
 msgid "Proposals"
-msgstr ""
-
-#: voteit/irl/views/templates/projector/proposal.pt:7
-msgid "Deactivate"
-msgstr ""
-
-#: voteit/irl/views/templates/projector/proposal.pt:14
-msgid "Set approved"
-msgstr ""
-
-#: voteit/irl/views/templates/projector/proposal.pt:17
-msgid "Set published"
-msgstr ""
-
-#: voteit/irl/views/templates/projector/proposal.pt:20
-msgid "Set denied"
-msgstr ""
-
-#: voteit/irl/views/templates/projector/proposal.pt:25
-msgid "Activate"
 msgstr ""
 

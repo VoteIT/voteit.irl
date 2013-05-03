@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-04-09 14:14+0200\n"
-"PO-Revision-Date: 2013-04-09 14:15+0100\n"
+"POT-Creation-Date: 2013-05-03 15:55+0200\n"
+"PO-Revision-Date: 2013-05-03 15:55+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -32,40 +32,48 @@ msgid "Your precence is received"
 msgstr "Din närvaro är mottagen"
 
 #. Default: Method to select elegible voters
-#: voteit/irl/schemas.py:25
+#: voteit/irl/schemas.py:27
 msgid "elegible_voters_method_name"
 msgstr "Metod för att välja röstberättigade"
 
 #. Default: It will modify the voting permissions accoring to it's
 #. specifications.
-#: voteit/irl/schemas.py:26
+#: voteit/irl/schemas.py:28
 msgid "elegible_voters_method_description"
 msgstr "Förändrar rösträtten i enlighet med metodens specifikationer."
 
-#: voteit/irl/schemas.py:48
+#: voteit/irl/schemas.py:50
 msgid "First register"
 msgstr "Första röstlängd"
 
-#: voteit/irl/schemas.py:52
+#: voteit/irl/schemas.py:54
 msgid "Second register"
 msgstr "Andra röstlängd"
 
-#: voteit/irl/schemas.py:74
+#: voteit/irl/schemas.py:76
 msgid "No match - remember that it's case sensitive!"
 msgstr "Ingen matchning - kom ihåg att stora eller små bokstäver spelar roll!"
 
-#: voteit/irl/schemas.py:81
+#: voteit/irl/schemas.py:83
 msgid "Participant code"
 msgstr "Deltagarnummer"
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
-#: voteit/irl/schemas.py:82
+#: voteit/irl/schemas.py:84
 msgid "enter_token_description"
 msgstr ""
 "Skriv i koden som skickades till dig. Den har formatet xxxx-xxxx. Observera "
 "att den gör skillnad på små och stora bokstäver, och kan bara användas en "
 "gång."
+
+#: voteit/irl/schemas.py:104 voteit/irl/views/participant_numbers.py:114
+msgid "Participant number not found"
+msgstr "Deltagarnummer hittades inte"
+
+#: voteit/irl/schemas.py:128
+msgid "UserID"
+msgstr "AnvändarID"
 
 #: voteit/irl/models/meeting_presence.py:51
 msgid "Meeting presence check isn't open"
@@ -89,8 +97,9 @@ msgstr "Diff"
 
 #: voteit/irl/views/electoral_register.py:68
 #: voteit/irl/views/templates/participant_callbacks.pt:63
-#: voteit/irl/views/templates/participant_numbers.pt:63
+#: voteit/irl/views/templates/participant_numbers.pt:66
 #: voteit/irl/views/templates/view_electoral_register.pt:30
+#: voteit/irl/views/templates/projector/projector.pt:24
 msgid "Back"
 msgstr "Tillbaka"
 
@@ -170,24 +179,34 @@ msgid "already_assigned_number_error"
 msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
 
 #: voteit/irl/views/participant_numbers.py:75
+#: voteit/irl/views/participant_numbers.py:97
 msgid "Submit"
 msgstr "Skicka"
 
 #. Default: You're now assigned number ${number}.
 #: voteit/irl/views/participant_numbers.py:84
+#: voteit/irl/views/participant_numbers.py:125
 msgid "number_now_assigned_notice"
 msgstr "Du har tilldelats nummer ${number}."
 
-#: voteit/irl/views/participant_numbers.py:96
+#. Default: This user was already assigned number ${number} so that number was
+#. cleared.
+#: voteit/irl/views/participant_numbers.py:118
+msgid "participant_number_moved_warning"
+msgstr ""
+"Denna användare var redan registrerad med nummer ${number} så det numret "
+"rensades."
+
+#: voteit/irl/views/participant_numbers.py:141
 #: voteit/irl/views/templates/participant_numbers.pt:14
 msgid "Participant numbers"
 msgstr "Deltagarnummer"
 
-#: voteit/irl/views/participant_numbers.py:107
+#: voteit/irl/views/participant_numbers.py:152
 msgid "Claim participant number"
 msgstr "Registrera deltagarnummer"
 
-#: voteit/irl/views/projector.py:55
+#: voteit/irl/views/projector.py:53
 msgid "Projector view"
 msgstr "Projektorvy"
 
@@ -316,22 +335,22 @@ msgid "Execute callbacks for existing users (recommended)"
 msgstr ""
 
 #: voteit/irl/views/templates/participant_callbacks.pt:51
-#: voteit/irl/views/templates/participant_numbers.pt:52
+#: voteit/irl/views/templates/participant_numbers.pt:55
 msgid "Start"
 msgstr "Start"
 
 #: voteit/irl/views/templates/participant_callbacks.pt:53
-#: voteit/irl/views/templates/participant_numbers.pt:54
+#: voteit/irl/views/templates/participant_numbers.pt:57
 msgid "End"
 msgstr "Slut"
 
 #: voteit/irl/views/templates/participant_callbacks.pt:57
-#: voteit/irl/views/templates/participant_numbers.pt:57
+#: voteit/irl/views/templates/participant_numbers.pt:60
 msgid "Add"
 msgstr "Lägg till"
 
 #: voteit/irl/views/templates/participant_callbacks.pt:60
-#: voteit/irl/views/templates/participant_numbers.pt:60
+#: voteit/irl/views/templates/participant_numbers.pt:63
 msgid "Remove"
 msgstr "Ta bort"
 
@@ -355,7 +374,7 @@ msgstr "Använd av"
 msgid "Created by"
 msgstr "Skapad av"
 
-#: voteit/irl/views/templates/participant_numbers.pt:44
+#: voteit/irl/views/templates/participant_numbers.pt:47
 msgid "Add or remove numbers"
 msgstr "Lägg till eller ta bort nummer"
 
@@ -366,7 +385,7 @@ msgstr "Lägg till eller ta bort nummer"
 #. start and 200 as end. If you don't specify an end number, only one ticket
 #. will
 #. be created.
-#: voteit/irl/views/templates/participant_numbers.pt:45
+#: voteit/irl/views/templates/participant_numbers.pt:48
 msgid "ticket_creation_help"
 msgstr ""
 "Ange ett startnummer (t.ex. 1) och eventuellt ett slutnummer om du vill "
@@ -379,7 +398,6 @@ msgid "Register meeting presence"
 msgstr "Registrera närvaro"
 
 #: voteit/irl/views/templates/user_participant_number_info.pt:4
-#| msgid "Participant numbers"
 msgid "Participant number:"
 msgstr "Deltagarnummer:"
 
@@ -391,34 +409,18 @@ msgstr "Röstlängd ${time}"
 msgid "Users"
 msgstr "Användare"
 
-#: voteit/irl/views/templates/projector/projector.pt:19
+#: voteit/irl/views/templates/projector/projector.pt:16
+msgid "Meeting logo"
+msgstr "Möteslogo"
+
+#: voteit/irl/views/templates/projector/projector.pt:28
 msgid "Agenda items"
 msgstr "Dagordningspunkter"
 
-#: voteit/irl/views/templates/projector/projector.pt:48
-msgid "Polls"
-msgstr "Omröstningar"
+#: voteit/irl/views/templates/projector/projector.pt:43
+msgid "Active"
+msgstr "Aktiv"
 
-#: voteit/irl/views/templates/projector/projector.pt:53
+#: voteit/irl/views/templates/projector/projector.pt:50
 msgid "Proposals"
 msgstr "Förslag"
-
-#: voteit/irl/views/templates/projector/proposal.pt:7
-msgid "Deactivate"
-msgstr "Deaktivera"
-
-#: voteit/irl/views/templates/projector/proposal.pt:14
-msgid "Set approved"
-msgstr "Sätt bifallen"
-
-#: voteit/irl/views/templates/projector/proposal.pt:17
-msgid "Set published"
-msgstr "Sätt publicerad"
-
-#: voteit/irl/views/templates/projector/proposal.pt:20
-msgid "Set denied"
-msgstr "Sätt avslagen"
-
-#: voteit/irl/views/templates/projector/proposal.pt:25
-msgid "Activate"
-msgstr "Aktiv"
