@@ -9,12 +9,13 @@ CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 requires = (
     'pyramid',
     'voteit.core',
+    'fanstatic',
     'Babel',
     'lingua',
     )
 
 setup(name='voteit.irl',
-      version='0.0',
+      version='0.1dev',
       description='VoteIT package for tools to use on irl meetings',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
