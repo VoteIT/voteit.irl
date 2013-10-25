@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-05-03 15:55+0200\n"
-"PO-Revision-Date: 2013-05-03 15:55+0100\n"
+"POT-Creation-Date: 2013-10-25 14:07+0200\n"
+"PO-Revision-Date: 2013-10-25 14:08+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.6\n"
-"X-Generator: Poedit 1.5.5\n"
+"Generated-By: Babel 1.3\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server
@@ -79,6 +79,27 @@ msgstr "AnvändarID"
 msgid "Meeting presence check isn't open"
 msgstr "Närvarokontroll är inte öppen"
 
+#. Default: Some callbacks for the UserId '${userid}' failed. Contact the
+#. moderator
+#. about this. The ones that failed were: ${callback_errors}
+#: voteit/irl/models/participant_callback.py:60
+msgid "could_not_execute_callback_error"
+msgstr ""
+"Vissa metoder kunde inte tillämpas för användarID '${userid}'. Kontakta "
+"moderatorn om detta. De som inte gick var: ${callback_errors}"
+
+#: voteit/irl/models/participant_callback.py:116
+msgid "Allow to vote"
+msgstr "Tillåt att rösta"
+
+#: voteit/irl/models/participant_callback.py:124
+msgid "Allow to discuss"
+msgstr "Tillåt att diskutera"
+
+#: voteit/irl/models/participant_callback.py:132
+msgid "Allow to propose"
+msgstr "Tillåt att föreslå"
+
 #: voteit/irl/plugins/present_users_voters.py:10
 msgid "Set present users as voters"
 msgstr "Ge närvarande användare rösträtt"
@@ -139,18 +160,19 @@ msgstr "Slutnummer måste vara högre än start"
 msgid "Must be an integer value"
 msgstr "Måste vara ett heltal"
 
-#: voteit/irl/views/participant_callbacks.py:55
+#: voteit/irl/views/participant_callbacks.py:54
 msgid ""
 "Added ${added} new callbacks and skipped ${existed} that already existed."
-msgstr ""
+msgstr "La till ${added} nya medoter och skippade ${existed} som redan fanns."
 
-#: voteit/irl/views/participant_callbacks.py:67
+#: voteit/irl/views/participant_callbacks.py:68
 msgid ""
 "Executed callback for ${num} users that had already claimed a participant "
 "number."
 msgstr ""
+"Exekverade metoder för ${num} användare som redan hade ett deltagarnummer."
 
-#: voteit/irl/views/participant_callbacks.py:72
+#: voteit/irl/views/participant_callbacks.py:73
 msgid ""
 "Removed ${removed} callbacks and skipped ${nonexistent} that wasn't "
 "registered."
@@ -158,10 +180,10 @@ msgstr ""
 "Tog bort ${removed} callbacks och skippade ${nonexistent} som inte var "
 "registrerade."
 
-#: voteit/irl/views/participant_callbacks.py:87
+#: voteit/irl/views/participant_callbacks.py:88
 #: voteit/irl/views/templates/participant_callbacks.pt:14
 msgid "Participant callbacks"
-msgstr ""
+msgstr "Deltagarmetoder"
 
 #: voteit/irl/views/participant_numbers.py:48
 msgid "Added ${count} new numbers"
@@ -329,10 +351,13 @@ msgstr "Närvarande deltagare"
 #: voteit/irl/views/templates/participant_callbacks.pt:18
 msgid "callback_code_explanation"
 msgstr ""
+"Detta är en avancerad funktion som fäster metoder till en händelse som "
+"inträffar när en deltagare får ett deltagarnummer. Rör inte detta om du inte "
+"vet vad du gör."
 
 #: voteit/irl/views/templates/participant_callbacks.pt:49
 msgid "Execute callbacks for existing users (recommended)"
-msgstr ""
+msgstr "Exekvera metoder för existerande användare (rekommenderas)"
 
 #: voteit/irl/views/templates/participant_callbacks.pt:51
 #: voteit/irl/views/templates/participant_numbers.pt:55

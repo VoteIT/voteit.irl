@@ -113,7 +113,7 @@ class ParticipantCallback(object):
 
 class AssignVoterRole(ParticipantCallback):
     name = u"allow_vote"
-    title = u"Give voter role"
+    title = _(u"Allow to vote")
 
     def __call__(self, number, userid, **kw):
         self.context.add_groups(userid, [security.ROLE_VOTER])
@@ -121,7 +121,7 @@ class AssignVoterRole(ParticipantCallback):
 
 class AssignDiscussionRole(ParticipantCallback):
     name = u"allow_discuss"
-    title = u"Give discuss role"
+    title = _(u"Allow to discuss")
 
     def __call__(self, number, userid, **kw):
         self.context.add_groups(userid, [security.ROLE_DISCUSS])
@@ -129,7 +129,7 @@ class AssignDiscussionRole(ParticipantCallback):
 
 class AssignProposeRole(ParticipantCallback):
     name = u"allow_propose"
-    title = u"Give propose role"
+    title = _(u"Allow to propose")
 
     def __call__(self, number, userid, **kw):
         self.context.add_groups(userid, [security.ROLE_PROPOSE])
