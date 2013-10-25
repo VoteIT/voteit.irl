@@ -26,8 +26,8 @@ class ParticipantCallbacksView(BaseView):
     def participant_callbacks(self):
         return self.request.registry.getAdapter(self.api.meeting, IParticipantCallbacks)
 
-#    @view_config(name = "manage_participant_callbacks", context = IMeeting, permission = security.MODERATE_MEETING,
-#                 renderer = "templates/participant_callbacks.pt")
+    @view_config(name = "manage_participant_callbacks", context = IMeeting, permission = security.MODERATE_MEETING,
+                 renderer = "templates/participant_callbacks.pt")
     def manage_participant_callbacks(self):
         if 'back' in self.request.POST:
             return HTTPFound(location = self.api.meeting_url)
@@ -49,20 +49,21 @@ class ParticipantCallbacksView(BaseView):
                 raise HTTPForbidden(_(u"Must be an integer value"))
             
             callback = self.request.POST['callback']
-            #FIXME: Validate, check that an adapter exists
             if add:
                 added, existed = self.participant_callbacks.add(callback, start, end)
                 msg = _(u"Added ${added} new callbacks and skipped ${existed} that already existed.",
                         mapping = {'added': len(added), 'existed': len(existed)})
                 self.api.flash_messages.add(msg)
                 if self.request.POST.get('execute_for_existing', True):
-                    callback_adapter = self.request.registry.getAdapter(self.api.meeting, IParticipantCallback, name = callback)
                     executed = 0
                     if end == None:
                         end = start
                     for i in range(start, end + 1): #Range  stops before end otherwise
                         if i in self.participant_numbers.number_to_userid:
-                            callback_adapter(i, self.participant_numbers.number_to_userid[i])
+                            #The method execute_callbacks_for is fault tolerant for missing callbacks, but not for
+                            #failures within the actual callback.
+                            self.participant_callbacks.execute_callbacks_for(i, self.participant_numbers.number_to_userid[i],
+                                                                             limit = callback, request = self.request)
                             executed += 1
                     msg = _(u"Executed callback for ${num} users that had already claimed a participant number.",
                             mapping = {'num': executed})
@@ -80,7 +81,7 @@ class ParticipantCallbacksView(BaseView):
         return self.response
 
 
-#@view_action('meeting', 'participant_callbacks', permission = security.MODERATE_MEETING)
+@view_action('meeting', 'participant_callbacks', permission = security.MODERATE_MEETING)
 def participant_callbacks_menu(context, request, va, **kw):
     api = kw['api']
     return """<li><a href="%s">%s</a></li>""" % ("%smanage_participant_callbacks" % api.meeting_url,

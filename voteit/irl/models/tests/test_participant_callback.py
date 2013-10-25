@@ -11,7 +11,8 @@ from voteit.irl.models.interfaces import IParticipantCallbacks
 
 class ParticipantCallbacksTests(unittest.TestCase):
     def setUp(self):
-        self.config = testing.setUp()
+        request = testing.DummyRequest()
+        self.config = testing.setUp(request = request)
 
     def tearDown(self):
         testing.tearDown()
@@ -97,6 +98,40 @@ class ParticipantCallbacksTests(unittest.TestCase):
         self.assertEqual(nonexistent, [])
         self.assertEqual(len(obj.callbacks), 1)
         self.assertEqual(len(obj.callbacks[1]), 1)
+
+    def test_execute_callbacks_for(self):
+        meeting = Meeting()
+        obj = self._cut(meeting)
+        _register_dummy_callback(self.config)
+        obj.add('dummy', 1)
+        results = []
+        obj.execute_callbacks_for(1, 'casper', results = results)
+        self.failUnless(results)
+
+    def test_execute_callbacks_for_none_registered(self):
+        meeting = Meeting()
+        obj = self._cut(meeting)
+        self.assertEqual(len(obj.execute_callbacks_for(1, 'casper')), 0)
+
+    def test_execute_callbacks_for_with_bad_callbacks(self):
+        self.config.include('voteit.core.models.flash_messages')
+        meeting = Meeting()
+        obj = self._cut(meeting)
+        _register_dummy_callback(self.config)
+        obj.add('404', 1)
+        results = []
+        obj.execute_callbacks_for(1, 'casper', results = results)
+        self.failIf(results)
+
+    def test_execute_callbacks_for_with_limit(self):
+        meeting = Meeting()
+        obj = self._cut(meeting)
+        _register_dummy_callback(self.config)
+        obj.add('dummy', 1)
+        obj.add('dummy_2', 1)
+        results = []
+        obj.execute_callbacks_for(1, 'casper', limit = 'dummy', results = results)
+        self.assertEqual(results, ['dummy'])
 
 
 class ParticipantCallbackTests(unittest.TestCase):
@@ -185,3 +220,17 @@ class AssignProposeRoleTests(unittest.TestCase):
     def test_integration(self):
         self.config.include('voteit.irl.models.participant_callback')
         self.failUnless(self.config.registry.queryAdapter(Meeting(), IParticipantCallback, name = 'allow_propose'))
+
+
+def _register_dummy_callback(config):
+    from voteit.irl.models.participant_callback import ParticipantCallback
+    
+    class _DummyCallback(ParticipantCallback):
+        name = u"dummy"
+        title = u"Dummy for testing"
+    
+        def __call__(self, number, userid, **kw):
+            kw['results'].append(self.name) #Pass this when executing to make testing easier
+    
+    config.registry.registerAdapter(_DummyCallback, name = _DummyCallback.name)
+    config.registry.registerAdapter(_DummyCallback, name = 'dummy_2')

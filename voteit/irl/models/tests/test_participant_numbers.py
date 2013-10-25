@@ -12,7 +12,8 @@ from voteit.irl.interfaces import IParticipantNumberClaimed
 
 class ParticipantNumbersTests(unittest.TestCase):
     def setUp(self):
-        self.config = testing.setUp()
+        request = testing.DummyRequest()
+        self.config = testing.setUp(request = request)
 
     def tearDown(self):
         testing.tearDown()

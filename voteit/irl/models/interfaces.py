@@ -120,6 +120,26 @@ class IParticipantCallbacks(Interface):
     def __init__(context):
         """ Always adapts meetings. """
 
+    def get_callbacks(number):
+        """ Return a list of callback names for a specific number. """
+
+    def execute_callbacks_for(number, userid, limit = None, request = None):
+        """ Execute all associated callbacks for the user associated with the number.
+            Will add a flash message to the request if something wasn't able to run.
+
+            number
+                This is the number you want to execute for.
+
+            userid
+                Of the user that the number is associated with.
+
+            limit (list or string)
+                Only execute callbacks with this name(s).
+
+            request
+                Will be fetched if it's none.
+        """
+
     def add(callback, start, end = None):
         """ Add a new callback.
 
@@ -159,5 +179,5 @@ class IParticipantCallback(Interface):
     def __init__(context):
         """ Always adapts meetings. """
 
-    def __call__(number, userid):
+    def __call__(number, userid, **kw):
         """ Perform action on meeting conserning this number and userid. """
