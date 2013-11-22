@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.1dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-10-25 14:07+0200\n"
+"POT-Creation-Date: 2013-11-22 09:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,7 +208,7 @@ msgid "Claim participant number"
 msgstr ""
 
 #: voteit/irl/views/projector.py:53
-msgid "Projector view"
+msgid "Proposal view for projector"
 msgstr ""
 
 #: voteit/irl/views/templates/diff_electoral_register.pt:9
@@ -399,13 +399,5 @@ msgstr ""
 
 #: voteit/irl/views/templates/projector/projector.pt:28
 msgid "Agenda items"
-msgstr ""
-
-#: voteit/irl/views/templates/projector/projector.pt:43
-msgid "Active"
-msgstr ""
-
-#: voteit/irl/views/templates/projector/projector.pt:50
-msgid "Proposals"
 msgstr ""
 

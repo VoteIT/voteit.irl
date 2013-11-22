@@ -41,7 +41,6 @@ setup(name='voteit.irl',
       message_extractors = { '.': [
               ('**.py',   'lingua_python', None ),
               ('**.pt',   'lingua_xml', None ),
-              ('**.zcml',   'lingua_zcml', None ),
               ]},
       )
 
