@@ -1,3 +1,8 @@
+<tal:main xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="voteit.irl">
+
 <li tal:define="state_id proposal.get_workflow_state();
                 css_class 'listing_block wf-state-%s' % state_id;"
     tal:attributes="class css_class"
@@ -24,3 +29,4 @@
               tal:content="api.tstring(state_id.title())">private</span>
     </div>
 </li>
+</tal:main>

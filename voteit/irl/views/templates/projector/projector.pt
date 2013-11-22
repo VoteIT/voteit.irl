@@ -18,7 +18,7 @@
                  src="${api.meeting.get_field_value('meeting_logo_url')}"
                  alt="Meeting logo" i18n:attributes="alt" />
             <img id="voteit-logo" src="${request.application_url}/static/images/voteit_logo.png" />
-            <h1 id="agenda_item_title" class="icon large-iconpadding">${context.title}</h1>
+            <h1>${context.title}</h1>
             <div class="clear"><!-- --></div>
         </div>
         <a class="icon iconpadding arrow-left" href="${request.resource_url(context)}"
@@ -40,14 +40,12 @@
     <div class="col-65-35">
         <div class="column column-1">
             <div id="active">
-                <h3 i18n:translate="">Active</h3>
                 <ul>
                 </ul>
             </div>
         </div>
         <div class="column column-2">
             <div id="inactive">
-                <h3 i18n:translate="">Proposals</h3>
                 <ul tal:condition="proposals">
                 <tal:iterate repeat="proposal proposals" >
                     <span tal:replace="structure render_proposal(proposal, request)">Proposal</span>
@@ -56,36 +54,7 @@
             </div>
         </div>
     </div>
-
 
 </div>
-
-<!--
-                <h1 id="meeting-name-space" tal:condition="context">
-                    <a href="${api.resource_url(context, request)}" tal:content="context.title">Agenda Item</a>
-                </h1>
-            </div>
-        </div>
-    </div>
-    
-    <div id="projector" class="content_wrapper">
-
-        <div id="proposals" class="col-50-50">
-            <div id="active" class="column column-1">
-                <h2 class="iconpadding icon poll" i18n:translate="">Polls</h2>
-                <ul>
-                </ul>
-            </div>
-            <div id="inactive" class="column column-2">
-                <h2 class="iconpadding icon proposal" i18n:translate="">Proposals</h2>
-                <ul tal:condition="proposals">
-                <tal:iterate repeat="proposal proposals" >
-                    <span tal:replace="structure render_proposal(proposal, request)">Proposal</span>
-                </tal:iterate>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>-->
 </body>
 </html>
