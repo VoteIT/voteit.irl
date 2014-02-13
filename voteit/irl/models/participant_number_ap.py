@@ -10,8 +10,8 @@ class ParticipantNumberAP(AccessPolicy):
     name = u"participant_number_ap"
     title = _(u"Participant number registration")
     description = _(u"participant_number_ap_description",
-                    default = u"If participant numbers are enabled and distributed for this meeting, use this policy "
-                        u"to allow access through registration of one of those numbers.")
+                    default = u"If participant numbers are enabled for this meeting, use this policy "
+                        u"to allow meeting access through registration of a participant number.")
     configurable = True
 
     def __init__(self, context):

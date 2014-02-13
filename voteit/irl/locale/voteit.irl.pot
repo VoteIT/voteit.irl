@@ -1,14 +1,14 @@
 # Translations template for voteit.irl.
-# Copyright (C) 2013 ORGANIZATION
+# Copyright (C) 2014 ORGANIZATION
 # This file is distributed under the same license as the voteit.irl project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.1dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-11-22 09:43+0100\n"
+"POT-Creation-Date: 2014-02-13 12:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,51 +19,78 @@ msgstr ""
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to server
 #. load, please try again in a short while.
-#: voteit/irl/__init__.py:36
+#: voteit/irl/__init__.py:30
 msgid "register_meeting_presence_error_notice"
 msgstr ""
 
-#: voteit/irl/__init__.py:39
+#: voteit/irl/__init__.py:33
 msgid "Your precence is received"
 msgstr ""
 
 #. Default: Method to select elegible voters
-#: voteit/irl/schemas.py:27
+#: voteit/irl/schemas.py:28
 msgid "elegible_voters_method_name"
 msgstr ""
 
 #. Default: It will modify the voting permissions accoring to it's specifications.
-#: voteit/irl/schemas.py:28
+#: voteit/irl/schemas.py:29
 msgid "elegible_voters_method_description"
 msgstr ""
 
-#: voteit/irl/schemas.py:50
+#: voteit/irl/schemas.py:51
 msgid "First register"
 msgstr ""
 
-#: voteit/irl/schemas.py:54
+#: voteit/irl/schemas.py:55
 msgid "Second register"
 msgstr ""
 
-#: voteit/irl/schemas.py:76
+#: voteit/irl/schemas.py:77
 msgid "No match - remember that it's case sensitive!"
 msgstr ""
 
-#: voteit/irl/schemas.py:83
+#: voteit/irl/schemas.py:80
+msgid "This number has already been claimed."
+msgstr ""
+
+#: voteit/irl/schemas.py:87
 msgid "Participant code"
 msgstr ""
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
-#: voteit/irl/schemas.py:84
+#: voteit/irl/schemas.py:88
 msgid "enter_token_description"
 msgstr ""
 
-#: voteit/irl/schemas.py:104 voteit/irl/views/participant_numbers.py:114
+#: voteit/irl/schemas.py:109 voteit/irl/views/participant_numbers.py:114
 msgid "Participant number not found"
 msgstr ""
 
-#: voteit/irl/schemas.py:128
+#: voteit/irl/schemas.py:122
+msgid "Anyone registering with participant number will be given these roles"
+msgstr ""
+
+#. Default: Picking at least one is required. Note that if you allow registration
+#. to be bypassed (see below) the roles specified here won't be added when a
+#. meeting number is claimed by someone who's already a part of the meeting.
+#: voteit/irl/schemas.py:123
+msgid "pn_ap_claimed_roles_description"
+msgstr ""
+
+#: voteit/irl/schemas.py:132
+msgid "Allow bypass and give access to anyone?"
+msgstr ""
+
+#. Default: If anything is checked below, any user will be able to bypass the
+#. access form and immediately gain the roles checked. Some examples - for meetings
+#. that are:   Closed: check nothing below. Viewable for anyone: check view
+#. permission Open for participation from anyone: check all
+#: voteit/irl/schemas.py:133
+msgid "pn_ap_public_roles_description"
+msgstr ""
+
+#: voteit/irl/schemas.py:164
 msgid "UserID"
 msgstr ""
 
@@ -77,16 +104,45 @@ msgstr ""
 msgid "could_not_execute_callback_error"
 msgstr ""
 
-#: voteit/irl/models/participant_callback.py:116
+#: voteit/irl/models/participant_callback.py:118
 msgid "Allow to vote"
 msgstr ""
 
-#: voteit/irl/models/participant_callback.py:124
+#: voteit/irl/models/participant_callback.py:126
 msgid "Allow to discuss"
 msgstr ""
 
-#: voteit/irl/models/participant_callback.py:132
+#: voteit/irl/models/participant_callback.py:134
 msgid "Allow to propose"
+msgstr ""
+
+#: voteit/irl/models/participant_number_ap.py:11
+msgid "Participant number registration"
+msgstr ""
+
+#. Default: If participant numbers are enabled for this meeting, use this policy to
+#. allow meeting access through registration of a participant number.
+#: voteit/irl/models/participant_number_ap.py:12
+msgid "participant_number_ap_description"
+msgstr ""
+
+#. Default: Enter your code to claim your participant number and all permissions
+#. associated with it. If you're not supposed to have a participant number, you're
+#. allowed to proceed by clicking 'Request access'.
+#: voteit/irl/models/participant_number_ap.py:24
+msgid "token_validator_description_when_ok_without"
+msgstr ""
+
+#. Default: You're now assigned number ${number}.
+#: voteit/irl/models/participant_number_ap.py:39
+#: voteit/irl/views/participant_numbers.py:84
+#: voteit/irl/views/participant_numbers.py:125
+msgid "number_now_assigned_notice"
+msgstr ""
+
+#. Default: You've been given access to the meeting without a participant number.
+#: voteit/irl/models/participant_number_ap.py:45
+msgid "access_without_pn_notice"
 msgstr ""
 
 #: voteit/irl/plugins/present_users_voters.py:10
@@ -184,12 +240,6 @@ msgstr ""
 #: voteit/irl/views/participant_numbers.py:75
 #: voteit/irl/views/participant_numbers.py:97
 msgid "Submit"
-msgstr ""
-
-#. Default: You're now assigned number ${number}.
-#: voteit/irl/views/participant_numbers.py:84
-#: voteit/irl/views/participant_numbers.py:125
-msgid "number_now_assigned_notice"
 msgstr ""
 
 #. Default: This user was already assigned number ${number} so that number was

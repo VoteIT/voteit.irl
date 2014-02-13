@@ -129,13 +129,13 @@ class ConfigureParticipantNumberAP(colander.Schema):
     )
     pn_ap_public_roles = colander.SchemaNode(
         deform.Set(allow_empty = True),
-        title = (u"Allow bypass and give access to anyone?"),
+        title = _(u"Allow bypass and give access to anyone?"),
         description = _(u"pn_ap_public_roles_description",
                         default = u"If anything is checked below, any user will be able to bypass the access form "
-                        u"and immediately gain the roles checked. Some examples - for meetings that are: "
-                        u"Closed: check nothing below. "
-                        u"Viewable for anyone: check view permission"
-                        u"Open for participation from anyone: check all"),
+                        u"and immediately gain the roles checked. Some examples - for meetings that are: \n\n"
+                        u"Closed: check nothing below.\n"
+                        u"Viewable for anyone: check view permission\n"
+                        u"Open for participation from anyone: check all\n"),
         widget = deform.widget.CheckboxChoiceWidget(values = _meeting_roles_minus_moderator()),
     )
 

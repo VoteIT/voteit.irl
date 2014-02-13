@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-11-22 09:40+0100\n"
-"PO-Revision-Date: 2013-11-22 09:41+0100\n"
+"POT-Creation-Date: 2014-02-13 12:33+0100\n"
+"PO-Revision-Date: 2014-02-13 12:35+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -21,57 +21,93 @@ msgstr ""
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server
 #. load, please try again in a short while.
-#: voteit/irl/__init__.py:36
+#: voteit/irl/__init__.py:30
 msgid "register_meeting_presence_error_notice"
 msgstr ""
 "VoteIT kunde inte sätta dig som närvarande. Det kan bero på hög last på "
 "servern, prova igen om en liten stund."
 
-#: voteit/irl/__init__.py:39
+#: voteit/irl/__init__.py:33
 msgid "Your precence is received"
 msgstr "Din närvaro är mottagen"
 
 #. Default: Method to select elegible voters
-#: voteit/irl/schemas.py:27
+#: voteit/irl/schemas.py:28
 msgid "elegible_voters_method_name"
 msgstr "Metod för att välja röstberättigade"
 
 #. Default: It will modify the voting permissions accoring to it's
 #. specifications.
-#: voteit/irl/schemas.py:28
+#: voteit/irl/schemas.py:29
 msgid "elegible_voters_method_description"
 msgstr "Förändrar rösträtten i enlighet med metodens specifikationer."
 
-#: voteit/irl/schemas.py:50
+#: voteit/irl/schemas.py:51
 msgid "First register"
 msgstr "Första röstlängd"
 
-#: voteit/irl/schemas.py:54
+#: voteit/irl/schemas.py:55
 msgid "Second register"
 msgstr "Andra röstlängd"
 
-#: voteit/irl/schemas.py:76
+#: voteit/irl/schemas.py:77
 msgid "No match - remember that it's case sensitive!"
-msgstr "Ingen matchning - kom ihåg att stora eller små bokstäver spelar roll!"
+msgstr "Matchar inte - kom ihåg att stora eller små bokstäver spelar roll!"
 
-#: voteit/irl/schemas.py:83
+#: voteit/irl/schemas.py:80
+msgid "This number has already been claimed."
+msgstr "Detta nummer har redan tagits."
+
+#: voteit/irl/schemas.py:87
 msgid "Participant code"
 msgstr "Deltagarnummer"
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
-#: voteit/irl/schemas.py:84
+#: voteit/irl/schemas.py:88
 msgid "enter_token_description"
 msgstr ""
 "Skriv i koden som skickades till dig. Den har formatet xxxx-xxxx. Observera "
 "att den gör skillnad på små och stora bokstäver, och kan bara användas en "
 "gång."
 
-#: voteit/irl/schemas.py:104 voteit/irl/views/participant_numbers.py:114
+#: voteit/irl/schemas.py:109 voteit/irl/views/participant_numbers.py:114
 msgid "Participant number not found"
 msgstr "Deltagarnummer hittades inte"
 
-#: voteit/irl/schemas.py:128
+#: voteit/irl/schemas.py:122
+msgid "Anyone registering with participant number will be given these roles"
+msgstr "Alla som registrerar sig med deltagarnummer kommer ges rollerna"
+
+#. Default: Picking at least one is required. Note that if you allow
+#. registration
+#. to be bypassed (see below) the roles specified here won't be added when a
+#. meeting number is claimed by someone who's already a part of the meeting.
+#: voteit/irl/schemas.py:123
+msgid "pn_ap_claimed_roles_description"
+msgstr ""
+"Välj minst en. Notera att om du tillåter användare att gå förbi registrering "
+"av deltagarnummer (se nedan) så kommer de roller du specificerar här inte "
+"att läggas till om de senare registrerar ett deltagarnummer."
+
+#: voteit/irl/schemas.py:132
+msgid "Allow bypass and give access to anyone?"
+msgstr "Tillåt att strunta i registrering och ge tillgång till vem som helst?"
+
+#. Default: If anything is checked below, any user will be able to bypass the
+#. access form and immediately gain the roles checked. Some examples - for
+#. meetings
+#. that are:   Closed: check nothing below. Viewable for anyone: check view
+#. permission Open for participation from anyone: check all
+#: voteit/irl/schemas.py:133
+msgid "pn_ap_public_roles_description"
+msgstr ""
+"Om något är ikryssat nedan så kommer alla användare kunna gå förbi "
+"formuläret registrera deltagarnummer och direkt få de roller du "
+"specificerar. Några exempel - för möten som är: Stängda: välj inget nedan. "
+"Synliga för alla: välj visa. Öppet att delta för alla: välj allt."
+
+#: voteit/irl/schemas.py:164
 msgid "UserID"
 msgstr "AnvändarID"
 
@@ -88,17 +124,55 @@ msgstr ""
 "Vissa metoder kunde inte tillämpas för användarID '${userid}'. Kontakta "
 "moderatorn om detta. De som inte gick var: ${callback_errors}"
 
-#: voteit/irl/models/participant_callback.py:116
+#: voteit/irl/models/participant_callback.py:118
 msgid "Allow to vote"
 msgstr "Tillåt att rösta"
 
-#: voteit/irl/models/participant_callback.py:124
+#: voteit/irl/models/participant_callback.py:126
 msgid "Allow to discuss"
 msgstr "Tillåt att diskutera"
 
-#: voteit/irl/models/participant_callback.py:132
+#: voteit/irl/models/participant_callback.py:134
 msgid "Allow to propose"
 msgstr "Tillåt att föreslå"
+
+#: voteit/irl/models/participant_number_ap.py:11
+msgid "Participant number registration"
+msgstr "Registrering av deltagarnummer"
+
+#. Default: If participant numbers are enabled for this meeting, use this
+#. policy to
+#. allow meeting access through registration of a participant number.
+#: voteit/irl/models/participant_number_ap.py:12
+msgid "participant_number_ap_description"
+msgstr ""
+"Om deltagarnummer är påslagna, använd denna policy för att tillåta access "
+"genom registrering av deltagarnummer."
+
+#. Default: Enter your code to claim your participant number and all
+#. permissions
+#. associated with it. If you're not supposed to have a participant number,
+#. you're
+#. allowed to proceed by clicking 'Request access'.
+#: voteit/irl/models/participant_number_ap.py:24
+msgid "token_validator_description_when_ok_without"
+msgstr ""
+"Skriv in din kod för att få ditt deltagarnummer och alla rättigheter som hör "
+"till det. Om du inte ska ha ett deltagarnummer så kan du fortsätta genom att "
+"trycka på 'Begär tillträde'."
+
+#. Default: You're now assigned number ${number}.
+#: voteit/irl/models/participant_number_ap.py:39
+#: voteit/irl/views/participant_numbers.py:84
+#: voteit/irl/views/participant_numbers.py:125
+msgid "number_now_assigned_notice"
+msgstr "Du har tilldelats nummer ${number}."
+
+#. Default: You've been given access to the meeting without a participant
+#. number.
+#: voteit/irl/models/participant_number_ap.py:45
+msgid "access_without_pn_notice"
+msgstr "Du har fått tillgång till mötet utan ett deltagarnummer."
 
 #: voteit/irl/plugins/present_users_voters.py:10
 msgid "Set present users as voters"
@@ -204,12 +278,6 @@ msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
 #: voteit/irl/views/participant_numbers.py:97
 msgid "Submit"
 msgstr "Skicka"
-
-#. Default: You're now assigned number ${number}.
-#: voteit/irl/views/participant_numbers.py:84
-#: voteit/irl/views/participant_numbers.py:125
-msgid "number_now_assigned_notice"
-msgstr "Du har tilldelats nummer ${number}."
 
 #. Default: This user was already assigned number ${number} so that number was
 #. cleared.
