@@ -1,8 +1,8 @@
 from BTrees.IOBTree import IOBTree
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_request
-from zope.component import adapts
-from zope.interface import implements
+from zope.component import adapter
+from zope.interface import implementer
 from voteit.core.models.interfaces import IMeeting
 from voteit.core import security
 from voteit.core.models.interfaces import IFlashMessages
@@ -13,9 +13,9 @@ from .interfaces import IParticipantNumbers
 from voteit.irl import VoteIT_IRL_MF as _
 
 
+@implementer(IParticipantCallbacks)
+@adapter(IMeeting)
 class ParticipantCallbacks(object):
-    implements(IParticipantCallbacks)
-    adapts(IMeeting)
 
     def __init__(self, context):
         self.context = context
@@ -97,9 +97,11 @@ class ParticipantCallbacks(object):
         return removed, nonexistent
 
 
+@implementer(IParticipantCallback)
+@adapter(IMeeting)
 class ParticipantCallback(object):
-    implements(IParticipantCallback)
-    adapts(IMeeting)
+    """ Abstract class, see IParticipantCallback
+    """
     name = u""
     title = u""
     description = u""

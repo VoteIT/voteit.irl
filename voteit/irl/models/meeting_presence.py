@@ -1,5 +1,5 @@
-from zope.interface import implements
-from zope.component import adapts
+from zope.interface import implementer
+from zope.component import adapter
 from BTrees.OOBTree import OOSet
 
 from voteit.core.models.date_time_util import utcnow
@@ -10,10 +10,10 @@ from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IMeetingPresence
 
 
+@implementer(IMeetingPresence)
+@adapter(IMeeting)
 class MeetingPresence(object):
     __doc__ = IMeetingPresence.__doc__
-    implements(IMeetingPresence)
-    adapts(IMeeting)
     open = None
     start_time = None
     end_time = None
@@ -51,3 +51,7 @@ class MeetingPresence(object):
             raise HTTPForbidden(_(u"Meeting presence check isn't open"))
         assert isinstance(userid, basestring)
         self.present_userids.add(userid)
+
+
+def includeme(config):
+    config.registry.registerAdapter(MeetingPresence)

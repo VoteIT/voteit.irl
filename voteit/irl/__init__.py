@@ -1,27 +1,20 @@
+import logging
+
 from pyramid.i18n import TranslationStringFactory
 
 VoteIT_IRL_MF = TranslationStringFactory('voteit.irl')
+
+log = logging.getLogger(__name__)
 
 
 def includeme(config):
     """ Include required components. You can include this by simply adding voteit.irl
         to the section "plugins" in your paster .ini file.
     """
-    from voteit.core.models.interfaces import IMeeting
-    
-    from voteit.irl.models.electoral_register import ElectoralRegister
-    
-    from voteit.irl.models.interfaces import IElectoralRegister
-    config.registry.registerAdapter(ElectoralRegister, (IMeeting,), IElectoralRegister)
-
-    from voteit.irl.models.meeting_presence import MeetingPresence
-    from voteit.irl.models.interfaces import IMeetingPresence
-    config.registry.registerAdapter(MeetingPresence, (IMeeting,), IMeetingPresence)
-
-    from voteit.irl.models.participant_numbers import ParticipantNumbers
-    config.registry.registerAdapter(ParticipantNumbers)
-    
-    config.include('voteit.irl.models.participant_callback') #Include standard adapters
+    config.include('voteit.irl.models.electoral_register')
+    config.include('voteit.irl.models.meeting_presence')
+    config.include('voteit.irl.models.participant_numbers')
+    config.include('voteit.irl.models.participant_callback')
 
     cache_ttl_seconds = int(config.registry.settings.get('cache_ttl_seconds', 7200))
     config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_ttl_seconds)
@@ -29,7 +22,7 @@ def includeme(config):
     config.add_translation_dirs('voteit.irl:locale/')
     #Add translations used within javascript
     from voteit.core.models.interfaces import IJSUtil
-    _ = VoteIT_IRL_MF
+    _ = VoteIT_IRL_MF #To make translations work
     js_trans = config.registry.queryUtility(IJSUtil)
     if js_trans:
         js_trans.add_translations(
@@ -38,5 +31,6 @@ def includeme(config):
                                                        u"please try again in a short while."),
             presence_success_notice = _(u"Your precence is received"),
         )
-    #FIXME:Tests don't need to load js util but we want to have proper logging here
+    else:
+        log.warn("No IJSUtil found so JS translations won't be loaded.")
     config.scan('voteit.irl')

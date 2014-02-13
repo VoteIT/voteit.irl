@@ -1,22 +1,21 @@
 from copy import deepcopy
 
-from zope.interface import implements
-from zope.component import adapts
+from zope.interface import implementer
+from zope.component import adapter
 from BTrees.IOBTree import IOBTree
 from BTrees.OOBTree import OOBTree
 from voteit.core.models.date_time_util import utcnow
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.security import ROLE_VOTER
 
-
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
 
 
+@implementer(IElectoralRegister)
+@adapter(IMeeting)
 class ElectoralRegister(object):
     __doc__ = IElectoralRegister.__doc__
-    implements(IElectoralRegister)
-    adapts(IMeeting)
     
     def __init__(self, context):
         self.context = context
@@ -58,3 +57,6 @@ class ElectoralRegister(object):
         if not self.current:
             return True
         return self.current['userids'] != self.currently_set_voters()
+
+def includeme(config):
+    config.registry.registerAdapter(ElectoralRegister)

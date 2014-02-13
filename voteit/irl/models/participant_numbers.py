@@ -3,8 +3,8 @@ from random import choice
 from BTrees.IOBTree import IOBTree
 from BTrees.OIBTree import OIBTree
 from persistent import Persistent
-from zope.interface import implements
-from zope.component import adapts
+from zope.interface import implementer
+from zope.component import adapter
 from pyramid.threadlocal import get_current_registry
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.date_time_util import utcnow
@@ -16,9 +16,9 @@ from voteit.irl.events import ParticipantNumberClaimed
 CHAR_POOL = u"23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ"
 
 
+@implementer(IParticipantNumbers)
+@adapter(IMeeting)
 class ParticipantNumbers(object):
-    implements(IParticipantNumbers)
-    adapts(IMeeting)
 
     def __init__(self, context):
         self.context = context
@@ -134,3 +134,7 @@ class ParticipantNumberTicket(Persistent):
 
 class TicketAlreadyClaimedError(Exception):
     """ Ticket has already been claimed by someone else. """
+
+
+def includeme(config):
+    config.registry.registerAdapter(ParticipantNumbers)
