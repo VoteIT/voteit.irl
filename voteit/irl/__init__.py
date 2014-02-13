@@ -15,6 +15,7 @@ def includeme(config):
     config.include('voteit.irl.models.meeting_presence')
     config.include('voteit.irl.models.participant_numbers')
     config.include('voteit.irl.models.participant_callback')
+    config.include('voteit.irl.models.participant_number_ap')
 
     cache_ttl_seconds = int(config.registry.settings.get('cache_ttl_seconds', 7200))
     config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_ttl_seconds)
