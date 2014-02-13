@@ -74,6 +74,9 @@ class PNTokenValidator(object):
         participant_numbers = self.request.registry.getAdapter(self.context, IParticipantNumbers)
         if value not in participant_numbers.token_to_number:
             raise colander.Invalid(node, _(u"No match - remember that it's case sensitive!"))
+        number = participant_numbers.token_to_number[value]
+        if participant_numbers.tickets[number].claimed:
+            raise colander.Invalid(node, _(u"This number has already been claimed."))
 
 
 @schema_factory('ClaimParticipantNumber')
