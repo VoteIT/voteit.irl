@@ -12,25 +12,43 @@ class ParticipantNumberAP(AccessPolicy):
     description = _(u"participant_number_ap_description",
                     default = u"If participant numbers are enabled and distributed for this meeting, use this policy "
                         u"to allow access through registration of one of those numbers.")
-    configurable = False
+    configurable = True
 
     def __init__(self, context):
         self.context = context
 
     def schema(self, api):
-        return createSchema("ClaimParticipantNumber")
+        schema = createSchema("ClaimParticipantNumber")
+        if self.context.get_field_value('pn_ap_public_roles', False):
+            schema['token'].missing = u""
+            schema['token'].description = _(u"token_validator_description_when_ok_without",
+                                            default = u"Enter your code to claim your participant number and all permissions associated with it. "
+                                                u"If you're not supposed to have a participant number, you're allowed to proceed by clicking "
+                                                u"'Request access'.")
+        return schema
 
     def handle_success(self, api, appstruct):
-        participant_numbers = api.request.registry.getAdapter(api.meeting, IParticipantNumbers)
-        number = participant_numbers.claim_ticket(api.userid, appstruct['token'])
-        msg = _(u"number_now_assigned_notice",
-                default = u"You're now assigned number ${number}.",
-                mapping = {'number': number})
-        api.flash_messages.add(msg)
-        return HTTPFound(location = api.meeting_url)
+        public_roles = self.context.get_field_value('pn_ap_public_roles', False)
+        if appstruct['token']:
+            #The schema validated the token if it existed
+            claimed_roles = api.meeting.get_field_value('pn_ap_claimed_roles', ())
+            if claimed_roles:
+                api.meeting.add_groups(api.userid, claimed_roles)
+            participant_numbers = api.request.registry.getAdapter(api.meeting, IParticipantNumbers)
+            number = participant_numbers.claim_ticket(api.userid, appstruct['token'])
+            msg = _(u"number_now_assigned_notice",
+                    default = u"You're now assigned number ${number}.",
+                    mapping = {'number': number})
+            api.flash_messages.add(msg)
+        elif public_roles:
+            api.meeting.add_groups(api.userid, public_roles)
+            msg = _(u"access_without_pn_notice",
+                    default = u"You've been given access to the meeting without a participant number.")
+            api.flash_messages.add(msg)
+        return HTTPFound(location = api.request.resource_url(api.meeting)) #Will raise unauthorized if nothing was done
 
     def config_schema(self, api):
-        pass
+        return createSchema("ConfigureParticipantNumberAP")
 
 
 def includeme(config):

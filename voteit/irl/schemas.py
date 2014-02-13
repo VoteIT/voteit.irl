@@ -3,6 +3,7 @@ import deform
 from betahaus.pyracont.decorators import schema_factory
 from voteit.core.validators import deferred_existing_userid_validator
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
+from voteit.core import security
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -88,6 +89,7 @@ class ClaimParticipantNumberSchema(colander.Schema):
                                                 default = u"Enter the code sent to you. It will have the format xxxx-xxxx. "
                                                           u"Note that it's case sensitive and can only be used once."))
 
+
 @colander.deferred
 def deferred_existing_participant_number_validator(node, kw):
     context = kw['api'].meeting
@@ -105,6 +107,37 @@ class ExistingParticipantNumberValidator(object):
         pn = self.request.registry.getAdapter(self.context, IParticipantNumbers)
         if value not in pn.number_to_userid.keys():
             return colander.Invalid(node, _(u"Participant number not found"))
+
+
+def _meeting_roles_minus_moderator():
+    roles = dict(security.MEETING_ROLES)
+    del roles[security.ROLE_MODERATOR]
+    return roles.items()
+
+
+@schema_factory('ConfigureParticipantNumberAP')
+class ConfigureParticipantNumberAP(colander.Schema):
+    pn_ap_claimed_roles = colander.SchemaNode(
+        deform.Set(allow_empty = False),
+        title = _(u"Anyone registering with participant number will be given these roles"),
+        description = _(u"pn_ap_claimed_roles_description",
+                        default = u"Picking at least one is required. "
+                            u"Note that if you allow registration to be bypassed (see below) the roles "
+                            u"specified here won't be added when a meeting number is claimed by someone who's already a part of the meeting."),
+        default = [security.ROLE_VIEWER],
+        widget = deform.widget.CheckboxChoiceWidget(values = _meeting_roles_minus_moderator()),
+    )
+    pn_ap_public_roles = colander.SchemaNode(
+        deform.Set(allow_empty = True),
+        title = (u"Allow bypass and give access to anyone?"),
+        description = _(u"pn_ap_public_roles_description",
+                        default = u"If anything is checked below, any user will be able to bypass the access form "
+                        u"and immediately gain the roles checked. Some examples - for meetings that are: "
+                        u"Closed: check nothing below. "
+                        u"Viewable for anyone: check view permission"
+                        u"Open for participation from anyone: check all"),
+        widget = deform.widget.CheckboxChoiceWidget(values = _meeting_roles_minus_moderator()),
+    )
 
 
 @colander.deferred
