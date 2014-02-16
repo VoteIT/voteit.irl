@@ -4,6 +4,7 @@ from betahaus.pyracont.decorators import schema_factory
 from voteit.core.validators import deferred_existing_userid_validator
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core import security
+from voteit.core.helpers import strip_and_truncate
 
 from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -170,3 +171,16 @@ class AssignParticipantNumber(colander.Schema):
         widget = deform.widget.HiddenWidget(),
         default = deferred_pn_from_get,
     )
+
+
+def add_proposals_owner_nodes(schema, proposals):
+    for prop in proposals:
+        name = prop.__name__
+        title = prop.get_field_value('aid')
+        description = strip_and_truncate(prop.title, limit=150)
+        schema.add(colander.SchemaNode(colander.String(),
+                                       name = name,
+                                       title = title,
+                                       description = description,
+                                       validator = deferred_existing_userid_validator,
+                                       widget = deferred_autocompleting_userid_widget,))
