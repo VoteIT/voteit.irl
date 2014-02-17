@@ -14,9 +14,6 @@ class ParticipantNumberAP(AccessPolicy):
                         u"to allow meeting access through registration of a participant number.")
     configurable = True
 
-    def __init__(self, context):
-        self.context = context
-
     def schema(self, api):
         schema = createSchema("ClaimParticipantNumber")
         if self.context.get_field_value('pn_ap_public_roles', False):

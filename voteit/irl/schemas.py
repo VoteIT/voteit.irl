@@ -10,6 +10,7 @@ from voteit.irl import VoteIT_IRL_MF as _
 from voteit.irl.models.interfaces import IElectoralRegister
 from voteit.irl.models.interfaces import IElegibleVotersMethod
 from voteit.irl.models.interfaces import IParticipantNumbers
+from voteit.irl.interfaces import IClaimParticipantNumber
 
 
 @colander.deferred
@@ -81,7 +82,7 @@ class PNTokenValidator(object):
             raise colander.Invalid(node, _(u"This number has already been claimed."))
 
 
-@schema_factory('ClaimParticipantNumber')
+@schema_factory('ClaimParticipantNumber', provides = IClaimParticipantNumber)
 class ClaimParticipantNumberSchema(colander.Schema):
     token = colander.SchemaNode(colander.String(),
                                 validator = deferred_participant_number_token_validator,
