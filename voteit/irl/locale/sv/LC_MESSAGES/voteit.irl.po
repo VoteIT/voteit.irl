@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-02-13 12:33+0100\n"
-"PO-Revision-Date: 2014-02-13 12:35+0100\n"
+"POT-Creation-Date: 2014-02-21 11:47+0100\n"
+"PO-Revision-Date: 2014-02-21 11:49+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -32,50 +32,50 @@ msgid "Your precence is received"
 msgstr "Din närvaro är mottagen"
 
 #. Default: Method to select elegible voters
-#: voteit/irl/schemas.py:28
+#: voteit/irl/schemas.py:30
 msgid "elegible_voters_method_name"
 msgstr "Metod för att välja röstberättigade"
 
 #. Default: It will modify the voting permissions accoring to it's
 #. specifications.
-#: voteit/irl/schemas.py:29
+#: voteit/irl/schemas.py:31
 msgid "elegible_voters_method_description"
 msgstr "Förändrar rösträtten i enlighet med metodens specifikationer."
 
-#: voteit/irl/schemas.py:51
+#: voteit/irl/schemas.py:53
 msgid "First register"
 msgstr "Första röstlängd"
 
-#: voteit/irl/schemas.py:55
+#: voteit/irl/schemas.py:57
 msgid "Second register"
 msgstr "Andra röstlängd"
 
-#: voteit/irl/schemas.py:77
+#: voteit/irl/schemas.py:79
 msgid "No match - remember that it's case sensitive!"
 msgstr "Matchar inte - kom ihåg att stora eller små bokstäver spelar roll!"
 
-#: voteit/irl/schemas.py:80
+#: voteit/irl/schemas.py:82
 msgid "This number has already been claimed."
 msgstr "Detta nummer har redan tagits."
 
-#: voteit/irl/schemas.py:87
+#: voteit/irl/schemas.py:89
 msgid "Participant code"
 msgstr "Deltagarnummer"
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
-#: voteit/irl/schemas.py:88
+#: voteit/irl/schemas.py:90
 msgid "enter_token_description"
 msgstr ""
 "Skriv i koden som skickades till dig. Den har formatet xxxx-xxxx. Observera "
 "att den gör skillnad på små och stora bokstäver, och kan bara användas en "
 "gång."
 
-#: voteit/irl/schemas.py:109 voteit/irl/views/participant_numbers.py:114
+#: voteit/irl/schemas.py:111 voteit/irl/views/participant_numbers.py:114
 msgid "Participant number not found"
 msgstr "Deltagarnummer hittades inte"
 
-#: voteit/irl/schemas.py:122
+#: voteit/irl/schemas.py:124
 msgid "Anyone registering with participant number will be given these roles"
 msgstr "Alla som registrerar sig med deltagarnummer kommer ges rollerna"
 
@@ -83,14 +83,14 @@ msgstr "Alla som registrerar sig med deltagarnummer kommer ges rollerna"
 #. registration
 #. to be bypassed (see below) the roles specified here won't be added when a
 #. meeting number is claimed by someone who's already a part of the meeting.
-#: voteit/irl/schemas.py:123
+#: voteit/irl/schemas.py:125
 msgid "pn_ap_claimed_roles_description"
 msgstr ""
 "Välj minst en. Notera att om du tillåter användare att gå förbi registrering "
 "av deltagarnummer (se nedan) så kommer de roller du specificerar här inte "
 "att läggas till om de senare registrerar ett deltagarnummer."
 
-#: voteit/irl/schemas.py:132
+#: voteit/irl/schemas.py:134
 msgid "Allow bypass and give access to anyone?"
 msgstr "Tillåt att strunta i registrering och ge tillgång till vem som helst?"
 
@@ -99,7 +99,7 @@ msgstr "Tillåt att strunta i registrering och ge tillgång till vem som helst?"
 #. meetings
 #. that are:   Closed: check nothing below. Viewable for anyone: check view
 #. permission Open for participation from anyone: check all
-#: voteit/irl/schemas.py:133
+#: voteit/irl/schemas.py:135
 msgid "pn_ap_public_roles_description"
 msgstr ""
 "Om något är ikryssat nedan så kommer alla användare kunna gå förbi "
@@ -107,7 +107,7 @@ msgstr ""
 "specificerar. Några exempel - för möten som är: Stängda: välj inget nedan. "
 "Synliga för alla: välj visa. Öppet att delta för alla: välj allt."
 
-#: voteit/irl/schemas.py:164
+#: voteit/irl/schemas.py:166
 msgid "UserID"
 msgstr "AnvändarID"
 
@@ -154,7 +154,7 @@ msgstr ""
 #. associated with it. If you're not supposed to have a participant number,
 #. you're
 #. allowed to proceed by clicking 'Request access'.
-#: voteit/irl/models/participant_number_ap.py:24
+#: voteit/irl/models/participant_number_ap.py:21
 msgid "token_validator_description_when_ok_without"
 msgstr ""
 "Skriv in din kod för att få ditt deltagarnummer och alla rättigheter som hör "
@@ -162,7 +162,7 @@ msgstr ""
 "trycka på 'Begär tillträde'."
 
 #. Default: You're now assigned number ${number}.
-#: voteit/irl/models/participant_number_ap.py:39
+#: voteit/irl/models/participant_number_ap.py:36
 #: voteit/irl/views/participant_numbers.py:84
 #: voteit/irl/views/participant_numbers.py:125
 msgid "number_now_assigned_notice"
@@ -170,9 +170,45 @@ msgstr "Du har tilldelats nummer ${number}."
 
 #. Default: You've been given access to the meeting without a participant
 #. number.
-#: voteit/irl/models/participant_number_ap.py:45
+#: voteit/irl/models/participant_number_ap.py:42
 msgid "access_without_pn_notice"
 msgstr "Du har fått tillgång till mötet utan ett deltagarnummer."
+
+#: voteit/irl/plugins/gender.py:12
+msgid "Female"
+msgstr "Man"
+
+#: voteit/irl/plugins/gender.py:13
+msgid "Male"
+msgstr "Kvinna"
+
+#: voteit/irl/plugins/gender.py:14
+#| msgid "Voters"
+msgid "Other"
+msgstr "Annat"
+
+#: voteit/irl/plugins/gender.py:19
+#| msgid "Participant number registration"
+msgid "Participant number registration with gender"
+msgstr "Registrering av deltagarnummer och kön"
+
+#. Default: Same as participant number, but this also requires gender to be
+#. specified.
+#: voteit/irl/plugins/gender.py:20
+#| msgid "participant_number_ap_description"
+msgid "participant_number_ap_with_gender_required_description"
+msgstr "Samma som deltagarnummer, men kräver också specificering av kön."
+
+#: voteit/irl/plugins/gender.py:36
+msgid "Gender"
+msgstr "Kön"
+
+#: voteit/irl/plugins/gender.py:37
+msgid ""
+"Used for statistics and perhaps gender based quotas. See meeting for details."
+msgstr ""
+"Används för statistik och exempelvis könsbaserad kvotering. See mötet för "
+"detaljer."
 
 #: voteit/irl/plugins/present_users_voters.py:10
 msgid "Set present users as voters"
@@ -181,6 +217,14 @@ msgstr "Ge närvarande användare rösträtt"
 #: voteit/irl/plugins/present_users_voters.py:11
 msgid "Will remove voting permission for anyone not set as present."
 msgstr "Tar bort rösträtt för icke närvarande."
+
+#: voteit/irl/views/change_owner.py:32
+msgid "No proposals here"
+msgstr "Inga förslag här"
+
+#: voteit/irl/views/change_owner.py:73
+msgid "Change proposals owner"
+msgstr "Byt ägare på förslag"
 
 #: voteit/irl/views/electoral_register.py:39
 msgid "New electoral register added"
