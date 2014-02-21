@@ -6,7 +6,7 @@
 	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
 	  i18n:domain="voteit.irl">
 <body>
-<h1 metal:fill-slot="page_heading">Electoral Register</h1>
+<h1 metal:fill-slot="page_heading" i18n:translate="">Electoral Register</h1>
 <div metal:fill-slot="content" class="content_wrapper">
 
     <a href="${request.resource_url(context, 'diff_electoral_register')}"

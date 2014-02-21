@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-02-21 11:47+0100\n"
-"PO-Revision-Date: 2014-02-21 11:49+0100\n"
+"POT-Creation-Date: 2014-02-21 15:10+0100\n"
+"PO-Revision-Date: 2014-02-21 15:11+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -183,19 +183,16 @@ msgid "Male"
 msgstr "Kvinna"
 
 #: voteit/irl/plugins/gender.py:14
-#| msgid "Voters"
 msgid "Other"
 msgstr "Annat"
 
 #: voteit/irl/plugins/gender.py:19
-#| msgid "Participant number registration"
 msgid "Participant number registration with gender"
 msgstr "Registrering av deltagarnummer och kön"
 
 #. Default: Same as participant number, but this also requires gender to be
 #. specified.
 #: voteit/irl/plugins/gender.py:20
-#| msgid "participant_number_ap_description"
 msgid "participant_number_ap_with_gender_required_description"
 msgstr "Samma som deltagarnummer, men kräver också specificering av kön."
 
@@ -365,6 +362,11 @@ msgstr "(Ingen förändring)"
 #: voteit/irl/views/templates/diff_electoral_register.pt:38
 msgid "${count} removed in ${first}"
 msgstr "${count} borttagen i ${first}"
+
+#: voteit/irl/views/templates/electoral_register.pt:9
+#| msgid "Electoral register"
+msgid "Electoral Register"
+msgstr "Röstlängd"
 
 #: voteit/irl/views/templates/electoral_register.pt:15
 msgid ""
