@@ -175,10 +175,22 @@ class AssignParticipantNumber(colander.Schema):
 
 
 def add_proposals_owner_nodes(schema, proposals):
-    for prop in proposals:
-        name = prop.__name__
-        title = prop.get_field_value('aid')
-        description = strip_and_truncate(prop.title, limit=150)
+    for obj in proposals:
+        name = obj.__name__
+        title = obj.get_field_value('aid')
+        description = strip_and_truncate(obj.title, limit=150)
+        schema.add(colander.SchemaNode(colander.String(),
+                                       name = name,
+                                       title = title,
+                                       description = description,
+                                       validator = deferred_existing_userid_validator,
+                                       widget = deferred_autocompleting_userid_widget,))
+
+def add_discussions_owner_nodes(schema, discussion_posts):
+    for obj in discussion_posts:
+        name = obj.__name__
+        title = name
+        description = strip_and_truncate(obj.title, limit=150)
         schema.add(colander.SchemaNode(colander.String(),
                                        name = name,
                                        title = title,
