@@ -73,7 +73,7 @@ class ChangeOwnership(BaseEdit):
 
 @view_action('context_actions', 'change_proposal_owner', title = _(u"Change proposal ownership"),
              permission = MODERATE_MEETING, interface = IAgendaItem, link = '_proposal_owner')
-@view_action('context_actions', 'change_discussion_owner', title = _(u"Change discussion ownership"),
+@view_action('context_actions', 'change_discussion_owner', title = _(u"Change post ownership"),
              permission = MODERATE_MEETING, interface = IAgendaItem, link = '_discussion_owner')
 def change_owner_menu_action(context, request, va, **kw):
     api = kw['api']
