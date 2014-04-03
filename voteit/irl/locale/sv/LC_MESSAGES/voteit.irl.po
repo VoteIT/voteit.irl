@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-02-21 15:10+0100\n"
-"PO-Revision-Date: 2014-02-21 15:11+0100\n"
+"POT-Creation-Date: 2014-04-03 09:19+0200\n"
+"PO-Revision-Date: 2014-04-03 09:19+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -215,13 +215,19 @@ msgstr "Ge närvarande användare rösträtt"
 msgid "Will remove voting permission for anyone not set as present."
 msgstr "Tar bort rösträtt för icke närvarande."
 
-#: voteit/irl/views/change_owner.py:32
+#: voteit/irl/views/change_owner.py:28
 msgid "No proposals here"
 msgstr "Inga förslag här"
 
-#: voteit/irl/views/change_owner.py:73
-msgid "Change proposals owner"
+#: voteit/irl/views/change_owner.py:74
+#| msgid "Change proposals owner"
+msgid "Change proposal ownership"
 msgstr "Byt ägare på förslag"
+
+#: voteit/irl/views/change_owner.py:76
+#| msgid "Change proposals owner"
+msgid "Change post ownership"
+msgstr "Byt ägare på post"
 
 #: voteit/irl/views/electoral_register.py:39
 msgid "New electoral register added"
@@ -364,7 +370,6 @@ msgid "${count} removed in ${first}"
 msgstr "${count} borttagen i ${first}"
 
 #: voteit/irl/views/templates/electoral_register.pt:9
-#| msgid "Electoral register"
 msgid "Electoral Register"
 msgstr "Röstlängd"
 

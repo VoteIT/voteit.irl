@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.1dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-02-21 15:10+0100\n"
+"POT-Creation-Date: 2014-04-03 09:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -183,12 +183,16 @@ msgstr ""
 msgid "Will remove voting permission for anyone not set as present."
 msgstr ""
 
-#: voteit/irl/views/change_owner.py:32
+#: voteit/irl/views/change_owner.py:28
 msgid "No proposals here"
 msgstr ""
 
-#: voteit/irl/views/change_owner.py:73
-msgid "Change proposals owner"
+#: voteit/irl/views/change_owner.py:74
+msgid "Change proposal ownership"
+msgstr ""
+
+#: voteit/irl/views/change_owner.py:76
+msgid "Change post ownership"
 msgstr ""
 
 #: voteit/irl/views/electoral_register.py:39
