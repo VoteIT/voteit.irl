@@ -60,7 +60,7 @@ class ParticipantNumbers(object):
             return "".join([choice(CHAR_POOL) for x in range(choice(range(4, 5)))])
         token = None
         i = 0
-        while token in self.token_to_number or not token:
+        while token is None or token in self.token_to_number:
             token = u"%s-%s" % (_token_part(), _token_part())
             i += 1
             if i > 200:
@@ -95,7 +95,7 @@ class ParticipantNumbers(object):
         userid = self.number_to_userid.get(number, None)
         if number in self.number_to_userid:
             del self.number_to_userid[number]
-        if userid in self.userid_to_number:
+        if userid and userid in self.userid_to_number:
             del self.userid_to_number[userid]
         if number in self.tickets:
             token = self.tickets[number].token
