@@ -14,7 +14,7 @@ class ParticipantNumberAP(AccessPolicy):
                         u"to allow meeting access through registration of a participant number.")
     configurable = True
 
-    def schema(self, api):
+    def schema(self):
         schema = createSchema("ClaimParticipantNumber")
         if self.context.get_field_value('pn_ap_public_roles', False):
             schema['token'].missing = u""
@@ -24,7 +24,8 @@ class ParticipantNumberAP(AccessPolicy):
                                                 u"'Request access'.")
         return schema
 
-    def handle_success(self, api, appstruct):
+    def handle_success(self, view, appstruct):
+        api = view.api
         public_roles = self.context.get_field_value('pn_ap_public_roles', False)
         if appstruct['token']:
             #The schema validated the token if it existed
@@ -44,7 +45,7 @@ class ParticipantNumberAP(AccessPolicy):
             api.flash_messages.add(msg)
         return HTTPFound(location = api.request.resource_url(api.meeting)) #Will raise unauthorized if nothing was done
 
-    def config_schema(self, api):
+    def config_schema(self):
         return createSchema("ConfigureParticipantNumberAP")
 
 
