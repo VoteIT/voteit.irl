@@ -20,10 +20,10 @@ class ParticipantNumberAPWithGender(ParticipantNumberAP):
     description = _(u"participant_number_ap_with_gender_required_description",
                     default = u"Same as participant number, but this also requires gender to be specified.")
 
-    def handle_success(self, api, appstruct):
+    def handle_success(self, view, appstruct):
         if 'gender' in appstruct:
-            api.user_profile.set_field_value('gender', appstruct['gender'])
-        return super(ParticipantNumberAPWithGender, self).handle_success(api, appstruct)
+            view.api.user_profile.set_field_value('gender', appstruct['gender'])
+        return super(ParticipantNumberAPWithGender, self).handle_success(view, appstruct)
 
 
 def add_gender_in_profile(schema, event):
