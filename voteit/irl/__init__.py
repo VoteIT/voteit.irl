@@ -2,7 +2,7 @@ import logging
 
 from pyramid.i18n import TranslationStringFactory
 
-VoteIT_IRL_MF = TranslationStringFactory('voteit.irl')
+VoteIT_IRL_MF = _ = TranslationStringFactory('voteit.irl')
 
 log = logging.getLogger(__name__)
 
@@ -23,7 +23,6 @@ def includeme(config):
     config.add_translation_dirs('voteit.irl:locale/')
     #Add translations used within javascript
     from voteit.core.models.interfaces import IJSUtil
-    _ = VoteIT_IRL_MF #To make translations work
     js_trans = config.registry.queryUtility(IJSUtil)
     if js_trans:
         js_trans.add_translations(
