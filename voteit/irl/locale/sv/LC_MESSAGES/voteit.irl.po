@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-02-19 11:15+0100\n"
-"PO-Revision-Date: 2015-02-19 11:17+0100\n"
+"PO-Revision-Date: 2015-02-22 10:30+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -184,11 +184,11 @@ msgstr "Samma som deltagarnummer, men kräver också specificering av kön."
 
 #: plugins/gender.py:12
 msgid "Female"
-msgstr "Man"
+msgstr "Kvinna"
 
 #: plugins/gender.py:13
 msgid "Male"
-msgstr "Kvinna"
+msgstr "Man"
 
 #: plugins/gender.py:14
 msgid "Other"
