@@ -1,55 +1,60 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="load: ${api.template_dir}content.pt"
-         xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-         i18n:domain="voteit.irl">
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"  
+  metal:use-macro="view.macro('arche:templates/master.pt', 'arche:templates/inline.pt')"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="voteit.irl">
 <body>
-<h1 metal:fill-slot="page_heading" i18n:translate="">
-    Diff electoral registers
-</h1>
-<div metal:fill-slot="content" class="content_wrapper">
-    
-    <div tal:content="structure form">Diff form</div>
-    
-    <tal:diff_view condition="show_diff|False">
-        <h2 i18n:translate="">Comparing <span i18n:name="first">${first}</span> and <span i18n:name="second">${second}</span></h2>
+  <div metal:fill-slot="content" class="row">
+    <div class="col-md-12">
+      <h1 i18n:translate="">Diff electoral registers</h1>
+
+      <div tal:content="structure form">Diff form</div>
+
+      <tal:diff_view condition="show_diff|False">
+        <h2 i18n:translate="">
+          Comparing <span i18n:name="first">${first}</span>
+          and <span i18n:name="second">${second}</span>
+        </h2>
         <table class="listing">
-        	<thead>
-    			<tr>
-                    <th class="heading" i18n:translate="">
-                        <span i18n:name="count">${len(added_userids)}</span> added in <span i18n:name="first">${first}</span>
-                    </th>
-    			</tr>
-    		</thead>
-    	    <tbody>
-    	        <tr tal:repeat="userid added_userids">
-                    <td tal:content="structure api.get_creators_info((userid,), portrait=False)">User info</td>
-    	        </tr>
-                <tr tal:condition="not added_userids">
-                    <td i18n:translate="">(No change)</td>
-                </tr>
-    	    </tbody>
+          <thead>
+            <tr>
+              <th class="heading" i18n:translate="">
+                <span i18n:name="count">${len(added_userids)}</span>
+                added in <span i18n:name="first">${first}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="userid added_userids">
+              <td tal:content="structure request.creators_info((userid,), portrait=False)">User info</td>
+            </tr>
+            <tr tal:condition="not added_userids">
+              <td i18n:translate="">(No change)</td>
+            </tr>
+          </tbody>
         </table>
         <table class="listing">
-            <thead>
-                <tr>
-                    <th class="heading" i18n:translate="">
-                        <span i18n:name="count">${len(removed_userids)}</span> removed in <span i18n:name="first">${first}</span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr tal:repeat="userid removed_userids">
-                    <td tal:content="structure api.get_creators_info((userid,), portrait=False)">User info</td>
-                </tr>
-                <tr tal:condition="not removed_userids">
-                    <td i18n:translate="">(No change)</td>
-                </tr>
-            </tbody>
+          <thead>
+            <tr>
+              <th class="heading" i18n:translate="">
+                <span i18n:name="count">${len(removed_userids)}</span>
+                removed in <span i18n:name="first">${first}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="userid removed_userids">
+              <td tal:content="structure request.creators_info((userid,), portrait=False)">User info</td>
+            </tr>
+            <tr tal:condition="not removed_userids">
+              <td i18n:translate="">(No change)</td>
+            </tr>
+          </tbody>
         </table>
-    </tal:diff_view>
-</div>
+      </tal:diff_view>
+    </div>
+  </div>
 </body>
 </html>

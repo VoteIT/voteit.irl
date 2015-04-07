@@ -43,20 +43,22 @@ class ElectoralRegisterView(BaseView):
             self.flash_messages.add(msg)
             url = self.request.resource_url(self.context, 'electoral_register')
             return HTTPFound(location = url)
-        self.response['current_reg'] = self.electoral_register.current
-        self.response['new_reg_needed'] = self.electoral_register.new_register_needed()
-        self.response['electoral_register'] = self.electoral_register
-        self.response['registers_list'] = self._registers_reverse()
-        self.response['view_reg_link'] = self._view_reg_link
-        return self.response
+        response = {}
+        response['current_reg'] = self.electoral_register.current
+        response['new_reg_needed'] = self.electoral_register.new_register_needed()
+        response['electoral_register'] = self.electoral_register
+        response['registers_list'] = self._registers_reverse()
+        response['view_reg_link'] = self._view_reg_link
+        return response
 
     @view_config(name = "view_electoral_register",
                  renderer = "voteit.irl:templates/view_electoral_register.pt")
     def view_electoral_register(self):
         id = int(self.request.GET.get('id'))
-        self.response['id'] = id
-        self.response['register'] = self.electoral_register.registers[id]
-        return self.response
+        response = {}
+        response['id'] = id
+        response['register'] = self.electoral_register.registers[id]
+        return response
 
     @view_config(name = "diff_electoral_register",
                  renderer = "voteit.irl:templates/diff_electoral_register.pt")
@@ -71,26 +73,27 @@ class ElectoralRegisterView(BaseView):
         schema = schema.bind(context = self.context, request = self.request, view = self)
         form = deform.Form(schema, buttons=(deform.Button('diff', _(u"Diff"), css_class="btn btn-primary"),
                                             deform.Button('back', _(u"Back"), css_class="btn btn-default"),))
+        response = {}
         if 'diff' in post:
             controls = post.items()
             try:
                 appstruct = form.validate(controls)
-                self.response['form'] = form.render(appstruct = appstruct)
-                self.append_diff_info(appstruct['first'], appstruct['second'])
+                response['form'] = form.render(appstruct = appstruct)
+                self.append_diff_info(response, appstruct['first'], appstruct['second'])
             except deform.ValidationFailure, e:
-                self.response['form'] = e.render()
+                response['form'] = e.render()
         else:
-            self.response['form'] = form.render()
-        return self.response
+            response['form'] = form.render()
+        return response
 
-    def append_diff_info(self, first, second):
+    def append_diff_info(self, response, first, second):
         first_reg_users = self.electoral_register.registers[first]['userids']
         second_reg_users = self.electoral_register.registers[second]['userids']
-        self.response.update({'show_diff': True,
-                              'first': first,
-                              'second': second,
-                              'added_userids': first_reg_users - second_reg_users,
-                              'removed_userids': second_reg_users - first_reg_users})
+        response.update({'show_diff': True,
+                         'first': first,
+                         'second': second,
+                         'added_userids': first_reg_users - second_reg_users,
+                         'removed_userids': second_reg_users - first_reg_users})
 
 
 @view_action('participants_menu', 'electoral_register',
