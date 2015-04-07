@@ -1,16 +1,14 @@
 import colander
 import deform
-from betahaus.pyracont.decorators import schema_factory
-from voteit.core.validators import deferred_existing_userid_validator
+from arche.validators import existing_userid_or_email
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
 
-from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
 from voteit.irl.models.interfaces import IElegibleVotersMethod
 from voteit.irl.models.interfaces import IParticipantNumbers
-from voteit.irl.interfaces import IClaimParticipantNumber
 
 
 @colander.deferred
@@ -24,7 +22,6 @@ def elegible_voters_method_choices_widget(node, kw):
     return deform.widget.SelectWidget(values=method_choices)
 
 
-@schema_factory('ElegibleVotersMethodSchema')
 class ElegibleVotersMethodSchema(colander.Schema):
     method_name = colander.SchemaNode(colander.String(),
                                  title = _(u"elegible_voters_method_name", default=u"Method to select elegible voters"),
@@ -37,17 +34,15 @@ class ElegibleVotersMethodSchema(colander.Schema):
 def register_diff_choices_widget(node, kw):
     context = kw['context']
     request = kw['request']
-    api = kw['api']
     electoral_register = request.registry.getAdapter(context, IElectoralRegister)
     choices = []
     for id in sorted(electoral_register.registers.keys(), key=int, reverse=True):
-        timestamp = api.dt_util.dt_format(electoral_register.registers[id]['time'])
+        timestamp = request.dt_handler.format_dt(electoral_register.registers[id]['time'])
         title = "%s: %s" % (id, timestamp)
         choices.append((id, title))
     return deform.widget.SelectWidget(values=choices)
 
 
-@schema_factory('ElectoralRegisterDiff')
 class ElectoralRegisterDiffSchema(colander.Schema):
     first = colander.SchemaNode(colander.Int(),
                                   title = _(u"First register"),
@@ -82,7 +77,6 @@ class PNTokenValidator(object):
             raise colander.Invalid(node, _(u"This number has already been claimed."))
 
 
-@schema_factory('ClaimParticipantNumber', provides = IClaimParticipantNumber)
 class ClaimParticipantNumberSchema(colander.Schema):
     token = colander.SchemaNode(colander.String(),
                                 validator = deferred_participant_number_token_validator,
@@ -94,8 +88,8 @@ class ClaimParticipantNumberSchema(colander.Schema):
 
 @colander.deferred
 def deferred_existing_participant_number_validator(node, kw):
-    context = kw['api'].meeting
     request = kw['request']
+    context = request.meeting
     return ExistingParticipantNumberValidator(context, request)
 
 
@@ -117,10 +111,9 @@ def _meeting_roles_minus_moderator():
     return roles.items()
 
 
-@schema_factory('ConfigureParticipantNumberAP')
 class ConfigureParticipantNumberAP(colander.Schema):
     pn_ap_claimed_roles = colander.SchemaNode(
-        deform.Set(allow_empty = False),
+        colander.Set(),
         title = _(u"Anyone registering with participant number will be given these roles"),
         description = _(u"pn_ap_claimed_roles_description",
                         default = u"Picking at least one is required. "
@@ -130,7 +123,7 @@ class ConfigureParticipantNumberAP(colander.Schema):
         widget = deform.widget.CheckboxChoiceWidget(values = _meeting_roles_minus_moderator()),
     )
     pn_ap_public_roles = colander.SchemaNode(
-        deform.Set(allow_empty = True),
+        colander.Set(),
         title = _(u"Allow bypass and give access to anyone?"),
         description = _(u"pn_ap_public_roles_description",
                         default = u"If anything is checked below, any user will be able to bypass the access form "
@@ -144,8 +137,8 @@ class ConfigureParticipantNumberAP(colander.Schema):
 
 @colander.deferred
 def deferred_autocompleting_participant_number_widget(node, kw):
-    meeting = kw['api'].meeting
     request = kw['request']
+    meeting = request.meeting
     pn = request.registry.getAdapter(meeting, IParticipantNumbers)
     choices = tuple(pn.number_to_userid.keys())
     return deform.widget.AutocompleteInputWidget(
@@ -159,12 +152,11 @@ def deferred_pn_from_get(node, kw):
     return int(request.GET['pn'])
 
 
-@schema_factory('AssignParticipantNumber')
 class AssignParticipantNumber(colander.Schema):
     userid = colander.SchemaNode(
         colander.String(),
         title = _(u"UserID"),
-        validator = deferred_existing_userid_validator,
+        validator = existing_userid_or_email,
         widget = deferred_autocompleting_userid_widget,
     )
     pn = colander.SchemaNode(
@@ -183,7 +175,7 @@ def add_proposals_owner_nodes(schema, proposals):
                                        name = name,
                                        title = title,
                                        description = description,
-                                       validator = deferred_existing_userid_validator,
+                                       validator = existing_userid_or_email,
                                        widget = deferred_autocompleting_userid_widget,))
 
 def add_discussions_owner_nodes(schema, discussion_posts):
@@ -195,5 +187,11 @@ def add_discussions_owner_nodes(schema, discussion_posts):
                                        name = name,
                                        title = title,
                                        description = description,
-                                       validator = deferred_existing_userid_validator,
+                                       validator = existing_userid_or_email,
                                        widget = deferred_autocompleting_userid_widget,))
+
+
+def includeme(config):
+    config.add_content_schema('Meeting', ElegibleVotersMethodSchema, 'eligible_voters_method')
+    config.add_content_schema('Meeting', AssignParticipantNumber, 'assign_participant_number')
+    config.add_content_schema('Meeting', ClaimParticipantNumberSchema, 'claim_participant_number')

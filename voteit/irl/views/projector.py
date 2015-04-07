@@ -1,7 +1,7 @@
 from pyramid.view import view_config
 from pyramid.renderers import render
 from pyramid.traversal import resource_path
-from voteit.core.views.base_view import BaseView
+from arche.views.base import BaseView
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
@@ -10,14 +10,18 @@ from betahaus.viewcomponent.decorators import view_action
 from voteit.irl.fanstaticlib import voteit_irl_projector
 from voteit.irl import VoteIT_IRL_MF as _
 
+#FIXME: XXX
 
 class ProjectorView(BaseView):
 
-    @view_config(context=IAgendaItem, name="projector", renderer="templates/projector/projector.pt", permission=MODERATE_MEETING)
+    @view_config(context = IAgendaItem,
+                 name = "projector",
+                 renderer = "voteit.irl:templates/projector/projector.pt",
+                 permission = MODERATE_MEETING)
     def view(self):
         """ Main projector view. """
         voteit_irl_projector.need()
-        context_path = resource_path(self.api.meeting)
+        context_path = resource_path(self.request.meeting)
         query = dict(
             content_type = 'AgendaItem',
             workflow_state = ('ongoing', ),
@@ -53,6 +57,5 @@ class ProjectorView(BaseView):
 @view_action('context_actions', 'projector', title = _(u"Proposal view for projector"), viewname = u"projector", interface = IAgendaItem)
 def projector_menu_link(context, request, va, **kw):
     """ Visible in the moderator menu, but doesn't work for the meeting root """
-    api = kw['api']
     url = request.resource_url(context, va.kwargs['viewname'])
-    return """<li><a href="%s">%s</a></li>""" % (url, api.translate(va.title))
+    return """<li><a href="%s">%s</a></li>""" % (url, request.localizer.translate(va.title))

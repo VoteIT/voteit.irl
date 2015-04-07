@@ -1,3 +1,4 @@
+from six import string_types
 from voteit.core.security import ROLE_OWNER
 
 
@@ -5,7 +6,7 @@ def change_ownership(obj, userid):
     """ Change ownership of an object to another user.
         Will return the supplied userid if anything was changed.
     """
-    assert isinstance(userid, basestring)
+    assert isinstance(userid, string_types)
     old_owner = obj.creators[0]
     if userid == old_owner:
         return

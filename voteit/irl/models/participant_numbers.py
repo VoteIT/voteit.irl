@@ -2,14 +2,14 @@ from random import choice
 
 from BTrees.IOBTree import IOBTree
 from BTrees.OIBTree import OIBTree
+from arche.utils import utcnow
 from persistent import Persistent
-from zope.interface import implementer
-from zope.component import adapter
 from pyramid.threadlocal import get_current_registry
 from voteit.core.models.interfaces import IMeeting
-from voteit.core.models.date_time_util import utcnow
+from zope.component import adapter
+from zope.interface import implementer
 
-from .interfaces import IParticipantNumbers
+from voteit.irl.models.interfaces import IParticipantNumbers
 from voteit.irl.events import ParticipantNumberClaimed
 
 

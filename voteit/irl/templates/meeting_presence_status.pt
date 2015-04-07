@@ -17,22 +17,27 @@
     <br/><br/>
 
     <div tal:condition="mp_util.open and not is_registered">
-        <a class="buttonize" id="register_set_attending"
-           href="${request.resource_url(context, '_register_set_attending')}"
-           i18n:translate="set_as_present_button">Set yourself as present</a>
+      <a class="btn btn-success"
+         data-clickable-target
+         data-replace-target="#register_current_status"
+         href="${request.resource_url(context, '_register_set_attending')}">
+       <span data-actionmarker="glyphicon glyphicon-refresh rotate-me"></span>      
+       <span i18n:translate="set_as_present_button">Set yourself as present</span></a>
     </div><br/>
-    <div tal:condition="not mp_util.open and api.show_moderator_actions">
-        <a class="buttonize"
+
+    <div tal:condition="not mp_util.open and request.is_moderator">
+        <a class="btn btn-primary"
            href="${request.resource_url(context, '_toggle_presence_check')}"
            i18n:translate="start_presence_check_button">Clear and start availability check</a>
     </div>
-    <div tal:condition="mp_util.open and api.show_moderator_actions">
-        <a class="buttonize"
+
+    <div tal:condition="mp_util.open and request.is_moderator">
+        <a class="btn btn-warning"
            href="${request.resource_url(context, '_toggle_presence_check')}"
            i18n:translate="end_presence_check_button">Close check</a>
     </div>
 
-    <div tal:condition="api.show_moderator_actions">
+    <div tal:condition="request.is_moderator">
         <hr/>
         <h3 i18n:translate="">Available participants</h3>
         <ul>

@@ -1,12 +1,12 @@
+from arche.interfaces import ISchemaCreatedEvent
+from arche.schemas import UserSchema
+from pyramid.threadlocal import get_current_request
 import colander
 import deform
-from betahaus.pyracont.interfaces import ISchemaCreatedEvent
-from voteit.core.schemas.interfaces import IEditUserSchema
-from pyramid.threadlocal import get_current_request
 
-from voteit.irl.interfaces import IClaimParticipantNumber
+from voteit.irl import _
 from voteit.irl.models.participant_number_ap import ParticipantNumberAP
-from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl.schemas import ClaimParticipantNumberSchema
 
 
 GENDER_VALUES = (('female', _(u"Female")),
@@ -22,7 +22,8 @@ class ParticipantNumberAPWithGender(ParticipantNumberAP):
 
     def handle_success(self, view, appstruct):
         if 'gender' in appstruct:
-            view.api.user_profile.set_field_value('gender', appstruct['gender'])
+            user = view.root['users'][view.request.authenticated_userid]
+            user.set_field_value('gender', appstruct['gender'])
         return super(ParticipantNumberAPWithGender, self).handle_success(view, appstruct)
 
 
@@ -35,11 +36,10 @@ def add_gender_in_profile(schema, event):
                                    name = "gender",
                                    title = _(u"Gender"),
                                    description = _(u"Used for statistics and perhaps gender based quotas. See meeting for details."),
-                                   widget = deform.widget.RadioChoiceWidget(values = GENDER_VALUES)),
-                                   )
+                                   widget = deform.widget.RadioChoiceWidget(values = GENDER_VALUES)),)
 
 
 def includeme(config):
-    config.add_subscriber(add_gender_in_profile, [IEditUserSchema, ISchemaCreatedEvent])
-    config.add_subscriber(add_gender_in_profile, [IClaimParticipantNumber, ISchemaCreatedEvent])
+    config.add_subscriber(add_gender_in_profile, [ClaimParticipantNumberSchema, ISchemaCreatedEvent])
+    config.add_subscriber(add_gender_in_profile, [UserSchema, ISchemaCreatedEvent])
     config.registry.registerAdapter(ParticipantNumberAPWithGender, name = ParticipantNumberAPWithGender.name)

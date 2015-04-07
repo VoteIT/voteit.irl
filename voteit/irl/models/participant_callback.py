@@ -1,16 +1,19 @@
+from __future__ import unicode_literals
+
 from BTrees.IOBTree import IOBTree
+from arche.interfaces import IFlashMessages
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_request
+from six import string_types
+from voteit.core import security
+from voteit.core.models.interfaces import IMeeting
 from zope.component import adapter
 from zope.interface import implementer
-from voteit.core.models.interfaces import IMeeting
-from voteit.core import security
-from voteit.core.models.interfaces import IFlashMessages
 
-from .interfaces import IParticipantCallback
-from .interfaces import IParticipantCallbacks
-from .interfaces import IParticipantNumbers
-from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl import _
+from voteit.irl.models.interfaces import IParticipantCallback
+from voteit.irl.models.interfaces import IParticipantCallbacks
+from voteit.irl.models.interfaces import IParticipantNumbers
 
 
 @implementer(IParticipantCallbacks)
@@ -29,16 +32,16 @@ class ParticipantCallbacks(object):
             return self.context.__participant_callbacks__
 
     def get_callbacks(self, number):
-        if number not in self.callbacks:
-            self.callbacks[number] = PersistentList()
-        return self.callbacks[number]
+        if number in self.callbacks:
+            return self.callbacks[number]
+        return []
 
     def execute_callbacks_for(self, number, userid, limit = None, request = None, **kw):
         assert isinstance(number, int)
-        assert isinstance(userid, basestring)
+        assert isinstance(userid, string_types)
         if request is None:
             request = get_current_request()
-        if isinstance(limit, basestring):
+        if isinstance(limit, string_types):
             limit = (limit,)
         errors = []
         executed = []
@@ -57,22 +60,24 @@ class ParticipantCallbacks(object):
                 executed.append(callback_name)
         if errors:
             fm = request.registry.getAdapter(request, IFlashMessages)
-            msg = _(u"could_not_execute_callback_error",
-                    default = u"Some callbacks for the UserId '${userid}' failed. Contact the moderator about this. "
-                              u"The ones that failed were: ${callback_errors}",
+            msg = _("could_not_execute_callback_error",
+                    default = "Some callbacks for the UserId '${userid}' failed. Contact the moderator about this. "
+                              "The ones that failed were: ${callback_errors}",
                     mapping = {'callback_errors': ", ".join(errors), 'userid': userid})
-            fm.add(msg, type = 'error')
+            fm.add(msg, type = 'danger', require_commit = False)
         return executed
 
     def add(self, callback, start, end = None):
-        assert isinstance(callback, basestring)
+        assert isinstance(callback, string_types)
         if end == None:
             end = start
         assert start <= end
         added = []
         existed = []
-        for i in range(start, end + 1): #Range  stops before end otherwise
-            callbacks = self.get_callbacks(i)
+        for i in range(start, end + 1): #Since end should be included.
+            if i not in self.callbacks:
+                self.callbacks[i] = PersistentList()
+            callbacks = self.callbacks[i]
             if callback not in callbacks:
                 callbacks.append(callback)
                 added.append(i)
@@ -81,13 +86,13 @@ class ParticipantCallbacks(object):
         return added, existed
 
     def remove(self, callback, start, end = None):
-        assert isinstance(callback, basestring)
+        assert isinstance(callback, string_types)
         if end == None:
             end = start
-        assert start <= end
+        assert start <= end, "Can't end before start"
         removed = []
         nonexistent = []
-        for i in range(start, end + 1): #Range  stops before end otherwise
+        for i in range(start, end + 1): #End value should be included
             callbacks = self.get_callbacks(i)
             if callback in callbacks:
                 callbacks.remove(callback)
@@ -102,9 +107,9 @@ class ParticipantCallbacks(object):
 class ParticipantCallback(object):
     """ Abstract class, see IParticipantCallback
     """
-    name = u""
-    title = u""
-    description = u""
+    name = ""
+    title = ""
+    description = ""
     
     def __init__(self, context):
         self.context = context
@@ -114,24 +119,24 @@ class ParticipantCallback(object):
 
 
 class AssignVoterRole(ParticipantCallback):
-    name = u"allow_vote"
-    title = _(u"Allow to vote")
+    name = "allow_vote"
+    title = _("Allow to vote")
 
     def __call__(self, number, userid, **kw):
         self.context.add_groups(userid, [security.ROLE_VOTER])
 
 
 class AssignDiscussionRole(ParticipantCallback):
-    name = u"allow_discuss"
-    title = _(u"Allow to discuss")
+    name = "allow_discuss"
+    title = _("Allow to discuss")
 
     def __call__(self, number, userid, **kw):
         self.context.add_groups(userid, [security.ROLE_DISCUSS])
 
 
 class AssignProposeRole(ParticipantCallback):
-    name = u"allow_propose"
-    title = _(u"Allow to propose")
+    name = "allow_propose"
+    title = _("Allow to propose")
 
     def __call__(self, number, userid, **kw):
         self.context.add_groups(userid, [security.ROLE_PROPOSE])

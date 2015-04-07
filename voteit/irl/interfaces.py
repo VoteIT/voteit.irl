@@ -1,6 +1,5 @@
 from zope.interface import Attribute
 from zope.interface import Interface
-from voteit.core.schemas.interfaces import ISchema
 
 
 class IParticipantNumberClaimed(Interface):
@@ -8,7 +7,3 @@ class IParticipantNumberClaimed(Interface):
     meeting = Attribute("Meeting object where the number was claimed")
     number = Attribute("Number claimed")
     userid = Attribute("UserID who claimed a number")
-
-
-class IClaimParticipantNumber(ISchema):
-    """ Form for claiming a participant number """
