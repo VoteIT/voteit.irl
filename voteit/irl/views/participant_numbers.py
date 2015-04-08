@@ -51,11 +51,12 @@ class ParticipantNumbersView(BaseView):
                 res = self.participant_numbers.new_tickets(self.request.authenticated_userid, start, end)
                 msg = _(u"Added ${count} new numbers",
                         mapping = {'count': len(res)})
+                self.flash_messages.add(msg)
             if remove:
                 res = self.participant_numbers.clear_numbers(start, end)
                 msg = _(u"Removed ${count} numbers",
                         mapping = {'count': len(res)})
-            self.flash_messages.add(msg)
+                self.flash_messages.add(msg, type = "warning")
             here_url = self.request.resource_url(self.context, 'manage_participant_numbers')
             return HTTPFound(location = here_url)
         response['participant_numbers'] = self.participant_numbers

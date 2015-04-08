@@ -37,6 +37,9 @@ class ChangeOwnershipBase(DefaultEditForm):
              renderer = 'arche:templates/form.pt')
 class ChangeOwnershipProposals(ChangeOwnershipBase):
 
+    def appstruct(self):
+        return dict([(x.__name__, x.creator[0]) for x in self.context.get_content(iface = IProposal, sort_on = 'created')])
+
     def get_schema(self):
         objects = self.context.get_content(iface = IProposal, sort_on = 'created')
         schema = colander.Schema()
@@ -50,11 +53,14 @@ class ChangeOwnershipProposals(ChangeOwnershipBase):
              renderer = 'arche:templates/form.pt')
 class ChangeOwnershipDiscussionPosts(ChangeOwnershipBase):
 
+    def appstruct(self):
+        return dict([(x.__name__, x.creator[0]) for x in self.context.get_content(iface = IDiscussionPost, sort_on = 'created')])
+
     def get_schema(self):
         objects = self.context.get_content(iface = IDiscussionPost, sort_on = 'created')
         schema = colander.Schema()
         add_discussions_owner_nodes(schema, objects)
-        return self.change_ownership(objects, schema)
+        return schema
 
 
 @view_action('context_actions', 'change_proposal_owner',

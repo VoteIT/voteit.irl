@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       metal:use-macro="view.macro('arche:templates/master.pt', 'arche:templates/inline.pt')"
-	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-	  i18n:domain="voteit.irl">
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="voteit.irl">
 <body>
 <div metal:fill-slot="content" class="row">
   <div class="col-md-12">

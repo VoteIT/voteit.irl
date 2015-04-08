@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from arche.views.base import BaseView
 from betahaus.viewcomponent import view_action
 from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPForbidden
@@ -8,7 +9,6 @@ from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
 from voteit.core import security
 from voteit.core.models.interfaces import IMeeting
-from voteit.core.views.base_view import BaseView
 import deform
 
 from voteit.irl import _
@@ -83,11 +83,3 @@ class ParticipantCallbacksView(BaseView):
         response['participant_callbacks'] = self.participant_callbacks
         response['callback_adapters'] = [adapter for (name, adapter) in self.request.registry.getAdapters([self.request.meeting], IParticipantCallback)]
         return response
-
-
-@view_action('meeting', 'participant_callbacks',
-             title = _("Participant callbacks"),
-             permission = security.MODERATE_MEETING)
-def participant_callbacks_menu(context, request, va, **kw):
-    return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, "manage_participant_callbacks"),
-                                                 request.localizer.translate(va.title))
