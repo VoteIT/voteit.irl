@@ -14,6 +14,7 @@ from voteit.irl import _
 from voteit.irl.models.interfaces import IParticipantCallback
 from voteit.irl.models.interfaces import IParticipantCallbacks
 from voteit.irl.models.interfaces import IParticipantNumbers
+from voteit.irl.interfaces import IParticipantNumberClaimed
 
 
 @implementer(IParticipantCallbacks)
@@ -142,8 +143,14 @@ class AssignProposeRole(ParticipantCallback):
         self.context.add_groups(userid, [security.ROLE_PROPOSE])
 
 
+def execute_callers_on_number_claimed(event):
+    request = get_current_request()
+    callbacks = request.registry.getAdapter(event.meeting, IParticipantCallbacks)
+    callbacks.execute_callbacks_for(event.number, event.userid, request = request)
+
 def includeme(config):
     config.registry.registerAdapter(ParticipantCallbacks)
     config.registry.registerAdapter(AssignVoterRole, name = AssignVoterRole.name)
     config.registry.registerAdapter(AssignDiscussionRole, name = AssignDiscussionRole.name)
     config.registry.registerAdapter(AssignProposeRole, name = AssignProposeRole.name)
+    config.add_subscriber(execute_callers_on_number_claimed, IParticipantNumberClaimed)
