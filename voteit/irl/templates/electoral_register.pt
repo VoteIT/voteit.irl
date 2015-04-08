@@ -10,25 +10,27 @@
   <div class="col-md-12">
     <h1 i18n:translate="">Electoral Register</h1>
 
-    <a href="${request.resource_url(context, 'diff_electoral_register')}"
-       i18n:translate="">Diff electoral registers</a><br/>
+    <p>
+    <a class="btn btn-default" href="${request.resource_url(context, 'diff_electoral_register')}"
+       i18n:translate="">Diff electoral registers</a>
+    </p>
     
-    <div tal:condition="new_reg_needed" i18n:translate="new_reg_needed_notice">
+    <p tal:condition="new_reg_needed" i18n:translate="new_reg_needed_notice">
         A new electoral register is needed.
         The curreny register differs from the users who've got the permission to vote.
-    </div>
-    <div tal:condition="not new_reg_needed" i18n:translate="no_new_reg_needed_notice">
+    </p>
+    <p tal:condition="not new_reg_needed" i18n:translate="no_new_reg_needed_notice">
         No new electoral register needed.
         The latest one has the same information as the users who're currently able to vote.
-    </div>
+    </p>
 
-    <div tal:condition="request.is_moderator">
+    <p tal:condition="request.is_moderator">
         <a class="btn btn-primary" 
            href="${request.resource_url(context, 'electoral_register', query={'update_register': 1})}">
            <span tal:condition="new_reg_needed" i18n:translate="">Update electoral register</span>
            <span tal:condition="not new_reg_needed" i18n:translate="">Update electoral register anyway</span>
         </a>
-    </div>
+    </p>
 
     <h2 i18n:translate="">All electoral registers</h2>
     <div i18n:translate="">Click the ID of a specific one to view it.</div>
@@ -36,9 +38,9 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th class="heading" i18n:translate="">ID</th>
-                <th class="heading" i18n:translate="">Time</th>
-                <th class="heading" i18n:translate="">Voters</th>
+                <th i18n:translate="">ID</th>
+                <th i18n:translate="">Time</th>
+                <th i18n:translate="">Voters</th>
             </tr>
         </thead>
         <tbody>
