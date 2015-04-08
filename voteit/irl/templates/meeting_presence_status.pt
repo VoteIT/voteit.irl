@@ -14,7 +14,7 @@
     <div tal:condition="not is_registered"
          i18n:translate="not_registered_as_present_in_meeting">You're not registered as present within this meeting.</div>
 
-    <br/><br/>
+    <br/>
 
     <div tal:condition="mp_util.open and not is_registered">
       <a class="btn btn-success"
@@ -38,11 +38,11 @@
     </div>
 
     <div tal:condition="request.is_moderator">
-        <hr/>
-        <h3 i18n:translate="">Available participants</h3>
-        <ul>
-            <li tal:repeat="userid mp_util.present_userids"><b>${repeat['userid'].number}:</b> ${userid}</li>
-        </ul>
+      <hr/>
+      <h3 i18n:translate="">Available participants</h3>
+      <ul>
+        <li tal:repeat="userid mp_util.present_userids"><b>${repeat['userid'].number}:</b> ${structure: request.creators_info([userid], portrait = False)}</li>
+      </ul>
     </div>
 
 </div>
