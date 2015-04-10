@@ -17,10 +17,10 @@
           Comparing <span i18n:name="first">${first}</span>
           and <span i18n:name="second">${second}</span>
         </h2>
-        <table class="listing">
+        <table class="table table-striped">
           <thead>
             <tr>
-              <th class="heading" i18n:translate="">
+              <th colspan="2" i18n:translate="">
                 <span i18n:name="count">${len(added_userids)}</span>
                 added in <span i18n:name="first">${first}</span>
               </th>
@@ -28,6 +28,7 @@
           </thead>
           <tbody>
             <tr tal:repeat="userid added_userids">
+              <td tal:content="get_pn(userid)"></td>
               <td tal:content="structure request.creators_info((userid,), portrait=False)">User info</td>
             </tr>
             <tr tal:condition="not added_userids">
@@ -35,10 +36,10 @@
             </tr>
           </tbody>
         </table>
-        <table class="listing">
+        <table class="table table-striped">
           <thead>
             <tr>
-              <th class="heading" i18n:translate="">
+              <th colspan="2" i18n:translate="">
                 <span i18n:name="count">${len(removed_userids)}</span>
                 removed in <span i18n:name="first">${first}</span>
               </th>
@@ -46,6 +47,7 @@
           </thead>
           <tbody>
             <tr tal:repeat="userid removed_userids">
+              <td tal:content="get_pn(userid)"></td>
               <td tal:content="structure request.creators_info((userid,), portrait=False)">User info</td>
             </tr>
             <tr tal:condition="not removed_userids">

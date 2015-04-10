@@ -1,18 +1,19 @@
-import deform
+from arche.events import SchemaCreatedEvent
+from arche.views.base import BaseView
+from betahaus.viewcomponent import view_action
+from pyramid.decorator import reify
+from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from pyramid.view import view_defaults
-from pyramid.httpexceptions import HTTPFound
-from pyramid.decorator import reify
-from betahaus.viewcomponent import view_action
 from voteit.core.models.interfaces import IMeeting
-from arche.views.base import BaseView
 from voteit.core.security import MODERATE_MEETING
+from zope.component.event import objectEventNotify
+import deform
 
 from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
+from voteit.irl.models.interfaces import IParticipantNumbers
 from voteit.irl.schemas import ElectoralRegisterDiffSchema
-from arche.events import SchemaCreatedEvent
-from zope.component.event import objectEventNotify
 
 
 @view_defaults(context = IMeeting, permission = MODERATE_MEETING)
@@ -24,6 +25,10 @@ class ElectoralRegisterView(BaseView):
     @reify
     def electoral_register(self):
         return self.request.registry.getAdapter(self.context, IElectoralRegister)
+
+    @reify
+    def participant_numbers(self):
+        return self.request.registry.getAdapter(self.context, IParticipantNumbers)
 
     def _registers_reverse(self):
         registers = [(k, v) for (k, v) in self.electoral_register.registers.items()]
@@ -58,6 +63,7 @@ class ElectoralRegisterView(BaseView):
         response = {}
         response['id'] = id
         response['register'] = self.electoral_register.registers[id]
+        response['get_pn'] = self._get_pn
         return response
 
     @view_config(name = "diff_electoral_register",
@@ -73,6 +79,7 @@ class ElectoralRegisterView(BaseView):
         form = deform.Form(schema, buttons=(deform.Button('diff', _(u"Diff"), css_class="btn btn-primary"),
                                             deform.Button('back', _(u"Back"), css_class="btn btn-default"),))
         response = {}
+        response['get_pn'] = self._get_pn
         if 'diff' in post:
             controls = post.items()
             try:
@@ -84,6 +91,9 @@ class ElectoralRegisterView(BaseView):
         else:
             response['form'] = form.render()
         return response
+
+    def _get_pn(self, userid):
+        return self.participant_numbers.userid_to_number.get(userid, '')
 
     def append_diff_info(self, response, first, second):
         first_reg_users = self.electoral_register.registers[first]['userids']
