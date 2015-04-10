@@ -1,78 +1,10 @@
-body {
-    background-color: #fff;
-    margin: 25px 0;
-    color: #5c5a5d;
+#projector-pool {}
+#projector-main {
+  font-size: 200%;
 }
-#inactive {
-    padding-left: 20px;
-    margin-top: 10px;
+#projector-pool .main-controls {
+  display: none;
 }
-#wrapper {
-    width: 990px;
-    margin: 0 auto;
-    display: block;
-}
-#voteit-logo {
-    float: right;
-}
-#heading-wrapper {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #5c5a5d;
-}
-#meeting-logo {
-    margin-right: 50px;
-}
-#header h1 {
-    padding-top: 0px;
-    padding-bottom: 10px;
-    font-size: 50px;
-    line-height: 50px;
-    background: url(/static/images/voteit_logo.png) right top no-repeat;
-}
-#ai_quick_menu {
-    float: right;
-}
-.controls {
-    float: right;
-}
-.control {
-    float: left;
-}
-.activate, .inactivate {
-    display: block;
-    height: 20px;
-    margin-left: 10px;
-}
-.cogwheel {
-    margin-top: 0px;
-    margin-left: 10px;
-}
-.proposal_id {
-    padding-bottom: 5px;
-    font-weight: bold;
-}
-.meta .icon {
-    line-height: 20px;
-    display: block;
-}
-/* Adjust sizes on active */
-#active .body,
-#active .creators {
-    font-size: 175%;
-    line-height: 125%;
-}
-#active .proposal_id {
-    font-size: 150%;
-    padding-bottom: 10px;
-}
-
-/* Don't show the following controls when inactive */
-#inactive .states,
-#inactive .inactivate {
-    display: none;
-}
-/* Don't show the following controls when active */
-#active .activate,
-#active .cogwheel {
-    display: none;
+#projector-main .move-left {
+  display: none;
 }

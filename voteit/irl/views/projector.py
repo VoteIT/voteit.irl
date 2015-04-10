@@ -1,61 +1,93 @@
-from pyramid.view import view_config
-from pyramid.renderers import render
-from pyramid.traversal import resource_path
 from arche.views.base import BaseView
+from betahaus.viewcomponent.decorators import view_action
+from pyramid.traversal import resource_path
+from pyramid.view import view_config
+from pyramid.view import view_defaults
 from voteit.core.models.interfaces import IAgendaItem
+from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
-from betahaus.viewcomponent.decorators import view_action
 
 from voteit.irl.fanstaticlib import voteit_irl_projector
-from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl import _
 
-#FIXME: XXX
 
+@view_defaults(context = IMeeting, permission = MODERATE_MEETING)
 class ProjectorView(BaseView):
 
-    @view_config(context = IAgendaItem,
-                 name = "projector",
-                 renderer = "voteit.irl:templates/projector/projector.pt",
-                 permission = MODERATE_MEETING)
-    def view(self):
-        """ Main projector view. """
+    @view_config(name = '__projector__', renderer = 'voteit.irl:templates/projector.pt')
+    def main_view(self):
         voteit_irl_projector.need()
-        context_path = resource_path(self.request.meeting)
-        query = dict(
-            content_type = 'AgendaItem',
-            workflow_state = ('ongoing', ),
-            path = context_path,
-            sort_index = 'order',
-        )
-        self.response['ai_brains'] = self.api.get_metadata_for_query(**query)
-        self.response['proposals'] = self.api.get_restricted_content(self.context, iface=IProposal, sort_on='created', states=('published', 'approved', 'denied', ))
-        self.response['render_proposal'] = self.render_proposal
-        return self.response
-        
-    def render_proposal(self, context, request):
-        self.response['proposal'] = context        
-        return render("templates/projector/proposal.pt", self.response, request=request)
-        
-    @view_config(context=IProposal, name="projector_state", renderer="templates/projector/proposal.pt", permission=MODERATE_MEETING)
-    def state_change(self):
+        response = {}
+        response['selected'] = selected = self.request.subpath and self.request.subpath[0] or None
+        response['agenda_items'] = self.get_ais()
+        response['state_titles'] = self.request.get_wf_state_titles(IAgendaItem, 'AgendaItem')
+        return response
+
+    @view_config(context = IAgendaItem, name = "__ai_contents__.json", renderer = 'json')
+    def ai_contents(self):
+        response = {}
+        query = "path == '%s' and " % resource_path(self.context)
+        query += "type_name == 'Proposal' and " #
+        query += "workflow_state in any(['published', 'approved', 'denied'])"
+        #sort_index = 'order'
+        results = []
+        for obj in self.catalog_query(query, resolve = True):
+            results.append(dict(text = obj.text,
+                                aid = obj.aid,
+                                prop_wf_url = self.request.resource_url(obj, '__change_state_projector__.json'),
+                                wf_state = obj.get_workflow_state(),
+                                creator = self.request.creators_info(obj.creator, portrait = False)))
+        return {'agenda_item': self.context.title,
+                'ai_url': self.request.resource_url(self.request.meeting, '__projector__', anchor = self.context.__name__),
+                'proposals': results}
+
+    def get_ais(self):
+        results = {}
+        states = ('ongoing', 'upcoming')
+        query = "path == '%s' and " % resource_path(self.request.meeting)
+        query += "type_name == 'AgendaItem' and "
+        #query += "order > %s and " % ai.get_field_value('order')
+        for state in states:
+            results[state] = tuple(self.catalog_query("%s workflow_state == '%s'" % (query, state), resolve = True, sort_index = 'order'))
+        return results
+
+    @view_config(context = IProposal, name = "__change_state_projector__.json", renderer = 'json')
+    def change_state_projector(self):
         """ Change workflow state for context.
-            Note that if this view is called without the required permission,
-            it will raise a WorkflowError exception. This view should
-            never be linked to without doing the proper permission checks first.
-            (Since the WorkflowError is not the same as Pyramids Forbidden exception,
-            which will be handled by the application.)
+            Returns result in json. Only state changes between 'published', 'approved' and 'denied'
+            are allowed.
         """
-        state = self.request.params.get('state')
-        if (state == 'approved' or state == 'denied') and self.context.get_workflow_state() != 'published':
-            self.context.set_workflow_state(self.request, 'published')
+        allowed_states = ('published', 'approved', 'denied')
+        transl = self.request.localizer.translate
+        if self.context.get_workflow_state() not in allowed_states:
+            return {'status': 'error',
+                    'type': 'wrong_initial_state',
+                    'msg': transl(_("Wrong inital state. Not 'published', approved' or 'denied'."))}
+        state = self.request.POST.get('state')
+        if state not in allowed_states:
+            return {'status': 'error',
+                    'type': 'wrong_new_state',
+                    'msg': transl(_("Not allowed to transition to %s" % state))}
         self.context.set_workflow_state(self.request, state)
-        self.response['proposal'] = self.context
-        return self.response
+        return {'status': 'success',
+                'state': state}
+
+#     def get_next_name(self, ai):
+#         query = "path == '%s' and " % resource_path(self.request.meeting)
+#         query += "type_name == 'AgendaItem' and "
+#         query += "workflow_state == '%s' and " % ai.get_workflow_state()
+#         query += "order > %s" % ai.get_field_value('order')
+#         for ai in self.catalog_query(query, resolve = True, sort_index = 'order', limit = 1):
+#             return ai
 
 
-@view_action('context_actions', 'projector', title = _(u"Proposal view for projector"), viewname = u"projector", interface = IAgendaItem)
+@view_action('meeting_menu', 'projector',
+             title = _(u"Proposal view for projector"))
 def projector_menu_link(context, request, va, **kw):
     """ Visible in the moderator menu, but doesn't work for the meeting root """
-    url = request.resource_url(context, va.kwargs['viewname'])
-    return """<li><a href="%s">%s</a></li>""" % (url, request.localizer.translate(va.title))
+    if IAgendaItem.providedBy(context):
+        url = request.resource_url(request.meeting, '__projector__', anchor = context.__name__)
+    else:
+        url = request.resource_url(request.meeting, '__projector__')
+    return """<li><a href="%s"> %s </a></li>""" % (url, request.localizer.translate(va.title))

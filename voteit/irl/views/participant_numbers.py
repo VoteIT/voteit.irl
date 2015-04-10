@@ -5,13 +5,10 @@ from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render
-from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
-from pyramid.view import view_defaults
 from voteit.core import security
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IUser
-import deform
 
 from voteit.irl import _
 from voteit.irl.models.interfaces import IParticipantNumbers
@@ -140,7 +137,7 @@ class AssignParticipantNumberForm(DefaultEditForm):
         return HTTPFound(location = self.request.resource_url(self.context, "manage_participant_numbers"))
 
 
-@view_action('meeting', 'participant_numbers',
+@view_action('meeting_menu', 'participant_numbers',
              permission = security.MODERATE_MEETING)
 def participant_numbers_menu(context, request, va, **kw):
     return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, "manage_participant_numbers"),

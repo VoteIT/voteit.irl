@@ -67,7 +67,6 @@ class ElectoralRegisterView(BaseView):
         if 'back' in post:
             url = self.request.resource_url(self.context, 'electoral_register')
             return HTTPFound(location = url)
-        
         schema = ElectoralRegisterDiffSchema()
         objectEventNotify(SchemaCreatedEvent(schema))
         schema = schema.bind(context = self.context, request = self.request, view = self)
@@ -96,7 +95,7 @@ class ElectoralRegisterView(BaseView):
                          'removed_userids': second_reg_users - first_reg_users})
 
 
-@view_action('meeting', 'electoral_register',
+@view_action('meeting_menu', 'electoral_register',
              title = _(u"Electoral register"),
              link = "electoral_register",
              permission = MODERATE_MEETING)
