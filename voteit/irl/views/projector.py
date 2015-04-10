@@ -61,9 +61,13 @@ class ProjectorView(BaseView):
         allowed_states = ('published', 'approved', 'denied')
         transl = self.request.localizer.translate
         if self.context.get_workflow_state() not in allowed_states:
+            msg = _("wrong_initial_state_error",
+                    default = "Proposal wasn't in any of the states "
+                    "'Published', 'Approved' or 'Denied'. "
+                    "You may need to reload this page.")
             return {'status': 'error',
                     'type': 'wrong_initial_state',
-                    'msg': transl(_("Wrong inital state. Not 'published', approved' or 'denied'."))}
+                    'msg': transl(msg)}
         state = self.request.POST.get('state')
         if state not in allowed_states:
             return {'status': 'error',
