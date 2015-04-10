@@ -1,9 +1,14 @@
-#projector-pool {}
-#projector-main {
-  font-size: 200%;
+#projector-pool .prop-meta-heading {
+  font-size: 100%;
 }
-#projector-pool .main-controls {
+#projector-main .proposal-text {
+  font-size: 150%;
+}
+#projector-pool .main-controls [data-wf-state] {
   display: none;
+}
+#projector-pool .main-controls [data-wf-state].active {
+  display: block;
 }
 #projector-main .move-left {
   display: none;

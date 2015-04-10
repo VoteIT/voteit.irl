@@ -79,9 +79,11 @@
                 <span class="glyphicon glyphicon-chevron-right"></span>
               </a>
             </div>
-            <strong>#<span class="proposal-aid"></span></strong>
-            <span i18n:translate="">by</span>
-            <span class="proposal-author"></span>
+            <h3 class="prop-meta-heading">
+              <strong>#<span class="proposal-aid"></span></strong>
+              <span i18n:translate="">by</span>
+              <span class="proposal-author"></span>
+            </h3>
             <div class="proposal-text"></div>
           </li>
         </ul>
