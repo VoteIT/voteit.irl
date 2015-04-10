@@ -12,7 +12,8 @@ from voteit.irl.models.interfaces import IParticipantNumbers
 class MakePresentUsersVoters(ElegibleVotersMethod):
     name = 'present_with_pn_voters'
     title = _("Present with participant number")
-    description = _("Will remove voting permission for anyone not set as present. "
+    description = _("present_with_pn_voters_description",
+                    default = "Will remove voting permission for anyone not set as present. "
                     "Users without a participant number will be ignored.")
 
     def get_voters(self, request = None, **kw):

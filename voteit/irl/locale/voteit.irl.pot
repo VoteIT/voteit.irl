@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-04-10 14:56+0200\n"
+"POT-Creation-Date: 2015-04-10 17:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,7 +96,7 @@ msgid "This number has already been claimed."
 msgstr ""
 
 #: ././voteit/irl/schemas.py:105
-#: ././voteit/irl/views/participant_numbers.py:122
+#: ././voteit/irl/views/participant_numbers.py:123
 msgid "Participant number not found"
 msgstr ""
 
@@ -141,8 +141,8 @@ msgstr ""
 
 #. Default: You're now assigned number ${number}.
 #: ././voteit/irl/models/participant_number_ap.py:37
-#: ././voteit/irl/views/participant_numbers.py:88
-#: ././voteit/irl/views/participant_numbers.py:133
+#: ././voteit/irl/views/participant_numbers.py:89
+#: ././voteit/irl/views/participant_numbers.py:134
 msgid "number_now_assigned_notice"
 msgstr ""
 
@@ -183,12 +183,14 @@ msgid ""
 "Used for statistics and perhaps gender based quotas. See meeting for details."
 msgstr ""
 
-#: ././voteit/irl/plugins/present_users_voters.py:12
-msgid "Set present users as voters"
+#: ././voteit/irl/plugins/present_users_voters.py:14
+msgid "Present with participant number"
 msgstr ""
 
-#: ././voteit/irl/plugins/present_users_voters.py:13
-msgid "Will remove voting permission for anyone not set as present."
+#. Default: Will remove voting permission for anyone not set as present. Users
+#. without a participant number will be ignored.
+#: ././voteit/irl/plugins/present_users_voters.py:15
+msgid "present_with_pn_voters_description"
 msgstr ""
 
 #: ././voteit/irl/templates/diff_electoral_register.pt:11
@@ -204,12 +206,12 @@ msgstr ""
 msgid "${count} added in ${first}"
 msgstr ""
 
-#: ././voteit/irl/templates/diff_electoral_register.pt:34
-#: ././voteit/irl/templates/diff_electoral_register.pt:52
+#: ././voteit/irl/templates/diff_electoral_register.pt:35
+#: ././voteit/irl/templates/diff_electoral_register.pt:54
 msgid "(No change)"
 msgstr ""
 
-#: ././voteit/irl/templates/diff_electoral_register.pt:41
+#: ././voteit/irl/templates/diff_electoral_register.pt:42
 msgid "${count} removed in ${first}"
 msgstr ""
 
@@ -310,6 +312,7 @@ msgid "callback_code_explanation"
 msgstr ""
 
 #: ././voteit/irl/templates/participant_callbacks.pt:21
+#: ././voteit/irl/views/participant_numbers.py:145
 msgid "Manage participant numbers"
 msgstr ""
 
@@ -344,13 +347,12 @@ msgstr ""
 
 #: ././voteit/irl/templates/participant_callbacks.pt:84
 #: ././voteit/irl/templates/participant_numbers.pt:65
-#: ././voteit/irl/templates/view_electoral_register.pt:34
-#: ././voteit/irl/views/electoral_register.py:74
+#: ././voteit/irl/templates/view_electoral_register.pt:35
+#: ././voteit/irl/views/electoral_register.py:80
 msgid "Back"
 msgstr ""
 
 #: ././voteit/irl/templates/participant_numbers.pt:10
-#: ././voteit/irl/views/participant_numbers.py:144
 msgid "Participant numbers"
 msgstr ""
 
@@ -406,7 +408,7 @@ msgstr ""
 msgid "Electoral register ${id} ${time}"
 msgstr ""
 
-#: ././voteit/irl/templates/view_electoral_register.pt:18
+#: ././voteit/irl/templates/view_electoral_register.pt:19
 msgid "Users"
 msgstr ""
 
@@ -418,15 +420,15 @@ msgstr ""
 msgid "Change post ownership"
 msgstr ""
 
-#: ././voteit/irl/views/electoral_register.py:99
+#: ././voteit/irl/views/electoral_register.py:109
 msgid "Electoral register"
 msgstr ""
 
-#: ././voteit/irl/views/electoral_register.py:42
+#: ././voteit/irl/views/electoral_register.py:47
 msgid "New electoral register added"
 msgstr ""
 
-#: ././voteit/irl/views/electoral_register.py:73
+#: ././voteit/irl/views/electoral_register.py:79
 msgid "Diff"
 msgstr ""
 
@@ -487,7 +489,7 @@ msgstr ""
 
 #. Default: This user was already assigned number ${number} so that number was
 #. cleared.
-#: ././voteit/irl/views/participant_numbers.py:126
+#: ././voteit/irl/views/participant_numbers.py:127
 msgid "participant_number_moved_warning"
 msgstr ""
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-04-10 14:56+0200\n"
-"PO-Revision-Date: 2015-04-10 16:43+0100\n"
+"POT-Creation-Date: 2015-04-10 17:07+0200\n"
+"PO-Revision-Date: 2015-04-10 17:07+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -110,7 +110,7 @@ msgstr "Matchar inte - kom ihåg att stora eller små bokstäver spelar roll!"
 msgid "This number has already been claimed."
 msgstr "Detta nummer har redan tagits."
 
-#: voteit/irl/schemas.py:105 voteit/irl/views/participant_numbers.py:122
+#: voteit/irl/schemas.py:105 voteit/irl/views/participant_numbers.py:123
 msgid "Participant number not found"
 msgstr "Deltagarnummer hittades inte"
 
@@ -162,8 +162,8 @@ msgstr ""
 
 #. Default: You're now assigned number ${number}.
 #: voteit/irl/models/participant_number_ap.py:37
-#: voteit/irl/views/participant_numbers.py:88
-#: voteit/irl/views/participant_numbers.py:133
+#: voteit/irl/views/participant_numbers.py:89
+#: voteit/irl/views/participant_numbers.py:134
 msgid "number_now_assigned_notice"
 msgstr "Du har tilldelats nummer ${number}."
 
@@ -206,13 +206,17 @@ msgstr ""
 "Används för statistik och exempelvis könsbaserad kvotering. See mötet för "
 "detaljer."
 
-#: voteit/irl/plugins/present_users_voters.py:12
-msgid "Set present users as voters"
-msgstr "Ge närvarande användare rösträtt"
+#: voteit/irl/plugins/present_users_voters.py:14
+msgid "Present with participant number"
+msgstr "Närvarande med deltagarnummer"
 
-#: voteit/irl/plugins/present_users_voters.py:13
-msgid "Will remove voting permission for anyone not set as present."
-msgstr "Tar bort rösträtt för icke närvarande."
+#. Default: Will remove voting permission for anyone not set as present. Users
+#. without a participant number will be ignored.
+#: voteit/irl/plugins/present_users_voters.py:15
+msgid "present_with_pn_voters_description"
+msgstr ""
+"Tar bort rösträtt för alla som inte är markerade som närvarande. Användare "
+"utan deltagarnummer ignoreras."
 
 #: voteit/irl/templates/diff_electoral_register.pt:11
 #: voteit/irl/templates/electoral_register.pt:15
@@ -227,12 +231,12 @@ msgstr "Jämför ${first} och ${second}"
 msgid "${count} added in ${first}"
 msgstr "${count} tillagd i ${first}"
 
-#: voteit/irl/templates/diff_electoral_register.pt:34
-#: voteit/irl/templates/diff_electoral_register.pt:52
+#: voteit/irl/templates/diff_electoral_register.pt:35
+#: voteit/irl/templates/diff_electoral_register.pt:54
 msgid "(No change)"
 msgstr "(Ingen förändring)"
 
-#: voteit/irl/templates/diff_electoral_register.pt:41
+#: voteit/irl/templates/diff_electoral_register.pt:42
 msgid "${count} removed in ${first}"
 msgstr "${count} borttagen i ${first}"
 
@@ -343,6 +347,7 @@ msgstr ""
 "vet vad du gör."
 
 #: voteit/irl/templates/participant_callbacks.pt:21
+#: voteit/irl/views/participant_numbers.py:145
 msgid "Manage participant numbers"
 msgstr "Hantera deltagarnummer"
 
@@ -377,13 +382,12 @@ msgstr "Ta bort"
 
 #: voteit/irl/templates/participant_callbacks.pt:84
 #: voteit/irl/templates/participant_numbers.pt:65
-#: voteit/irl/templates/view_electoral_register.pt:34
-#: voteit/irl/views/electoral_register.py:74
+#: voteit/irl/templates/view_electoral_register.pt:35
+#: voteit/irl/views/electoral_register.py:80
 msgid "Back"
 msgstr "Tillbaka"
 
 #: voteit/irl/templates/participant_numbers.pt:10
-#: voteit/irl/views/participant_numbers.py:144
 msgid "Participant numbers"
 msgstr "Deltagarnummer"
 
@@ -443,7 +447,7 @@ msgstr "Deltagarnummer:"
 msgid "Electoral register ${id} ${time}"
 msgstr "Röstlängd ${id} ${time}"
 
-#: voteit/irl/templates/view_electoral_register.pt:18
+#: voteit/irl/templates/view_electoral_register.pt:19
 msgid "Users"
 msgstr "Användare"
 
@@ -455,15 +459,15 @@ msgstr "Byt ägare på förslag"
 msgid "Change post ownership"
 msgstr "Byt ägare på post"
 
-#: voteit/irl/views/electoral_register.py:99
+#: voteit/irl/views/electoral_register.py:109
 msgid "Electoral register"
 msgstr "Röstlängd"
 
-#: voteit/irl/views/electoral_register.py:42
+#: voteit/irl/views/electoral_register.py:47
 msgid "New electoral register added"
 msgstr "Ny röstlängd tillagd"
 
-#: voteit/irl/views/electoral_register.py:73
+#: voteit/irl/views/electoral_register.py:79
 msgid "Diff"
 msgstr "Diff"
 
@@ -529,7 +533,7 @@ msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
 
 #. Default: This user was already assigned number ${number} so that number was
 #. cleared.
-#: voteit/irl/views/participant_numbers.py:126
+#: voteit/irl/views/participant_numbers.py:127
 msgid "participant_number_moved_warning"
 msgstr ""
 "Denna användare var redan registrerad med nummer ${number} så det numret "
@@ -560,6 +564,15 @@ msgid "wrong_initial_state_error"
 msgstr ""
 "Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
 "'Avslagen'. Du kan behöva ladda om sidan."
+
+#, fuzzy
+#~ msgid ""
+#~ "Will remove voting permission for anyone not set as present. Users "
+#~ "without a participant number will be ignored."
+#~ msgstr "Tar bort rösträtt för icke närvarande."
+
+#~ msgid "Set present users as voters"
+#~ msgstr "Ge närvarande användare rösträtt"
 
 #~ msgid "Meeting logo"
 #~ msgstr "Möteslogo"
