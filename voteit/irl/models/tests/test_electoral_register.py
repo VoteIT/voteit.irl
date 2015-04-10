@@ -44,12 +44,13 @@ class ElectoralRegisterTests(unittest.TestCase):
         self.assertEqual(obj.get_next_key(), 11)
 
     def test_currently_set_voters(self):
+        self.config.include('arche.testing')
         meeting = self._meeting()
-        meeting.add_groups('john', ['role:Voter'])
-        meeting.add_groups('jane', ['role:Voter'])
-        meeting.add_groups('doe', ['role:Voter'])
-        meeting.add_groups('jeff', ['role:Viewer'])
-        meeting.add_groups('janet', ['role:Viewer'])
+        meeting.local_roles.add('john', ['role:Voter'])
+        meeting.local_roles.add('jane', ['role:Voter'])
+        meeting.local_roles.add('doe', ['role:Voter'])
+        meeting.local_roles.add('jeff', ['role:Viewer'])
+        meeting.local_roles.add('janet', ['role:Viewer'])
         obj = self._cut(meeting)
         self.assertEqual(obj.currently_set_voters(), frozenset(['john', 'jane', 'doe']))
 
@@ -61,12 +62,13 @@ class ElectoralRegisterTests(unittest.TestCase):
         self.assertIsInstance(obj.registers[0]['time'], datetime)
 
     def test_new_register_needed(self):
+        self.config.include('arche.testing')
         meeting = self._meeting()
         obj = self._cut(meeting)
         self.assertTrue(obj.new_register_needed())
-        meeting.add_groups('john', ['role:Voter'])
+        meeting.local_roles.add('john', ['role:Voter'])
         self.assertTrue(obj.new_register_needed())
         obj.new_register(['john'])
         self.assertFalse(obj.new_register_needed())
-        meeting.add_groups('jane', ['role:Voter'])
+        meeting.local_roles.add('jane', ['role:Voter'])
         self.assertTrue(obj.new_register_needed())

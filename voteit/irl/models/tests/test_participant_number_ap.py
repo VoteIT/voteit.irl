@@ -1,12 +1,12 @@
 import unittest
 
-import colander
+from arche.views.base import BaseView
 from pyramid import testing
-from zope.interface.verify import verifyObject
-from zope.interface.verify import verifyClass
-from voteit.core.models.meeting import Meeting
-from voteit.core.views.base_view import BaseView
 from voteit.core import security
+from voteit.core.models.meeting import Meeting
+from zope.interface.verify import verifyClass
+from zope.interface.verify import verifyObject
+import colander
 
 from voteit.core.models.interfaces import IAccessPolicy
 from voteit.irl.models.interfaces import IParticipantNumbers
@@ -52,6 +52,7 @@ class ParticipantNumberAPTests(unittest.TestCase):
         self.assertEqual(pn.number_to_userid[1], 'jane')
 
     def test_handle_success_with_claimed_roles(self):
+        self.config.include('arche.testing')
         claimed_roles = set((security.ROLE_VIEWER, security.ROLE_DISCUSS))
         view = _fixture(self.config)
         view.context.set_field_value('pn_ap_claimed_roles', claimed_roles)
@@ -60,6 +61,7 @@ class ParticipantNumberAPTests(unittest.TestCase):
         self.assertEqual(set(view.context.get_groups('jane')), claimed_roles)
 
     def test_handle_success_with_public_roles(self):
+        self.config.include('arche.testing')
         public_roles = set((security.ROLE_VIEWER, security.ROLE_DISCUSS))
         view = _fixture(self.config)
         view.context.set_field_value('pn_ap_public_roles', public_roles)

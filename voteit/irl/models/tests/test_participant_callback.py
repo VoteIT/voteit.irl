@@ -72,10 +72,7 @@ class ParticipantCallbacksTests(unittest.TestCase):
         removed, nonexistent = obj.remove('call', 1, 3)
         self.assertEqual(removed, [1, 2])
         self.assertEqual(nonexistent, [3])
-        self.assertEqual(len(obj.callbacks), 3)
-        self.assertEqual(len(obj.callbacks[1]), 0)
-        self.assertEqual(len(obj.callbacks[2]), 0)
-        self.assertEqual(len(obj.callbacks[3]), 0)
+        self.assertEqual(len(obj.callbacks), 0)
 
     def test_remove_one(self):
         meeting = Meeting()
@@ -84,9 +81,9 @@ class ParticipantCallbacksTests(unittest.TestCase):
         removed, nonexistent = obj.remove('call', 1)
         self.assertEqual(removed, [1])
         self.assertEqual(nonexistent, [])
-        self.assertEqual(len(obj.callbacks), 2)
-        self.assertEqual(len(obj.callbacks[1]), 0)
-        self.assertEqual(len(obj.callbacks[2]), 1)
+        self.assertEqual(len(obj.callbacks), 1)
+        self.assertEqual(len(obj.get_callbacks(1)), 0)
+        self.assertEqual(len(obj.get_callbacks(2)), 1)
 
     def test_remove_another(self):
         meeting = Meeting()
@@ -114,7 +111,7 @@ class ParticipantCallbacksTests(unittest.TestCase):
         self.assertEqual(len(obj.execute_callbacks_for(1, 'casper')), 0)
 
     def test_execute_callbacks_for_with_bad_callbacks(self):
-        self.config.include('voteit.core.models.flash_messages')
+        self.config.include('arche.models.flash_messages')
         meeting = Meeting()
         obj = self._cut(meeting)
         _register_dummy_callback(self.config)

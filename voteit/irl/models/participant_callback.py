@@ -98,6 +98,8 @@ class ParticipantCallbacks(object):
             if callback in callbacks:
                 callbacks.remove(callback)
                 removed.append(i)
+                if not len(callbacks):
+                    del self.callbacks[i]
             else:
                 nonexistent.append(i)
         return removed, nonexistent
