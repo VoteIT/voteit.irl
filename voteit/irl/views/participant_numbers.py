@@ -78,6 +78,7 @@ class ClaimParticipantNumberForm(DefaultEditForm):
                     mapping = {'number': number})
             self.flash_messages.add(msg, type = 'warning')
             return HTTPFound(location = self.request.resource_url(self.context))
+        return super(ClaimParticipantNumberForm, self).__call__()
 
     @reify
     def participant_numbers(self):
@@ -137,21 +138,20 @@ class AssignParticipantNumberForm(DefaultEditForm):
         return HTTPFound(location = self.request.resource_url(self.context, "manage_participant_numbers"))
 
 
-@view_action('meeting_menu', 'participant_numbers',
+@view_action('settings_menu', 'participant_numbers',
              permission = security.MODERATE_MEETING)
 def participant_numbers_menu(context, request, va, **kw):
     return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, "manage_participant_numbers"),
-                                                 request.localizer.translate(_("Participant numbers")))
+                                                 request.localizer.translate(_("Manage participant numbers")))
 
-@view_action('meeting', 'claim_participant_number',
+@view_action('participants_menu', 'claim_participant_number',
              permission = security.VIEW)
 def claim_participant_number_menu(context, request, va, **kw):
     if request.meeting:
         participant_numbers = request.registry.getAdapter(request.meeting, IParticipantNumbers)
-        if request.authenticated_userid in participant_numbers.userid_to_number:
-            return
-        return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, 'claim_participant_number'),
-                                                     request.localizer.translate(_("Claim participant number")))
+        if request.authenticated_userid not in participant_numbers.userid_to_number:
+            return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, 'claim_participant_number'),
+                                                         request.localizer.translate(_("Claim participant number")))
 
 @view_action('user_info', 'participant_number',
              interface = IUser)
