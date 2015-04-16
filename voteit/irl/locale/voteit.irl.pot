@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-04-10 17:07+0200\n"
+"POT-Creation-Date: 2015-04-16 21:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server load, please try again in a short while.
-#: ././voteit/irl/__init__.py:26
+#: ././voteit/irl/__init__.py:28
 msgid "register_meeting_presence_error_notice"
 msgstr ""
 
-#: ././voteit/irl/__init__.py:29
+#: ././voteit/irl/__init__.py:31
 msgid "Your precence is received"
 msgstr ""
 
@@ -259,45 +259,28 @@ msgstr ""
 msgid "Voters"
 msgstr ""
 
-#. Default: The register is closed, you can't set your status right now.
-#: ././voteit/irl/templates/meeting_presence_status.pt:6
-msgid "register_closed_cant_set_status"
+#: ././voteit/irl/templates/meeting_presence.pt:10
+msgid "Presence check"
 msgstr ""
 
-#. Default: Your presence is registered, but the register hasn't closed yet.
-#. You don't need to do anything else.
-#: ././voteit/irl/templates/meeting_presence_status.pt:9
-msgid "presence_registered_register_not_closed_yet"
+#: ././voteit/irl/templates/meeting_presence.pt:17
+msgid "Start check"
 msgstr ""
 
-#. Default: Your presence was registered and will be part of the next electoral
-#. register.
-#: ././voteit/irl/templates/meeting_presence_status.pt:12
-msgid "presence_registered_and_now_active"
+#: ././voteit/irl/templates/meeting_presence.pt:23
+msgid "End check"
 msgstr ""
 
-#. Default: You're not registered as present within this meeting.
-#: ././voteit/irl/templates/meeting_presence_status.pt:15
-msgid "not_registered_as_present_in_meeting"
+#: ././voteit/irl/templates/meeting_presence.pt:27
+msgid "View"
 msgstr ""
 
-#. Default: Set yourself as present
-#: ././voteit/irl/templates/meeting_presence_status.pt:25
-msgid "set_as_present_button"
+#: ././voteit/irl/templates/meeting_presence_userids.pt:11
+msgid "Present users"
 msgstr ""
 
-#. Default: Clear and start availability check
-#: ././voteit/irl/templates/meeting_presence_status.pt:31
-msgid "start_presence_check_button"
-msgstr ""
-
-#. Default: Close check
-#: ././voteit/irl/templates/meeting_presence_status.pt:37
-msgid "end_presence_check_button"
-msgstr ""
-
-#: ././voteit/irl/templates/meeting_presence_status.pt:42
-msgid "Available participants"
+#: ././voteit/irl/templates/meeting_presence_userids.pt:15
+msgid "${count} user(s)"
 msgstr ""
 
 #: ././voteit/irl/templates/participant_callbacks.pt:10
@@ -396,8 +379,20 @@ msgstr ""
 msgid "by"
 msgstr ""
 
-#: ././voteit/irl/templates/register_meeting_presence.pt:11
-msgid "Register meeting presence"
+#: ././voteit/irl/templates/register_presence.pt:11
+msgid "I'm here!"
+msgstr ""
+
+#: ././voteit/irl/templates/register_presence.pt:14
+msgid "Click to confirm your status as present."
+msgstr ""
+
+#: ././voteit/irl/templates/register_presence_done.pt:7
+msgid "Done!"
+msgstr ""
+
+#: ././voteit/irl/templates/register_presence_done.pt:9
+msgid "You've confirmed your presence."
 msgstr ""
 
 #: ././voteit/irl/templates/user_participant_number_info.pt:4
@@ -447,8 +442,16 @@ msgstr ""
 msgid "no_update_of_perms_needed_notice"
 msgstr ""
 
-#: ././voteit/irl/views/meeting_presence.py:61
-msgid "Meeting presence"
+#: ././voteit/irl/views/meeting_presence.py:82
+msgid "You're now set as present"
+msgstr ""
+
+#: ././voteit/irl/views/meeting_presence.py:63
+msgid "Started"
+msgstr ""
+
+#: ././voteit/irl/views/meeting_presence.py:66
+msgid "Closed"
 msgstr ""
 
 #: ././voteit/irl/views/participant_callbacks.py:57
