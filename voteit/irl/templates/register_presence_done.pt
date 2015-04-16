@@ -1,0 +1,10 @@
+<tal:main xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="voteit.irl">
+<a href="#" class="btn btn-default btn-sm active">
+  <span class="glyphicon glyphicon-ok"></span>
+  <span i18n:translate="">Done!</span>
+</a>
+<span i18n:translate="">You've confirmed your presence.</span>
+</tal:main>

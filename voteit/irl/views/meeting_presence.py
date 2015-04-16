@@ -1,66 +1,120 @@
+from arche.portlets import PortletType
 from arche.views.base import BaseView
 from betahaus.viewcomponent import view_action
 from pyramid.decorator import reify
+from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render
-from pyramid.response import Response
 from pyramid.view import view_config
+from pyramid.view import view_defaults
+from voteit.core.helpers import get_meeting_participants
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.security import MODERATE_MEETING
 from voteit.core.security import VIEW
 
 from voteit.irl import _
-from voteit.irl.fanstaticlib import voteit_irl_set_as_present
+from voteit.irl.fanstaticlib import meeting_presence_moderator
 from voteit.irl.models.interfaces import IMeetingPresence
 
 
-#FIXME: REFACTOR THIS
+class MeetingPresencePortlet(PortletType):
+    name = "meeting_presence_portlet"
+    title = "Meeting Presence"
 
+    def __init__(self, portlet):
+        self.portlet = portlet
+
+    def render(self, context, request, view, **kwargs):
+        if request.meeting and request.is_moderator:
+            mp_util = request.registry.getAdapter(request.meeting, IMeetingPresence)
+            response = {'title': self.title,
+                        'portlet': self.portlet,
+                        'mp_util': mp_util,
+                        'view': view,}
+            if mp_util.open:
+                meeting_presence_moderator.need()
+                response['participants_count'] = len(get_meeting_participants(context))
+            return render("voteit.irl:templates/meeting_presence.pt",
+                          response,
+                          request = request)
+
+
+@view_defaults(context = IMeeting, permission = VIEW)
 class MeetingPresenceView(BaseView):
-
+ 
     @reify
     def mp_util(self):
         """ Note that this only works for IMeeting views. Change this later if we need to update. """
         return self.request.registry.getAdapter(self.context, IMeetingPresence)
 
-    @view_config(name = "register_meeting_presence",
-                 context=IMeeting, permission=VIEW,
-                 renderer = "voteit.irl:templates/register_meeting_presence.pt")
-    def register_meeting_presence(self):
-        """ Controls for setting yourself as present
-        """
-        voteit_irl_set_as_present.need()
-        return {'current': self.register_current_status()}
-
-    def register_current_status(self):
+    @view_config(name = "meeting_presence.json",
+                 permission = MODERATE_MEETING)
+    def presence_data_json(self):
         response = {}
-        response['mp_util'] = self.mp_util
-        response['is_registered'] = self.request.authenticated_userid in self.mp_util.present_userids
-        return render("voteit.irl:templates/meeting_presence_status.pt", response, request = self.request)
+        response['present_count'] = len(self.mp_util.present_userids)
+        return response
 
-    @view_config(name = "_register_set_attending", context = IMeeting, permission = VIEW)
-    def register_set_attending(self):
-        assert self.request.authenticated_userid
-        self.mp_util.add(self.request.authenticated_userid)
-        if self.request.is_xhr:
-            return Response(self.register_current_status())
-        url = self.request.resource_url(self.context, 'register_meeting_presence')
-        return HTTPFound(location = url)
-
-    @view_config(name = "_toggle_presence_check", context = IMeeting, permission = MODERATE_MEETING)
-    def toggle_open_presence_check(self):
-        if self.mp_util.open:
+    @view_config(name = "_presence_check_ctrl",
+                 permission = MODERATE_MEETING,
+                 renderer = 'json')
+    def presence_check_ctrl(self):
+        action = self.request.GET.get('action', '')
+        if action == 'start':
+            self.flash_messages.add(_("Started"), type = 'success')
+            self.mp_util.start_check()
+        elif action == 'end':
+            self.flash_messages.add(_("Closed"), type = 'warning')
             self.mp_util.end_check()
         else:
-            self.mp_util.start_check()
-        url = self.request.resource_url(self.context, 'register_meeting_presence')
-        return HTTPFound(location = url)
+            raise HTTPForbidden("No such action %r" % action)
+        came_from = self.request.GET.get('came_from', self.request.resource_url(self.request.meeting))
+        return HTTPFound(location = came_from)
+
+    @view_config(name = "_set_as_present",
+                 renderer = 'voteit.irl:templates/register_presence_done.pt',
+                 permission = VIEW)
+    def set_as_present(self):
+        if self.request.authenticated_userid not in self.mp_util.present_userids:
+            #Add here will raise forbidden if it isn't open
+            self.mp_util.add(self.request.authenticated_userid)
+        if self.request.is_xhr:
+            return {}
+        self.flash_messages.add(_("You're now set as present"), type = 'success')
+        return HTTPFound(localtion = self.request.resource_url(self.request.meeting))
+
+    @view_config(name = "present_userids",
+                 permission = MODERATE_MEETING,
+                 renderer = "voteit.irl:templates/meeting_presence_userids.pt")
+    def view_userids(self):
+        return {'userids': self.mp_util.present_userids}
 
 
-@view_action('participants_menu', 'register_meeting_presence',
-             title = _("Meeting presence"))
-def meeting_presence_link(context, request, va, **kw):
-    if not request.authenticated_userid or not request.meeting:
-        return ''
-    link = request.resource_url(request.meeting, 'register_meeting_presence')
-    return """ <li><a href="%s">%s</a></li>"""  % (link, request.localizer.translate(va.title))
+@view_action('watcher_json', 'meeting_presence')
+def meeting_presence_json(context, request, va, **kw):
+    """ Return the status of meeting presence checks.
+        Can be: open, closed, confirmed, where confirmed is when it's open
+        and the current user have confirmed their presence.
+    """
+    meeting_presence = request.registry.getAdapter(context, IMeetingPresence)
+    response = {}
+    if meeting_presence.open:
+        if request.authenticated_userid in meeting_presence.present_userids:
+            response['status'] = 'confirmed'
+            return response
+        response['status'] = 'open'
+        response['msg'] = render('voteit.irl:templates/register_presence.pt', {}, request = request)
+        return response
+    response['status'] = 'closed'
+    return response
+
+@view_action('watcher_json', 'meeting_presence_count')
+def meeting_presence_count_json(context, request, va, **kw):
+    """ Return number of users who've registered themselves."""
+    if request.is_moderator:
+        meeting_presence = request.registry.getAdapter(context, IMeetingPresence)
+        if meeting_presence.open:
+            return len(meeting_presence.present_userids)
+
+
+def includeme(config):
+    config.add_portlet(MeetingPresencePortlet)

@@ -1,0 +1,35 @@
+<tal:main xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="voteit.irl">
+<div class="portlet meeting-presence-portlet hidden-print">
+
+  <h4>
+    <span class="glyphicon glyphicon-user"></span>
+    <span i18n:translate="">Presence check</span>
+  </h4>
+
+  <a tal:condition="not mp_util.open"
+    href="${request.resource_url(request.meeting, '_presence_check_ctrl', query = {'action': 'start', 'came_from': request.url})}"
+    class="btn btn-success btn-sm">
+    <span class="glyphicon glyphicon-play"></span>
+    <ts i18n:translate="">Start check</ts>
+  </a>
+  <a tal:condition="mp_util.open"
+    href="${request.resource_url(request.meeting, '_presence_check_ctrl', query = {'action': 'end', 'came_from': request.url})}"
+    class="btn btn-warning btn-sm">
+    <span class="glyphicon glyphicon-stop"></span>
+    <ts i18n:translate="">End check</ts>
+  </a>
+  <a href="${request.resource_url(request.meeting, 'present_userids')}"
+    class="btn btn-default btn-sm">
+    <ts i18n:translate="">View</ts>
+  </a>
+
+  <tal:status  tal:condition="mp_util.open">
+  <span data-meeting-presence-count></span>
+  / ${participants_count}
+  </tal:status>
+</div>
+</tal:main>
