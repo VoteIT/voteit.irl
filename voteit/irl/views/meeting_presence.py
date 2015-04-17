@@ -15,6 +15,7 @@ from voteit.core.security import VIEW
 from voteit.irl import _
 from voteit.irl.fanstaticlib import meeting_presence_moderator
 from voteit.irl.models.interfaces import IMeetingPresence
+from voteit.irl.models.interfaces import IParticipantNumbers
 
 
 class MeetingPresencePortlet(PortletType):
@@ -81,6 +82,48 @@ class MeetingPresenceView(BaseView):
             return {}
         self.flash_messages.add(_("You're now set as present"), type = 'success')
         return HTTPFound(localtion = self.request.resource_url(self.request.meeting))
+
+    @view_config(name = "_add_as_present",
+                 renderer = 'json',
+                 permission = MODERATE_MEETING,
+                 xhr = True)
+    def add_as_present(self):
+        if not self.mp_util.open:
+            return {'status': 'error',
+                    'msg': _("Check not open")}
+        userid_or_pn = self.request.POST.get('userid_or_pn', '')
+        pn = None
+        try:
+            pn = int(userid_or_pn)
+        except ValueError:
+            #User is probably a userid
+            pass
+        transl = self.request.localizer.translate
+        if isinstance(pn, int):
+            pns = IParticipantNumbers(self.context)
+            userid = pns.number_to_userid.get(pn, None)
+            if userid is None:
+                msg = _("No user with number: '${num}'",
+                        mapping = {'num': pn})
+                return {'status': 'error',
+                        'msg': transl(msg)}
+        else:
+            userid = userid_or_pn
+        user = self.root['users'].get(userid, None)
+        if not user:
+            msg = _("User not found: '${userid}'",
+                    mapping = {'userid': userid})
+            return {'status': 'error',
+                    'msg': transl(msg)}
+        if userid not in self.mp_util.present_userids:
+            self.mp_util.add(userid)
+            return {'status': 'success',
+                    'count': len(self.mp_util.present_userids),
+                    'msg': transl(_("Added ${userid}", mapping = {'userid': userid}))}
+        else:
+            return {'status': 'warning',
+                    'msg': transl(_("Already registered: ${userid}",
+                                    mapping = {'userid': userid}))}
 
     @view_config(name = "present_userids",
                  permission = MODERATE_MEETING,
