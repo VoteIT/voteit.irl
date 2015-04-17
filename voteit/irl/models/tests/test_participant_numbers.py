@@ -125,12 +125,14 @@ class ParticipantNumbersTests(unittest.TestCase):
 
     def test_integration(self):
         self.config.include('arche.testing')
+        self.config.include('arche.portlets')
         self.config.include('voteit.irl')
         meeting = Meeting()
         self.failUnless(self.config.registry.queryAdapter(meeting, IParticipantNumbers))
 
     def test_claim_ticket_sends_notification(self):
         self.config.include('arche.testing')
+        self.config.include('arche.portlets')
         self.config.include('voteit.irl')
         L = []
         def subscriber(event):
