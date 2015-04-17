@@ -7,6 +7,7 @@ from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
+from voteit.core.security import VIEW
 
 from voteit.irl.fanstaticlib import voteit_irl_projector
 from voteit.irl import _
@@ -15,7 +16,9 @@ from voteit.irl import _
 @view_defaults(context = IMeeting, permission = MODERATE_MEETING)
 class ProjectorView(BaseView):
 
-    @view_config(name = '__projector__', renderer = 'voteit.irl:templates/projector.pt')
+    @view_config(name = '__projector__',
+                 renderer = 'voteit.irl:templates/projector.pt',
+                 permission = VIEW)
     def main_view(self):
         voteit_irl_projector.need()
         response = {}
@@ -87,7 +90,8 @@ class ProjectorView(BaseView):
 
 
 @view_action('meeting_menu', 'projector',
-             title = _(u"Proposal view for projector"))
+             title = _(u"Proposal view for projector"),
+             permission = MODERATE_MEETING)
 def projector_menu_link(context, request, va, **kw):
     """ Visible in the moderator menu, but doesn't work for the meeting root """
     if IAgendaItem.providedBy(context):
