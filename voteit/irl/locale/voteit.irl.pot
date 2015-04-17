@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-04-16 21:43+0200\n"
+"POT-Creation-Date: 2015-04-17 13:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -263,16 +263,20 @@ msgstr ""
 msgid "Presence check"
 msgstr ""
 
-#: ././voteit/irl/templates/meeting_presence.pt:17
+#: ././voteit/irl/templates/meeting_presence.pt:23
 msgid "Start check"
 msgstr ""
 
-#: ././voteit/irl/templates/meeting_presence.pt:23
+#: ././voteit/irl/templates/meeting_presence.pt:29
 msgid "End check"
 msgstr ""
 
-#: ././voteit/irl/templates/meeting_presence.pt:27
+#: ././voteit/irl/templates/meeting_presence.pt:33
 msgid "View"
+msgstr ""
+
+#: ././voteit/irl/templates/meeting_presence.pt:43
+msgid "Number or UserID"
 msgstr ""
 
 #: ././voteit/irl/templates/meeting_presence_userids.pt:11
@@ -442,16 +446,40 @@ msgstr ""
 msgid "no_update_of_perms_needed_notice"
 msgstr ""
 
-#: ././voteit/irl/views/meeting_presence.py:82
+#: ././voteit/irl/views/meeting_presence.py:83
 msgid "You're now set as present"
 msgstr ""
 
-#: ././voteit/irl/views/meeting_presence.py:63
+#: ././voteit/irl/views/meeting_presence.py:114
+#, python-format
+msgid "User not found: '${userid}'"
+msgstr ""
+
+#: ././voteit/irl/views/meeting_presence.py:64
 msgid "Started"
 msgstr ""
 
-#: ././voteit/irl/views/meeting_presence.py:66
+#: ././voteit/irl/views/meeting_presence.py:93
+msgid "Check not open"
+msgstr ""
+
+#: ././voteit/irl/views/meeting_presence.py:106
+#, python-format
+msgid "No user with number: '${num}'"
+msgstr ""
+
+#: ././voteit/irl/views/meeting_presence.py:67
 msgid "Closed"
+msgstr ""
+
+#: ././voteit/irl/views/meeting_presence.py:122
+#, python-format
+msgid "Added ${userid}"
+msgstr ""
+
+#: ././voteit/irl/views/meeting_presence.py:125
+#, python-format
+msgid "Already registered: ${userid}"
 msgstr ""
 
 #: ././voteit/irl/views/participant_callbacks.py:57

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-04-16 21:43+0200\n"
-"PO-Revision-Date: 2015-04-16 21:44+0100\n"
+"POT-Creation-Date: 2015-04-17 13:09+0200\n"
+"PO-Revision-Date: 2015-04-17 13:10+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -291,17 +291,21 @@ msgstr "Röstberättigade"
 msgid "Presence check"
 msgstr "Närvarokontroll"
 
-#: voteit/irl/templates/meeting_presence.pt:17
+#: voteit/irl/templates/meeting_presence.pt:23
 msgid "Start check"
 msgstr "Starta koll"
 
-#: voteit/irl/templates/meeting_presence.pt:23
+#: voteit/irl/templates/meeting_presence.pt:29
 msgid "End check"
 msgstr "Avsluta koll"
 
-#: voteit/irl/templates/meeting_presence.pt:27
+#: voteit/irl/templates/meeting_presence.pt:33
 msgid "View"
 msgstr "Visa"
+
+#: voteit/irl/templates/meeting_presence.pt:43
+msgid "Number or UserID"
+msgstr "Nummer eller AnvändarID"
 
 #: voteit/irl/templates/meeting_presence_userids.pt:11
 msgid "Present users"
@@ -479,17 +483,41 @@ msgstr "Uppdatera röstberättigade"
 msgid "no_update_of_perms_needed_notice"
 msgstr "Metoden '${method_title}' tillämpades men inget behövde ändras."
 
-#: voteit/irl/views/meeting_presence.py:82
+#: voteit/irl/views/meeting_presence.py:83
 msgid "You're now set as present"
 msgstr "Du är nu närvarande"
 
-#: voteit/irl/views/meeting_presence.py:63
+#: voteit/irl/views/meeting_presence.py:114
+#, python-format
+msgid "User not found: '${userid}'"
+msgstr "Användaren hittades inte: '${userid}'"
+
+#: voteit/irl/views/meeting_presence.py:64
 msgid "Started"
 msgstr "Startad"
 
-#: voteit/irl/views/meeting_presence.py:66
+#: voteit/irl/views/meeting_presence.py:93
+msgid "Check not open"
+msgstr "Koll inte öppen"
+
+#: voteit/irl/views/meeting_presence.py:106
+#, python-format
+msgid "No user with number: '${num}'"
+msgstr "Ingen användare med nummer: '${num}'"
+
+#: voteit/irl/views/meeting_presence.py:67
 msgid "Closed"
 msgstr "Stängd"
+
+#: voteit/irl/views/meeting_presence.py:122
+#, python-format
+msgid "Added ${userid}"
+msgstr "La till ${userid}"
+
+#: voteit/irl/views/meeting_presence.py:125
+#, python-format
+msgid "Already registered: ${userid}"
+msgstr "Redan registrerad: ${userid}"
 
 #: voteit/irl/views/participant_callbacks.py:57
 #, python-format
@@ -615,9 +643,6 @@ msgstr ""
 
 #~ msgid "Must be someone who isn't a voter right now."
 #~ msgstr "Måste vara någon som inte har rösträtt just nu."
-
-#~ msgid "Vote transfered to ${userid}"
-#~ msgstr "Rösträtt överförd till ${userid}"
 
 #~ msgid "${userid} doesn't exist in this meeting."
 #~ msgstr "${userid} finns inte i detta möte."
