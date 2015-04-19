@@ -1,3 +1,6 @@
+body {
+  padding-top: 0;
+}
 #projector-pool .prop-meta-heading {
   font-size: 100%;
 }
@@ -12,4 +15,18 @@
 }
 #projector-main .move-left {
   display: none;
+}
+#navbar-heading {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (min-width: 768px) {
+  #navbar-heading { max-width: 550px; }
+}
+@media (min-width: 992px) {
+  #navbar-heading { max-width: 800px; }
+}
+@media (min-width: 1200px) {
+  #navbar-heading { max-width: 1000px; }
 }
