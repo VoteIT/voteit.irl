@@ -36,7 +36,7 @@ class ProjectorView(BaseView):
         #sort_index = 'order'
         results = []
         for obj in self.catalog_query(query, resolve = True):
-            results.append(dict(text = obj.text,
+            results.append(dict(text = self.request.transform_text(obj.text),
                                 aid = obj.aid,
                                 prop_wf_url = self.request.resource_url(obj, '__change_state_projector__.json'),
                                 wf_state = obj.get_workflow_state(),

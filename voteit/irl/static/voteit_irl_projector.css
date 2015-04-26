@@ -4,6 +4,24 @@ body {
 #projector-pool .prop-meta-heading {
   font-size: 100%;
 }
+
+#projector-pool .proposal-text {
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  max-height: 150px;
+  overflow: hidden;
+  content: "";
+  position: relative;
+}
+#projector-pool .proposal-text:before {
+    content: '';
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    left: 0;
+    top: 80%;
+    background: linear-gradient(transparent, #fff);
+}
 #projector-main .proposal-text {
   font-size: 150%;
 }
