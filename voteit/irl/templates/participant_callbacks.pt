@@ -8,19 +8,14 @@
 <div metal:fill-slot="content" class="row">
   <div class="col-md-12">
     <h1 i18n:translate="">Participant callbacks</h1>
+
+    <tal:tabs replace="structure view.render_template('voteit.irl:templates/participant_number_tabs.pt')" />
     
     <p i18n:translate="callback_code_explanation">
         This is an advanced feature that attaches callback code to an
         event that fires when a user claims a participant number.
         Don't touch this unless you know what you're doing.
     </p>
-    
-    <p>
-      <a class="btn btn-default"
-        href="${request.resource_url(request.meeting, 'manage_participant_numbers')}"
-        i18n:translate="">Manage participant numbers</a>    
-    </p>
-
 
     <div class="panel-group" id="panel-participant-callbacks" role="tablist" aria-multiselectable="true">
       <tal:callbacks repeat="adapter callback_adapters">

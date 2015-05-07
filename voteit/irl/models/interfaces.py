@@ -70,6 +70,7 @@ class IParticipantNumbers(Interface):
     userid_to_number = Attribute("Map userid -> number")
     number_to_userid = Attribute("Map number -> userid")
     token_to_number = Attribute("Map token -> number - good for validation too.")
+    email_to_number = Attribute("Map email -> number")
 
     def __init__(context):
         """ context is always meeting. """
@@ -110,6 +111,10 @@ class IParticipantNumbers(Interface):
     def clear_number(number):
         """ Remove all data for this number. This includes any registered tickets etc.
             Will return cleared number if anything was cleared.
+        """
+
+    def attach_email(email, number):
+        """ Attach an email address to this number.
         """
 
 

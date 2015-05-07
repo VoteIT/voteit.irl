@@ -9,17 +9,14 @@
   <div class="col-md-12">
     <h1 i18n:translate="">Participant numbers</h1>
     
-    <p>
-      <a class="btn btn-default"
-        href="${request.resource_url(request.meeting, 'manage_participant_callbacks')}"
-        i18n:translate="">Assign actions to participant numbers</a>    
-    </p>
+    <tal:tabs replace="structure view.render_template('voteit.irl:templates/participant_number_tabs.pt')" />
 
     <table class="table table-striped">
       <thead>
         <tr>
           <th>#</th>
           <th i18n:translate="">Token</th>
+          <th i18n:translate="">Email</th>
           <th i18n:translate="">Created</th>
           <th i18n:translate="">Claimed</th>
           <th i18n:translate="">Claimed by</th>
@@ -34,6 +31,7 @@
               href="${request.resource_url(request.meeting, 'assign_participant_number', query = {'pn': ticket.number})}">${ticket.number}</a>
           </td>
             <td>${ticket.token}</td>
+            <td>${ticket.email}</td>
             <td tal:content="request.dt_handler.format_relative(ticket.created)"></td>
             <td tal:content="ticket.claimed and request.dt_handler.format_relative(ticket.claimed) or ''"></td>
             <td tal:content="structure ticket.claimed_by and request.creators_info([ticket.claimed_by], portrait = False) or ''"></td>

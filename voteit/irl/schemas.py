@@ -1,9 +1,11 @@
-import colander
-import deform
 from arche.validators import existing_userid_or_email
-from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
+from voteit.core.schemas.common import deferred_autocompleting_userid_widget
+from voteit.core.schemas.common import strip_and_lowercase
+from voteit.core.validators import multiple_email_validator
+import colander
+import deform
 
 from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -105,6 +107,71 @@ class ExistingParticipantNumberValidator(object):
             return colander.Invalid(node, _(u"Participant number not found"))
 
 
+@colander.deferred
+def emails_matches_start_and_existing_nums(form, kw):
+    return EmailsMatchesStartAndExistingNumbersValidator(kw['context'], kw['request'])
+
+
+class EmailsMatchesStartAndExistingNumbersValidator(object):
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self, form, values):
+        exc = colander.Invalid(form) #Raised if trouble
+        pns = self.request.registry.getAdapter(self.request.meeting, IParticipantNumbers)
+        numbers = tuple(pns.tickets.keys())
+        start_at = values['start_at']
+        if start_at not in numbers and not values['create_new']:
+            exc['start_at'] = _("Not an existing participant number")
+            raise exc
+        existing_emails = tuple([x.email for x in pns.tickets.values()])
+        found = []
+        i = start_at
+        emails = values['emails'].splitlines()
+        for email in emails:
+            if email in existing_emails:
+                found.append(email)
+            if not values['create_new']:
+                #Check if numbers exist
+                if i not in numbers:
+                    exc['emails'] = _("attach_emails_pn_dont_exist_error",
+                                      default = "There are more email addresses than existing participant numbers. "
+                                      "Number ${num} not found. Total emails: ${emails_count}",
+                                      mapping = {'num': i, 'emails_count': len(emails)})
+                    raise exc
+                i+=1
+        if found:
+            exc['emails'] = _("The following emails are already assigned to numbers: ${emails}",
+                              mapping = {'emails': ", ".join(found)})
+            raise exc
+            
+
+class AttachEmailsToPN(colander.Schema):
+    title = _("Attach emails")
+    start_at = colander.SchemaNode(colander.Int(),
+                                   title = _("Start at number"))
+    validator = emails_matches_start_and_existing_nums
+    emails = colander.SchemaNode(colander.String(),
+        title = _(u"add_tickets_emails_titles",
+                  default=u"Email addresses to attach."),
+        description = _(u"attach_emails_description",
+                        default = """Paste a list of email addresses,
+                        one per row, to attach to participant numbers.
+                        They will be attached in sequence starting at the specified start number.
+                        If any of them exist as validated users, the participant numbers will be
+                        assigned to them. If not, numbers will automatically be assigned when an
+                        email address is validated. This is instead of using the code to attach
+                        the number to a user."""),
+        widget = deform.widget.TextAreaWidget(rows=7, cols=40),
+        preparer = strip_and_lowercase,
+        validator = multiple_email_validator,)
+    create_new = colander.SchemaNode(colander.Bool(),
+                                     title = _("Create new tickets if they don't exist"),
+                                     default = True,
+                                     missing = False)
+
+
 def _meeting_roles_minus_moderator():
     roles = dict(security.MEETING_ROLES)
     del roles[security.ROLE_MODERATOR]
@@ -195,3 +262,4 @@ def includeme(config):
     config.add_content_schema('Meeting', ElegibleVotersMethodSchema, 'eligible_voters_method')
     config.add_content_schema('Meeting', AssignParticipantNumber, 'assign_participant_number')
     config.add_content_schema('Meeting', ClaimParticipantNumberSchema, 'claim_participant_number')
+    config.add_content_schema('Meeting', AttachEmailsToPN, 'attach_emails_to_pn')

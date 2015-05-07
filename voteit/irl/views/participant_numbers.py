@@ -30,6 +30,7 @@ class ParticipantNumbersView(BaseView):
         response = {}
         add = 'add' in self.request.POST
         remove = 'remove' in self.request.POST
+        here_url = self.request.resource_url(self.context, 'manage_participant_numbers')
         if add or remove:
             #Basic validation
             try:
@@ -54,11 +55,63 @@ class ParticipantNumbersView(BaseView):
                 msg = _(u"Removed ${count} numbers",
                         mapping = {'count': len(res)})
                 self.flash_messages.add(msg, type = "warning")
-            here_url = self.request.resource_url(self.context, 'manage_participant_numbers')
             return HTTPFound(location = here_url)
         response['participant_numbers'] = self.participant_numbers
         return response
 
+
+@view_config(name = "attach_emails_to_pn",
+             permission = security.MODERATE_MEETING,
+             renderer = "arche:templates/form.pt")
+class AttachEmailsToPNForm(DefaultEditForm):
+
+    schema_name = 'attach_emails_to_pn'
+
+    @property
+    def title(self): #<- This will probably change in arche
+        return self.schema.title
+
+    @reify
+    def participant_numbers(self):
+        return self.request.registry.getAdapter(self.context, IParticipantNumbers)
+
+    def cancel_success(self, *args):
+        return HTTPFound(location = self.request.resource_url(self.context, 'manage_participant_numbers'))
+
+    def save_success(self, appstruct):
+        emails = appstruct['emails'].splitlines()
+        start_at = appstruct['start_at']
+        create_new = appstruct['create_new']
+        #First, create new tickets if ordered to
+        messages = []
+        translate = self.request.localizer.translate
+        if create_new:
+            end_at = start_at + len(emails) - 1
+            res = self.participant_numbers.new_tickets(self.request.authenticated_userid, start_at, end_at)
+            if res:
+                msg = _(u"<b>${count}</b> new participant numbers created.",
+                        mapping = {'count': len(res)})
+                messages.append(translate(msg))
+        i = start_at
+        users = self.root['users']
+        auto_claimed = 0
+        for email in emails:
+            self.participant_numbers.attach_email(email, i)
+            user = users.get_user_by_email(email, only_validated = True)
+            if user:
+                ticket = self.participant_numbers.tickets[i]
+                self.participant_numbers.claim_ticket(user.userid, ticket.token)
+                auto_claimed += 1
+            i += 1
+        msg = _("<b>${emails_num}</b> attached.",
+                mapping = {'emails_num': len(emails)})
+        messages.append(translate(msg))
+        if auto_claimed:
+            msg = _("<b>${num}</b> numbers were auto-claimed by users with validated email addresses.",
+                    mapping = {'num': auto_claimed})
+            messages.append(translate(msg))
+        self.flash_messages.add(" ".join(messages), auto_destruct = False)
+        return HTTPFound(location = self.request.resource_url(self.context, 'manage_participant_numbers'))
 
 @view_config(name = "claim_participant_number",
              permission = security.VIEW,
