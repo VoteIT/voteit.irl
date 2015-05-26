@@ -7,8 +7,6 @@ from pyramid.view import view_config
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.security import MODERATE_MEETING
 from voteit.core.security import ROLE_VOTER
-from voteit.core.views.base_view import BaseView
-import deform
 
 from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
