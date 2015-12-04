@@ -10,8 +10,8 @@
     <div class="container">
       <div class="navbar-header">
         <a class="navbar-brand hidden-xs" href="${request.application_url}">       
-            <img height="31" width="85" class="voteitlogo"
-                src="${request.static_url('voteit.core:static/images/logo.png')}" />
+          <img height="31" width="85" class="voteitlogo"
+              src="${request.static_url('voteit.core:static/images/logo.png')}" />
         </a>
         <a tal:condition="request.meeting"
           class="navbar-brand"
@@ -46,17 +46,25 @@
         </li>
       </ul>
     </div><!-- /.container-->
-    <div class="container" id="messages">
+    <div class="container container-float-below">
       <div class="float-below" data-flash-slot="voteit-main"></div>
     </div>
   </nav>
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xs-10" id="projector-main">
-        <ul id="projector-main" class="list-group">
-        
-        </ul>
+      <div class="col-xs-10">
+        <form id="quick-poll" action="${request.resource_url(context, '__quick_poll__.json')}" method="POST">
+          <ul id="projector-main" class="list-group"></ul>
+        </form>
+        <a href="javascript:"
+          class="btn btn-sm btn-default pull-right"
+          title="Quickly create a poll. Majority poll with 1-2 proposals, Schulze STV for 3 or more."
+          i18n:attributes="title quick_poll_btn_title;"
+          data-quick-poll>
+          <span class="glyphicon glyphicon-star"></span>
+          <span i18n:translate="">Quick poll</span>
+        </a>
       </div>
       <div class="col-xs-2">
         <ul id="projector-pool" class="list-group">
@@ -64,6 +72,7 @@
             <a href="#" class="btn btn-xs btn-default move-left">
               <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
+            <input type="hidden" name="uid" value="" />
             <div class="main-controls pull-right">
               <div class="btn-group btn-group-sm" data-wf-controls role="group">
                 <a class="btn btn-default" data-wf-state="published" href="">
@@ -106,7 +115,10 @@
     });
     $('body').on('click', '[data-wf-state]', function(event) {
       projector.handle_wf_click(event);
-    })
+    });
+    $('body').on('click', '[data-quick-poll]', function(event) {
+      projector.quick_poll(event);
+    });
     //Load initial content?
     if (window.location.hash.length > 1) {
       var url = '${request.resource_url(request.meeting)}' + window.location.hash + '/__ai_contents__.json';

@@ -21,6 +21,7 @@ Projector.prototype.handle_response = function (response) {
       {'.proposal-aid': 'obj.aid',
        '.proposal-text': 'obj.text',
        '.proposal-author': 'obj.creator',
+       '[name="uid"]@value': 'obj.uid',
        '[data-wf-state]@href': 'obj.prop_wf_url',
        '[data-wf-state="published"]@class+': function(a) {
          if (a.item['wf_state'] == "published") {
@@ -89,4 +90,17 @@ Projector.prototype.highlight_proposal = function (event, enable) {
     //Disable selection
     $('#projector-pool').append(elem);
   }
+}
+
+/* Find all proposals currently placed in the highlighted section and post them */
+Projector.prototype.quick_poll = function (event) {
+  var form = $('#quick-poll');
+  var request = arche.do_request(form.attr('action'), {'method': 'POST', 'data': form.serialize()});
+  request.done(function(response) {
+    arche.load_flash_messages()
+    arche.create_flash_message(response['msg'], {'type': 'success', 'auto_destruct': false})
+  });
+  request.fail(function(jqXHR) {
+    arche.flash_error(jqXHR);
+  });
 }
