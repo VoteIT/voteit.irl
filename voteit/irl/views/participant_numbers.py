@@ -64,7 +64,6 @@ class ParticipantNumbersView(BaseView):
              permission = security.MODERATE_MEETING,
              renderer = "arche:templates/form.pt")
 class AttachEmailsToPNForm(DefaultEditForm):
-
     schema_name = 'attach_emails_to_pn'
 
     @property
@@ -113,6 +112,7 @@ class AttachEmailsToPNForm(DefaultEditForm):
         self.flash_messages.add(" ".join(messages), auto_destruct = False)
         return HTTPFound(location = self.request.resource_url(self.context, 'manage_participant_numbers'))
 
+
 @view_config(name = "claim_participant_number",
              permission = security.VIEW,
              renderer = "arche:templates/form.pt")
@@ -150,8 +150,11 @@ class ClaimParticipantNumberForm(DefaultEditForm):
              permission = security.MODERATE_MEETING,
              renderer = "arche:templates/form.pt")
 class AssignParticipantNumberForm(DefaultEditForm):
-
     schema_name = 'assign_participant_number'
+
+    @property
+    def title(self):
+        return self.schema.title
 
     @reify
     def participant_numbers(self):

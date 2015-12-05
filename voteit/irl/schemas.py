@@ -220,6 +220,7 @@ def deferred_pn_from_get(node, kw):
 
 
 class AssignParticipantNumber(colander.Schema):
+    title = _("Assign participant number")
     userid = colander.SchemaNode(
         colander.String(),
         title = _(u"UserID"),
