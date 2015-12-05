@@ -47,7 +47,7 @@ class ProjectorView(BaseView):
             raise HTTPForbidden(translate(_("No proposals")))
         factories = get_content_factories()
         if len(proposals) == 1:
-            reject_prop = factories['Proposal'](title = translate(_("Reject proposal")))
+            reject_prop = factories['Proposal'](text = translate(_("Reject proposal")))
             ai[reject_prop.uid] = reject_prop
             proposals.append(reject_prop)
         title = _("Quick poll: ${proposals}",
