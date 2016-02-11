@@ -1,6 +1,5 @@
 from arche.interfaces import ISchemaCreatedEvent
 from arche.schemas import UserSchema
-from pyramid.threadlocal import get_current_request
 import colander
 import deform
 
@@ -28,9 +27,8 @@ class ParticipantNumberAPWithGender(ParticipantNumberAP):
 
 
 def add_gender_in_profile(schema, event):
-    request = get_current_request()
-    if request.context.content_type == 'Meeting' and \
-        request.context.get_field_value('access_policy') != ParticipantNumberAPWithGender.name:
+    if event.context.type_name == 'Meeting' and \
+        event.context.access_policy != ParticipantNumberAPWithGender.name:
         return #Skip in meeting context without this AP
     schema.add(colander.SchemaNode(colander.String(),
                                    name = "gender",
@@ -43,3 +41,11 @@ def includeme(config):
     config.add_subscriber(add_gender_in_profile, [ClaimParticipantNumberSchema, ISchemaCreatedEvent])
     config.add_subscriber(add_gender_in_profile, [UserSchema, ISchemaCreatedEvent])
     config.registry.registerAdapter(ParticipantNumberAPWithGender, name = ParticipantNumberAPWithGender.name)
+    #Maybe add attribute to User class
+    from voteit.core.models.user import User
+    if not hasattr(User, 'gender'):
+        def _get(self):
+            return self.get_field_value('gender', '')
+        def _set(self, value):
+            self.set_field_value('gender', value)
+        User.gender = property(_get, _set)
