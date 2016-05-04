@@ -9,6 +9,7 @@ from arche.views.base import BaseForm, BaseView
 from voteit.core import security
 from voteit.core.models.interfaces import IAgendaItem, IProposal
 from voteit.irl import _
+from voteit.irl.fanstaticlib import voteit_irl_print_css
 
 
 @view_config(name = "_print_proposals_form",
@@ -46,6 +47,7 @@ class PrintProposalsForm(BaseForm):
 class PrintProposalsView(BaseView):
 
     def __call__(self):
+        voteit_irl_print_css.need()
         response = {}
         proposal_ids = self.request.session.pop('print_proposal_ids', ())
         dt_handler = self.request.dt_handler
