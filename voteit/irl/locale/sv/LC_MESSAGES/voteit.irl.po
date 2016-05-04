@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-05-04 12:51+0200\n"
-"PO-Revision-Date: 2016-05-04 12:54+0200\n"
+"POT-Creation-Date: 2016-05-04 13:23+0200\n"
+"PO-Revision-Date: 2016-05-04 13:25+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -88,7 +88,7 @@ msgstr ""
 #: voteit/irl/schemas.py:145
 #, python-format
 msgid "The following emails are already assigned to numbers: ${emails}"
-msgstr ""
+msgstr "Följande epostadresser är redan kopplade till nummer: ${emails}"
 
 #: voteit/irl/schemas.py:151 voteit/irl/templates/participant_number_tabs.pt:12
 msgid "Attach emails"
@@ -120,7 +120,7 @@ msgstr ""
 
 #: voteit/irl/schemas.py:170
 msgid "Create new tickets if they don't exist"
-msgstr ""
+msgstr "Skapa nya biljetter om de inte existerar"
 
 #: voteit/irl/schemas.py:184
 msgid "Anyone registering with participant number will be given these roles"
@@ -411,6 +411,7 @@ msgstr "Ta bort"
 
 #: voteit/irl/templates/participant_callbacks.pt:79
 #: voteit/irl/templates/participant_numbers.pt:63
+#: voteit/irl/templates/print_proposals.pt:19
 #: voteit/irl/templates/view_electoral_register.pt:35
 #: voteit/irl/views/electoral_register.py:80
 msgid "Back"
@@ -463,6 +464,20 @@ msgstr ""
 "skapa flera biljetter. Om du vill skapa biljetter mellan 1-200, skriv 1 som "
 "start och 200 som slutnummer. Om du inte skriver ett slutnummer så skapas "
 "bara en biljett."
+
+#: voteit/irl/templates/print_proposals.pt:9
+msgid "${num} selected proposal(s)"
+msgstr "${num} valda förslag"
+
+#: voteit/irl/templates/print_proposals.pt:13
+msgid ""
+"Each proposal will be printed on its own page. This text will be ignored"
+msgstr "Varje förslag hamnar på sin egen sida. Den här texten kommer inte med."
+
+#: voteit/irl/templates/print_proposals.pt:17
+#: voteit/irl/views/print_proposals.py:22
+msgid "Print"
+msgstr "Skriv ut"
 
 #: voteit/irl/templates/projector.pt:21
 msgid "(Click menu to select Agenda Item)"
@@ -667,10 +682,6 @@ msgstr "Hantera deltagarnummer"
 msgid "Claim participant number"
 msgstr "Registrera deltagarnummer"
 
-#: voteit/irl/views/print_proposals.py:22
-msgid "Print"
-msgstr "Skriv ut"
-
 #: voteit/irl/views/print_proposals.py:26
 msgid "Select proposals to print"
 msgstr "Välj förslag att skriva ut"
@@ -717,7 +728,7 @@ msgstr ""
 #: voteit/irl/views/projector.py:121
 #, python-format
 msgid "Not allowed to transition to ${state}"
-msgstr ""
+msgstr "Inte tillåtet att gå till ${state}"
 
 #: voteit/irl/views/projector.py:137
 msgid "Proposal view for projector"

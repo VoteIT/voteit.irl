@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-05-04 12:51+0200\n"
+"POT-Creation-Date: 2016-05-04 13:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -381,6 +381,7 @@ msgstr ""
 
 #: ././voteit/irl/templates/participant_callbacks.pt:79
 #: ././voteit/irl/templates/participant_numbers.pt:63
+#: ././voteit/irl/templates/print_proposals.pt:19
 #: ././voteit/irl/templates/view_electoral_register.pt:35
 #: ././voteit/irl/views/electoral_register.py:80
 msgid "Back"
@@ -428,6 +429,20 @@ msgstr ""
 #. one ticket will be created.
 #: ././voteit/irl/templates/participant_numbers.pt:45
 msgid "ticket_creation_help"
+msgstr ""
+
+#: ././voteit/irl/templates/print_proposals.pt:9
+msgid "${num} selected proposal(s)"
+msgstr ""
+
+#: ././voteit/irl/templates/print_proposals.pt:13
+msgid ""
+"Each proposal will be printed on its own page. This text will be ignored"
+msgstr ""
+
+#: ././voteit/irl/templates/print_proposals.pt:17
+#: ././voteit/irl/views/print_proposals.py:22
+msgid "Print"
 msgstr ""
 
 #: ././voteit/irl/templates/projector.pt:21
@@ -622,10 +637,6 @@ msgstr ""
 
 #: ././voteit/irl/views/participant_numbers.py:210
 msgid "Claim participant number"
-msgstr ""
-
-#: ././voteit/irl/views/print_proposals.py:22
-msgid "Print"
 msgstr ""
 
 #: ././voteit/irl/views/print_proposals.py:26
