@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="sfs_ga">
+<head></head>
+<body id="print-friendly">
+<div class="print-hidden text-center">
+  <h1 i18n:translate="">
+    <span i18n:name="num" tal:content="len(proposals)" />
+    selected proposal(s)
+  </h1>
+  <div i18n:translate="">
+      Each proposal will be printed on its own page. This text will be ignored
+  </div>
+  <a href="javascript:window.print()" class="btn btn-default"
+     i18n:translate="">Print</a>
+  <a href="${request.resource_url(context)}" class="btn btn-default"
+     i18n:translate="">Back</a>
+</div>
+<tal:iterate repeat="prop proposals">
+  <div>
+    <h1>
+      #${prop.aid}
+    </h1>
+    <h3><small>${now}</small></h3>
+    <div><i>${structure: request.creators_info(prop.creator, portrait = False, no_tag = True)}</i> ${prop.text}</div>
+  </div>
+  <div class="page-break"><!-- --></div>
+</tal:iterate>
+</body>
+</html>

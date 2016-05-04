@@ -1,20 +1,20 @@
-# 
+#
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-12-04 21:16+0100\n"
+"POT-Creation-Date: 2016-05-04 12:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Lingua 3.9\n"
+"Language: \n"
+"Generated-By: Lingua 4.9\n"
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server load, please try again in a short while.
@@ -24,11 +24,6 @@ msgstr ""
 
 #: ././voteit/irl/__init__.py:31
 msgid "Your precence is received"
-msgstr ""
-
-#: ././voteit/irl/schemas.py:151
-#: ././voteit/irl/templates/participant_number_tabs.pt:12
-msgid "Attach emails"
 msgstr ""
 
 #. Default: Method to select elegible voters
@@ -50,6 +45,14 @@ msgstr ""
 msgid "Second register"
 msgstr ""
 
+#: ././voteit/irl/schemas.py:76
+msgid "No match - remember that it's case sensitive!"
+msgstr ""
+
+#: ././voteit/irl/schemas.py:79
+msgid "This number has already been claimed."
+msgstr ""
+
 #: ././voteit/irl/schemas.py:85
 msgid "Participant code"
 msgstr ""
@@ -60,13 +63,29 @@ msgstr ""
 msgid "enter_token_description"
 msgstr ""
 
+#: ././voteit/irl/schemas.py:107
+#: ././voteit/irl/views/participant_numbers.py:179
+msgid "Participant number not found"
+msgstr ""
+
 #: ././voteit/irl/schemas.py:126
 msgid "Not an existing participant number"
+msgstr ""
+
+#. Default: There are more email addresses than existing participant numbers.
+#. Number ${num} not found. Total emails: ${emails_count}
+#: ././voteit/irl/schemas.py:138
+msgid "attach_emails_pn_dont_exist_error"
 msgstr ""
 
 #: ././voteit/irl/schemas.py:145
 #, python-format
 msgid "The following emails are already assigned to numbers: ${emails}"
+msgstr ""
+
+#: ././voteit/irl/schemas.py:151
+#: ././voteit/irl/templates/participant_number_tabs.pt:12
+msgid "Attach emails"
 msgstr ""
 
 #: ././voteit/irl/schemas.py:153
@@ -125,31 +144,22 @@ msgstr ""
 msgid "pn_ap_public_roles_description"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:225
+#: ././voteit/irl/schemas.py:223
+msgid "Assign participant number"
+msgstr ""
+
+#: ././voteit/irl/schemas.py:226
 msgid "UserID"
-msgstr ""
-
-#: ././voteit/irl/schemas.py:76
-msgid "No match - remember that it's case sensitive!"
-msgstr ""
-
-#: ././voteit/irl/schemas.py:79
-msgid "This number has already been claimed."
-msgstr ""
-
-#: ././voteit/irl/schemas.py:107
-#: ././voteit/irl/views/participant_numbers.py:176
-msgid "Participant number not found"
-msgstr ""
-
-#. Default: There are more email addresses than existing participant numbers.
-#. Number ${num} not found. Total emails: ${emails_count}
-#: ././voteit/irl/schemas.py:138
-msgid "attach_emails_pn_dont_exist_error"
 msgstr ""
 
 #: ././voteit/irl/models/meeting_presence.py:53
 msgid "Meeting presence check isn't open"
+msgstr ""
+
+#. Default: Some callbacks for the UserId '${userid}' failed. Contact the
+#. moderator about this. The ones that failed were: ${callback_errors}
+#: ././voteit/irl/models/participant_callback.py:64
+msgid "could_not_execute_callback_error"
 msgstr ""
 
 #: ././voteit/irl/models/participant_callback.py:126
@@ -162,12 +172,6 @@ msgstr ""
 
 #: ././voteit/irl/models/participant_callback.py:142
 msgid "Allow to propose"
-msgstr ""
-
-#. Default: Some callbacks for the UserId '${userid}' failed. Contact the
-#. moderator about this. The ones that failed were: ${callback_errors}
-#: ././voteit/irl/models/participant_callback.py:64
-msgid "could_not_execute_callback_error"
 msgstr ""
 
 #: ././voteit/irl/models/participant_number_ap.py:12
@@ -190,7 +194,7 @@ msgstr ""
 #. Default: You're now assigned number ${number}.
 #: ././voteit/irl/models/participant_number_ap.py:37
 #: ././voteit/irl/views/participant_numbers.py:142
-#: ././voteit/irl/views/participant_numbers.py:187
+#: ././voteit/irl/views/participant_numbers.py:190
 msgid "number_now_assigned_notice"
 msgstr ""
 
@@ -200,33 +204,33 @@ msgstr ""
 msgid "access_without_pn_notice"
 msgstr ""
 
-#: ././voteit/irl/plugins/gender.py:19
+#: ././voteit/irl/plugins/gender.py:11
+msgid "Female"
+msgstr ""
+
+#: ././voteit/irl/plugins/gender.py:12
+msgid "Male"
+msgstr ""
+
+#: ././voteit/irl/plugins/gender.py:13
+msgid "Other"
+msgstr ""
+
+#: ././voteit/irl/plugins/gender.py:18
 msgid "Participant number registration with gender"
 msgstr ""
 
 #. Default: Same as participant number, but this also requires gender to be
 #. specified.
-#: ././voteit/irl/plugins/gender.py:20
+#: ././voteit/irl/plugins/gender.py:19
 msgid "participant_number_ap_with_gender_required_description"
 msgstr ""
 
-#: ././voteit/irl/plugins/gender.py:12
-msgid "Female"
-msgstr ""
-
-#: ././voteit/irl/plugins/gender.py:13
-msgid "Male"
-msgstr ""
-
-#: ././voteit/irl/plugins/gender.py:14
-msgid "Other"
-msgstr ""
-
-#: ././voteit/irl/plugins/gender.py:37
+#: ././voteit/irl/plugins/gender.py:35
 msgid "Gender"
 msgstr ""
 
-#: ././voteit/irl/plugins/gender.py:38
+#: ././voteit/irl/plugins/gender.py:36
 msgid ""
 "Used for statistics and perhaps gender based quotas. See meeting for details."
 msgstr ""
@@ -480,16 +484,21 @@ msgstr ""
 msgid "Change post ownership"
 msgstr ""
 
-#: ././voteit/irl/views/electoral_register.py:109
-msgid "Electoral register"
-msgstr ""
-
 #: ././voteit/irl/views/electoral_register.py:47
 msgid "New electoral register added"
 msgstr ""
 
 #: ././voteit/irl/views/electoral_register.py:79
 msgid "Diff"
+msgstr ""
+
+#: ././voteit/irl/views/electoral_register.py:109
+msgid "Electoral register"
+msgstr ""
+
+#. Default: Method '${method_title}' applied but it reports no change needed.
+#: ././voteit/irl/views/eligible_voters.py:36
+msgid "no_update_of_perms_needed_notice"
 msgstr ""
 
 #. Default: Method '${method_title}' added ${added_count} and removed
@@ -502,22 +511,16 @@ msgstr ""
 msgid "Update elegible voters"
 msgstr ""
 
-#. Default: Method '${method_title}' applied but it reports no change needed.
-#: ././voteit/irl/views/eligible_voters.py:36
-msgid "no_update_of_perms_needed_notice"
+#: ././voteit/irl/views/meeting_presence.py:64
+msgid "Started"
+msgstr ""
+
+#: ././voteit/irl/views/meeting_presence.py:67
+msgid "Closed"
 msgstr ""
 
 #: ././voteit/irl/views/meeting_presence.py:83
 msgid "You're now set as present"
-msgstr ""
-
-#: ././voteit/irl/views/meeting_presence.py:114
-#, python-format
-msgid "User not found: '${userid}'"
-msgstr ""
-
-#: ././voteit/irl/views/meeting_presence.py:64
-msgid "Started"
 msgstr ""
 
 #: ././voteit/irl/views/meeting_presence.py:93
@@ -529,8 +532,9 @@ msgstr ""
 msgid "No user with number: '${num}'"
 msgstr ""
 
-#: ././voteit/irl/views/meeting_presence.py:67
-msgid "Closed"
+#: ././voteit/irl/views/meeting_presence.py:114
+#, python-format
+msgid "User not found: '${userid}'"
 msgstr ""
 
 #: ././voteit/irl/views/meeting_presence.py:122
@@ -543,17 +547,20 @@ msgstr ""
 msgid "Already registered: ${userid}"
 msgstr ""
 
+#: ././voteit/irl/views/participant_callbacks.py:50
+#: ././voteit/irl/views/participant_numbers.py:45
+msgid "End must be higher than start"
+msgstr ""
+
+#: ././voteit/irl/views/participant_callbacks.py:52
+#: ././voteit/irl/views/participant_numbers.py:47
+msgid "Must be an integer value"
+msgstr ""
+
 #: ././voteit/irl/views/participant_callbacks.py:57
 #, python-format
 msgid ""
 "Added ${added} new callbacks and skipped ${existed} that already existed."
-msgstr ""
-
-#: ././voteit/irl/views/participant_callbacks.py:76
-#, python-format
-msgid ""
-"Removed ${removed} callbacks and skipped ${nonexistent} that wasn't "
-"registered."
 msgstr ""
 
 #: ././voteit/irl/views/participant_callbacks.py:71
@@ -563,22 +570,34 @@ msgid ""
 "number."
 msgstr ""
 
-#: ././voteit/irl/views/participant_callbacks.py:52
-#: ././voteit/irl/views/participant_numbers.py:47
-msgid "Must be an integer value"
+#: ././voteit/irl/views/participant_callbacks.py:76
+#, python-format
+msgid ""
+"Removed ${removed} callbacks and skipped ${nonexistent} that wasn't "
+"registered."
 msgstr ""
 
-#: ././voteit/irl/views/participant_callbacks.py:50
-#: ././voteit/irl/views/participant_numbers.py:45
-msgid "End must be higher than start"
+#: ././voteit/irl/views/participant_numbers.py:50
+#, python-format
+msgid "Added ${count} new numbers"
 msgstr ""
 
-#: ././voteit/irl/views/participant_numbers.py:106
+#: ././voteit/irl/views/participant_numbers.py:55
+#, python-format
+msgid "Removed ${count} numbers"
+msgstr ""
+
+#: ././voteit/irl/views/participant_numbers.py:91
+#, python-format
+msgid "<b>${count}</b> new participant numbers created."
+msgstr ""
+
+#: ././voteit/irl/views/participant_numbers.py:105
 #, python-format
 msgid "<b>${emails_num}</b> attached."
 msgstr ""
 
-#: ././voteit/irl/views/participant_numbers.py:110
+#: ././voteit/irl/views/participant_numbers.py:109
 #, python-format
 msgid ""
 "<b>${num}</b> numbers were auto-claimed by users with validated email "
@@ -593,51 +612,37 @@ msgstr ""
 
 #. Default: This user was already assigned number ${number} so that number was
 #. cleared.
-#: ././voteit/irl/views/participant_numbers.py:180
+#: ././voteit/irl/views/participant_numbers.py:183
 msgid "participant_number_moved_warning"
 msgstr ""
 
-#: ././voteit/irl/views/participant_numbers.py:50
-#, python-format
-msgid "Added ${count} new numbers"
-msgstr ""
-
-#: ././voteit/irl/views/participant_numbers.py:55
-#, python-format
-msgid "Removed ${count} numbers"
-msgstr ""
-
-#: ././voteit/irl/views/participant_numbers.py:92
-#, python-format
-msgid "<b>${count}</b> new participant numbers created."
-msgstr ""
-
-#: ././voteit/irl/views/participant_numbers.py:198
+#: ././voteit/irl/views/participant_numbers.py:201
 msgid "Manage participant numbers"
 msgstr ""
 
-#: ././voteit/irl/views/participant_numbers.py:207
+#: ././voteit/irl/views/participant_numbers.py:210
 msgid "Claim participant number"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:53
-#, python-format
-msgid "Quick poll: ${proposals}"
+#: ././voteit/irl/views/print_proposals.py:22
+msgid "Print"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:136
-msgid "Proposal view for projector"
+#: ././voteit/irl/views/print_proposals.py:26
+msgid "Select proposals to print"
 msgstr ""
 
-#. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
-#. 'Denied'. You may need to reload this page.
-#: ././voteit/irl/views/projector.py:110
-msgid "wrong_initial_state_error"
+#. Default: Each proposal will be on its own page
+#: ././voteit/irl/views/print_proposals.py:27
+msgid "print_proposals_description"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:69
-#, python-format
-msgid "Added and started: ${poll_url}"
+#: ././voteit/irl/views/print_proposals.py:58
+msgid "Print proposals"
+msgstr ""
+
+#: ././voteit/irl/views/print_proposals.py:67
+msgid "Print this proposal"
 msgstr ""
 
 #: ././voteit/irl/views/projector.py:47
@@ -646,4 +651,34 @@ msgstr ""
 
 #: ././voteit/irl/views/projector.py:50
 msgid "Reject proposal"
+msgstr ""
+
+#: ././voteit/irl/views/projector.py:53
+#, python-format
+msgid "Quick poll: ${proposals}"
+msgstr ""
+
+#: ././voteit/irl/views/projector.py:69
+#, python-format
+msgid "Added and started: ${poll_url}"
+msgstr ""
+
+#. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
+#. 'Denied'. You may need to reload this page.
+#: ././voteit/irl/views/projector.py:110
+msgid "wrong_initial_state_error"
+msgstr ""
+
+#: ././voteit/irl/views/projector.py:121
+#, python-format
+msgid "Not allowed to transition to ${state}"
+msgstr ""
+
+#: ././voteit/irl/views/projector.py:137
+msgid "Proposal view for projector"
+msgstr ""
+
+#: ././voteit/irl/views/proposals_unhandled.py:28
+#, python-format
+msgid "Changed ${count} proposals"
 msgstr ""

@@ -118,7 +118,8 @@ class ProjectorView(BaseView):
         if state not in allowed_states:
             return {'status': 'error',
                     'type': 'wrong_new_state',
-                    'msg': transl(_("Not allowed to transition to %s" % state))}
+                    'msg': transl(_("Not allowed to transition to ${state}",
+                                    mapping = {'state': state}))}
         self.context.set_workflow_state(self.request, state)
         return {'status': 'success',
                 'state': state}
