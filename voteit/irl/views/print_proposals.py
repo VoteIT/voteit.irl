@@ -49,7 +49,11 @@ class PrintProposalsView(BaseView):
     def __call__(self):
         voteit_irl_print_css.need()
         response = {}
-        proposal_ids = self.request.session.pop('print_proposal_ids', ())
+        one_proposal = self.request.GET.get('proposal_id', None)
+        if one_proposal:
+            proposal_ids = [one_proposal]
+        else:
+            proposal_ids = self.request.session.pop('print_proposal_ids', ())
         dt_handler = self.request.dt_handler
         response['proposals'] = [self.context[x] for x in proposal_ids]
         response['now'] = dt_handler.format_dt(dt_handler.utcnow())
@@ -69,9 +73,8 @@ def print_proposals_action(context, request, va, **kw):
              title = _(u"Print this proposal"),
              interface = IProposal)
 def print_this_proposal_action(context, request, va, **kw):
-    query = {'print': 'print', context.__name__: 'true'} #'true' is the marshalled True value
     ai = find_interface(context, IAgendaItem)
-    url = request.resource_url(ai, '_print_proposals_form', query = query)
+    url = request.resource_url(ai, '_print_proposals', query = {'proposal_id': context.uid})
     return """<li><a href="%s">%s</a></li>""" % (url,
                                                  request.localizer.translate(va.title))
 
