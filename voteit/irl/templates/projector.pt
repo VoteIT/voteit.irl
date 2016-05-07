@@ -22,6 +22,31 @@
         </a>
       </div>
       <ul class="nav navbar-nav navbar-right">
+        <li class="disabled">
+          <a href="#"
+             title="Previous"
+             i18n:attributes="title;"
+             data-nav-ai="previous">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </a>
+        </li>
+        <li class="disabled">
+          <a href="#"
+             title="Next"
+             i18n:attributes="title;"
+             data-nav-ai="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:"
+            title="Quickly create a poll. Majority poll with 1-2 proposals, Schulze STV for 3 or more."
+            i18n:attributes="title quick_poll_btn_title;"
+             data-toggle="tooltip" data-placement="bottom"
+            data-quick-poll>
+            <span class="glyphicon glyphicon-star"></span>
+          </a>
+        </li>
         <li class="dropdown" id="polls-menu">
           <a href="#" class="dropdown-toggle"
             data-toggle="dropdown"
@@ -36,7 +61,8 @@
                 ${state_titles[state]}
               </li>
               <li role="presentation" tal:repeat="obj agenda_items[state]">
-                <a role="menuitem" tabindex="-1" href="${request.resource_url(obj, '__ai_contents__.json')}"><!-- XXX -->
+                <a role="menuitem" tabindex="-1"
+                   href="${request.resource_url(obj, '__ai_contents__.json')}">
                   ${obj.title}
                 </a>
               </li>
@@ -57,18 +83,10 @@
         <form id="quick-poll" action="${request.resource_url(context, '__quick_poll__.json')}" method="POST">
           <ul id="projector-main" class="list-group"></ul>
         </form>
-        <a href="javascript:"
-          class="btn btn-sm btn-default pull-right"
-          title="Quickly create a poll. Majority poll with 1-2 proposals, Schulze STV for 3 or more."
-          i18n:attributes="title quick_poll_btn_title;"
-          data-quick-poll>
-          <span class="glyphicon glyphicon-star"></span>
-          <span i18n:translate="">Quick poll</span>
-        </a>
       </div>
       <div class="col-xs-2">
         <ul id="projector-pool" class="list-group">
-          <li class="list-group-item hidden">
+          <li class="list-group-item hidden" data-uid="">
             <a href="#" class="btn btn-xs btn-default move-left">
               <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
@@ -107,6 +125,9 @@
     $('#projector-ai-menu a').on('click', function(event) {
       projector.handle_ai_menu_click(event);
     });
+    $('[data-nav-ai]').on('click', function(event) {
+      projector.handle_ai_menu_click(event);
+    });
     $('body').on('click', '.move-left', function(event) {
       projector.highlight_proposal(event, true);
     });
@@ -125,6 +146,7 @@
       url = url.replace('#', '');
       projector.load_context(url);
     }
+    $('[data-toggle="tooltip"]').tooltip();
   });
 </script>
 </body>

@@ -22,6 +22,7 @@ Projector.prototype.handle_response = function (response) {
        '.proposal-text': 'obj.text',
        '.proposal-author': 'obj.creator',
        '[name="uid"]@value': 'obj.uid',
+       '.@data-uid': 'obj.uid',
        '[data-wf-state]@href': 'obj.prop_wf_url',
        '[data-wf-state="published"]@class+': function(a) {
          if (a.item['wf_state'] == "published") {
@@ -42,14 +43,32 @@ Projector.prototype.handle_response = function (response) {
     }
   };
   $('#projector-pool').render(response, directive);
+
+  $('[data-nav-ai="previous"]').attr('href', response['previous_url']);
+  $('[data-nav-ai="previous"]').attr('title', response['previous_title']);
+  if (response['previous_url']) {
+    $('[data-nav-ai="previous"]').parent().removeClass('disabled');
+  } else {
+    $('[data-nav-ai="previous"]').parent().addClass('disabled');
+  }
+  $('[data-nav-ai="next"]').attr('href', response['next_url']);
+  $('[data-nav-ai="next"]').attr('title', response['next_title']);
+  if (response['next_url']) {
+    $('[data-nav-ai="next"]').parent().removeClass('disabled');
+  } else {
+    $('[data-nav-ai="next"]').parent().addClass('disabled');
+  }
+
   $('#navbar-heading').html(response['agenda_item']);
   try { window.history.pushState(null, response['agenda_item'], response['ai_url']); } catch(e) {}
 }
 
 Projector.prototype.handle_ai_menu_click = function (event) {
   event.preventDefault();
-  var elem = $(event.target);
-  this.load_context(elem.attr('href'));
+  var elem = $(event.currentTarget);
+  if (!elem.parent().hasClass('disabled')) {
+    this.load_context(elem.attr('href'));
+  }
 }
 
 Projector.prototype.reset = function () {

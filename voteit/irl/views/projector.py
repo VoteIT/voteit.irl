@@ -1,5 +1,4 @@
 from arche.utils import get_content_factories
-from arche.views.base import BaseView
 from betahaus.viewcomponent.decorators import view_action
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.traversal import resource_path
@@ -10,13 +9,14 @@ from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
 from voteit.core.security import VIEW
+from voteit.core.views.agenda_item import AgendaItemView
 
 from voteit.irl.fanstaticlib import voteit_irl_projector
 from voteit.irl import _
 
 
 @view_defaults(context = IMeeting, permission = MODERATE_MEETING)
-class ProjectorView(BaseView):
+class ProjectorView(AgendaItemView):
 
     @view_config(name = '__projector__',
                  renderer = 'voteit.irl:templates/projector.pt',
@@ -24,7 +24,6 @@ class ProjectorView(BaseView):
     def main_view(self):
         voteit_irl_projector.need()
         response = {}
-        response['selected'] = selected = self.request.subpath and self.request.subpath[0] or None
         response['agenda_items'] = self.get_ais()
         response['state_titles'] = self.request.get_wf_state_titles(IAgendaItem, 'AgendaItem')
         return response
@@ -71,11 +70,9 @@ class ProjectorView(BaseView):
 
     @view_config(context = IAgendaItem, name = "__ai_contents__.json", renderer = 'json')
     def ai_contents(self):
-        response = {}
         query = "path == '%s' and " % resource_path(self.context)
         query += "type_name == 'Proposal' and " #
         query += "workflow_state in any(['published', 'approved', 'denied'])"
-        #sort_index = 'order'
         results = []
         for obj in self.catalog_query(query, resolve = True):
             results.append(dict(text = self.request.transform_text(obj.text),
@@ -84,18 +81,33 @@ class ProjectorView(BaseView):
                                 wf_state = obj.get_workflow_state(),
                                 uid = obj.uid,
                                 creator = self.request.creators_info(obj.creator, portrait = False)))
+        next_obj = self.next_ai()
+        next_url = ''
+        next_title = getattr(next_obj, 'title', '')
+        if next_obj:
+            next_url = self.request.resource_url(next_obj, '__ai_contents__.json')
+        previous_obj = self.previous_ai()
+        previous_url = ''
+        previous_title = getattr(previous_obj, 'title', '')
+        if previous_obj:
+            previous_url = self.request.resource_url(previous_obj, '__ai_contents__.json')
         return {'agenda_item': self.context.title,
-                'ai_url': self.request.resource_url(self.request.meeting, '__projector__', anchor = self.context.__name__),
-                'proposals': results}
+                'ai_url': self.request.resource_url(self.request.meeting, '__projector__',
+                                                    anchor = self.context.__name__),
+                'proposals': results,
+                'next_url': next_url,
+                'previous_url': previous_url,
+                'next_title': next_title,
+                'previous_title': previous_title}
 
     def get_ais(self):
         results = {}
         states = ('ongoing', 'upcoming')
         query = "path == '%s' and " % resource_path(self.request.meeting)
         query += "type_name == 'AgendaItem' and "
-        #query += "order > %s and " % ai.get_field_value('order')
         for state in states:
-            results[state] = tuple(self.catalog_query("%s workflow_state == '%s'" % (query, state), resolve = True, sort_index = 'order'))
+            results[state] = tuple(self.catalog_query("%s workflow_state == '%s'" % (query, state),
+                                                      resolve = True, sort_index = 'order'))
         return results
 
     @view_config(context = IProposal, name = "__change_state_projector__.json", renderer = 'json')
@@ -123,14 +135,6 @@ class ProjectorView(BaseView):
         self.context.set_workflow_state(self.request, state)
         return {'status': 'success',
                 'state': state}
-
-#     def get_next_name(self, ai):
-#         query = "path == '%s' and " % resource_path(self.request.meeting)
-#         query += "type_name == 'AgendaItem' and "
-#         query += "workflow_state == '%s' and " % ai.get_workflow_state()
-#         query += "order > %s" % ai.get_field_value('order')
-#         for ai in self.catalog_query(query, resolve = True, sort_index = 'order', limit = 1):
-#             return ai
 
 
 @view_action('meeting_menu', 'projector',
