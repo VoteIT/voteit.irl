@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-05-04 13:23+0200\n"
-"PO-Revision-Date: 2016-05-04 13:25+0200\n"
+"POT-Creation-Date: 2016-05-13 22:06+0200\n"
+"PO-Revision-Date: 2016-05-13 22:08+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -101,7 +101,7 @@ msgstr "Börja på nummer"
 #. Default: Email addresses to attach.
 #: voteit/irl/schemas.py:156
 msgid "add_tickets_emails_titles"
-msgstr ""
+msgstr "Epostadresser att lägga till."
 
 #. Default: Paste a list of email addresses,
 #. one per row, to attach to participant numbers.
@@ -411,6 +411,7 @@ msgstr "Ta bort"
 
 #: voteit/irl/templates/participant_callbacks.pt:79
 #: voteit/irl/templates/participant_numbers.pt:63
+#: voteit/irl/templates/print_discussions.pt:19
 #: voteit/irl/templates/print_proposals.pt:19
 #: voteit/irl/templates/view_electoral_register.pt:35
 #: voteit/irl/views/electoral_register.py:80
@@ -465,6 +466,20 @@ msgstr ""
 "start och 200 som slutnummer. Om du inte skriver ett slutnummer så skapas "
 "bara en biljett."
 
+#: voteit/irl/templates/print_discussions.pt:9
+msgid "${num} selected discussion post(s)"
+msgstr "${num} valda diskussionsinlägg"
+
+#: voteit/irl/templates/print_discussions.pt:13
+msgid "Each post will be printed on its own page. This text will be ignored"
+msgstr "Varje inlägg hamnar på sin egen sida. Den här texten kommer inte med."
+
+#: voteit/irl/templates/print_discussions.pt:17
+#: voteit/irl/templates/print_proposals.pt:17 voteit/irl/views/print.py:27
+#: voteit/irl/views/print.py:55
+msgid "Print"
+msgstr "Skriv ut"
+
 #: voteit/irl/templates/print_proposals.pt:9
 msgid "${num} selected proposal(s)"
 msgstr "${num} valda förslag"
@@ -474,28 +489,27 @@ msgid ""
 "Each proposal will be printed on its own page. This text will be ignored"
 msgstr "Varje förslag hamnar på sin egen sida. Den här texten kommer inte med."
 
-#: voteit/irl/templates/print_proposals.pt:17
-#: voteit/irl/views/print_proposals.py:22
-msgid "Print"
-msgstr "Skriv ut"
-
 #: voteit/irl/templates/projector.pt:21
 msgid "(Click menu to select Agenda Item)"
 msgstr "(Klicka i menyn för att välja dagordningspunk)"
 
+#: voteit/irl/templates/projector.pt:27
+msgid "Previous"
+msgstr "Föregående"
+
+#: voteit/irl/templates/projector.pt:35
+msgid "Next"
+msgstr "Nästa"
+
 #. Default: Quickly create a poll. Majority poll with 1-2 proposals, Schulze
 #. STV for 3 or more.
-#: voteit/irl/templates/projector.pt:62
+#: voteit/irl/templates/projector.pt:43
 msgid "quick_poll_btn_title"
 msgstr ""
 "Snabbskapar omröstning. Majoritetsomröstning för 1-2 förslag, Schulze STV "
 "för 3 eller fler."
 
-#: voteit/irl/templates/projector.pt:66
-msgid "Quick poll"
-msgstr "Snabbomröstning"
-
-#: voteit/irl/templates/projector.pt:94
+#: voteit/irl/templates/projector.pt:112
 msgid "by"
 msgstr "av"
 
@@ -646,12 +660,12 @@ msgstr "Tog bort ${count} nummer"
 #: voteit/irl/views/participant_numbers.py:91
 #, python-format
 msgid "<b>${count}</b> new participant numbers created."
-msgstr ""
+msgstr "<b>${count}</b> nya deltagarnummer skapade."
 
 #: voteit/irl/views/participant_numbers.py:105
 #, python-format
 msgid "<b>${emails_num}</b> attached."
-msgstr ""
+msgstr "<b>${emails_num}</b> epostadresser tillagda."
 
 #: voteit/irl/views/participant_numbers.py:109
 #, python-format
@@ -682,55 +696,72 @@ msgstr "Hantera deltagarnummer"
 msgid "Claim participant number"
 msgstr "Registrera deltagarnummer"
 
-#: voteit/irl/views/print_proposals.py:26
+#: voteit/irl/views/print.py:31
 msgid "Select proposals to print"
 msgstr "Välj förslag att skriva ut"
 
 #. Default: Each proposal will be on its own page
-#: voteit/irl/views/print_proposals.py:27
+#: voteit/irl/views/print.py:32
 msgid "print_proposals_description"
 msgstr "Varje förslag skrivs ut på en egen sida"
 
-#: voteit/irl/views/print_proposals.py:58
+#: voteit/irl/views/print.py:59
+msgid "Select discussion posts to print"
+msgstr "Välj diskussionsinlägg att skriva ut"
+
+#. Default: Each post will be on its own page
+#: voteit/irl/views/print.py:60
+msgid "print_discussion_description"
+msgstr "Varje inlägg skrivs ut på en egen sida"
+
+#: voteit/irl/views/print.py:114
 msgid "Print proposals"
 msgstr "Skriv ut förslag"
 
-#: voteit/irl/views/print_proposals.py:67
+#: voteit/irl/views/print.py:123
+msgid "Print discussions"
+msgstr "Skriv ut diskussion"
+
+#: voteit/irl/views/print.py:132
 msgid "Print this proposal"
 msgstr "Skriv ut förslaget"
 
-#: voteit/irl/views/projector.py:47
+#: voteit/irl/views/print.py:142
+msgid "Print this post"
+msgstr "Skriv ut inlägget"
+
+#: voteit/irl/views/projector.py:46
 msgid "No proposals"
 msgstr "Inga förslag"
 
-#: voteit/irl/views/projector.py:50
+#: voteit/irl/views/projector.py:49
 msgid "Reject proposal"
 msgstr "Avslå förslag"
 
-#: voteit/irl/views/projector.py:53
+#: voteit/irl/views/projector.py:52
 #, python-format
 msgid "Quick poll: ${proposals}"
 msgstr "Snabbomröstning: ${proposals}"
 
-#: voteit/irl/views/projector.py:69
+#: voteit/irl/views/projector.py:68
 #, python-format
 msgid "Added and started: ${poll_url}"
 msgstr "Tillagd och startad: ${poll_url}"
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: voteit/irl/views/projector.py:110
+#: voteit/irl/views/projector.py:122
 msgid "wrong_initial_state_error"
 msgstr ""
 "Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
 "'Avslagen'. Du kan behöva ladda om sidan."
 
-#: voteit/irl/views/projector.py:121
+#: voteit/irl/views/projector.py:133
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr "Inte tillåtet att gå till ${state}"
 
-#: voteit/irl/views/projector.py:137
+#: voteit/irl/views/projector.py:141
 msgid "Proposal view for projector"
 msgstr "Förslagsvy för projektor"
 
@@ -738,6 +769,9 @@ msgstr "Förslagsvy för projektor"
 #, python-format
 msgid "Changed ${count} proposals"
 msgstr "Ändrade ${count} förslag"
+
+#~ msgid "Quick poll"
+#~ msgstr "Snabbomröstning"
 
 #~ msgid "Assign actions to participant numbers"
 #~ msgstr "Lägg till händelser till deltagarnummer"
