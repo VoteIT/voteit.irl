@@ -11,6 +11,7 @@ from voteit.core.helpers import strip_and_truncate
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IDiscussionPost
 from voteit.core.models.interfaces import IProposal
+from webhelpers.html.converters import nl2br
 
 from voteit.irl import _
 from voteit.irl.fanstaticlib import voteit_irl_print_css
@@ -87,6 +88,7 @@ class PrintProposalsView(BaseView):
         dt_handler = self.request.dt_handler
         response['proposals'] = [self.context[x] for x in proposal_ids]
         response['now'] = dt_handler.format_dt(dt_handler.utcnow())
+        response['nl2br'] = nl2br
         return response
 
 
@@ -107,6 +109,7 @@ class PrintDiscussionsView(BaseView):
         dt_handler = self.request.dt_handler
         response['discussion_posts'] = [self.context[x] for x in print_post_ids]
         response['now'] = dt_handler.format_dt(dt_handler.utcnow())
+        response['nl2br'] = nl2br
         return response
 
 
