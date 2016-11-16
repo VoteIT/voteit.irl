@@ -40,7 +40,7 @@
         </li>
         <li>
           <a href="javascript:"
-            title="Quickly create a poll. Majority poll with 1-2 proposals, Schulze STV for 3 or more."
+            title="Quickly create a poll. Majority poll with 1-2 proposals, Schulze for 3 or more."
             i18n:attributes="title quick_poll_btn_title;"
              data-toggle="tooltip" data-placement="bottom"
             data-quick-poll>

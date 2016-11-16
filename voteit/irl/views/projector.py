@@ -4,6 +4,7 @@ from pyramid.httpexceptions import HTTPForbidden
 from pyramid.traversal import resource_path
 from pyramid.view import view_config
 from pyramid.view import view_defaults
+from repoze.catalog.query import Eq
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IProposal
@@ -44,6 +45,15 @@ class ProjectorView(AgendaItemView):
                     raise HTTPForbidden("Proposals fetched from different agenda items")
         if not proposals:
             raise HTTPForbidden(translate(_("No proposals")))
+        #Check if there are other ongoing polls
+        query = Eq('type_name', 'Poll') & Eq('path', resource_path(ai)) & Eq('workflow_state', 'ongoing')
+        res = self.request.root.catalog.query(query)[0]
+        if res.total:
+            raise HTTPForbidden(
+                _("quickpoll_ongoing_polls_error",
+                  default="There are ongoing polls in this agenda item,"
+                          "close them first."))
+        #Setup poll
         factories = get_content_factories()
         if len(proposals) == 1:
             reject_prop = factories['Proposal'](text = translate(_("Reject proposal")))
@@ -57,7 +67,7 @@ class ProjectorView(AgendaItemView):
             poll_plugin = 'majority_poll'
         else:
             #Kolla Schulze eller majoritet
-            poll_plugin = 'schulze_stv'
+            poll_plugin = 'schulze'
         poll = factories['Poll'](title = title,
                                  proposals = proposal_uids,
                                  poll_plugin = poll_plugin)
