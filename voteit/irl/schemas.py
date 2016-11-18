@@ -19,9 +19,9 @@ def elegible_voters_method_choices_widget(node, kw):
     """ Create a widget where you can choose all selectable methods to adjust elegible voters. """
     context = kw['context']
     request = kw['request']
-    method_choices = set()
+    method_choices = [('', _('<Select>'))]
     for (name, method) in request.registry.getAdapters([context], IElegibleVotersMethod):
-        method_choices.add((name, method.title))
+        method_choices.append((name, method.title))
     return deform.widget.SelectWidget(values=method_choices)
 
 
@@ -252,6 +252,7 @@ def add_proposals_owner_nodes(schema, proposals):
                                        description = description,
                                        validator = existing_userid_or_email,
                                        widget = deferred_autocompleting_userid_widget,))
+
 
 def add_discussions_owner_nodes(schema, discussion_posts):
     for obj in discussion_posts:

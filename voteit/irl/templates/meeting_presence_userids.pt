@@ -9,6 +9,11 @@
   <div metal:fill-slot="content" class="row">
     <div class="col-md-12">
       <h1 i18n:translate="">Present users</h1>
+
+      <p>
+        <a class="btn btn-default" href="${request.resource_url(context, 'update_elegible_voters')}" i18n:translate="">Go to elegible voters method</a>
+      </p>
+
       <table class="table table-striped">
         <thead>
           <tr>
