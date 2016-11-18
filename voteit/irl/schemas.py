@@ -1,4 +1,5 @@
 from arche.validators import existing_userid_or_email
+from six import string_types
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
@@ -216,7 +217,13 @@ def deferred_autocompleting_participant_number_widget(node, kw):
 @colander.deferred
 def deferred_pn_from_get(node, kw):
     request = kw['request']
-    return int(request.GET['pn'])
+    val = request.GET.get('pn', colander.null)
+    if isinstance(val, string_types):
+        try:
+            return int(val)
+        except:
+            pass
+    return colander.null
 
 
 class AssignParticipantNumber(colander.Schema):
