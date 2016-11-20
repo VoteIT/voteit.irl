@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-11-16 16:54+0100\n"
+"POT-Creation-Date: 2016-11-19 00:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
-"Generated-By: Lingua 4.11\n"
+"Generated-By: Lingua 4.9\n"
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server load, please try again in a short while.
@@ -26,74 +26,78 @@ msgstr ""
 msgid "Your precence is received"
 msgstr ""
 
+#: ././voteit/irl/schemas.py:22
+msgid "<Select>"
+msgstr ""
+
 #. Default: Method to select elegible voters
-#: ././voteit/irl/schemas.py:29
+#: ././voteit/irl/schemas.py:30
 msgid "elegible_voters_method_name"
 msgstr ""
 
 #. Default: It will modify the voting permissions accoring to it's
 #. specifications.
-#: ././voteit/irl/schemas.py:30
+#: ././voteit/irl/schemas.py:31
 msgid "elegible_voters_method_description"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:50
+#: ././voteit/irl/schemas.py:51
 msgid "First register"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:54
+#: ././voteit/irl/schemas.py:55
 msgid "Second register"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:76
+#: ././voteit/irl/schemas.py:77
 msgid "No match - remember that it's case sensitive!"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:79
+#: ././voteit/irl/schemas.py:80
 msgid "This number has already been claimed."
 msgstr ""
 
-#: ././voteit/irl/schemas.py:85
+#: ././voteit/irl/schemas.py:86
 msgid "Participant code"
 msgstr ""
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
-#: ././voteit/irl/schemas.py:86
+#: ././voteit/irl/schemas.py:87
 msgid "enter_token_description"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:107
+#: ././voteit/irl/schemas.py:108
 #: ././voteit/irl/views/participant_numbers.py:179
 msgid "Participant number not found"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:126
+#: ././voteit/irl/schemas.py:127
 msgid "Not an existing participant number"
 msgstr ""
 
 #. Default: There are more email addresses than existing participant numbers.
 #. Number ${num} not found. Total emails: ${emails_count}
-#: ././voteit/irl/schemas.py:138
+#: ././voteit/irl/schemas.py:139
 msgid "attach_emails_pn_dont_exist_error"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:145
+#: ././voteit/irl/schemas.py:146
 #, python-format
 msgid "The following emails are already assigned to numbers: ${emails}"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:151
+#: ././voteit/irl/schemas.py:152
 #: ././voteit/irl/templates/participant_number_tabs.pt:12
 msgid "Attach emails"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:153
+#: ././voteit/irl/schemas.py:154
 msgid "Start at number"
 msgstr ""
 
 #. Default: Email addresses to attach.
-#: ././voteit/irl/schemas.py:156
+#: ././voteit/irl/schemas.py:157
 msgid "add_tickets_emails_titles"
 msgstr ""
 
@@ -108,15 +112,15 @@ msgstr ""
 #.                         email address is validated. This is instead of using
 #. the code to attach
 #.                         the number to a user.
-#: ././voteit/irl/schemas.py:158
+#: ././voteit/irl/schemas.py:159
 msgid "attach_emails_description"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:170
+#: ././voteit/irl/schemas.py:171
 msgid "Create new tickets if they don't exist"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:184
+#: ././voteit/irl/schemas.py:185
 msgid "Anyone registering with participant number will be given these roles"
 msgstr ""
 
@@ -124,11 +128,11 @@ msgstr ""
 #. registration to be bypassed (see below) the roles specified here won't be
 #. added when a meeting number is claimed by someone who's already a part of
 #. the meeting.
-#: ././voteit/irl/schemas.py:185
+#: ././voteit/irl/schemas.py:186
 msgid "pn_ap_claimed_roles_description"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:194
+#: ././voteit/irl/schemas.py:195
 msgid "Allow bypass and give access to anyone?"
 msgstr ""
 
@@ -140,15 +144,15 @@ msgstr ""
 #. Viewable for anyone: check view permission
 #. Open for participation from anyone: check all
 #. 
-#: ././voteit/irl/schemas.py:195
+#: ././voteit/irl/schemas.py:196
 msgid "pn_ap_public_roles_description"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:223
+#: ././voteit/irl/schemas.py:230
 msgid "Assign participant number"
 msgstr ""
 
-#: ././voteit/irl/schemas.py:226
+#: ././voteit/irl/schemas.py:233
 msgid "UserID"
 msgstr ""
 
@@ -235,14 +239,34 @@ msgid ""
 "Used for statistics and perhaps gender based quotas. See meeting for details."
 msgstr ""
 
-#: ././voteit/irl/plugins/present_users_voters.py:14
-msgid "Present with participant number"
+#: ././voteit/irl/plugins/present_users_voters.py:15
+msgid "Present with participant number (set on meeting -> advanced tab)"
 msgstr ""
 
 #. Default: Will remove voting permission for anyone not set as present. Users
-#. without a participant number will be ignored.
-#: ././voteit/irl/plugins/present_users_voters.py:15
+#. without a participant number will be ignored, or if they're outside of the
+#. meeting setting.
+#: ././voteit/irl/plugins/present_users_voters.py:16
 msgid "present_with_pn_voters_description"
+msgstr ""
+
+#: ././voteit/irl/plugins/present_users_voters.py:42
+msgid "Must be written as 'NN-XX' where N is low nr and X high."
+msgstr ""
+
+#: ././voteit/irl/plugins/present_users_voters.py:51
+msgid "First value must be higher than second"
+msgstr ""
+
+#: ././voteit/irl/plugins/present_users_voters.py:58
+msgid "Voter participant number range"
+msgstr ""
+
+#. Default: Anyone with a participant number will be able to become a voter
+#. during a meeting presence check. Write number as 'NN-NN', i.e. 10-20 means
+#. that 10 to and including 20 will be voters.
+#: ././voteit/irl/plugins/present_users_voters.py:59
+msgid "voter_pn_range_desc"
 msgstr ""
 
 #: ././voteit/irl/templates/diff_electoral_register.pt:11
@@ -335,7 +359,11 @@ msgstr ""
 msgid "Present users"
 msgstr ""
 
-#: ././voteit/irl/templates/meeting_presence_userids.pt:15
+#: ././voteit/irl/templates/meeting_presence_userids.pt:14
+msgid "Go to elegible voters method"
+msgstr ""
+
+#: ././voteit/irl/templates/meeting_presence_userids.pt:20
 msgid "${count} user(s)"
 msgstr ""
 
@@ -525,18 +553,22 @@ msgstr ""
 msgid "Electoral register"
 msgstr ""
 
+#: ././voteit/irl/views/eligible_voters.py:21
+msgid "Elegible voters"
+msgstr ""
+
 #. Default: Method '${method_title}' applied but it reports no change needed.
-#: ././voteit/irl/views/eligible_voters.py:36
+#: ././voteit/irl/views/eligible_voters.py:37
 msgid "no_update_of_perms_needed_notice"
 msgstr ""
 
 #. Default: Method '${method_title}' added ${added_count} and removed
 #. ${removed_count}.
-#: ././voteit/irl/views/eligible_voters.py:47
+#: ././voteit/irl/views/eligible_voters.py:48
 msgid "updated_voter_permissions_notice"
 msgstr ""
 
-#: ././voteit/irl/views/eligible_voters.py:56
+#: ././voteit/irl/views/eligible_voters.py:57
 msgid "Update elegible voters"
 msgstr ""
 
@@ -651,6 +683,10 @@ msgstr ""
 
 #: ././voteit/irl/views/participant_numbers.py:210
 msgid "Claim participant number"
+msgstr ""
+
+#: ././voteit/irl/views/participant_numbers.py:213
+msgid "Your participant number"
 msgstr ""
 
 #: ././voteit/irl/views/print.py:32

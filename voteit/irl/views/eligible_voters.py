@@ -18,6 +18,7 @@ from voteit.irl.models.interfaces import IElegibleVotersMethod
              renderer = "arche:templates/form.pt",
              permission = MODERATE_MEETING)
 class EligibleVotersForm(DefaultEditForm):
+    title = _("Elegible voters")
     schema_name = 'eligible_voters_method'
     title = _("Eligible Voters")
 

@@ -54,6 +54,9 @@ class MeetingPresence(object):
         assert isinstance(userid, basestring)
         self.present_userids.add(userid)
 
+    def __contains__(self, val):
+        return val in self.present_userids
+
 
 def includeme(config):
     config.registry.registerAdapter(MeetingPresence)

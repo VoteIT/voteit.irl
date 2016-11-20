@@ -209,6 +209,13 @@ def claim_participant_number_menu(context, request, va, **kw):
         if request.authenticated_userid not in participant_numbers.userid_to_number:
             return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, 'claim_participant_number'),
                                                          request.localizer.translate(_("Claim participant number")))
+        else:
+            return """<li class="disabled"><a>%s: %s</a></li>""" % (
+                request.localizer.translate(_("Your participant number")),
+                participant_numbers.userid_to_number[request.authenticated_userid]
+            )
+
+
 
 @view_action('user_info', 'participant_number',
              interface = IUser)

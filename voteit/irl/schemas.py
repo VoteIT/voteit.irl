@@ -1,4 +1,5 @@
 from arche.validators import existing_userid_or_email
+from six import string_types
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
@@ -18,9 +19,9 @@ def elegible_voters_method_choices_widget(node, kw):
     """ Create a widget where you can choose all selectable methods to adjust elegible voters. """
     context = kw['context']
     request = kw['request']
-    method_choices = set()
+    method_choices = [('', _('<Select>'))]
     for (name, method) in request.registry.getAdapters([context], IElegibleVotersMethod):
-        method_choices.add((name, method.title))
+        method_choices.append((name, method.title))
     return deform.widget.SelectWidget(values=method_choices)
 
 
@@ -216,7 +217,13 @@ def deferred_autocompleting_participant_number_widget(node, kw):
 @colander.deferred
 def deferred_pn_from_get(node, kw):
     request = kw['request']
-    return int(request.GET['pn'])
+    val = request.GET.get('pn', colander.null)
+    if isinstance(val, string_types):
+        try:
+            return int(val)
+        except:
+            pass
+    return colander.null
 
 
 class AssignParticipantNumber(colander.Schema):
@@ -245,6 +252,7 @@ def add_proposals_owner_nodes(schema, proposals):
                                        description = description,
                                        validator = existing_userid_or_email,
                                        widget = deferred_autocompleting_userid_widget,))
+
 
 def add_discussions_owner_nodes(schema, discussion_posts):
     for obj in discussion_posts:
