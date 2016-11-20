@@ -1,15 +1,12 @@
 from __future__ import unicode_literals
 
 from arche.views.base import BaseView
-from betahaus.viewcomponent import view_action
 from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPFound
-from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
 from voteit.core import security
 from voteit.core.models.interfaces import IMeeting
-import deform
 
 from voteit.irl import _
 from voteit.irl.models.interfaces import IParticipantCallback
@@ -83,3 +80,7 @@ class ParticipantCallbacksView(BaseView):
         response['participant_callbacks'] = self.participant_callbacks
         response['callback_adapters'] = [adapter for (name, adapter) in self.request.registry.getAdapters([self.request.meeting], IParticipantCallback)]
         return response
+
+
+def includeme(config):
+    config.scan(__name__)

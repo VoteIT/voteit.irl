@@ -112,3 +112,8 @@ class ElectoralRegisterView(BaseView):
 def electoral_register_moderator_menu_link(context, request, va, **kw):
     url = request.resource_url(request.meeting, va.kwargs['link'])
     return """<li><a href="%s">%s</a></li>""" % (url, request.localizer.translate(va.title))
+
+
+def includeme(config):
+    config.scan(__name__)
+

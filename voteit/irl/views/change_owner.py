@@ -76,3 +76,7 @@ class ChangeOwnershipDiscussionPosts(ChangeOwnershipBase):
 def change_owner_menu_action(context, request, va, **kw):
     url = request.resource_url(context, va.kwargs['link'])
     return """<li><a href="%s">%s</a></li>""" % (url, request.localizer.translate(va.title))
+
+
+def includeme(config):
+    config.scan(__name__)

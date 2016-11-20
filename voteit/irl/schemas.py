@@ -82,7 +82,7 @@ class PNTokenValidator(object):
 class ClaimParticipantNumberSchema(colander.Schema):
     token = colander.SchemaNode(colander.String(),
                                 validator = deferred_participant_number_token_validator,
-                                title = _(u"Participant code"),
+                                title = _("Access code for participant number"),
                                 description = _(u"enter_token_description",
                                                 default = u"Enter the code sent to you. It will have the format xxxx-xxxx. "
                                                           u"Note that it's case sensitive and can only be used once."))

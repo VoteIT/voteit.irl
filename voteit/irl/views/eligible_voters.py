@@ -19,6 +19,7 @@ from voteit.irl.models.interfaces import IElegibleVotersMethod
              permission = MODERATE_MEETING)
 class EligibleVotersForm(DefaultEditForm):
     schema_name = 'eligible_voters_method'
+    title = _("Eligible Voters")
 
     def save_success(self, appstruct):
         self.adjust_voters(appstruct['method_name'])
@@ -58,3 +59,7 @@ class EligibleVotersForm(DefaultEditForm):
 def meeting_presence_link(context, request, va, **kw):
     link = request.resource_url(request.meeting, 'update_elegible_voters')
     return """ <li><a href="%s">%s</a></li>"""  % (link, request.localizer.translate(va.title))
+
+
+def includeme(config):
+    config.scan(__name__)

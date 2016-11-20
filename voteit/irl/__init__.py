@@ -32,4 +32,3 @@ def includeme(config):
         )
     else:
         log.warn("No IJSUtil found so JS translations won't be loaded.")
-    config.scan('voteit.irl')

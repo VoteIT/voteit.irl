@@ -157,3 +157,7 @@ def projector_menu_link(context, request, va, **kw):
     else:
         url = request.resource_url(request.meeting, '__projector__')
     return """<li><a href="%s"> %s </a></li>""" % (url, request.localizer.translate(va.title))
+
+
+def includeme(config):
+    config.scan(__name__)

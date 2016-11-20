@@ -161,3 +161,4 @@ def meeting_presence_count_json(context, request, va, **kw):
 
 def includeme(config):
     config.add_portlet(MeetingPresencePortlet)
+    config.scan(__name__)

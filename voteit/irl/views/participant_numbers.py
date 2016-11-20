@@ -120,6 +120,7 @@ class ClaimParticipantNumberForm(DefaultEditForm):
     """ This view is for participants who're already members of this meeting,
         but haven't registered their number yet.
     """
+    title = _("Claim participant number")
     schema_name = 'claim_participant_number'
 
     def __call__(self):
@@ -220,3 +221,7 @@ def participant_number_info(context, request, va, **kw):
             number = participant_numbers.userid_to_number[context.userid],
             context = context)
         return render("voteit.irl:templates/user_participant_number_info.pt", response, request = request)
+
+
+def includeme(config):
+    config.scan(__name__)
