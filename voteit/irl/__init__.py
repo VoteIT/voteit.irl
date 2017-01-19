@@ -11,14 +11,13 @@ def includeme(config):
     """ Include required components. You can include this by simply adding voteit.irl
         to the section "plugins" in your paster .ini file.
     """
-    config.include('voteit.irl.models.electoral_register')
-    config.include('voteit.irl.models.meeting_presence')
-    config.include('voteit.irl.models.participant_numbers')
-    config.include('voteit.irl.models.participant_callback')
-    config.include('voteit.irl.models.participant_number_ap')
+    config.include('.models')
+    config.include('.schemas')
+    config.include('.views')
+    config.include('.fanstaticlib')
 
-    cache_ttl_seconds = int(config.registry.settings.get('cache_ttl_seconds', 7200))
-    config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_ttl_seconds)
+    cache_max_age = int(config.registry.settings.get('arche.cache_max_age', 60*60*24))
+    config.add_static_view('voteit_irl', 'voteit.irl:static', cache_max_age = cache_max_age)
 
     config.add_translation_dirs('voteit.irl:locale/')
     #Add translations used within javascript
@@ -33,4 +32,3 @@ def includeme(config):
         )
     else:
         log.warn("No IJSUtil found so JS translations won't be loaded.")
-    config.scan('voteit.irl')

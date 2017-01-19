@@ -2,60 +2,63 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      metal:use-macro="load: ${api.template_dir}content.pt"
-	  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-	  i18n:domain="voteit.irl">
+      metal:use-macro="view.macro('arche:templates/master.pt', 'arche:templates/inline.pt')"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="voteit.irl">
 <body>
-<h1 metal:fill-slot="page_heading" i18n:translate="">Electoral Register</h1>
-<div metal:fill-slot="content" class="content_wrapper">
+<div metal:fill-slot="content" class="row">
+  <div class="col-md-12">
+    <h1 i18n:translate="">Electoral Register</h1>
 
-    <a href="${request.resource_url(context, 'diff_electoral_register')}"
-       i18n:translate="">Diff electoral registers</a><br/>
+    <p>
+    <a class="btn btn-default" href="${request.resource_url(context, 'diff_electoral_register')}"
+       i18n:translate="">Diff electoral registers</a>
+    </p>
     
-    <div tal:condition="new_reg_needed" i18n:translate="">
+    <p tal:condition="new_reg_needed" i18n:translate="new_reg_needed_notice">
         A new electoral register is needed.
         The curreny register differs from the users who've got the permission to vote.
-    </div>
-    <div tal:condition="not new_reg_needed" i18n:translate="">
+    </p>
+    <p tal:condition="not new_reg_needed" i18n:translate="no_new_reg_needed_notice">
         No new electoral register needed.
         The latest one has the same information as the users who're currently able to vote.
-    </div>
+    </p>
 
-    <div tal:condition="api.show_moderator_actions">
-        <a class="buttonize" 
+    <p tal:condition="request.is_moderator">
+        <a class="btn btn-primary" 
            href="${request.resource_url(context, 'electoral_register', query={'update_register': 1})}">
            <span tal:condition="new_reg_needed" i18n:translate="">Update electoral register</span>
            <span tal:condition="not new_reg_needed" i18n:translate="">Update electoral register anyway</span>
         </a>
-    </div>
+    </p>
 
     <h2 i18n:translate="">All electoral registers</h2>
     <div i18n:translate="">Click the ID of a specific one to view it.</div>
 
-    <table class="listing">
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th class="heading" i18n:translate="">ID</th>
-                <th class="heading" i18n:translate="">Time</th>
-                <th class="heading" i18n:translate="">Voters</th>
+                <th i18n:translate="">ID</th>
+                <th i18n:translate="">Time</th>
+                <th i18n:translate="">Voters</th>
             </tr>
         </thead>
         <tbody>
         <tal:iterate repeat="item registers_list">
-            <tr tal:attributes="class repeat.item.odd and 'odd' or '';">
+            <tr>
                 <td>
                     <a href="${view_reg_link(item[0])}">
                         ${item[0]}
                     </a>
                 </td>
-                <td>${api.dt_util.dt_format(item[1]['time'])}</td>
+                <td>${request.dt_handler.format_dt(item[1]['time'])}</td>
                 <td>${len(item[1]['userids'])}</td>
             </tr>
         </tal:iterate>
         </tbody>
     </table>
 
-
+  </div>
 </div>
 </body>
 </html>

@@ -1,14 +1,14 @@
 from copy import deepcopy
 
-from zope.interface import implementer
-from zope.component import adapter
 from BTrees.IOBTree import IOBTree
 from BTrees.OOBTree import OOBTree
-from voteit.core.models.date_time_util import utcnow
+from arche.utils import utcnow
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.security import ROLE_VOTER
+from zope.component import adapter
+from zope.interface import implementer
 
-from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
 
 
@@ -49,8 +49,7 @@ class ElectoralRegister(object):
         return frozenset(userids)
 
     def new_register(self, userids):
-        reg = OOBTree()
-        reg.update({'userids': frozenset(userids), 'time': utcnow()})
+        reg = OOBTree({'userids': frozenset(userids), 'time': utcnow()})
         self.registers[self.get_next_key()] = reg
 
     def new_register_needed(self):

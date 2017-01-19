@@ -1,0 +1,19 @@
+<tal:main xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="voteit.irl">
+<p>
+  <div class="btn-group">
+    <a class="btn btn-default ${request.view_name == 'manage_participant_numbers' and 'active' or None}"
+      href="${request.resource_url(request.meeting, 'manage_participant_numbers')}"
+      i18n:translate="">Manage/List</a>
+    <a class="btn btn-default ${request.view_name == 'attach_emails_to_pn' and 'active' or None}"
+      href="${request.resource_url(request.meeting, 'attach_emails_to_pn')}"
+      i18n:translate="">Attach emails</a>
+    <a class="btn btn-default ${request.view_name == 'manage_participant_callbacks' and 'active' or None}"
+      href="${request.resource_url(request.meeting, 'manage_participant_callbacks')}"
+      i18n:translate="">Assign actions</a>
+  </div>
+  
+</p>
+</tal:main>

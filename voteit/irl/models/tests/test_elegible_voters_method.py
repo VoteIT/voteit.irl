@@ -8,6 +8,7 @@ from voteit.irl.models.interfaces import IElegibleVotersMethod
 
 
 class ElegibleVotersMethodTests(unittest.TestCase):
+
     def setUp(self):
         self.config = testing.setUp()
 

@@ -7,11 +7,11 @@ README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
 requires = (
-    'pyramid',
-    'voteit.core',
+    'Arche',
     'fanstatic',
-    'Babel',
-    'lingua',
+    'pyramid',
+    'six',
+    'voteit.core',
     )
 
 setup(name='voteit.irl',
@@ -38,9 +38,5 @@ setup(name='voteit.irl',
       [fanstatic.libraries]
       voteit_irl_lib = voteit.irl.fanstaticlib:voteit_irl_lib
       """,
-      message_extractors = { '.': [
-              ('**.py',   'lingua_python', None ),
-              ('**.pt',   'lingua_xml', None ),
-              ]},
       )
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="view.macro('arche:templates/master.pt', 'arche:templates/inline.pt')"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="voteit.irl">
+<body>
+<div metal:fill-slot="content" class="row">
+
+  <h1 i18n:translate="">
+      Electoral register <b i18n:name="id">${id}</b>
+      <small i18n:name="time">${request.dt_handler.format_dt(register['time'])}</small>
+  </h1>
+  
+  <table class="table table-striped">
+  	<thead>
+  		<tr>
+        <th>#</th>
+        <th><span i18n:translate="">Users</span> (${len(register['userids'])})</th>
+  		</tr>
+    </thead>
+    <tbody>
+      <tal:iterate repeat="userid register['userids']">
+        <tr>
+          <td tal:content="structure get_pn(userid)"></td>
+          <td tal:content="structure request.creators_info((userid,), portrait=False)">User info</td>
+        </tr>
+      </tal:iterate>
+    </tbody>
+  </table>
+
+  <p>
+    <a class="btn btn-default" 
+      href="${request.resource_url(context, 'electoral_register')}"
+      i18n:translate="">Back</a>
+  </p>
+</div>
+</body>
+</html>

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-19 11:15+0100\n"
-"PO-Revision-Date: 2015-02-22 10:30+0100\n"
+"POT-Creation-Date: 2016-11-19 00:33+0100\n"
+"PO-Revision-Date: 2016-11-19 00:35+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -17,53 +17,116 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 1.3\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server load, please try again in a short while.
-#: __init__.py:29
+#: voteit/irl/__init__.py:28
 msgid "register_meeting_presence_error_notice"
 msgstr ""
 "VoteIT kunde inte sätta dig som närvarande. Det kan bero på hög last på "
 "servern, prova igen om en liten stund."
 
-#: __init__.py:32
+#: voteit/irl/__init__.py:31
 msgid "Your precence is received"
 msgstr "Din närvaro är mottagen"
 
+#: voteit/irl/schemas.py:22
+msgid "<Select>"
+msgstr "<Välj>"
+
 #. Default: Method to select elegible voters
-#: schemas.py:30
+#: voteit/irl/schemas.py:30
 msgid "elegible_voters_method_name"
 msgstr "Metod för att välja röstberättigade"
 
 #. Default: It will modify the voting permissions accoring to it's
 #. specifications.
-#: schemas.py:31
+#: voteit/irl/schemas.py:31
 msgid "elegible_voters_method_description"
 msgstr "Förändrar rösträtten i enlighet med metodens specifikationer."
 
-#: schemas.py:53
+#: voteit/irl/schemas.py:51
 msgid "First register"
 msgstr "Första röstlängd"
 
-#: schemas.py:57
+#: voteit/irl/schemas.py:55
 msgid "Second register"
 msgstr "Andra röstlängd"
 
-#: schemas.py:89
+#: voteit/irl/schemas.py:77
+msgid "No match - remember that it's case sensitive!"
+msgstr "Matchar inte - kom ihåg att stora eller små bokstäver spelar roll!"
+
+#: voteit/irl/schemas.py:80
+msgid "This number has already been claimed."
+msgstr "Detta nummer har redan tagits."
+
+#: voteit/irl/schemas.py:86
 msgid "Participant code"
 msgstr "Deltagarnummer"
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
-#: schemas.py:90
+#: voteit/irl/schemas.py:87
 msgid "enter_token_description"
 msgstr ""
 "Skriv i koden som skickades till dig. Den har formatet xxxx-xxxx. Observera "
 "att den gör skillnad på små och stora bokstäver, och kan bara användas en "
 "gång."
 
-#: schemas.py:124
+#: voteit/irl/schemas.py:108 voteit/irl/views/participant_numbers.py:179
+msgid "Participant number not found"
+msgstr "Deltagarnummer hittades inte"
+
+#: voteit/irl/schemas.py:127
+msgid "Not an existing participant number"
+msgstr "Inte ett existerande deltagarnummer"
+
+#. Default: There are more email addresses than existing participant numbers.
+#. Number ${num} not found. Total emails: ${emails_count}
+#: voteit/irl/schemas.py:139
+msgid "attach_emails_pn_dont_exist_error"
+msgstr ""
+
+#: voteit/irl/schemas.py:146
+#, python-format
+msgid "The following emails are already assigned to numbers: ${emails}"
+msgstr "Följande epostadresser är redan kopplade till nummer: ${emails}"
+
+#: voteit/irl/schemas.py:152 voteit/irl/templates/participant_number_tabs.pt:12
+msgid "Attach emails"
+msgstr "Lägg till epost"
+
+#: voteit/irl/schemas.py:154
+msgid "Start at number"
+msgstr "Börja på nummer"
+
+#. Default: Email addresses to attach.
+#: voteit/irl/schemas.py:157
+msgid "add_tickets_emails_titles"
+msgstr "Epostadresser att lägga till."
+
+#. Default: Paste a list of email addresses,
+#. one per row, to attach to participant numbers.
+#. They will be attached in sequence starting at the
+#. specified start number.
+#. If any of them exist as validated users, the
+#. participant numbers will be
+#. assigned to them. If not, numbers will automatically
+#. be assigned when an
+#. email address is validated. This is instead of using
+#. the code to attach
+#. the number to a user.
+#: voteit/irl/schemas.py:159
+msgid "attach_emails_description"
+msgstr ""
+
+#: voteit/irl/schemas.py:171
+msgid "Create new tickets if they don't exist"
+msgstr "Skapa nya biljetter om de inte existerar"
+
+#: voteit/irl/schemas.py:185
 msgid "Anyone registering with participant number will be given these roles"
 msgstr "Alla som registrerar sig med deltagarnummer kommer ges rollerna"
 
@@ -71,14 +134,14 @@ msgstr "Alla som registrerar sig med deltagarnummer kommer ges rollerna"
 #. registration to be bypassed (see below) the roles specified here won't be
 #. added when a meeting number is claimed by someone who's already a part of
 #. the meeting.
-#: schemas.py:125
+#: voteit/irl/schemas.py:186
 msgid "pn_ap_claimed_roles_description"
 msgstr ""
 "Välj minst en. Notera att om du tillåter användare att gå förbi registrering "
 "av deltagarnummer (se nedan) så kommer de roller du specificerar här inte "
 "att läggas till om de senare registrerar ett deltagarnummer."
 
-#: schemas.py:134
+#: voteit/irl/schemas.py:195
 msgid "Allow bypass and give access to anyone?"
 msgstr "Tillåt att strunta i registrering och ge tillgång till vem som helst?"
 
@@ -90,7 +153,7 @@ msgstr "Tillåt att strunta i registrering och ge tillgång till vem som helst?"
 #. Viewable for anyone: check view permission
 #. Open for participation from anyone: check all
 #.
-#: schemas.py:135
+#: voteit/irl/schemas.py:196
 msgid "pn_ap_public_roles_description"
 msgstr ""
 "Om något är ikryssat nedan så kommer alla användare kunna gå förbi "
@@ -98,53 +161,45 @@ msgstr ""
 "specificerar. Några exempel - för möten som är: Stängda: välj inget nedan. "
 "Synliga för alla: välj visa. Öppet att delta för alla: välj allt."
 
-#: schemas.py:166
+#: voteit/irl/schemas.py:230
+msgid "Assign participant number"
+msgstr "Ställ in deltagarnummer"
+
+#: voteit/irl/schemas.py:233
 msgid "UserID"
 msgstr "AnvändarID"
 
-#: schemas.py:79
-msgid "No match - remember that it's case sensitive!"
-msgstr "Matchar inte - kom ihåg att stora eller små bokstäver spelar roll!"
-
-#: schemas.py:82
-msgid "This number has already been claimed."
-msgstr "Detta nummer har redan tagits."
-
-#: schemas.py:111 views/participant_numbers.py:114
-msgid "Participant number not found"
-msgstr "Deltagarnummer hittades inte"
-
-#: models/meeting_presence.py:51
+#: voteit/irl/models/meeting_presence.py:53
 msgid "Meeting presence check isn't open"
 msgstr "Närvarokontroll är inte öppen"
 
-#: models/participant_callback.py:118
-msgid "Allow to vote"
-msgstr "Tillåt att rösta"
-
-#: models/participant_callback.py:126
-msgid "Allow to discuss"
-msgstr "Tillåt att diskutera"
-
-#: models/participant_callback.py:134
-msgid "Allow to propose"
-msgstr "Tillåt att föreslå"
-
 #. Default: Some callbacks for the UserId '${userid}' failed. Contact the
 #. moderator about this. The ones that failed were: ${callback_errors}
-#: models/participant_callback.py:60
+#: voteit/irl/models/participant_callback.py:64
 msgid "could_not_execute_callback_error"
 msgstr ""
 "Vissa metoder kunde inte tillämpas för användarID '${userid}'. Kontakta "
 "moderatorn om detta. De som inte gick var: ${callback_errors}"
 
-#: models/participant_number_ap.py:11
+#: voteit/irl/models/participant_callback.py:126
+msgid "Allow to vote"
+msgstr "Tillåt att rösta"
+
+#: voteit/irl/models/participant_callback.py:134
+msgid "Allow to discuss"
+msgstr "Tillåt att diskutera"
+
+#: voteit/irl/models/participant_callback.py:142
+msgid "Allow to propose"
+msgstr "Tillåt att föreslå"
+
+#: voteit/irl/models/participant_number_ap.py:12
 msgid "Participant number registration"
 msgstr "Registrering av deltagarnummer"
 
 #. Default: If participant numbers are enabled for this meeting, use this
 #. policy to allow meeting access through registration of a participant number.
-#: models/participant_number_ap.py:12
+#: voteit/irl/models/participant_number_ap.py:13
 msgid "participant_number_ap_description"
 msgstr ""
 "Om deltagarnummer är påslagna, använd denna policy för att tillåta access "
@@ -153,7 +208,7 @@ msgstr ""
 #. Default: Enter your code to claim your participant number and all
 #. permissions associated with it. If you're not supposed to have a participant
 #. number, you're allowed to proceed by clicking 'Request access'.
-#: models/participant_number_ap.py:21
+#: voteit/irl/models/participant_number_ap.py:21
 msgid "token_validator_description_when_ok_without"
 msgstr ""
 "Skriv in din kod för att få ditt deltagarnummer och alla rättigheter som hör "
@@ -161,153 +216,461 @@ msgstr ""
 "trycka på 'Begär tillträde'."
 
 #. Default: You're now assigned number ${number}.
-#: models/participant_number_ap.py:37 views/participant_numbers.py:84
-#: views/participant_numbers.py:125
+#: voteit/irl/models/participant_number_ap.py:37
+#: voteit/irl/views/participant_numbers.py:142
+#: voteit/irl/views/participant_numbers.py:190
 msgid "number_now_assigned_notice"
 msgstr "Du har tilldelats nummer ${number}."
 
 #. Default: You've been given access to the meeting without a participant
 #. number.
-#: models/participant_number_ap.py:43
+#: voteit/irl/models/participant_number_ap.py:43
 msgid "access_without_pn_notice"
 msgstr "Du har fått tillgång till mötet utan ett deltagarnummer."
 
-#: plugins/gender.py:19
+#: voteit/irl/plugins/gender.py:11
+msgid "Female"
+msgstr "Kvinna"
+
+#: voteit/irl/plugins/gender.py:12
+msgid "Male"
+msgstr "Man"
+
+#: voteit/irl/plugins/gender.py:13
+msgid "Other"
+msgstr "Annat"
+
+#: voteit/irl/plugins/gender.py:18
 msgid "Participant number registration with gender"
 msgstr "Registrering av deltagarnummer och kön"
 
 #. Default: Same as participant number, but this also requires gender to be
 #. specified.
-#: plugins/gender.py:20
+#: voteit/irl/plugins/gender.py:19
 msgid "participant_number_ap_with_gender_required_description"
 msgstr "Samma som deltagarnummer, men kräver också specificering av kön."
 
-#: plugins/gender.py:12
-msgid "Female"
-msgstr "Kvinna"
-
-#: plugins/gender.py:13
-msgid "Male"
-msgstr "Man"
-
-#: plugins/gender.py:14
-msgid "Other"
-msgstr "Annat"
-
-#: plugins/gender.py:36
+#: voteit/irl/plugins/gender.py:35
 msgid "Gender"
 msgstr "Kön"
 
-#: plugins/gender.py:37
+#: voteit/irl/plugins/gender.py:36
 msgid ""
 "Used for statistics and perhaps gender based quotas. See meeting for details."
 msgstr ""
 "Används för statistik och exempelvis könsbaserad kvotering. See mötet för "
 "detaljer."
 
-#: plugins/present_users_voters.py:10
-msgid "Set present users as voters"
-msgstr "Ge närvarande användare rösträtt"
+#: voteit/irl/plugins/present_users_voters.py:15
+msgid "Present with participant number (set on meeting -> advanced tab)"
+msgstr "Närvarande med deltagarnummer (ställ in under möte -> avancerat)"
 
-#: plugins/present_users_voters.py:11
-msgid "Will remove voting permission for anyone not set as present."
-msgstr "Tar bort rösträtt för icke närvarande."
+#. Default: Will remove voting permission for anyone not set as present. Users
+#. without a participant number will be ignored, or if they're outside of the
+#. meeting setting.
+#: voteit/irl/plugins/present_users_voters.py:16
+msgid "present_with_pn_voters_description"
+msgstr ""
+"Tar bort rösträtt för alla som inte är markerade som närvarande. Användare "
+"utan deltagarnummer ignoreras."
 
-#: plugins/transfer_vote.py:14
-msgid "Transfer vote"
-msgstr "För över rösträtt"
+#: voteit/irl/plugins/present_users_voters.py:42
+msgid "Must be written as 'NN-XX' where N is low nr and X high."
+msgstr "Måste skrivas som ’NN-XX’ där N är lägre än X."
 
-#: plugins/transfer_vote.py:48
-msgid "To userid"
-msgstr "Till AnvändarID"
+#: voteit/irl/plugins/present_users_voters.py:51
+msgid "First value must be higher than second"
+msgstr "Första värdet måste vara högre än andra"
 
-#: plugins/transfer_vote.py:49
-msgid "Must be someone who isn't a voter right now."
-msgstr "Måste vara någon som inte har rösträtt just nu."
+#: voteit/irl/plugins/present_users_voters.py:58
+msgid "Voter participant number range"
+msgstr "Spann på röstandes deltagarnummer"
 
-#: plugins/transfer_vote.py:74
-#, python-format
-msgid "Vote transfered to ${userid}"
-msgstr "Rösträtt överförd till ${userid}"
+#. Default: Anyone with a participant number will be able to become a voter
+#. during a meeting presence check. Write number as 'NN-NN', i.e. 10-20 means
+#. that 10 to and including 20 will be voters.
+#: voteit/irl/plugins/present_users_voters.py:59
+msgid "voter_pn_range_desc"
+msgstr ""
 
-#: plugins/transfer_vote.py:39
-#, python-format
-msgid "${userid} doesn't exist in this meeting."
-msgstr "${userid} finns inte i detta möte."
+#: voteit/irl/templates/diff_electoral_register.pt:11
+#: voteit/irl/templates/electoral_register.pt:15
+msgid "Diff electoral registers"
+msgstr "Diff mellan röstlängder"
 
-#: plugins/transfer_vote.py:42
-#, python-format
-msgid "${userid} is already a voter."
-msgstr "${userid} har redan rösträtt."
+#: voteit/irl/templates/diff_electoral_register.pt:16
+msgid "Comparing ${first} and ${second}"
+msgstr "Jämför ${first} och ${second}"
 
-#: plugins/transfer_vote.py:58
-msgid "You're not a voter"
-msgstr "Du har inte rösträtt"
+#: voteit/irl/templates/diff_electoral_register.pt:23
+msgid "${count} added in ${first}"
+msgstr "${count} tillagd i ${first}"
 
-#: plugins/transfer_vote.py:64
-msgid "Votes can't be transfered while a poll is open."
-msgstr "Rösträtt kan inte överföras när en omröstning pågår."
+#: voteit/irl/templates/diff_electoral_register.pt:35
+#: voteit/irl/templates/diff_electoral_register.pt:54
+msgid "(No change)"
+msgstr "(Ingen förändring)"
 
-#: views/change_owner.py:74
-msgid "Change proposal ownership"
-msgstr "Byt ägare på förslag"
+#: voteit/irl/templates/diff_electoral_register.pt:42
+msgid "${count} removed in ${first}"
+msgstr "${count} borttagen i ${first}"
 
-#: views/change_owner.py:76
-msgid "Change post ownership"
-msgstr "Byt ägare på post"
-
-#: views/change_owner.py:28
-msgid "No proposals here"
-msgstr "Inga förslag här"
-
-#: views/electoral_register.py:92
-msgid "Electoral register"
+#: voteit/irl/templates/electoral_register.pt:11
+msgid "Electoral Register"
 msgstr "Röstlängd"
 
-#: views/electoral_register.py:39
-msgid "New electoral register added"
-msgstr "Ny röstlängd tillagd"
+#. Default: A new electoral register is needed. The curreny register differs
+#. from the users who've got the permission to vote.
+#: voteit/irl/templates/electoral_register.pt:18
+msgid "new_reg_needed_notice"
+msgstr ""
+"En ny röstlängd behövs. Den nuvarande avviker från listan av användare med "
+"rösträtt."
 
-#: views/electoral_register.py:67
-msgid "Diff"
-msgstr "Diff"
+#. Default: No new electoral register needed. The latest one has the same
+#. information as the users who're currently able to vote.
+#: voteit/irl/templates/electoral_register.pt:22
+msgid "no_new_reg_needed_notice"
+msgstr ""
+"Ingen ny röstlängd behövs. Den senaste stämmer med röstberättigade användare."
 
-#: views/electoral_register.py:68 views/templates/participant_callbacks.pt:111
-#: views/templates/participant_numbers.pt:122
-#: views/templates/view_electoral_register.pt:49
-#: views/templates/projector/projector.pt:30
+#: voteit/irl/templates/electoral_register.pt:30
+msgid "Update electoral register"
+msgstr "Uppdatera röstlängd"
+
+#: voteit/irl/templates/electoral_register.pt:31
+msgid "Update electoral register anyway"
+msgstr "Uppdatera röstlängden ändå"
+
+#: voteit/irl/templates/electoral_register.pt:35
+msgid "All electoral registers"
+msgstr "Alla röstlängder"
+
+#: voteit/irl/templates/electoral_register.pt:36
+msgid "Click the ID of a specific one to view it."
+msgstr "Klicka på ID för en specifik röstlängd för att öppna den."
+
+#: voteit/irl/templates/electoral_register.pt:41
+msgid "ID"
+msgstr "ID"
+
+#: voteit/irl/templates/electoral_register.pt:42
+msgid "Time"
+msgstr "Tid"
+
+#: voteit/irl/templates/electoral_register.pt:43
+msgid "Voters"
+msgstr "Röstberättigade"
+
+#: voteit/irl/templates/meeting_presence.pt:10
+msgid "Presence check"
+msgstr "Närvarokontroll"
+
+#: voteit/irl/templates/meeting_presence.pt:23
+msgid "Start check"
+msgstr "Starta koll"
+
+#: voteit/irl/templates/meeting_presence.pt:29
+msgid "End check"
+msgstr "Avsluta koll"
+
+#: voteit/irl/templates/meeting_presence.pt:33
+msgid "View"
+msgstr "Visa"
+
+#: voteit/irl/templates/meeting_presence.pt:43
+msgid "Number or UserID"
+msgstr "Nummer eller AnvändarID"
+
+#: voteit/irl/templates/meeting_presence_userids.pt:11
+msgid "Present users"
+msgstr "Närvarande användare"
+
+#: voteit/irl/templates/meeting_presence_userids.pt:14
+msgid "Go to elegible voters method"
+msgstr "Gå till metod för röstberättigade"
+
+#: voteit/irl/templates/meeting_presence_userids.pt:20
+msgid "${count} user(s)"
+msgstr "${count} användare"
+
+#: voteit/irl/templates/participant_callbacks.pt:10
+msgid "Participant callbacks"
+msgstr "Deltagarmetoder"
+
+#. Default: This is an advanced feature that attaches callback code to an event
+#. that fires when a user claims a participant number. Don't touch this unless
+#. you know what you're doing.
+#: voteit/irl/templates/participant_callbacks.pt:14
+msgid "callback_code_explanation"
+msgstr ""
+"Detta är en avancerad funktion som fäster metoder till en händelse som "
+"inträffar när en deltagare får ett deltagarnummer. Rör inte detta om du inte "
+"vet vad du gör."
+
+#: voteit/irl/templates/participant_callbacks.pt:45
+#: voteit/irl/templates/participant_numbers.pt:22
+msgid "Claimed by"
+msgstr "Använd av"
+
+#: voteit/irl/templates/participant_callbacks.pt:60
+msgid "Execute callbacks for existing users (recommended)"
+msgstr "Exekvera metoder för existerande användare (rekommenderas)"
+
+#: voteit/irl/templates/participant_callbacks.pt:64
+#: voteit/irl/templates/participant_numbers.pt:52
+msgid "Start"
+msgstr "Start"
+
+#: voteit/irl/templates/participant_callbacks.pt:67
+#: voteit/irl/templates/participant_numbers.pt:54
+msgid "End"
+msgstr "Slut"
+
+#: voteit/irl/templates/participant_callbacks.pt:73
+#: voteit/irl/templates/participant_numbers.pt:57
+msgid "Add"
+msgstr "Lägg till"
+
+#: voteit/irl/templates/participant_callbacks.pt:76
+#: voteit/irl/templates/participant_numbers.pt:60
+msgid "Remove"
+msgstr "Ta bort"
+
+#: voteit/irl/templates/participant_callbacks.pt:79
+#: voteit/irl/templates/participant_numbers.pt:63
+#: voteit/irl/templates/print_discussions.pt:19
+#: voteit/irl/templates/print_proposals.pt:19
+#: voteit/irl/templates/view_electoral_register.pt:35
+#: voteit/irl/views/electoral_register.py:80
 msgid "Back"
 msgstr "Tillbaka"
 
+#: voteit/irl/templates/participant_number_tabs.pt:9
+msgid "Manage/List"
+msgstr "Hantera/Lista"
+
+#: voteit/irl/templates/participant_number_tabs.pt:15
+msgid "Assign actions"
+msgstr "Lägg till handlingar"
+
+#: voteit/irl/templates/participant_numbers.pt:10
+msgid "Participant numbers"
+msgstr "Deltagarnummer"
+
+#: voteit/irl/templates/participant_numbers.pt:18
+msgid "Token"
+msgstr "Biljettkod"
+
+#: voteit/irl/templates/participant_numbers.pt:19
+msgid "Email"
+msgstr "Epost"
+
+#: voteit/irl/templates/participant_numbers.pt:20
+msgid "Created"
+msgstr "Skapad"
+
+#: voteit/irl/templates/participant_numbers.pt:21
+msgid "Claimed"
+msgstr "Använd"
+
+#: voteit/irl/templates/participant_numbers.pt:23
+msgid "Created by"
+msgstr "Skapad av"
+
+#: voteit/irl/templates/participant_numbers.pt:44
+msgid "Add or remove numbers"
+msgstr "Lägg till eller ta bort nummer"
+
+#. Default: Enter a start number (like 1) and possibly an end number if you wan
+#. to create several tickets. If you want to create tickets between 1-200,
+#. enter 1 as start and 200 as end. If you don't specify an end number, only
+#. one ticket will be created.
+#: voteit/irl/templates/participant_numbers.pt:45
+msgid "ticket_creation_help"
+msgstr ""
+"Ange ett startnummer (t.ex. 1) och eventuellt ett slutnummer om du vill "
+"skapa flera biljetter. Om du vill skapa biljetter mellan 1-200, skriv 1 som "
+"start och 200 som slutnummer. Om du inte skriver ett slutnummer så skapas "
+"bara en biljett."
+
+#: voteit/irl/templates/print_discussions.pt:9
+msgid "${num} selected discussion post(s)"
+msgstr "${num} valda diskussionsinlägg"
+
+#: voteit/irl/templates/print_discussions.pt:13
+msgid "Each post will be printed on its own page. This text will be ignored"
+msgstr "Varje inlägg hamnar på sin egen sida. Den här texten kommer inte med."
+
+#: voteit/irl/templates/print_discussions.pt:17
+#: voteit/irl/templates/print_proposals.pt:17 voteit/irl/views/print.py:28
+#: voteit/irl/views/print.py:56
+msgid "Print"
+msgstr "Skriv ut"
+
+#: voteit/irl/templates/print_proposals.pt:9
+msgid "${num} selected proposal(s)"
+msgstr "${num} valda förslag"
+
+#: voteit/irl/templates/print_proposals.pt:13
+msgid ""
+"Each proposal will be printed on its own page. This text will be ignored"
+msgstr "Varje förslag hamnar på sin egen sida. Den här texten kommer inte med."
+
+#: voteit/irl/templates/projector.pt:21
+msgid "(Click menu to select Agenda Item)"
+msgstr "(Klicka i menyn för att välja dagordningspunk)"
+
+#: voteit/irl/templates/projector.pt:27
+msgid "Previous"
+msgstr "Föregående"
+
+#: voteit/irl/templates/projector.pt:35
+msgid "Next"
+msgstr "Nästa"
+
+#. Default: Quickly create a poll. Majority poll with 1-2 proposals, Schulze
+#. for 3 or more.
+#: voteit/irl/templates/projector.pt:43
+msgid "quick_poll_btn_title"
+msgstr ""
+"Snabbskapar omröstning. Majoritetsomröstning för 1-2 förslag, Schulze STV "
+"för 3 eller fler."
+
+#: voteit/irl/templates/projector.pt:112
+msgid "by"
+msgstr "av"
+
+#: voteit/irl/templates/register_presence.pt:11
+msgid "I'm here!"
+msgstr "Jag är här!"
+
+#: voteit/irl/templates/register_presence.pt:14
+msgid "Click to confirm your status as present."
+msgstr "Klicka för att bekräfta din närvaro."
+
+#: voteit/irl/templates/register_presence_done.pt:7
+msgid "Done!"
+msgstr "Klart!"
+
+#: voteit/irl/templates/register_presence_done.pt:9
+msgid "You've confirmed your presence."
+msgstr "Du har bekräftat din närvaro."
+
+#: voteit/irl/templates/user_participant_number_info.pt:4
+msgid "Participant number:"
+msgstr "Deltagarnummer:"
+
+#: voteit/irl/templates/view_electoral_register.pt:10
+msgid "Electoral register ${id} ${time}"
+msgstr "Röstlängd ${id} ${time}"
+
+#: voteit/irl/templates/view_electoral_register.pt:19
+msgid "Users"
+msgstr "Användare"
+
+#: voteit/irl/views/change_owner.py:67
+msgid "Change proposal ownership"
+msgstr "Byt ägare på förslag"
+
+#: voteit/irl/views/change_owner.py:72
+msgid "Change post ownership"
+msgstr "Byt ägare på post"
+
+#: voteit/irl/views/electoral_register.py:47
+msgid "New electoral register added"
+msgstr "Ny röstlängd tillagd"
+
+#: voteit/irl/views/electoral_register.py:79
+msgid "Diff"
+msgstr "Diff"
+
+#: voteit/irl/views/electoral_register.py:109
+msgid "Electoral register"
+msgstr "Röstlängd"
+
+#: voteit/irl/views/eligible_voters.py:21
+msgid "Elegible voters"
+msgstr "Röstberättigade"
+
+#. Default: Method '${method_title}' applied but it reports no change needed.
+#: voteit/irl/views/eligible_voters.py:37
+msgid "no_update_of_perms_needed_notice"
+msgstr "Metoden '${method_title}' tillämpades men inget behövde ändras."
+
 #. Default: Method '${method_title}' added ${added_count} and removed
 #. ${removed_count}.
-#: views/eligible_voters.py:66
+#: voteit/irl/views/eligible_voters.py:48
 msgid "updated_voter_permissions_notice"
 msgstr ""
 "Metoden '${method_title}' la till ${added_count} och tog bort"
 "${removed_count} röstberättigade."
 
-#: views/eligible_voters.py:74
+#: voteit/irl/views/eligible_voters.py:57
 msgid "Update elegible voters"
 msgstr "Uppdatera röstberättigade"
 
-#. Default: Method '${method_title}' applied but it didn't need to change
-#. anything.
-#: views/eligible_voters.py:55
-msgid "no_update_of_perms_needed_notice"
-msgstr "Metoden '${method_title}' tillämpades men inget behövde ändras."
+#: voteit/irl/views/meeting_presence.py:64
+msgid "Started"
+msgstr "Startad"
 
-#: views/meeting_presence.py:55
-msgid "Meeting presence"
-msgstr "Närvarokontroll"
+#: voteit/irl/views/meeting_presence.py:67
+msgid "Closed"
+msgstr "Stängd"
 
-#: views/participant_callbacks.py:54
+#: voteit/irl/views/meeting_presence.py:83
+msgid "You're now set as present"
+msgstr "Du är nu närvarande"
+
+#: voteit/irl/views/meeting_presence.py:93
+msgid "Check not open"
+msgstr "Koll inte öppen"
+
+#: voteit/irl/views/meeting_presence.py:106
+#, python-format
+msgid "No user with number: '${num}'"
+msgstr "Ingen användare med nummer: '${num}'"
+
+#: voteit/irl/views/meeting_presence.py:114
+#, python-format
+msgid "User not found: '${userid}'"
+msgstr "Användaren hittades inte: '${userid}'"
+
+#: voteit/irl/views/meeting_presence.py:122
+#, python-format
+msgid "Added ${userid}"
+msgstr "La till ${userid}"
+
+#: voteit/irl/views/meeting_presence.py:125
+#, python-format
+msgid "Already registered: ${userid}"
+msgstr "Redan registrerad: ${userid}"
+
+#: voteit/irl/views/participant_callbacks.py:50
+#: voteit/irl/views/participant_numbers.py:45
+msgid "End must be higher than start"
+msgstr "Slutnummer måste vara högre än start"
+
+#: voteit/irl/views/participant_callbacks.py:52
+#: voteit/irl/views/participant_numbers.py:47
+msgid "Must be an integer value"
+msgstr "Måste vara ett heltal"
+
+#: voteit/irl/views/participant_callbacks.py:57
 #, python-format
 msgid ""
 "Added ${added} new callbacks and skipped ${existed} that already existed."
 msgstr "La till ${added} nya medoter och skippade ${existed} som redan fanns."
 
-#: views/participant_callbacks.py:73
+#: voteit/irl/views/participant_callbacks.py:71
+#, python-format
+msgid ""
+"Executed callback for ${num} users that had already claimed a participant "
+"number."
+msgstr ""
+"Exekverade metoder för ${num} användare som redan hade ett deltagarnummer."
+
+#: voteit/irl/views/participant_callbacks.py:76
 #, python-format
 msgid ""
 "Removed ${removed} callbacks and skipped ${nonexistent} that wasn't "
@@ -316,281 +679,227 @@ msgstr ""
 "Tog bort ${removed} callbacks och skippade ${nonexistent} som inte var "
 "registrerade."
 
-#: views/participant_callbacks.py:88
-#: views/templates/participant_callbacks.pt:13
-msgid "Participant callbacks"
-msgstr "Deltagarmetoder"
-
-#: views/participant_callbacks.py:68
-#, python-format
-msgid ""
-"Executed callback for ${num} users that had already claimed a participant "
-"number."
-msgstr ""
-"Exekverade metoder för ${num} användare som redan hade ett deltagarnummer."
-
-#: views/participant_callbacks.py:49 views/participant_numbers.py:45
-msgid "Must be an integer value"
-msgstr "Måste vara ett heltal"
-
-#: views/participant_callbacks.py:47 views/participant_numbers.py:43
-msgid "End must be higher than start"
-msgstr "Slutnummer måste vara högre än start"
-
-#. Default: You've already been assigned the number ${number} so you don't need
-#. to do anything else.
-#: views/participant_numbers.py:68
-msgid "already_assigned_number_error"
-msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
-
-#: views/participant_numbers.py:48
+#: voteit/irl/views/participant_numbers.py:50
 #, python-format
 msgid "Added ${count} new numbers"
 msgstr "La till ${count} nya nummer"
 
-#: views/participant_numbers.py:52
+#: voteit/irl/views/participant_numbers.py:55
 #, python-format
 msgid "Removed ${count} numbers"
 msgstr "Tog bort ${count} nummer"
 
+#: voteit/irl/views/participant_numbers.py:91
+#, python-format
+msgid "<b>${count}</b> new participant numbers created."
+msgstr "<b>${count}</b> nya deltagarnummer skapade."
+
+#: voteit/irl/views/participant_numbers.py:105
+#, python-format
+msgid "<b>${emails_num}</b> attached."
+msgstr "<b>${emails_num}</b> epostadresser tillagda."
+
+#: voteit/irl/views/participant_numbers.py:109
+#, python-format
+msgid ""
+"<b>${num}</b> numbers were auto-claimed by users with validated email "
+"addresses."
+msgstr ""
+"<b>${num}</b> nummer blev auto-tilldelade användare med validerade e-"
+"postadresser."
+
+#. Default: You've already been assigned the number ${number} so you don't need
+#. to do anything else.
+#: voteit/irl/views/participant_numbers.py:129
+msgid "already_assigned_number_error"
+msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
+
 #. Default: This user was already assigned number ${number} so that number was
 #. cleared.
-#: views/participant_numbers.py:118
+#: voteit/irl/views/participant_numbers.py:183
 msgid "participant_number_moved_warning"
 msgstr ""
 "Denna användare var redan registrerad med nummer ${number} så det numret "
 "rensades."
 
-#: views/participant_numbers.py:141 views/templates/participant_numbers.pt:13
-msgid "Participant numbers"
-msgstr "Deltagarnummer"
+#: voteit/irl/views/participant_numbers.py:201
+msgid "Manage participant numbers"
+msgstr "Hantera deltagarnummer"
 
-#: views/participant_numbers.py:152
+#: voteit/irl/views/participant_numbers.py:210
 msgid "Claim participant number"
 msgstr "Registrera deltagarnummer"
 
-#: views/participant_numbers.py:75 views/participant_numbers.py:97
-msgid "Submit"
-msgstr "Skicka"
+#: voteit/irl/views/participant_numbers.py:213
+msgid "Your participant number"
+msgstr "Ditt deltagarnummer"
 
-#: views/projector.py:53
+#: voteit/irl/views/print.py:32
+msgid "Select proposals to print"
+msgstr "Välj förslag att skriva ut"
+
+#. Default: Each proposal will be on its own page
+#: voteit/irl/views/print.py:33
+msgid "print_proposals_description"
+msgstr "Varje förslag skrivs ut på en egen sida"
+
+#: voteit/irl/views/print.py:60
+msgid "Select discussion posts to print"
+msgstr "Välj diskussionsinlägg att skriva ut"
+
+#. Default: Each post will be on its own page
+#: voteit/irl/views/print.py:61
+msgid "print_discussion_description"
+msgstr "Varje inlägg skrivs ut på en egen sida"
+
+#: voteit/irl/views/print.py:117
+msgid "Print proposals"
+msgstr "Skriv ut förslag"
+
+#: voteit/irl/views/print.py:126
+msgid "Print discussions"
+msgstr "Skriv ut diskussion"
+
+#: voteit/irl/views/print.py:135
+msgid "Print this proposal"
+msgstr "Skriv ut förslaget"
+
+#: voteit/irl/views/print.py:145
+msgid "Print this post"
+msgstr "Skriv ut inlägget"
+
+#: voteit/irl/views/projector.py:47
+msgid "No proposals"
+msgstr "Inga förslag"
+
+#. Default: There are ongoing polls in this agenda item,close them first.
+#: voteit/irl/views/projector.py:53
+msgid "quickpoll_ongoing_polls_error"
+msgstr ""
+"Det finns pågående omröstningar i dagordningspunkten, avsluta dem först."
+
+#: voteit/irl/views/projector.py:59
+msgid "Reject proposal"
+msgstr "Avslå förslag"
+
+#: voteit/irl/views/projector.py:62
+#, python-format
+msgid "Quick poll: ${proposals}"
+msgstr "Snabbomröstning: ${proposals}"
+
+#: voteit/irl/views/projector.py:78
+#, python-format
+msgid "Added and started: ${poll_url}"
+msgstr "Tillagd och startad: ${poll_url}"
+
+#. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
+#. 'Denied'. You may need to reload this page.
+#: voteit/irl/views/projector.py:132
+msgid "wrong_initial_state_error"
+msgstr ""
+"Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
+"'Avslagen'. Du kan behöva ladda om sidan."
+
+#: voteit/irl/views/projector.py:143
+#, python-format
+msgid "Not allowed to transition to ${state}"
+msgstr "Inte tillåtet att gå till ${state}"
+
+#: voteit/irl/views/projector.py:151
 msgid "Proposal view for projector"
 msgstr "Förslagsvy för projektor"
 
-#: views/templates/diff_electoral_register.pt:4
-#: views/templates/electoral_register.pt:9
-msgid "Diff electoral registers"
-msgstr "Diff mellan röstlängder"
+#: voteit/irl/views/proposals_unhandled.py:28
+#, python-format
+msgid "Changed ${count} proposals"
+msgstr "Ändrade ${count} förslag"
 
-#: views/templates/diff_electoral_register.pt:16
-msgid "Comparing ${first} and ${second}"
-msgstr "Jämför ${first} och ${second}"
+#~ msgid "Quick poll"
+#~ msgstr "Snabbomröstning"
 
-#: views/templates/diff_electoral_register.pt:28
-msgid "${count} added in ${first}"
-msgstr "${count} tillagd i ${first}"
+#~ msgid "Assign actions to participant numbers"
+#~ msgstr "Lägg till händelser till deltagarnummer"
 
-#: views/templates/diff_electoral_register.pt:52
-#: views/templates/diff_electoral_register.pt:91
-msgid "(No change)"
-msgstr "(Ingen förändring)"
+#~ msgid "register_closed_cant_set_status"
+#~ msgstr "Närvarokontrollen är stängd. Du kan inte ange din närvaro just nu."
 
-#: views/templates/diff_electoral_register.pt:67
-msgid "${count} removed in ${first}"
-msgstr "${count} borttagen i ${first}"
+#~ msgid "presence_registered_register_not_closed_yet"
+#~ msgstr ""
+#~ "Din närvaro har noterats men närvarokollen har inte stängt ännu. Du "
+#~ "behöver inte göra något mer."
 
-#: views/templates/electoral_register.pt:4
-msgid "Electoral Register"
-msgstr "Röstlängd"
+#~ msgid "presence_registered_and_now_active"
+#~ msgstr ""
+#~ "Din närvaro registrerades och kommer beaktas vid framtagande av nästa "
+#~ "röstlängd."
 
-#: views/templates/electoral_register.pt:13
-msgid ""
-"A new electoral register is needed. The curreny register differs from the "
-"users who've got the permission to vote."
-msgstr ""
-"En ny röstlängd behövs. Den nuvarande röstlängden skiljer sig från vilka "
-"användare som har rösträtt."
+#~ msgid "not_registered_as_present_in_meeting"
+#~ msgstr "Du är inte noterad som närvarande i detta möte."
 
-#: views/templates/electoral_register.pt:19
-msgid ""
-"No new electoral register needed. The latest one has the same information as "
-"the users who're currently able to vote."
-msgstr ""
-"Ingen ny röstlängd behövs. Den senaste har samma innehåll som förteckningen "
-"av användare med rösträtt."
+#~ msgid "set_as_present_button"
+#~ msgstr "Sätt dig själv som närvarande"
 
-#: views/templates/electoral_register.pt:30
-msgid "Update electoral register"
-msgstr "Uppdatera röstlängd"
+#~ msgid "start_presence_check_button"
+#~ msgstr "Rensa och starta närvarokontroll"
 
-#: views/templates/electoral_register.pt:33
-msgid "Update electoral register anyway"
-msgstr "Uppdatera röstlängden ändå"
+#~ msgid "Available participants"
+#~ msgstr "Närvarande deltagare"
 
-#: views/templates/electoral_register.pt:41
-msgid "All electoral registers"
-msgstr "Lägg till röstlängd"
+#~ msgid "Register meeting presence"
+#~ msgstr "Registrera närvaro"
 
-#: views/templates/electoral_register.pt:44
-msgid "Click the ID of a specific one to view it."
-msgstr "Klicka på ID för en specifik röstlängd för att öppna den."
+#~ msgid "Meeting presence"
+#~ msgstr "Närvarokontroll"
 
-#: views/templates/electoral_register.pt:54
-msgid "ID"
-msgstr "ID"
+#, fuzzy
+#~ msgid ""
+#~ "Will remove voting permission for anyone not set as present. Users "
+#~ "without a participant number will be ignored."
+#~ msgstr "Tar bort rösträtt för icke närvarande."
 
-#: views/templates/electoral_register.pt:57
-msgid "Time"
-msgstr "Tid"
+#~ msgid "Meeting logo"
+#~ msgstr "Möteslogo"
 
-#: views/templates/electoral_register.pt:60
-msgid "Voters"
-msgstr "Röstberättigade"
+#~ msgid "Agenda items"
+#~ msgstr "Dagordningspunkter"
 
-#. Default: The register is closed, you can't set your status right now.
-#: views/templates/meeting_presence_status.pt:4
-msgid "register_closed_cant_set_status"
-msgstr "Närvarokontrollen är stängd. Du kan inte ange din närvaro just nu."
+#~ msgid "Transfer vote"
+#~ msgstr "För över rösträtt"
 
-#. Default: Your presence is registered, but the register hasn't closed yet.
-#. You don't need to do anything else.
-#: views/templates/meeting_presence_status.pt:8
-msgid "presence_registered_register_not_closed_yet"
-msgstr ""
-"Din närvaro har noterats men närvarokollen har inte stängt ännu. Du behöver "
-"inte göra något mer."
+#~ msgid "To userid"
+#~ msgstr "Till AnvändarID"
 
-#. Default: Your presence was registered and will be part of the next electoral
-#. register.
-#: views/templates/meeting_presence_status.pt:12
-msgid "presence_registered_and_now_active"
-msgstr ""
-"Din närvaro registrerades och kommer beaktas vid framtagande av nästa "
-"röstlängd."
+#~ msgid "Must be someone who isn't a voter right now."
+#~ msgstr "Måste vara någon som inte har rösträtt just nu."
 
-#. Default: You're not registered as present within this meeting.
-#: views/templates/meeting_presence_status.pt:16
-msgid "not_registered_as_present_in_meeting"
-msgstr "Du är inte noterad som nävarande i detta möte."
+#~ msgid "${userid} doesn't exist in this meeting."
+#~ msgstr "${userid} finns inte i detta möte."
 
-#. Default: Set yourself as present
-#: views/templates/meeting_presence_status.pt:25
-msgid "set_as_present_button"
-msgstr "Sätt dig själv som närvarande"
+#~ msgid "${userid} is already a voter."
+#~ msgstr "${userid} har redan rösträtt."
 
-#. Default: Clear and start availability check
-#: views/templates/meeting_presence_status.pt:32
-msgid "start_presence_check_button"
-msgstr "Rensa och starta närvarokontroll"
+#~ msgid "Votes can't be transfered while a poll is open."
+#~ msgstr "Rösträtt kan inte överföras när en omröstning pågår."
 
-#. Default: Close check
-#: views/templates/meeting_presence_status.pt:39
-msgid "end_presence_check_button"
-msgstr "Stäng närvarokontroll"
+#~ msgid "Submit"
+#~ msgstr "Skicka"
 
-#: views/templates/meeting_presence_status.pt:49
-msgid "Available participants"
-msgstr "Närvarande deltagare"
+#~ msgid ""
+#~ "A new electoral register is needed. The curreny register differs from the "
+#~ "users who've got the permission to vote."
+#~ msgstr ""
+#~ "En ny röstlängd behövs. Den nuvarande röstlängden skiljer sig från vilka "
+#~ "användare som har rösträtt."
 
-#. Default: This is an advanced feature that attaches callback code to an event
-#. that fires when a user claims a participant number. Don't touch this unless
-#. you know what you're doing.
-#: views/templates/participant_callbacks.pt:19
-msgid "callback_code_explanation"
-msgstr ""
-"Detta är en avancerad funktion som fäster metoder till en händelse som "
-"inträffar när en deltagare får ett deltagarnummer. Rör inte detta om du inte "
-"vet vad du gör."
-
-#: views/templates/participant_callbacks.pt:78
-msgid "Execute callbacks for existing users (recommended)"
-msgstr "Exekvera metoder för existerande användare (rekommenderas)"
-
-#: views/templates/participant_callbacks.pt:83
-#: views/templates/participant_numbers.pt:96
-msgid "Start"
-msgstr "Start"
-
-#: views/templates/participant_callbacks.pt:88
-#: views/templates/participant_numbers.pt:101
-msgid "End"
-msgstr "Slut"
-
-#: views/templates/participant_callbacks.pt:97
-#: views/templates/participant_numbers.pt:108
-msgid "Add"
-msgstr "Lägg till"
-
-#: views/templates/participant_callbacks.pt:104
-#: views/templates/participant_numbers.pt:115
-msgid "Remove"
-msgstr "Ta bort"
-
-#: views/templates/participant_numbers.pt:28
-msgid "Token"
-msgstr "Biljettkod"
-
-#: views/templates/participant_numbers.pt:31
-msgid "Created"
-msgstr "Skapad"
-
-#: views/templates/participant_numbers.pt:34
-msgid "Claimed"
-msgstr "Använd"
-
-#: views/templates/participant_numbers.pt:37
-msgid "Claimed by"
-msgstr "Använd av"
-
-#: views/templates/participant_numbers.pt:40
-msgid "Created by"
-msgstr "Skapad av"
-
-#: views/templates/participant_numbers.pt:82
-msgid "Add or remove numbers"
-msgstr "Lägg till eller ta bort nummer"
-
-#. Default: Enter a start number (like 1) and possibly an end number if you wan
-#. to create several tickets. If you want to create tickets between 1-200,
-#. enter 1 as start and 200 as end. If you don't specify an end number, only
-#. one ticket will be created.
-#: views/templates/participant_numbers.pt:85
-msgid "ticket_creation_help"
-msgstr ""
-"Ange ett startnummer (t.ex. 1) och eventuellt ett slutnummer om du vill "
-"skapa flera biljetter. Om du vill skapa biljetter mellan 1-200, skriv 1 som "
-"start och 200 som slutnummer. Om du inte skriver ett slutnummer så skapas "
-"bara en biljett."
-
-#: views/templates/register_meeting_presence.pt:4
-msgid "Register meeting presence"
-msgstr "Registrera närvaro"
-
-#: views/templates/user_participant_number_info.pt:3
-msgid "Participant number:"
-msgstr "Deltagarnummer:"
-
-#: views/templates/view_electoral_register.pt:4
-msgid "Electoral register ${id}: ${time}"
-msgstr "Röstlängd ${time}"
-
-#: views/templates/view_electoral_register.pt:21
-msgid "Users"
-msgstr "Användare"
-
-#: views/templates/projector/projector.pt:19
-msgid "Meeting logo"
-msgstr "Möteslogo"
-
-#: views/templates/projector/projector.pt:37
-msgid "Agenda items"
-msgstr "Dagordningspunkter"
+#~ msgid ""
+#~ "No new electoral register needed. The latest one has the same information "
+#~ "as the users who're currently able to vote."
+#~ msgstr ""
+#~ "Ingen ny röstlängd behövs. Den senaste har samma innehåll som "
+#~ "förteckningen av användare med rösträtt."
 
 #~ msgid "Projector view"
 #~ msgstr "Projektorvy"
 
 #~ msgid "Active"
 #~ msgstr "Aktiv"
-
-#~ msgid "Proposals"
-#~ msgstr "Förslag"

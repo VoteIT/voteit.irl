@@ -6,6 +6,7 @@ from pyramid import testing
 class ChangeOwnershipTests(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp()
+        self.config.include('arche.testing')
 
     def tearDown(self):
         testing.tearDown()
@@ -22,11 +23,11 @@ class ChangeOwnershipTests(unittest.TestCase):
     def test_new_ownership(self):
         obj = self._mk_obj()
         #Just to make sure
-        self.assertIn('role:Owner', obj.get_groups('jane_doe'))
+        self.assertIn('role:Owner', obj.local_roles['jane_doe'])
         #Real test
         result = self._fut(obj, 'john_doe')
-        self.assertIn('role:Owner', obj.get_groups('john_doe'))
-        self.assertNotIn('role:Owner', obj.get_groups('jane_doe'))
+        self.assertIn('role:Owner', obj.local_roles['john_doe'])
+        self.assertNotIn('role:Owner', obj.local_roles.get('jane_doe', []))
         self.assertEqual(obj.creators[0], 'john_doe')
         self.assertEqual(result, 'john_doe')
 
@@ -34,4 +35,4 @@ class ChangeOwnershipTests(unittest.TestCase):
         obj = self._mk_obj()
         result = self._fut(obj, 'jane_doe')
         self.assertEqual(result, None)
-        self.assertIn('role:Owner', obj.get_groups('jane_doe'))
+        self.assertIn('role:Owner', obj.local_roles['jane_doe'])

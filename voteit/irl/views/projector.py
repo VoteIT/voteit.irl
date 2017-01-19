@@ -1,58 +1,163 @@
-from pyramid.view import view_config
-from pyramid.renderers import render
+from arche.utils import get_content_factories
+from betahaus.viewcomponent.decorators import view_action
+from pyramid.httpexceptions import HTTPForbidden
 from pyramid.traversal import resource_path
-from voteit.core.views.base_view import BaseView
+from pyramid.view import view_config
+from pyramid.view import view_defaults
+from repoze.catalog.query import Eq
 from voteit.core.models.interfaces import IAgendaItem
+from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
-from betahaus.viewcomponent.decorators import view_action
+from voteit.core.security import VIEW
+from voteit.core.views.agenda_item import AgendaItemView
 
 from voteit.irl.fanstaticlib import voteit_irl_projector
-from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl import _
 
 
-class ProjectorView(BaseView):
+@view_defaults(context = IMeeting, permission = MODERATE_MEETING)
+class ProjectorView(AgendaItemView):
 
-    @view_config(context=IAgendaItem, name="projector", renderer="templates/projector/projector.pt", permission=MODERATE_MEETING)
-    def view(self):
-        """ Main projector view. """
+    @view_config(name = '__projector__',
+                 renderer = 'voteit.irl:templates/projector.pt',
+                 permission = VIEW)
+    def main_view(self):
         voteit_irl_projector.need()
-        context_path = resource_path(self.api.meeting)
-        query = dict(
-            content_type = 'AgendaItem',
-            workflow_state = ('ongoing', ),
-            path = context_path,
-            sort_index = 'order',
-        )
-        self.response['ai_brains'] = self.api.get_metadata_for_query(**query)
-        self.response['proposals'] = self.api.get_restricted_content(self.context, iface=IProposal, sort_on='created', states=('published', 'approved', 'denied', ))
-        self.response['render_proposal'] = self.render_proposal
-        return self.response
-        
-    def render_proposal(self, context, request):
-        self.response['proposal'] = context        
-        return render("templates/projector/proposal.pt", self.response, request=request)
-        
-    @view_config(context=IProposal, name="projector_state", renderer="templates/projector/proposal.pt", permission=MODERATE_MEETING)
-    def state_change(self):
+        response = {}
+        response['agenda_items'] = self.get_ais()
+        response['state_titles'] = self.request.get_wf_state_titles(IAgendaItem, 'AgendaItem')
+        return response
+
+    @view_config(name = '__quick_poll__.json',
+                 renderer = 'json')
+    def quick_poll(self):
+        proposals = []
+        ai = None
+        translate = self.request.localizer.translate
+        for uid in self.request.POST.getall('uid'):
+            prop = self.resolve_uid(uid = uid)
+            proposals.append(prop)
+            if ai is None:
+                ai = prop.__parent__
+            else:
+                if ai != prop.__parent__:
+                    raise HTTPForbidden("Proposals fetched from different agenda items")
+        if not proposals:
+            raise HTTPForbidden(translate(_("No proposals")))
+        #Check if there are other ongoing polls
+        query = Eq('type_name', 'Poll') & Eq('path', resource_path(ai)) & Eq('workflow_state', 'ongoing')
+        res = self.request.root.catalog.query(query)[0]
+        if res.total:
+            raise HTTPForbidden(
+                _("quickpoll_ongoing_polls_error",
+                  default="There are ongoing polls in this agenda item,"
+                          "close them first."))
+        #Setup poll
+        factories = get_content_factories()
+        if len(proposals) == 1:
+            reject_prop = factories['Proposal'](text = translate(_("Reject proposal")))
+            ai[reject_prop.uid] = reject_prop
+            proposals.append(reject_prop)
+        title = _("Quick poll: ${proposals}",
+                  mapping = {'proposals': ", ".join([x.aid for x in proposals])})
+        title = translate(title)
+        proposal_uids = [x.uid for x in proposals]
+        if len(proposals) == 2:
+            poll_plugin = 'majority_poll'
+        else:
+            #Kolla Schulze eller majoritet
+            poll_plugin = 'schulze'
+        poll = factories['Poll'](title = title,
+                                 proposals = proposal_uids,
+                                 poll_plugin = poll_plugin)
+        ai[poll.uid] = poll
+        poll.set_workflow_state(self.request, 'upcoming')
+        poll.set_workflow_state(self.request, 'ongoing')
+        poll_url = '<a href="%s">%s</a>' % (self.request.resource_url(poll), title)
+        return {'msg': translate(_("Added and started: ${poll_url}",
+                                   {'poll_url': poll_url}))}
+
+    @view_config(context = IAgendaItem, name = "__ai_contents__.json", renderer = 'json')
+    def ai_contents(self):
+        query = "path == '%s' and " % resource_path(self.context)
+        query += "type_name == 'Proposal' and " #
+        query += "workflow_state in any(['published', 'approved', 'denied'])"
+        results = []
+        for obj in self.catalog_query(query, resolve = True):
+            results.append(dict(text = self.request.transform_text(obj.text),
+                                aid = obj.aid,
+                                prop_wf_url = self.request.resource_url(obj, '__change_state_projector__.json'),
+                                wf_state = obj.get_workflow_state(),
+                                uid = obj.uid,
+                                creator = self.request.creators_info(obj.creator, portrait = False)))
+        next_obj = self.next_ai()
+        next_url = ''
+        next_title = getattr(next_obj, 'title', '')
+        if next_obj:
+            next_url = self.request.resource_url(next_obj, '__ai_contents__.json')
+        previous_obj = self.previous_ai()
+        previous_url = ''
+        previous_title = getattr(previous_obj, 'title', '')
+        if previous_obj:
+            previous_url = self.request.resource_url(previous_obj, '__ai_contents__.json')
+        return {'agenda_item': self.context.title,
+                'ai_url': self.request.resource_url(self.request.meeting, '__projector__',
+                                                    anchor = self.context.__name__),
+                'proposals': results,
+                'next_url': next_url,
+                'previous_url': previous_url,
+                'next_title': next_title,
+                'previous_title': previous_title}
+
+    def get_ais(self):
+        results = {}
+        states = ('ongoing', 'upcoming')
+        query = "path == '%s' and " % resource_path(self.request.meeting)
+        query += "type_name == 'AgendaItem' and "
+        for state in states:
+            results[state] = tuple(self.catalog_query("%s workflow_state == '%s'" % (query, state),
+                                                      resolve = True, sort_index = 'order'))
+        return results
+
+    @view_config(context = IProposal, name = "__change_state_projector__.json", renderer = 'json')
+    def change_state_projector(self):
         """ Change workflow state for context.
-            Note that if this view is called without the required permission,
-            it will raise a WorkflowError exception. This view should
-            never be linked to without doing the proper permission checks first.
-            (Since the WorkflowError is not the same as Pyramids Forbidden exception,
-            which will be handled by the application.)
+            Returns result in json. Only state changes between 'published', 'approved' and 'denied'
+            are allowed.
         """
-        state = self.request.params.get('state')
-        if (state == 'approved' or state == 'denied') and self.context.get_workflow_state() != 'published':
-            self.context.set_workflow_state(self.request, 'published')
+        allowed_states = ('published', 'approved', 'denied')
+        transl = self.request.localizer.translate
+        if self.context.get_workflow_state() not in allowed_states:
+            msg = _("wrong_initial_state_error",
+                    default = "Proposal wasn't in any of the states "
+                    "'Published', 'Approved' or 'Denied'. "
+                    "You may need to reload this page.")
+            return {'status': 'error',
+                    'type': 'wrong_initial_state',
+                    'msg': transl(msg)}
+        state = self.request.POST.get('state')
+        if state not in allowed_states:
+            return {'status': 'error',
+                    'type': 'wrong_new_state',
+                    'msg': transl(_("Not allowed to transition to ${state}",
+                                    mapping = {'state': state}))}
         self.context.set_workflow_state(self.request, state)
-        self.response['proposal'] = self.context
-        return self.response
+        return {'status': 'success',
+                'state': state}
 
 
-@view_action('context_actions', 'projector', title = _(u"Proposal view for projector"), viewname = u"projector", interface = IAgendaItem)
+@view_action('meeting_menu', 'projector',
+             title = _(u"Proposal view for projector"),
+             permission = MODERATE_MEETING)
 def projector_menu_link(context, request, va, **kw):
     """ Visible in the moderator menu, but doesn't work for the meeting root """
-    api = kw['api']
-    url = request.resource_url(context, va.kwargs['viewname'])
-    return """<li><a href="%s">%s</a></li>""" % (url, api.translate(va.title))
+    if IAgendaItem.providedBy(context):
+        url = request.resource_url(request.meeting, '__projector__', anchor = context.__name__)
+    else:
+        url = request.resource_url(request.meeting, '__projector__')
+    return """<li><a href="%s"> %s </a></li>""" % (url, request.localizer.translate(va.title))
+
+
+def includeme(config):
+    config.scan(__name__)

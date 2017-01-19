@@ -1,78 +1,50 @@
 body {
-    background-color: #fff;
-    margin: 25px 0;
-    color: #5c5a5d;
+  padding-top: 0;
 }
-#inactive {
-    padding-left: 20px;
-    margin-top: 10px;
-}
-#wrapper {
-    width: 990px;
-    margin: 0 auto;
-    display: block;
-}
-#voteit-logo {
-    float: right;
-}
-#heading-wrapper {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #5c5a5d;
-}
-#meeting-logo {
-    margin-right: 50px;
-}
-#header h1 {
-    padding-top: 0px;
-    padding-bottom: 10px;
-    font-size: 50px;
-    line-height: 50px;
-    background: url(/static/images/voteit_logo.png) right top no-repeat;
-}
-#ai_quick_menu {
-    float: right;
-}
-.controls {
-    float: right;
-}
-.control {
-    float: left;
-}
-.activate, .inactivate {
-    display: block;
-    height: 20px;
-    margin-left: 10px;
-}
-.cogwheel {
-    margin-top: 0px;
-    margin-left: 10px;
-}
-.proposal_id {
-    padding-bottom: 5px;
-    font-weight: bold;
-}
-.meta .icon {
-    line-height: 20px;
-    display: block;
-}
-/* Adjust sizes on active */
-#active .body,
-#active .creators {
-    font-size: 175%;
-    line-height: 125%;
-}
-#active .proposal_id {
-    font-size: 150%;
-    padding-bottom: 10px;
+#projector-pool .prop-meta-heading {
+  font-size: 100%;
 }
 
-/* Don't show the following controls when inactive */
-#inactive .states,
-#inactive .inactivate {
-    display: none;
+#projector-pool .proposal-text {
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  max-height: 150px;
+  overflow: hidden;
+  content: "";
+  position: relative;
 }
-/* Don't show the following controls when active */
-#active .activate,
-#active .cogwheel {
-    display: none;
+#projector-pool .proposal-text:before {
+    content: '';
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    left: 0;
+    top: 80%;
+    background: linear-gradient(transparent, #fff);
+}
+#projector-main .proposal-text {
+  font-size: 150%;
+}
+#projector-pool .main-controls [data-wf-state] {
+  display: none;
+}
+#projector-pool .main-controls [data-wf-state].active {
+  display: block;
+}
+#projector-main .move-left {
+  display: none;
+}
+#navbar-heading {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (min-width: 768px) {
+  #navbar-heading { max-width: 550px; }
+}
+@media (min-width: 992px) {
+  #navbar-heading { max-width: 800px; }
+}
+@media (min-width: 1200px) {
+  #navbar-heading { max-width: 1000px; }
 }

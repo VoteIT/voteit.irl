@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"  
+  metal:use-macro="view.macro('arche:templates/master.pt', 'arche:templates/inline.pt')"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="voteit.irl">
+<body>
+  <div metal:fill-slot="content" class="row">
+    <div class="col-md-12">
+      <h1 i18n:translate="">Present users</h1>
+
+      <p>
+        <a class="btn btn-default" href="${request.resource_url(context, 'update_elegible_voters')}" i18n:translate="">Go to elegible voters method</a>
+      </p>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th i18n:translate="">
+              <span i18n:name="count">${len(userids)}</span>
+              user(s)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="userid userids">
+            <td tal:content="structure request.creators_info([userid], portrait = False)"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

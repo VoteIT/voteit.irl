@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="view.macro('arche:templates/master.pt')"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="voteit.irl">
+<body metal:fill-slot="fullpage">
+
+  <nav class="navbar navbar-static-top navbar-voteit" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand hidden-xs" href="${request.application_url}">       
+          <img height="31" width="85" class="voteitlogo"
+              src="${request.static_url('voteit.core:static/images/logo.png')}" />
+        </a>
+        <a tal:condition="request.meeting"
+          class="navbar-brand"
+          id="navbar-heading"
+          href="${request.resource_url(request.meeting)}">
+          <span class="hidden-sm hidden-xs hidden-sm">${request.meeting.title}:</span>
+          <span i18n:translate="">(Click menu to select Agenda Item)</span>
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="disabled">
+          <a href="#"
+             title="Previous"
+             i18n:attributes="title;"
+             data-nav-ai="previous">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </a>
+        </li>
+        <li class="disabled">
+          <a href="#"
+             title="Next"
+             i18n:attributes="title;"
+             data-nav-ai="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:"
+            title="Quickly create a poll. Majority poll with 1-2 proposals, Schulze for 3 or more."
+            i18n:attributes="title quick_poll_btn_title;"
+             data-toggle="tooltip" data-placement="bottom"
+            data-quick-poll>
+            <span class="glyphicon glyphicon-star"></span>
+          </a>
+        </li>
+        <li class="dropdown" id="polls-menu">
+          <a href="#" class="dropdown-toggle"
+            data-toggle="dropdown"
+            aria-expanded="false">
+            <span class="glyphicon glyphicon-list"></span>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" id="projector-ai-menu">
+            <tal:state repeat="state ('ongoing', 'upcoming')">
+              <li role="presentation" class="dropdown-header">
+                <span class="glyphicon glyphicon-${state} text-${state}"></span>
+                ${state_titles[state]}
+              </li>
+              <li role="presentation" tal:repeat="obj agenda_items[state]">
+                <a role="menuitem" tabindex="-1"
+                   href="${request.resource_url(obj, '__ai_contents__.json')}">
+                  ${obj.title}
+                </a>
+              </li>
+              <li role="presentation" class="divider" tal:condition="not repeat['state'].end"></li>
+            </tal:state>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.container-->
+    <div class="container container-float-below">
+      <div class="float-below" data-flash-slot="voteit-main"></div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-10">
+        <form id="quick-poll" action="${request.resource_url(context, '__quick_poll__.json')}" method="POST">
+          <ul id="projector-main" class="list-group"></ul>
+        </form>
+      </div>
+      <div class="col-xs-2">
+        <ul id="projector-pool" class="list-group">
+          <li class="list-group-item hidden" data-uid="">
+            <a href="#" class="btn btn-xs btn-default move-left">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <input type="hidden" name="uid" value="" />
+            <div class="main-controls pull-right">
+              <div class="btn-group btn-group-sm" data-wf-controls role="group">
+                <a class="btn btn-default" data-wf-state="published" href="">
+                  <span class="text-published glyphicon glyphicon-published"></span>
+                </a>
+                <a class="btn btn-default" data-wf-state="approved" href="">
+                  <span class="text-approved glyphicon glyphicon-approved"></span>
+                </a>
+                <a class="btn btn-default" data-wf-state="denied" href="">
+                  <span class="text-denied glyphicon glyphicon-denied"></span>
+                </a>
+              </div>
+              <a href="#" class="btn btn-sm btn-default move-right">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+              </a>
+            </div>
+            <h3 class="prop-meta-heading">
+              <strong>#<span class="proposal-aid"></span></strong>
+              <span i18n:translate="">by</span>
+              <span class="proposal-author"></span>
+            </h3>
+            <div class="proposal-text"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var projector = new Projector();
+    $('#projector-ai-menu a').on('click', function(event) {
+      projector.handle_ai_menu_click(event);
+    });
+    $('[data-nav-ai]').on('click', function(event) {
+      projector.handle_ai_menu_click(event);
+    });
+    $('body').on('click', '.move-left', function(event) {
+      projector.highlight_proposal(event, true);
+    });
+    $('body').on('click', '.move-right', function(event) {
+      projector.highlight_proposal(event, false);
+    });
+    $('body').on('click', '[data-wf-state]', function(event) {
+      projector.handle_wf_click(event);
+    });
+    $('body').on('click', '[data-quick-poll]', function(event) {
+      projector.quick_poll(event);
+    });
+    //Load initial content?
+    if (window.location.hash.length > 1) {
+      var url = '${request.resource_url(request.meeting)}' + window.location.hash + '/__ai_contents__.json';
+      url = url.replace('#', '');
+      projector.load_context(url);
+    }
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
+</body>
+</html>

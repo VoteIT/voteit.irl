@@ -1,12 +1,13 @@
-from zope.interface import implementer
-from zope.component import adapter
+from __future__ import unicode_literals
+
 from BTrees.OOBTree import OOSet
-
-from voteit.core.models.date_time_util import utcnow
-from voteit.core.models.interfaces import IMeeting
+from arche.utils import utcnow
 from pyramid.httpexceptions import HTTPForbidden
+from voteit.core.models.interfaces import IMeeting
+from zope.component import adapter
+from zope.interface import implementer
 
-from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl import _
 from voteit.irl.models.interfaces import IMeetingPresence
 
 
@@ -21,12 +22,13 @@ class MeetingPresence(object):
     def __init__(self, context):
         self.context = context
 
-    def _get_open(self):
+    @property
+    def open(self):
         return getattr(self.context, '__meeting_presence_open__', False)
-    def _set_open(self, value):
+    @open.setter
+    def open(self, value):
         assert isinstance(value, bool)
         self.context.__meeting_presence_open__ = value
-    open = property(_get_open, _set_open)
 
     @property
     def present_userids(self):
@@ -51,6 +53,9 @@ class MeetingPresence(object):
             raise HTTPForbidden(_(u"Meeting presence check isn't open"))
         assert isinstance(userid, basestring)
         self.present_userids.add(userid)
+
+    def __contains__(self, val):
+        return val in self.present_userids
 
 
 def includeme(config):

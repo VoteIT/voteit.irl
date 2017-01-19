@@ -1,12 +1,11 @@
+from arche.interfaces import ISchemaCreatedEvent
+from arche.schemas import UserSchema
 import colander
 import deform
-from betahaus.pyracont.interfaces import ISchemaCreatedEvent
-from voteit.core.schemas.interfaces import IEditUserSchema
-from pyramid.threadlocal import get_current_request
 
-from voteit.irl.interfaces import IClaimParticipantNumber
+from voteit.irl import _
 from voteit.irl.models.participant_number_ap import ParticipantNumberAP
-from voteit.irl import VoteIT_IRL_MF as _
+from voteit.irl.schemas import ClaimParticipantNumberSchema
 
 
 GENDER_VALUES = (('female', _(u"Female")),
@@ -22,24 +21,31 @@ class ParticipantNumberAPWithGender(ParticipantNumberAP):
 
     def handle_success(self, view, appstruct):
         if 'gender' in appstruct:
-            view.api.user_profile.set_field_value('gender', appstruct['gender'])
+            user = view.root['users'][view.request.authenticated_userid]
+            user.set_field_value('gender', appstruct['gender'])
         return super(ParticipantNumberAPWithGender, self).handle_success(view, appstruct)
 
 
 def add_gender_in_profile(schema, event):
-    request = get_current_request()
-    if request.context.content_type == 'Meeting' and \
-        request.context.get_field_value('access_policy') != ParticipantNumberAPWithGender.name:
+    if event.context.type_name == 'Meeting' and \
+        event.context.access_policy != ParticipantNumberAPWithGender.name:
         return #Skip in meeting context without this AP
     schema.add(colander.SchemaNode(colander.String(),
                                    name = "gender",
                                    title = _(u"Gender"),
                                    description = _(u"Used for statistics and perhaps gender based quotas. See meeting for details."),
-                                   widget = deform.widget.RadioChoiceWidget(values = GENDER_VALUES)),
-                                   )
+                                   widget = deform.widget.RadioChoiceWidget(values = GENDER_VALUES)),)
 
 
 def includeme(config):
-    config.add_subscriber(add_gender_in_profile, [IEditUserSchema, ISchemaCreatedEvent])
-    config.add_subscriber(add_gender_in_profile, [IClaimParticipantNumber, ISchemaCreatedEvent])
+    config.add_subscriber(add_gender_in_profile, [ClaimParticipantNumberSchema, ISchemaCreatedEvent])
+    config.add_subscriber(add_gender_in_profile, [UserSchema, ISchemaCreatedEvent])
     config.registry.registerAdapter(ParticipantNumberAPWithGender, name = ParticipantNumberAPWithGender.name)
+    #Maybe add attribute to User class
+    from voteit.core.models.user import User
+    if not hasattr(User, 'gender'):
+        def _get(self):
+            return self.get_field_value('gender', '')
+        def _set(self, value):
+            self.set_field_value('gender', value)
+        User.gender = property(_get, _set)

@@ -2,14 +2,18 @@ from random import choice
 
 from BTrees.IOBTree import IOBTree
 from BTrees.OIBTree import OIBTree
+from arche.utils import utcnow
 from persistent import Persistent
-from zope.interface import implementer
-from zope.component import adapter
 from pyramid.threadlocal import get_current_registry
 from voteit.core.models.interfaces import IMeeting
-from voteit.core.models.date_time_util import utcnow
+from zope.component import adapter
+from zope.interface import implementer
+from pyramid.traversal import find_root
+from arche.interfaces import IEmailValidatedEvent
+from pyramid.traversal import find_resource
+from pyramid.threadlocal import get_current_request
 
-from .interfaces import IParticipantNumbers
+from voteit.irl.models.interfaces import IParticipantNumbers
 from voteit.irl.events import ParticipantNumberClaimed
 
 
@@ -55,6 +59,14 @@ class ParticipantNumbers(object):
             self.context.__participant_numbers_token_to_number__ = OIBTree()
             return self.context.__participant_numbers_token_to_number__
 
+    @property
+    def email_to_number(self):
+        try:
+            return self.context.__participant_numbers_email_to_number__
+        except AttributeError:
+            self.context.__participant_numbers_email_to_number__ = OIBTree()
+            return self.context.__participant_numbers_email_to_number__
+
     def new_token(self):
         def _token_part():
             return "".join([choice(CHAR_POOL) for x in range(choice(range(4, 5)))])
@@ -98,7 +110,10 @@ class ParticipantNumbers(object):
         if userid and userid in self.userid_to_number:
             del self.userid_to_number[userid]
         if number in self.tickets:
-            token = self.tickets[number].token
+            ticket = self.tickets[number]
+            if ticket.email and ticket.email in self.email_to_number:
+                del self.email_to_number[ticket.email]
+            token = ticket.token
             del self.tickets[number]
             del self.token_to_number[token]
             return number
@@ -114,8 +129,20 @@ class ParticipantNumbers(object):
                 results.append(i)
         return results
 
+    def attach_email(self, email, number):
+        ticket = self.tickets[number]
+        ticket.email = email
+        self.email_to_number[email] = number
+
 
 class ParticipantNumberTicket(Persistent):
+    number = None
+    created = None
+    claimed = None
+    claimed_by = None
+    token = None
+    created_by = None
+    email = None
 
     def __init__(self, number, token, creator):
         self.number = number
@@ -136,5 +163,24 @@ class TicketAlreadyClaimedError(Exception):
     """ Ticket has already been claimed by someone else. """
 
 
+def auto_claim_pn_when_email_validated(event):
+    #FIXME: Typical example of task that should be sent to a worker queue instead.
+    #It hardly requires atomicity
+    root = find_root(event.user)
+    address_for_docid = root.document_map.address_for_docid
+    query = "type_name == 'Meeting' and "
+    query += "workflow_state in any(['ongoing', 'upcoming'])"
+    request = get_current_request()
+    for docid in root.catalog.query(query)[1]:
+        path = address_for_docid(docid)
+        meeting = find_resource(root, path)
+        pns = IParticipantNumbers(meeting)
+        if event.user.email in pns.email_to_number:
+            number = pns.email_to_number[event.user.email]
+            ticket = pns.tickets[number]
+            if ticket.claimed == None:
+                pns.claim_ticket(event.user.userid, ticket.token)
+
 def includeme(config):
     config.registry.registerAdapter(ParticipantNumbers)
+    config.add_subscriber(auto_claim_pn_when_email_validated, IEmailValidatedEvent)

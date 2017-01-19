@@ -1,0 +1,16 @@
+<tal:main xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="voteit.irl">
+<span data-register-presence-action>
+  <a href="${request.resource_url(request.meeting, '_set_as_present')}"
+    class="btn btn-default btn-sm"
+    data-clickable-target
+    data-replace-target="[data-register-presence-action]">
+    <span class="glyphicon glyphicon-thumbs-up"></span>
+    <span i18n:translate="">I'm here!</span>
+    <span data-actionmarker="glyphicon glyphicon-refresh rotate-me"></span>
+  </a>
+  <span i18n:translate="">Click to confirm your status as present.</span>
+</span>
+</tal:main>
