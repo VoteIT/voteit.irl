@@ -115,9 +115,16 @@ class ProjectorView(AgendaItemView):
         states = ('ongoing', 'upcoming')
         query = "path == '%s' and " % resource_path(self.request.meeting)
         query += "type_name == 'AgendaItem' and "
+        ai_order = self.request.meeting.order
+        def _sorter(ai):
+            try:
+                return ai_order.index(ai.__name__)
+            except (ValueError, KeyError):
+                return len(ai_order)
+
         for state in states:
-            results[state] = tuple(self.catalog_query("%s workflow_state == '%s'" % (query, state),
-                                                      resolve = True, sort_index = 'order'))
+            squery = "%s workflow_state == '%s'" % (query, state)
+            results[state] = sorted(self.catalog_query(squery, resolve = True), key=_sorter)
         return results
 
     @view_config(context = IProposal, name = "__change_state_projector__.json", renderer = 'json')
