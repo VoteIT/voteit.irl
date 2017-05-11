@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-11 12:10+0200\n"
-"PO-Revision-Date: 2017-05-11 12:12+0200\n"
+"POT-Creation-Date: 2017-05-11 12:15+0200\n"
+"PO-Revision-Date: 2017-05-11 12:15+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -545,6 +545,10 @@ msgstr ""
 "Snabbskapar omröstning. Majoritetsomröstning för 1-2 förslag, Schulze STV "
 "för 3 eller fler."
 
+#: voteit/irl/templates/projector.pt:54
+msgid "Multiple proposals (Schulze)"
+msgstr "Flera förslag (Schulze)"
+
 #: voteit/irl/templates/projector.pt:62
 msgid "All highlighted"
 msgstr "Alla markerade"
@@ -552,6 +556,10 @@ msgstr "Alla markerade"
 #: voteit/irl/templates/projector.pt:72
 msgid "All highlighted + Create reject"
 msgstr "Alla markerade + Skapa avslag"
+
+#: voteit/irl/templates/projector.pt:80
+msgid "Majority"
+msgstr "Majoritetsomröstning"
 
 #: voteit/irl/templates/projector.pt:88
 msgid "2 highlighted"

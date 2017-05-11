@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-05-11 12:10+0200\n"
+"POT-Creation-Date: 2017-05-11 12:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -509,12 +509,20 @@ msgstr ""
 msgid "quick_poll_btn_title"
 msgstr ""
 
+#: ././voteit/irl/templates/projector.pt:54
+msgid "Multiple proposals (Schulze)"
+msgstr ""
+
 #: ././voteit/irl/templates/projector.pt:62
 msgid "All highlighted"
 msgstr ""
 
 #: ././voteit/irl/templates/projector.pt:72
 msgid "All highlighted + Create reject"
+msgstr ""
+
+#: ././voteit/irl/templates/projector.pt:80
+msgid "Majority"
 msgstr ""
 
 #: ././voteit/irl/templates/projector.pt:88
