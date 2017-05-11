@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-11-19 00:33+0100\n"
-"PO-Revision-Date: 2016-11-19 00:35+0100\n"
+"POT-Creation-Date: 2017-05-11 12:10+0200\n"
+"PO-Revision-Date: 2017-05-11 12:12+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -63,8 +63,8 @@ msgid "This number has already been claimed."
 msgstr "Detta nummer har redan tagits."
 
 #: voteit/irl/schemas.py:86
-msgid "Participant code"
-msgstr "Deltagarnummer"
+msgid "Access code for participant number"
+msgstr "Accesskod för deltagarnummer"
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
@@ -75,7 +75,7 @@ msgstr ""
 "att den gör skillnad på små och stora bokstäver, och kan bara användas en "
 "gång."
 
-#: voteit/irl/schemas.py:108 voteit/irl/views/participant_numbers.py:179
+#: voteit/irl/schemas.py:108 voteit/irl/views/participant_numbers.py:180
 msgid "Participant number not found"
 msgstr "Deltagarnummer hittades inte"
 
@@ -217,8 +217,8 @@ msgstr ""
 
 #. Default: You're now assigned number ${number}.
 #: voteit/irl/models/participant_number_ap.py:37
-#: voteit/irl/views/participant_numbers.py:142
-#: voteit/irl/views/participant_numbers.py:190
+#: voteit/irl/views/participant_numbers.py:143
+#: voteit/irl/views/participant_numbers.py:191
 msgid "number_now_assigned_notice"
 msgstr "Du har tilldelats nummer ${number}."
 
@@ -260,6 +260,15 @@ msgid ""
 msgstr ""
 "Används för statistik och exempelvis könsbaserad kvotering. See mötet för "
 "detaljer."
+
+#: voteit/irl/plugins/kill_unread.py:24
+msgid "Clear unread"
+msgstr ""
+
+#: voteit/irl/plugins/kill_unread.py:46
+#, python-format
+msgid "Cleared ${num} unread"
+msgstr ""
 
 #: voteit/irl/plugins/present_users_voters.py:15
 msgid "Present with participant number (set on meeting -> advanced tab)"
@@ -529,15 +538,30 @@ msgstr "Föregående"
 msgid "Next"
 msgstr "Nästa"
 
-#. Default: Quickly create a poll. Majority poll with 1-2 proposals, Schulze
-#. for 3 or more.
-#: voteit/irl/templates/projector.pt:43
+#. Default: Quickly create a poll
+#: voteit/irl/templates/projector.pt:44
 msgid "quick_poll_btn_title"
 msgstr ""
 "Snabbskapar omröstning. Majoritetsomröstning för 1-2 förslag, Schulze STV "
 "för 3 eller fler."
 
-#: voteit/irl/templates/projector.pt:112
+#: voteit/irl/templates/projector.pt:62
+msgid "All highlighted"
+msgstr "Alla markerade"
+
+#: voteit/irl/templates/projector.pt:72
+msgid "All highlighted + Create reject"
+msgstr "Alla markerade + Skapa avslag"
+
+#: voteit/irl/templates/projector.pt:88
+msgid "2 highlighted"
+msgstr "2 markerade"
+
+#: voteit/irl/templates/projector.pt:97
+msgid "1 highlighted + create reject"
+msgstr "1 markerad + skapa avslag"
+
+#: voteit/irl/templates/projector.pt:168
 msgid "by"
 msgstr "av"
 
@@ -593,20 +617,24 @@ msgstr "Röstlängd"
 msgid "Elegible voters"
 msgstr "Röstberättigade"
 
+#: voteit/irl/views/eligible_voters.py:23
+msgid "Eligible Voters"
+msgstr "Röstberättigade"
+
 #. Default: Method '${method_title}' applied but it reports no change needed.
-#: voteit/irl/views/eligible_voters.py:37
+#: voteit/irl/views/eligible_voters.py:38
 msgid "no_update_of_perms_needed_notice"
 msgstr "Metoden '${method_title}' tillämpades men inget behövde ändras."
 
 #. Default: Method '${method_title}' added ${added_count} and removed
 #. ${removed_count}.
-#: voteit/irl/views/eligible_voters.py:48
+#: voteit/irl/views/eligible_voters.py:49
 msgid "updated_voter_permissions_notice"
 msgstr ""
 "Metoden '${method_title}' la till ${added_count} och tog bort"
 "${removed_count} röstberättigade."
 
-#: voteit/irl/views/eligible_voters.py:57
+#: voteit/irl/views/eligible_voters.py:58
 msgid "Update elegible voters"
 msgstr "Uppdatera röstberättigade"
 
@@ -646,23 +674,23 @@ msgstr "La till ${userid}"
 msgid "Already registered: ${userid}"
 msgstr "Redan registrerad: ${userid}"
 
-#: voteit/irl/views/participant_callbacks.py:50
+#: voteit/irl/views/participant_callbacks.py:47
 #: voteit/irl/views/participant_numbers.py:45
 msgid "End must be higher than start"
 msgstr "Slutnummer måste vara högre än start"
 
-#: voteit/irl/views/participant_callbacks.py:52
+#: voteit/irl/views/participant_callbacks.py:49
 #: voteit/irl/views/participant_numbers.py:47
 msgid "Must be an integer value"
 msgstr "Måste vara ett heltal"
 
-#: voteit/irl/views/participant_callbacks.py:57
+#: voteit/irl/views/participant_callbacks.py:54
 #, python-format
 msgid ""
 "Added ${added} new callbacks and skipped ${existed} that already existed."
 msgstr "La till ${added} nya medoter och skippade ${existed} som redan fanns."
 
-#: voteit/irl/views/participant_callbacks.py:71
+#: voteit/irl/views/participant_callbacks.py:68
 #, python-format
 msgid ""
 "Executed callback for ${num} users that had already claimed a participant "
@@ -670,7 +698,7 @@ msgid ""
 msgstr ""
 "Exekverade metoder för ${num} användare som redan hade ett deltagarnummer."
 
-#: voteit/irl/views/participant_callbacks.py:76
+#: voteit/irl/views/participant_callbacks.py:73
 #, python-format
 msgid ""
 "Removed ${removed} callbacks and skipped ${nonexistent} that wasn't "
@@ -708,29 +736,30 @@ msgstr ""
 "<b>${num}</b> nummer blev auto-tilldelade användare med validerade e-"
 "postadresser."
 
+#: voteit/irl/views/participant_numbers.py:123
+#: voteit/irl/views/participant_numbers.py:211
+msgid "Claim participant number"
+msgstr "Registrera deltagarnummer"
+
 #. Default: You've already been assigned the number ${number} so you don't need
 #. to do anything else.
-#: voteit/irl/views/participant_numbers.py:129
+#: voteit/irl/views/participant_numbers.py:130
 msgid "already_assigned_number_error"
 msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
 
 #. Default: This user was already assigned number ${number} so that number was
 #. cleared.
-#: voteit/irl/views/participant_numbers.py:183
+#: voteit/irl/views/participant_numbers.py:184
 msgid "participant_number_moved_warning"
 msgstr ""
 "Denna användare var redan registrerad med nummer ${number} så det numret "
 "rensades."
 
-#: voteit/irl/views/participant_numbers.py:201
+#: voteit/irl/views/participant_numbers.py:202
 msgid "Manage participant numbers"
 msgstr "Hantera deltagarnummer"
 
-#: voteit/irl/views/participant_numbers.py:210
-msgid "Claim participant number"
-msgstr "Registrera deltagarnummer"
-
-#: voteit/irl/views/participant_numbers.py:213
+#: voteit/irl/views/participant_numbers.py:214
 msgid "Your participant number"
 msgstr "Ditt deltagarnummer"
 
@@ -768,44 +797,52 @@ msgstr "Skriv ut förslaget"
 msgid "Print this post"
 msgstr "Skriv ut inlägget"
 
-#: voteit/irl/views/projector.py:47
+#: voteit/irl/views/projector.py:55
+msgid "Reject"
+msgstr "Avslag"
+
+#: voteit/irl/views/projector.py:60
 msgid "No proposals"
 msgstr "Inga förslag"
 
+#: voteit/irl/views/projector.py:62
+msgid "Majority polls must have exactly 2 proposals in them."
+msgstr "Majoritetsomröstningar måste ha exakt 2 förslag i sig."
+
+#: voteit/irl/views/projector.py:64
+msgid "Use majority polls for 2 proposals."
+msgstr ""
+
 #. Default: There are ongoing polls in this agenda item,close them first.
-#: voteit/irl/views/projector.py:53
+#: voteit/irl/views/projector.py:70
 msgid "quickpoll_ongoing_polls_error"
 msgstr ""
 "Det finns pågående omröstningar i dagordningspunkten, avsluta dem först."
 
-#: voteit/irl/views/projector.py:59
-msgid "Reject proposal"
-msgstr "Avslå förslag"
-
-#: voteit/irl/views/projector.py:62
+#: voteit/irl/views/projector.py:74
 #, python-format
 msgid "Quick poll: ${proposals}"
 msgstr "Snabbomröstning: ${proposals}"
 
-#: voteit/irl/views/projector.py:78
+#: voteit/irl/views/projector.py:91
 #, python-format
 msgid "Added and started: ${poll_url}"
 msgstr "Tillagd och startad: ${poll_url}"
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: voteit/irl/views/projector.py:132
+#: voteit/irl/views/projector.py:152
 msgid "wrong_initial_state_error"
 msgstr ""
 "Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
 "'Avslagen'. Du kan behöva ladda om sidan."
 
-#: voteit/irl/views/projector.py:143
+#: voteit/irl/views/projector.py:163
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr "Inte tillåtet att gå till ${state}"
 
-#: voteit/irl/views/projector.py:151
+#: voteit/irl/views/projector.py:171
 msgid "Proposal view for projector"
 msgstr "Förslagsvy för projektor"
 
@@ -814,11 +851,14 @@ msgstr "Förslagsvy för projektor"
 msgid "Changed ${count} proposals"
 msgstr "Ändrade ${count} förslag"
 
+#~ msgid "Participant code"
+#~ msgstr "Deltagarnummer"
+
+#~ msgid "Reject proposal"
+#~ msgstr "Avslå förslag"
+
 #~ msgid "Quick poll"
 #~ msgstr "Snabbomröstning"
-
-#~ msgid "Assign actions to participant numbers"
-#~ msgstr "Lägg till händelser till deltagarnummer"
 
 #~ msgid "register_closed_cant_set_status"
 #~ msgstr "Närvarokontrollen är stängd. Du kan inte ange din närvaro just nu."

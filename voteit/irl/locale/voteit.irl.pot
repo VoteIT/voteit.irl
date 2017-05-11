@@ -1,12 +1,12 @@
 #
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-11-19 00:33+0100\n"
+"POT-Creation-Date: 2017-05-11 12:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,7 +58,7 @@ msgid "This number has already been claimed."
 msgstr ""
 
 #: ././voteit/irl/schemas.py:86
-msgid "Participant code"
+msgid "Access code for participant number"
 msgstr ""
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
@@ -68,7 +68,7 @@ msgid "enter_token_description"
 msgstr ""
 
 #: ././voteit/irl/schemas.py:108
-#: ././voteit/irl/views/participant_numbers.py:179
+#: ././voteit/irl/views/participant_numbers.py:180
 msgid "Participant number not found"
 msgstr ""
 
@@ -197,8 +197,8 @@ msgstr ""
 
 #. Default: You're now assigned number ${number}.
 #: ././voteit/irl/models/participant_number_ap.py:37
-#: ././voteit/irl/views/participant_numbers.py:142
-#: ././voteit/irl/views/participant_numbers.py:190
+#: ././voteit/irl/views/participant_numbers.py:143
+#: ././voteit/irl/views/participant_numbers.py:191
 msgid "number_now_assigned_notice"
 msgstr ""
 
@@ -237,6 +237,15 @@ msgstr ""
 #: ././voteit/irl/plugins/gender.py:36
 msgid ""
 "Used for statistics and perhaps gender based quotas. See meeting for details."
+msgstr ""
+
+#: ././voteit/irl/plugins/kill_unread.py:24
+msgid "Clear unread"
+msgstr ""
+
+#: ././voteit/irl/plugins/kill_unread.py:46
+#, python-format
+msgid "Cleared ${num} unread"
 msgstr ""
 
 #: ././voteit/irl/plugins/present_users_voters.py:15
@@ -495,13 +504,28 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#. Default: Quickly create a poll. Majority poll with 1-2 proposals, Schulze
-#. for 3 or more.
-#: ././voteit/irl/templates/projector.pt:43
+#. Default: Quickly create a poll
+#: ././voteit/irl/templates/projector.pt:44
 msgid "quick_poll_btn_title"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:112
+#: ././voteit/irl/templates/projector.pt:62
+msgid "All highlighted"
+msgstr ""
+
+#: ././voteit/irl/templates/projector.pt:72
+msgid "All highlighted + Create reject"
+msgstr ""
+
+#: ././voteit/irl/templates/projector.pt:88
+msgid "2 highlighted"
+msgstr ""
+
+#: ././voteit/irl/templates/projector.pt:97
+msgid "1 highlighted + create reject"
+msgstr ""
+
+#: ././voteit/irl/templates/projector.pt:168
 msgid "by"
 msgstr ""
 
@@ -557,18 +581,22 @@ msgstr ""
 msgid "Elegible voters"
 msgstr ""
 
+#: ././voteit/irl/views/eligible_voters.py:23
+msgid "Eligible Voters"
+msgstr ""
+
 #. Default: Method '${method_title}' applied but it reports no change needed.
-#: ././voteit/irl/views/eligible_voters.py:37
+#: ././voteit/irl/views/eligible_voters.py:38
 msgid "no_update_of_perms_needed_notice"
 msgstr ""
 
 #. Default: Method '${method_title}' added ${added_count} and removed
 #. ${removed_count}.
-#: ././voteit/irl/views/eligible_voters.py:48
+#: ././voteit/irl/views/eligible_voters.py:49
 msgid "updated_voter_permissions_notice"
 msgstr ""
 
-#: ././voteit/irl/views/eligible_voters.py:57
+#: ././voteit/irl/views/eligible_voters.py:58
 msgid "Update elegible voters"
 msgstr ""
 
@@ -608,30 +636,30 @@ msgstr ""
 msgid "Already registered: ${userid}"
 msgstr ""
 
-#: ././voteit/irl/views/participant_callbacks.py:50
+#: ././voteit/irl/views/participant_callbacks.py:47
 #: ././voteit/irl/views/participant_numbers.py:45
 msgid "End must be higher than start"
 msgstr ""
 
-#: ././voteit/irl/views/participant_callbacks.py:52
+#: ././voteit/irl/views/participant_callbacks.py:49
 #: ././voteit/irl/views/participant_numbers.py:47
 msgid "Must be an integer value"
 msgstr ""
 
-#: ././voteit/irl/views/participant_callbacks.py:57
+#: ././voteit/irl/views/participant_callbacks.py:54
 #, python-format
 msgid ""
 "Added ${added} new callbacks and skipped ${existed} that already existed."
 msgstr ""
 
-#: ././voteit/irl/views/participant_callbacks.py:71
+#: ././voteit/irl/views/participant_callbacks.py:68
 #, python-format
 msgid ""
 "Executed callback for ${num} users that had already claimed a participant "
 "number."
 msgstr ""
 
-#: ././voteit/irl/views/participant_callbacks.py:76
+#: ././voteit/irl/views/participant_callbacks.py:73
 #, python-format
 msgid ""
 "Removed ${removed} callbacks and skipped ${nonexistent} that wasn't "
@@ -665,27 +693,28 @@ msgid ""
 "addresses."
 msgstr ""
 
+#: ././voteit/irl/views/participant_numbers.py:123
+#: ././voteit/irl/views/participant_numbers.py:211
+msgid "Claim participant number"
+msgstr ""
+
 #. Default: You've already been assigned the number ${number} so you don't need
 #. to do anything else.
-#: ././voteit/irl/views/participant_numbers.py:129
+#: ././voteit/irl/views/participant_numbers.py:130
 msgid "already_assigned_number_error"
 msgstr ""
 
 #. Default: This user was already assigned number ${number} so that number was
 #. cleared.
-#: ././voteit/irl/views/participant_numbers.py:183
+#: ././voteit/irl/views/participant_numbers.py:184
 msgid "participant_number_moved_warning"
 msgstr ""
 
-#: ././voteit/irl/views/participant_numbers.py:201
+#: ././voteit/irl/views/participant_numbers.py:202
 msgid "Manage participant numbers"
 msgstr ""
 
-#: ././voteit/irl/views/participant_numbers.py:210
-msgid "Claim participant number"
-msgstr ""
-
-#: ././voteit/irl/views/participant_numbers.py:213
+#: ././voteit/irl/views/participant_numbers.py:214
 msgid "Your participant number"
 msgstr ""
 
@@ -723,41 +752,49 @@ msgstr ""
 msgid "Print this post"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:47
+#: ././voteit/irl/views/projector.py:55
+msgid "Reject"
+msgstr ""
+
+#: ././voteit/irl/views/projector.py:60
 msgid "No proposals"
 msgstr ""
 
+#: ././voteit/irl/views/projector.py:62
+msgid "Majority polls must have exactly 2 proposals in them."
+msgstr ""
+
+#: ././voteit/irl/views/projector.py:64
+msgid "Use majority polls for 2 proposals."
+msgstr ""
+
 #. Default: There are ongoing polls in this agenda item,close them first.
-#: ././voteit/irl/views/projector.py:53
+#: ././voteit/irl/views/projector.py:70
 msgid "quickpoll_ongoing_polls_error"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:59
-msgid "Reject proposal"
-msgstr ""
-
-#: ././voteit/irl/views/projector.py:62
+#: ././voteit/irl/views/projector.py:74
 #, python-format
 msgid "Quick poll: ${proposals}"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:78
+#: ././voteit/irl/views/projector.py:91
 #, python-format
 msgid "Added and started: ${poll_url}"
 msgstr ""
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: ././voteit/irl/views/projector.py:132
+#: ././voteit/irl/views/projector.py:152
 msgid "wrong_initial_state_error"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:143
+#: ././voteit/irl/views/projector.py:163
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:151
+#: ././voteit/irl/views/projector.py:171
 msgid "Proposal view for projector"
 msgstr ""
 

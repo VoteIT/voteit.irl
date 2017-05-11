@@ -113,13 +113,17 @@ Projector.prototype.highlight_proposal = function (event, enable) {
 
 /* Find all proposals currently placed in the highlighted section and post them */
 Projector.prototype.quick_poll = function (event) {
-  var form = $('#quick-poll');
-  var request = arche.do_request(form.attr('action'), {'method': 'POST', 'data': form.serialize()});
-  request.done(function(response) {
-    arche.load_flash_messages()
-    arche.create_flash_message(response['msg'], {'type': 'success', 'auto_destruct': false})
-  });
-  request.fail(function(jqXHR) {
-    arche.flash_error(jqXHR);
-  });
+    event.preventDefault();
+    $('[name="quick-poll-method"]').attr('value', $(event.currentTarget).data('quick-poll'));
+    $('[name="reject-prop"]').attr('value', $(event.currentTarget).data('reject-prop'));
+    var form = $('#quick-poll');
+    var request = arche.do_request(form.attr('action'), {'method': 'POST', 'data': form.serialize()});
+    request.done(function(response) {
+        arche.load_flash_messages()
+        arche.create_flash_message(response['msg'], {'type': 'success', 'auto_destruct': false})
+        //FIXME: At least update ai item
+    });
+    request.fail(function(jqXHR) {
+        arche.flash_error(jqXHR);
+    });
 }

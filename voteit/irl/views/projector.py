@@ -1,6 +1,6 @@
-from arche.utils import get_content_factories
 from betahaus.viewcomponent.decorators import view_action
 from pyramid.httpexceptions import HTTPForbidden
+from pyramid.settings import truthy
 from pyramid.traversal import resource_path
 from pyramid.view import view_config
 from pyramid.view import view_defaults
@@ -11,9 +11,8 @@ from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
 from voteit.core.security import VIEW
 from voteit.core.views.agenda_item import AgendaItemView
-
-from voteit.irl.fanstaticlib import voteit_irl_projector
 from voteit.irl import _
+from voteit.irl.fanstaticlib import voteit_irl_projector
 
 
 @view_defaults(context = IMeeting, permission = MODERATE_MEETING)
@@ -35,6 +34,13 @@ class ProjectorView(AgendaItemView):
         proposals = []
         ai = None
         translate = self.request.localizer.translate
+        factories = self.request.content_factories
+
+        #Poll method
+        poll_method = self.request.POST.get('quick-poll-method', None)
+        reject_prop = self.request.POST.get('reject-prop', None)
+        reject_prop = reject_prop in truthy
+
         for uid in self.request.POST.getall('uid'):
             prop = self.resolve_uid(uid = uid)
             proposals.append(prop)
@@ -43,8 +49,19 @@ class ProjectorView(AgendaItemView):
             else:
                 if ai != prop.__parent__:
                     raise HTTPForbidden("Proposals fetched from different agenda items")
+        if reject_prop:
+            if ai: #Should be set, otherwise next step will die anyway
+                prop = factories['Proposal'](
+                    text = translate(_("Reject"))
+                )
+                ai[prop.uid] = prop
+                proposals.append(prop)
         if not proposals:
             raise HTTPForbidden(translate(_("No proposals")))
+        if len(proposals) != 2 and poll_method == 'majority':
+            raise HTTPForbidden(translate(_("Majority polls must have exactly 2 proposals in them.")))
+        if len(proposals) < 3 and poll_method == 'schulze':
+            raise HTTPForbidden(translate(_("Use majority polls for 2 proposals.")))
         #Check if there are other ongoing polls
         query = Eq('type_name', 'Poll') & Eq('path', resource_path(ai)) & Eq('workflow_state', 'ongoing')
         res = self.request.root.catalog.query(query)[0]
@@ -53,24 +70,20 @@ class ProjectorView(AgendaItemView):
                 _("quickpoll_ongoing_polls_error",
                   default="There are ongoing polls in this agenda item,"
                           "close them first."))
-        #Setup poll
-        factories = get_content_factories()
-        if len(proposals) == 1:
-            reject_prop = factories['Proposal'](text = translate(_("Reject proposal")))
-            ai[reject_prop.uid] = reject_prop
-            proposals.append(reject_prop)
+
         title = _("Quick poll: ${proposals}",
                   mapping = {'proposals': ", ".join([x.aid for x in proposals])})
         title = translate(title)
         proposal_uids = [x.uid for x in proposals]
-        if len(proposals) == 2:
-            poll_plugin = 'majority_poll'
-        else:
-            #Kolla Schulze eller majoritet
+        if poll_method == 'schulze':
             poll_plugin = 'schulze'
-        poll = factories['Poll'](title = title,
-                                 proposals = proposal_uids,
-                                 poll_plugin = poll_plugin)
+        if poll_method == 'majority':
+            poll_plugin = 'majority_poll'
+        poll = factories['Poll'](
+            title = title,
+            proposals=proposal_uids,
+            poll_plugin = poll_plugin
+        )
         ai[poll.uid] = poll
         poll.set_workflow_state(self.request, 'upcoming')
         poll.set_workflow_state(self.request, 'ongoing')
