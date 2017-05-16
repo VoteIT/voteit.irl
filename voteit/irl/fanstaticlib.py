@@ -6,7 +6,6 @@ from arche.interfaces import IViewInitializedEvent
 from fanstatic import Group
 from fanstatic import Library
 from fanstatic import Resource
-from voteit.core.fanstaticlib import data_loader
 from voteit.core.fanstaticlib import voteit_main_css
 from voteit.core.fanstaticlib import watcher_js
 
@@ -23,6 +22,7 @@ voteit_irl_print_css = Resource(voteit_irl_lib, 'print.css', depends = (voteit_m
 
 def always_needed(view, event):
     meeting_presence.need()
+
 
 def includeme(config):
     config.add_subscriber(always_needed, [IBaseView, IViewInitializedEvent])
