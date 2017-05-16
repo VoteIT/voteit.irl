@@ -73,7 +73,7 @@ class PrintDiscussionsForm(BaseForm):
 
 @view_config(name = "_print_proposals",
              context = IAgendaItem,
-             permission = security.MODERATE_MEETING,
+             permission = security.VIEW,
              renderer = "voteit.irl:templates/print_proposals.pt")
 class PrintProposalsView(BaseView):
 
@@ -94,7 +94,7 @@ class PrintProposalsView(BaseView):
 
 @view_config(name = "_print_discussions",
              context = IAgendaItem,
-             permission = security.MODERATE_MEETING,
+             permission = security.VIEW,
              renderer = "voteit.irl:templates/print_discussions.pt")
 class PrintDiscussionsView(BaseView):
 
@@ -131,24 +131,30 @@ def print_discussions_action(context, request, va, **kw):
                                                  request.localizer.translate(va.title))
 
 
-@view_action('context_actions', 'print_proposal',
-             title = _(u"Print this proposal"),
+#The silly &nbsp; is to cause the icon to have correct height. Only icons won't do.
+_PRINT_BTN = """
+<a class="btn btn-default btn-xs" href="%s" title="%s">
+&nbsp;
+<span class="text-primary glyphicon glyphicon-print"></span>
+&nbsp;
+</a>
+"""
+
+@view_action('metadata_listing', 'print_proposal',
+             title = _("Print this proposal"),
              interface = IProposal)
 def print_this_proposal_action(context, request, va, **kw):
-    ai = find_interface(context, IAgendaItem)
-    url = request.resource_url(ai, '_print_proposals', query = {'proposal_id': context.__name__})
-    return """<li><a href="%s">%s</a></li>""" % (url,
-                                                 request.localizer.translate(va.title))
+    url = request.resource_url(request.agenda_item, '_print_proposals', query = {'proposal_id': context.__name__})
+    return _PRINT_BTN % (url, request.localizer.translate(va.title))
 
 
-@view_action('context_actions', 'print_post',
-             title = _(u"Print this post"),
+@view_action('metadata_listing', 'print_post',
+             title = _("Print this post"),
              interface = IDiscussionPost)
 def print_this_post_action(context, request, va, **kw):
-    ai = find_interface(context, IAgendaItem)
-    url = request.resource_url(ai, '_print_discussions', query = {'post_id': context.__name__})
-    return """<li><a href="%s">%s</a></li>""" % (url,
-                                                 request.localizer.translate(va.title))
+    url = request.resource_url(request.agenda_item, '_print_discussions', query = {'post_id': context.__name__})
+    return _PRINT_BTN % (url, request.localizer.translate(va.title))
+
 
 def includeme(config):
     config.scan(__name__)
