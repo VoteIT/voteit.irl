@@ -146,14 +146,14 @@
             </a>
             <input type="hidden" name="uid" value="" />
             <div class="main-controls pull-right">
-              <div class="btn-group btn-group-sm" data-wf-controls role="group">
-                <a class="btn btn-default" data-wf-state="published" href="">
+              <div class="btn-group" data-wf-controls role="group">
+                <a class="btn btn-default btn-sm" data-wf-state="published" href="">
                   <span class="text-published glyphicon glyphicon-published"></span>
                 </a>
-                <a class="btn btn-default" data-wf-state="approved" href="">
+                <a class="btn btn-default btn-sm" data-wf-state="approved" href="">
                   <span class="text-approved glyphicon glyphicon-approved"></span>
                 </a>
-                <a class="btn btn-default" data-wf-state="denied" href="">
+                <a class="btn btn-default btn-sm" data-wf-state="denied" href="">
                   <span class="text-denied glyphicon glyphicon-denied"></span>
                 </a>
               </div>

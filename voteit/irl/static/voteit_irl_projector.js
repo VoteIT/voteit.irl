@@ -10,11 +10,11 @@ var Projector = function() {
 };
 
 Projector.prototype.load_context = function (url) {
-  var request = arche.do_request(url);
-  var that = this;
-  request.done(function(response) {
-    that.handle_response(response);
-  });
+    var request = arche.do_request(url);
+    var that = this;
+    request.done(function(response) {
+        that.handle_response(response);
+    });
 }
 
 Projector.prototype.handle_response = function (response) {
@@ -68,6 +68,7 @@ Projector.prototype.handle_response = function (response) {
   try { window.history.pushState(null, response['agenda_item'], response['ai_url']); } catch(e) {}
 }
 
+
 Projector.prototype.handle_ai_menu_click = function (event) {
   event.preventDefault();
   var elem = $(event.currentTarget);
@@ -76,10 +77,12 @@ Projector.prototype.handle_ai_menu_click = function (event) {
   }
 }
 
+
 Projector.prototype.reset = function () {
   $('#projector-pool').html(this.tpl);
   $('#projector-main').empty();
 }
+
 
 Projector.prototype.handle_wf_click = function(event) {
   event.preventDefault();
@@ -90,6 +93,7 @@ Projector.prototype.handle_wf_click = function(event) {
     that.handle_wf_response(event, response)
   });
 }
+
 
 Projector.prototype.handle_wf_response = function (event, response) {
   var elem = $(event.currentTarget);
@@ -103,6 +107,7 @@ Projector.prototype.handle_wf_response = function (event, response) {
   }
 }
 
+
 Projector.prototype.highlight_proposal = function (event, enable) {
   event.preventDefault();
   var elem = $(event.target).parents('.list-group-item');
@@ -115,6 +120,7 @@ Projector.prototype.highlight_proposal = function (event, enable) {
     $('#projector-pool').append(elem);
   }
 }
+
 
 /* Find all proposals currently placed in the highlighted section and post them */
 Projector.prototype.quick_poll = function (event) {
@@ -151,6 +157,8 @@ $(document).ready(function() {
     $('body').on('click', '.move-right', function(event) {
       projector.highlight_proposal(event, false);
     });
-    $('body').on('click', '[data-wf-state]', projector.handle_wf_click);
+    $('body').on('click', '[data-wf-state]', function(event) {
+        projector.handle_wf_click(event);
+    });
     $('body').on('click', '[data-quick-poll]', projector.quick_poll);
 });

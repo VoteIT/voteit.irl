@@ -3,6 +3,7 @@ body {
 }
 #projector-pool .prop-meta-heading {
   font-size: 100%;
+  overflow: hidden;
 }
 
 #projector-pool .proposal-text {
