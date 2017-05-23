@@ -201,8 +201,9 @@ def participant_numbers_menu(context, request, va, **kw):
     return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, "manage_participant_numbers"),
                                                  request.localizer.translate(_("Manage participant numbers")))
 
-@view_action('participants_menu', 'claim_participant_number',
-             permission = security.VIEW)
+
+@view_action('user_menu', 'claim_participant_number',
+             permission = security.VIEW, priority=20)
 def claim_participant_number_menu(context, request, va, **kw):
     if request.meeting:
         participant_numbers = request.registry.getAdapter(request.meeting, IParticipantNumbers)
@@ -214,7 +215,6 @@ def claim_participant_number_menu(context, request, va, **kw):
                 request.localizer.translate(_("Your participant number")),
                 participant_numbers.userid_to_number[request.authenticated_userid]
             )
-
 
 
 @view_action('user_info', 'participant_number',
