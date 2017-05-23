@@ -1,9 +1,12 @@
 /* Projector prototype that handles projector view. */
 
 var Projector = function() {
-  this.tpl = $('#projector-pool .list-group-item').clone();
-  this.tpl.removeClass('hidden');
-  $('#projector-pool .list-group-item').remove();
+  this.tpl = "";
+  this.init = function() {
+      this.tpl = $('#projector-pool .list-group-item').clone();
+      this.tpl.removeClass('hidden');
+      $('#projector-pool .list-group-item').remove();
+  }
 };
 
 Projector.prototype.load_context = function (url) {
@@ -42,7 +45,9 @@ Projector.prototype.handle_response = function (response) {
       }
     }
   };
+
   $('#projector-pool').render(response, directive);
+  $('#navbar-heading').attr('href', response['ai_regular_url']);
 
   $('[data-nav-ai="previous"]').attr('href', response['previous_url']);
   $('[data-nav-ai="previous"]').attr('title', response['previous_title']);
@@ -127,3 +132,25 @@ Projector.prototype.quick_poll = function (event) {
         arche.flash_error(jqXHR);
     });
 }
+
+
+var projector = new Projector();
+
+
+$(document).ready(function() {
+    projector.init();
+    $('body').on('click', '#projector-ai-menu a', function(event) {
+        projector.handle_ai_menu_click(event);
+    });
+    $('body').on('click', '[data-nav-ai]', function(event) {
+        projector.handle_ai_menu_click(event);
+    });
+    $('body').on('click', '.move-left', function(event) {
+      projector.highlight_proposal(event, true);
+    });
+    $('body').on('click', '.move-right', function(event) {
+      projector.highlight_proposal(event, false);
+    });
+    $('body').on('click', '[data-wf-state]', projector.handle_wf_click);
+    $('body').on('click', '[data-quick-poll]', projector.quick_poll);
+});

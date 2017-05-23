@@ -117,6 +117,7 @@ class ProjectorView(AgendaItemView):
         return {'agenda_item': self.context.title,
                 'ai_url': self.request.resource_url(self.request.meeting, '__projector__',
                                                     anchor = self.context.__name__),
+                'ai_regular_url': self.request.resource_url(self.context),
                 'proposals': results,
                 'next_url': next_url,
                 'previous_url': previous_url,
