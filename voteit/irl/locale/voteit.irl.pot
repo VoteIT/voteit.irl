@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-05-11 12:15+0200\n"
+"POT-Creation-Date: 2017-05-25 10:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -239,15 +239,6 @@ msgid ""
 "Used for statistics and perhaps gender based quotas. See meeting for details."
 msgstr ""
 
-#: ././voteit/irl/plugins/kill_unread.py:24
-msgid "Clear unread"
-msgstr ""
-
-#: ././voteit/irl/plugins/kill_unread.py:46
-#, python-format
-msgid "Cleared ${num} unread"
-msgstr ""
-
 #: ././voteit/irl/plugins/present_users_voters.py:15
 msgid "Present with participant number (set on meeting -> advanced tab)"
 msgstr ""
@@ -276,6 +267,42 @@ msgstr ""
 #. that 10 to and including 20 will be voters.
 #: ././voteit/irl/plugins/present_users_voters.py:59
 msgid "voter_pn_range_desc"
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:14
+#: ././voteit/irl/plugins/transfer_vote.py:51
+msgid "Transfer vote"
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:32
+#, python-format
+msgid "${userid} doesn't exist in this meeting."
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:35
+#, python-format
+msgid "${userid} is already a voter."
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:42
+msgid "To userid"
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:43
+msgid "Must be someone who isn't a voter right now."
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:56
+msgid "You're not a voter"
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:61
+msgid "Votes can't be transfered while a poll is open."
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:68
+#, python-format
+msgid "Vote transfered to ${userid}"
 msgstr ""
 
 #: ././voteit/irl/templates/diff_electoral_register.pt:11
@@ -492,48 +519,48 @@ msgid ""
 "Each proposal will be printed on its own page. This text will be ignored"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:21
+#: ././voteit/irl/templates/projector.pt:20
 msgid "(Click menu to select Agenda Item)"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:27
+#: ././voteit/irl/templates/projector.pt:25
 msgid "Previous"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:35
+#: ././voteit/irl/templates/projector.pt:33
 msgid "Next"
 msgstr ""
 
 #. Default: Quickly create a poll
-#: ././voteit/irl/templates/projector.pt:44
+#: ././voteit/irl/templates/projector.pt:42
 msgid "quick_poll_btn_title"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:54
+#: ././voteit/irl/templates/projector.pt:52
 msgid "Multiple proposals (Schulze)"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:62
+#: ././voteit/irl/templates/projector.pt:60
 msgid "All highlighted"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:72
+#: ././voteit/irl/templates/projector.pt:70
 msgid "All highlighted + Create reject"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:80
+#: ././voteit/irl/templates/projector.pt:78
 msgid "Majority"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:88
+#: ././voteit/irl/templates/projector.pt:86
 msgid "2 highlighted"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:97
+#: ././voteit/irl/templates/projector.pt:95
 msgid "1 highlighted + create reject"
 msgstr ""
 
-#: ././voteit/irl/templates/projector.pt:168
+#: ././voteit/irl/templates/projector.pt:166
 msgid "by"
 msgstr ""
 
@@ -702,7 +729,7 @@ msgid ""
 msgstr ""
 
 #: ././voteit/irl/views/participant_numbers.py:123
-#: ././voteit/irl/views/participant_numbers.py:211
+#: ././voteit/irl/views/participant_numbers.py:212
 msgid "Claim participant number"
 msgstr ""
 
@@ -722,7 +749,7 @@ msgstr ""
 msgid "Manage participant numbers"
 msgstr ""
 
-#: ././voteit/irl/views/participant_numbers.py:214
+#: ././voteit/irl/views/participant_numbers.py:215
 msgid "Your participant number"
 msgstr ""
 
@@ -752,11 +779,11 @@ msgstr ""
 msgid "Print discussions"
 msgstr ""
 
-#: ././voteit/irl/views/print.py:135
+#: ././voteit/irl/views/print.py:144
 msgid "Print this proposal"
 msgstr ""
 
-#: ././voteit/irl/views/print.py:145
+#: ././voteit/irl/views/print.py:152
 msgid "Print this post"
 msgstr ""
 
@@ -793,16 +820,16 @@ msgstr ""
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: ././voteit/irl/views/projector.py:152
+#: ././voteit/irl/views/projector.py:153
 msgid "wrong_initial_state_error"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:163
+#: ././voteit/irl/views/projector.py:164
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:171
+#: ././voteit/irl/views/projector.py:172
 msgid "Proposal view for projector"
 msgstr ""
 

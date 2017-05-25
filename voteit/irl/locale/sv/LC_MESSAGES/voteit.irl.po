@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-11 12:15+0200\n"
-"PO-Revision-Date: 2017-05-11 12:15+0200\n"
+"POT-Creation-Date: 2017-05-25 10:55+0200\n"
+"PO-Revision-Date: 2017-05-25 10:57+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -261,15 +261,6 @@ msgstr ""
 "Används för statistik och exempelvis könsbaserad kvotering. See mötet för "
 "detaljer."
 
-#: voteit/irl/plugins/kill_unread.py:24
-msgid "Clear unread"
-msgstr ""
-
-#: voteit/irl/plugins/kill_unread.py:46
-#, python-format
-msgid "Cleared ${num} unread"
-msgstr ""
-
 #: voteit/irl/plugins/present_users_voters.py:15
 msgid "Present with participant number (set on meeting -> advanced tab)"
 msgstr "Närvarande med deltagarnummer (ställ in under möte -> avancerat)"
@@ -301,6 +292,42 @@ msgstr "Spann på röstandes deltagarnummer"
 #: voteit/irl/plugins/present_users_voters.py:59
 msgid "voter_pn_range_desc"
 msgstr ""
+
+#: voteit/irl/plugins/transfer_vote.py:14
+#: voteit/irl/plugins/transfer_vote.py:51
+msgid "Transfer vote"
+msgstr "För över rösträtt"
+
+#: voteit/irl/plugins/transfer_vote.py:32
+#, python-format
+msgid "${userid} doesn't exist in this meeting."
+msgstr "${userid} finns inte i detta möte."
+
+#: voteit/irl/plugins/transfer_vote.py:35
+#, python-format
+msgid "${userid} is already a voter."
+msgstr "${userid} har redan rösträtt."
+
+#: voteit/irl/plugins/transfer_vote.py:42
+msgid "To userid"
+msgstr "Till AnvändarID"
+
+#: voteit/irl/plugins/transfer_vote.py:43
+msgid "Must be someone who isn't a voter right now."
+msgstr "Måste vara någon som inte har rösträtt just nu."
+
+#: voteit/irl/plugins/transfer_vote.py:56
+msgid "You're not a voter"
+msgstr "Du har inte rösträtt"
+
+#: voteit/irl/plugins/transfer_vote.py:61
+msgid "Votes can't be transfered while a poll is open."
+msgstr "Rösträtt kan inte överföras när en omröstning pågår."
+
+#: voteit/irl/plugins/transfer_vote.py:68
+#, python-format
+msgid "Vote transfered to ${userid}"
+msgstr "Röst överförd till: ${userid}"
 
 #: voteit/irl/templates/diff_electoral_register.pt:11
 #: voteit/irl/templates/electoral_register.pt:15
@@ -526,50 +553,50 @@ msgid ""
 "Each proposal will be printed on its own page. This text will be ignored"
 msgstr "Varje förslag hamnar på sin egen sida. Den här texten kommer inte med."
 
-#: voteit/irl/templates/projector.pt:21
+#: voteit/irl/templates/projector.pt:20
 msgid "(Click menu to select Agenda Item)"
 msgstr "(Klicka i menyn för att välja dagordningspunk)"
 
-#: voteit/irl/templates/projector.pt:27
+#: voteit/irl/templates/projector.pt:25
 msgid "Previous"
 msgstr "Föregående"
 
-#: voteit/irl/templates/projector.pt:35
+#: voteit/irl/templates/projector.pt:33
 msgid "Next"
 msgstr "Nästa"
 
 #. Default: Quickly create a poll
-#: voteit/irl/templates/projector.pt:44
+#: voteit/irl/templates/projector.pt:42
 msgid "quick_poll_btn_title"
 msgstr ""
 "Snabbskapar omröstning. Majoritetsomröstning för 1-2 förslag, Schulze STV "
 "för 3 eller fler."
 
-#: voteit/irl/templates/projector.pt:54
+#: voteit/irl/templates/projector.pt:52
 msgid "Multiple proposals (Schulze)"
 msgstr "Flera förslag (Schulze)"
 
-#: voteit/irl/templates/projector.pt:62
+#: voteit/irl/templates/projector.pt:60
 msgid "All highlighted"
 msgstr "Alla markerade"
 
-#: voteit/irl/templates/projector.pt:72
+#: voteit/irl/templates/projector.pt:70
 msgid "All highlighted + Create reject"
 msgstr "Alla markerade + Skapa avslag"
 
-#: voteit/irl/templates/projector.pt:80
+#: voteit/irl/templates/projector.pt:78
 msgid "Majority"
 msgstr "Majoritetsomröstning"
 
-#: voteit/irl/templates/projector.pt:88
+#: voteit/irl/templates/projector.pt:86
 msgid "2 highlighted"
 msgstr "2 markerade"
 
-#: voteit/irl/templates/projector.pt:97
+#: voteit/irl/templates/projector.pt:95
 msgid "1 highlighted + create reject"
 msgstr "1 markerad + skapa avslag"
 
-#: voteit/irl/templates/projector.pt:168
+#: voteit/irl/templates/projector.pt:166
 msgid "by"
 msgstr "av"
 
@@ -745,7 +772,7 @@ msgstr ""
 "postadresser."
 
 #: voteit/irl/views/participant_numbers.py:123
-#: voteit/irl/views/participant_numbers.py:211
+#: voteit/irl/views/participant_numbers.py:212
 msgid "Claim participant number"
 msgstr "Registrera deltagarnummer"
 
@@ -767,7 +794,7 @@ msgstr ""
 msgid "Manage participant numbers"
 msgstr "Hantera deltagarnummer"
 
-#: voteit/irl/views/participant_numbers.py:214
+#: voteit/irl/views/participant_numbers.py:215
 msgid "Your participant number"
 msgstr "Ditt deltagarnummer"
 
@@ -797,11 +824,11 @@ msgstr "Skriv ut förslag"
 msgid "Print discussions"
 msgstr "Skriv ut diskussion"
 
-#: voteit/irl/views/print.py:135
+#: voteit/irl/views/print.py:144
 msgid "Print this proposal"
 msgstr "Skriv ut förslaget"
 
-#: voteit/irl/views/print.py:145
+#: voteit/irl/views/print.py:152
 msgid "Print this post"
 msgstr "Skriv ut inlägget"
 
@@ -819,7 +846,7 @@ msgstr "Majoritetsomröstningar måste ha exakt 2 förslag i sig."
 
 #: voteit/irl/views/projector.py:64
 msgid "Use majority polls for 2 proposals."
-msgstr ""
+msgstr "Använd majoritetsomrösting för 2 förslag"
 
 #. Default: There are ongoing polls in this agenda item,close them first.
 #: voteit/irl/views/projector.py:70
@@ -839,18 +866,18 @@ msgstr "Tillagd och startad: ${poll_url}"
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: voteit/irl/views/projector.py:152
+#: voteit/irl/views/projector.py:153
 msgid "wrong_initial_state_error"
 msgstr ""
 "Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
 "'Avslagen'. Du kan behöva ladda om sidan."
 
-#: voteit/irl/views/projector.py:163
+#: voteit/irl/views/projector.py:164
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr "Inte tillåtet att gå till ${state}"
 
-#: voteit/irl/views/projector.py:171
+#: voteit/irl/views/projector.py:172
 msgid "Proposal view for projector"
 msgstr "Förslagsvy för projektor"
 
@@ -910,24 +937,6 @@ msgstr "Ändrade ${count} förslag"
 
 #~ msgid "Agenda items"
 #~ msgstr "Dagordningspunkter"
-
-#~ msgid "Transfer vote"
-#~ msgstr "För över rösträtt"
-
-#~ msgid "To userid"
-#~ msgstr "Till AnvändarID"
-
-#~ msgid "Must be someone who isn't a voter right now."
-#~ msgstr "Måste vara någon som inte har rösträtt just nu."
-
-#~ msgid "${userid} doesn't exist in this meeting."
-#~ msgstr "${userid} finns inte i detta möte."
-
-#~ msgid "${userid} is already a voter."
-#~ msgstr "${userid} har redan rösträtt."
-
-#~ msgid "Votes can't be transfered while a poll is open."
-#~ msgstr "Rösträtt kan inte överföras när en omröstning pågår."
 
 #~ msgid "Submit"
 #~ msgstr "Skicka"
