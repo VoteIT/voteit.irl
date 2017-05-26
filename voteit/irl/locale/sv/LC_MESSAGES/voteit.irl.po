@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-25 10:55+0200\n"
-"PO-Revision-Date: 2017-05-25 10:57+0200\n"
+"POT-Creation-Date: 2017-05-26 10:07+0200\n"
+"PO-Revision-Date: 2017-05-26 10:08+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -854,30 +854,30 @@ msgid "quickpoll_ongoing_polls_error"
 msgstr ""
 "Det finns pågående omröstningar i dagordningspunkten, avsluta dem först."
 
-#: voteit/irl/views/projector.py:74
-#, python-format
-msgid "Quick poll: ${proposals}"
-msgstr "Snabbomröstning: ${proposals}"
-
-#: voteit/irl/views/projector.py:91
+#: voteit/irl/views/projector.py:88
 #, python-format
 msgid "Added and started: ${poll_url}"
 msgstr "Tillagd och startad: ${poll_url}"
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: voteit/irl/views/projector.py:153
+#: voteit/irl/views/projector.py:150
 msgid "wrong_initial_state_error"
 msgstr ""
 "Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
 "'Avslagen'. Du kan behöva ladda om sidan."
 
-#: voteit/irl/views/projector.py:164
+#: voteit/irl/views/projector.py:161
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr "Inte tillåtet att gå till ${state}"
 
-#: voteit/irl/views/projector.py:172
+#: voteit/irl/views/projector.py:170
+#, python-format
+msgid "Descision ${num}"
+msgstr "Beslut ${num}"
+
+#: voteit/irl/views/projector.py:175
 msgid "Proposal view for projector"
 msgstr "Förslagsvy för projektor"
 
@@ -885,6 +885,9 @@ msgstr "Förslagsvy för projektor"
 #, python-format
 msgid "Changed ${count} proposals"
 msgstr "Ändrade ${count} förslag"
+
+#~ msgid "Quick poll: ${proposals}"
+#~ msgstr "Snabbomröstning: ${proposals}"
 
 #~ msgid "Participant code"
 #~ msgstr "Deltagarnummer"
