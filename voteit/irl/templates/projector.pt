@@ -162,7 +162,7 @@
               </a>
             </div>
             <h3 class="prop-meta-heading">
-              <strong>#<span class="proposal-aid"></span></strong>
+              <strong><span class="proposal-aid"></span></strong>
               <span i18n:translate="">by</span>
               <span class="proposal-author"></span>
             </h3>

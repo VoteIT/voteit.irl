@@ -16,16 +16,43 @@ var Projector = function() {
     });
   }
 
+  this.linkify = function(text) {
+    var insert = '$1<a href="#" data-tag-filter="$2">$2</a>';
+    return text.replace(/(^|\s)(#[a-z\d-]+)/ig, insert);
+  }
+
+  this.filter_tag = function(event) {
+    event.preventDefault();
+    var elem = $(event.currentTarget);
+    var select_tag = elem.data('tag-filter');
+    if (select_tag[0] == '#') select_tag = select_tag.slice(1);
+    //Unselect all
+    $('#projector-main .list-group-item').each(function(i, v) {
+        projector.highlight_proposal($(v), false);
+    });
+    //Select valid
+    $('#projector-pool .list-group-item').each(function(i, v) {
+        if ($.inArray( select_tag , $(v).data('tags').split(',') ) > -1) {
+            projector.highlight_proposal($(v), true);
+        }
+    });
+  }
+
   this.handle_response = function (response) {
       this.reset();
       var directive = {'.list-group-item':
         {'obj<-proposals':
-          {'.proposal-aid': 'obj.aid',
-           '.proposal-text': 'obj.text',
+          {'.proposal-aid': function(a) {
+             return projector.linkify('#' + a.item['aid']);
+           },
+           '.proposal-text': function(a) {
+              return projector.linkify(a.item['text']);
+           },
            '.proposal-author': 'obj.creator',
            '[name="uid"]@value': 'obj.uid',
            '.@data-uid': 'obj.uid',
            '.@data-state': 'obj.wf_state',
+           '.@data-tags': 'obj.tags',
            '[data-wf-state]@href': 'obj.prop_wf_url',
            '[data-wf-state="published"]@class+': function(a) {
              if (a.item['wf_state'] == "published") {
@@ -42,8 +69,17 @@ var Projector = function() {
                return ' active';
              }
            },
-          }
+          },
+        sort: function(a, b){
+            //Lazy version of ordering
+            var ordering = {'published': 1, 'approved': 2, 'denied': 3}
+            var cmp = function(x, y) {
+                return x > y? 1 : x < y ? -1 : 0;
+            }
+            return cmp(ordering[a.wf_state], ordering[b.wf_state]);
         }
+        }
+
       };
 
       $('#projector-pool').render(response, directive);
@@ -103,9 +139,13 @@ var Projector = function() {
       }
     }
 
-    this.highlight_proposal = function (event, enable) {
-      event.preventDefault();
-      var elem = $(event.target).parents('.list-group-item');
+    this.highlight_proposal_handler = function (event, enable) {
+        event.preventDefault();
+        var elem = $(event.target).parents('.list-group-item');
+        this.highlight_proposal(elem, enable);
+    }
+
+    this.highlight_proposal = function (elem, enable) {
       elem.remove()
       if (enable == true) {
         //Enable selection
@@ -113,8 +153,12 @@ var Projector = function() {
       } else {
         //Disable selection
         var last_pub = $('#projector-pool [data-state="published"]:last');
-        if ((elem.data('state') == 'published') && (last_pub.length > 0)) {
-            last_pub.after(elem);
+        if (elem.data('state') == 'published') {
+            if (last_pub.length > 0) {
+                last_pub.after(elem);
+            } else {
+                $('#projector-pool').prepend(elem);
+            }
         } else {
             $('#projector-pool').append(elem);
         }
@@ -153,13 +197,17 @@ $(document).ready(function() {
         projector.handle_ai_menu_click(event);
     });
     $('body').on('click', '.move-left', function(event) {
-      projector.highlight_proposal(event, true);
+      projector.highlight_proposal_handler(event, true);
     });
     $('body').on('click', '.move-right', function(event) {
-      projector.highlight_proposal(event, false);
+      projector.highlight_proposal_handler(event, false);
     });
     $('body').on('click', '[data-wf-state]', function(event) {
         projector.handle_wf_click(event);
     });
     $('body').on('click', '[data-quick-poll]', projector.quick_poll);
+
+    $('body').on('click', '[data-tag-filter]', function(event) {
+        projector.filter_tag(event);
+    });
 });
