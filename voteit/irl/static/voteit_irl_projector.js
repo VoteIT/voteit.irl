@@ -112,7 +112,12 @@ var Projector = function() {
         $('#projector-main').append(elem);
       } else {
         //Disable selection
-        $('#projector-pool').append(elem);
+        var last_pub = $('#projector-pool [data-state="published"]:last');
+        if ((elem.data('state') == 'published') && (last_pub.length > 0)) {
+            last_pub.after(elem);
+        } else {
+            $('#projector-pool').append(elem);
+        }
       }
     }
 
