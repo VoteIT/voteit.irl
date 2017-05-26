@@ -140,7 +140,7 @@
       </div>
       <div class="col-xs-2">
         <ul id="projector-pool" class="list-group">
-          <li class="list-group-item hidden" data-uid="">
+          <li class="list-group-item hidden" data-uid="" data-state="">
             <a href="#" class="btn btn-xs btn-default move-left">
               <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
