@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-05-26 10:07+0200\n"
+"POT-Creation-Date: 2017-05-27 10:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -269,38 +269,42 @@ msgstr ""
 msgid "voter_pn_range_desc"
 msgstr ""
 
-#: ././voteit/irl/plugins/transfer_vote.py:14
-#: ././voteit/irl/plugins/transfer_vote.py:51
+#: ././voteit/irl/plugins/transfer_vote.py:17
+#: ././voteit/irl/plugins/transfer_vote.py:68
 msgid "Transfer vote"
 msgstr ""
 
-#: ././voteit/irl/plugins/transfer_vote.py:32
+#: ././voteit/irl/plugins/transfer_vote.py:47
+msgid "No user has that participant number"
+msgstr ""
+
+#: ././voteit/irl/plugins/transfer_vote.py:49
 #, python-format
 msgid "${userid} doesn't exist in this meeting."
 msgstr ""
 
-#: ././voteit/irl/plugins/transfer_vote.py:35
+#: ././voteit/irl/plugins/transfer_vote.py:52
 #, python-format
 msgid "${userid} is already a voter."
 msgstr ""
 
-#: ././voteit/irl/plugins/transfer_vote.py:42
-msgid "To userid"
+#: ././voteit/irl/plugins/transfer_vote.py:59
+msgid "To userid or participant number"
 msgstr ""
 
-#: ././voteit/irl/plugins/transfer_vote.py:43
+#: ././voteit/irl/plugins/transfer_vote.py:60
 msgid "Must be someone who isn't a voter right now."
 msgstr ""
 
-#: ././voteit/irl/plugins/transfer_vote.py:56
+#: ././voteit/irl/plugins/transfer_vote.py:73
 msgid "You're not a voter"
 msgstr ""
 
-#: ././voteit/irl/plugins/transfer_vote.py:61
+#: ././voteit/irl/plugins/transfer_vote.py:78
 msgid "Votes can't be transfered while a poll is open."
 msgstr ""
 
-#: ././voteit/irl/plugins/transfer_vote.py:68
+#: ././voteit/irl/plugins/transfer_vote.py:88
 #, python-format
 msgid "Vote transfered to ${userid}"
 msgstr ""
@@ -787,49 +791,49 @@ msgstr ""
 msgid "Print this post"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:55
+#: ././voteit/irl/views/projector.py:56
 msgid "Reject"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:60
+#: ././voteit/irl/views/projector.py:61
 msgid "No proposals"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:62
+#: ././voteit/irl/views/projector.py:64
 msgid "Majority polls must have exactly 2 proposals in them."
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:64
+#: ././voteit/irl/views/projector.py:66
 msgid "Use majority polls for 2 proposals."
 msgstr ""
 
 #. Default: There are ongoing polls in this agenda item,close them first.
-#: ././voteit/irl/views/projector.py:70
+#: ././voteit/irl/views/projector.py:73
 msgid "quickpoll_ongoing_polls_error"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:88
+#: ././voteit/irl/views/projector.py:91
 #, python-format
 msgid "Added and started: ${poll_url}"
 msgstr ""
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: ././voteit/irl/views/projector.py:150
+#: ././voteit/irl/views/projector.py:161
 msgid "wrong_initial_state_error"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:161
+#: ././voteit/irl/views/projector.py:172
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:170
+#: ././voteit/irl/views/projector.py:181
 #, python-format
 msgid "Descision ${num}"
 msgstr ""
 
-#: ././voteit/irl/views/projector.py:175
+#: ././voteit/irl/views/projector.py:186
 msgid "Proposal view for projector"
 msgstr ""
 

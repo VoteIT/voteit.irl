@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-26 10:07+0200\n"
-"PO-Revision-Date: 2017-05-26 10:08+0200\n"
+"POT-Creation-Date: 2017-05-27 10:42+0200\n"
+"PO-Revision-Date: 2017-05-27 10:42+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -293,38 +293,42 @@ msgstr "Spann på röstandes deltagarnummer"
 msgid "voter_pn_range_desc"
 msgstr ""
 
-#: voteit/irl/plugins/transfer_vote.py:14
-#: voteit/irl/plugins/transfer_vote.py:51
+#: voteit/irl/plugins/transfer_vote.py:17
+#: voteit/irl/plugins/transfer_vote.py:68
 msgid "Transfer vote"
 msgstr "För över rösträtt"
 
-#: voteit/irl/plugins/transfer_vote.py:32
+#: voteit/irl/plugins/transfer_vote.py:47
+msgid "No user has that participant number"
+msgstr "Ingen användare har det deltagarnumret"
+
+#: voteit/irl/plugins/transfer_vote.py:49
 #, python-format
 msgid "${userid} doesn't exist in this meeting."
 msgstr "${userid} finns inte i detta möte."
 
-#: voteit/irl/plugins/transfer_vote.py:35
+#: voteit/irl/plugins/transfer_vote.py:52
 #, python-format
 msgid "${userid} is already a voter."
 msgstr "${userid} har redan rösträtt."
 
-#: voteit/irl/plugins/transfer_vote.py:42
-msgid "To userid"
-msgstr "Till AnvändarID"
+#: voteit/irl/plugins/transfer_vote.py:59
+msgid "To userid or participant number"
+msgstr "Till användare eller deltagarnummer"
 
-#: voteit/irl/plugins/transfer_vote.py:43
+#: voteit/irl/plugins/transfer_vote.py:60
 msgid "Must be someone who isn't a voter right now."
 msgstr "Måste vara någon som inte har rösträtt just nu."
 
-#: voteit/irl/plugins/transfer_vote.py:56
+#: voteit/irl/plugins/transfer_vote.py:73
 msgid "You're not a voter"
 msgstr "Du har inte rösträtt"
 
-#: voteit/irl/plugins/transfer_vote.py:61
+#: voteit/irl/plugins/transfer_vote.py:78
 msgid "Votes can't be transfered while a poll is open."
 msgstr "Rösträtt kan inte överföras när en omröstning pågår."
 
-#: voteit/irl/plugins/transfer_vote.py:68
+#: voteit/irl/plugins/transfer_vote.py:88
 #, python-format
 msgid "Vote transfered to ${userid}"
 msgstr "Röst överförd till: ${userid}"
@@ -832,52 +836,52 @@ msgstr "Skriv ut förslaget"
 msgid "Print this post"
 msgstr "Skriv ut inlägget"
 
-#: voteit/irl/views/projector.py:55
+#: voteit/irl/views/projector.py:56
 msgid "Reject"
 msgstr "Avslag"
 
-#: voteit/irl/views/projector.py:60
+#: voteit/irl/views/projector.py:61
 msgid "No proposals"
 msgstr "Inga förslag"
 
-#: voteit/irl/views/projector.py:62
+#: voteit/irl/views/projector.py:64
 msgid "Majority polls must have exactly 2 proposals in them."
 msgstr "Majoritetsomröstningar måste ha exakt 2 förslag i sig."
 
-#: voteit/irl/views/projector.py:64
+#: voteit/irl/views/projector.py:66
 msgid "Use majority polls for 2 proposals."
 msgstr "Använd majoritetsomrösting för 2 förslag"
 
 #. Default: There are ongoing polls in this agenda item,close them first.
-#: voteit/irl/views/projector.py:70
+#: voteit/irl/views/projector.py:73
 msgid "quickpoll_ongoing_polls_error"
 msgstr ""
 "Det finns pågående omröstningar i dagordningspunkten, avsluta dem först."
 
-#: voteit/irl/views/projector.py:88
+#: voteit/irl/views/projector.py:91
 #, python-format
 msgid "Added and started: ${poll_url}"
 msgstr "Tillagd och startad: ${poll_url}"
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: voteit/irl/views/projector.py:150
+#: voteit/irl/views/projector.py:161
 msgid "wrong_initial_state_error"
 msgstr ""
 "Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
 "'Avslagen'. Du kan behöva ladda om sidan."
 
-#: voteit/irl/views/projector.py:161
+#: voteit/irl/views/projector.py:172
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr "Inte tillåtet att gå till ${state}"
 
-#: voteit/irl/views/projector.py:170
+#: voteit/irl/views/projector.py:181
 #, python-format
 msgid "Descision ${num}"
 msgstr "Beslut ${num}"
 
-#: voteit/irl/views/projector.py:175
+#: voteit/irl/views/projector.py:186
 msgid "Proposal view for projector"
 msgstr "Förslagsvy för projektor"
 
@@ -885,6 +889,9 @@ msgstr "Förslagsvy för projektor"
 #, python-format
 msgid "Changed ${count} proposals"
 msgstr "Ändrade ${count} förslag"
+
+#~ msgid "To userid"
+#~ msgstr "Till AnvändarID"
 
 #~ msgid "Quick poll: ${proposals}"
 #~ msgstr "Snabbomröstning: ${proposals}"
