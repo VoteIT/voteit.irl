@@ -24,14 +24,20 @@ body {
     background: linear-gradient(transparent, #fff);
 }
 #projector-main .proposal-text {
-  font-size: 150%;
+    font-size: 150%;
 }
 #projector-pool .main-controls [data-wf-state] {
-  display: none;
+    display: none;
 }
 #projector-pool .main-controls [data-wf-state].active {
-  display: block;
+    display: block;
 }
 #projector-main .move-left {
-  display: none;
+    display: none;
+}
+#projector-pool {
+    overflow: scroll;
+    position: fixed;
+    top: 60px;
+    bottom: 0px;
 }
