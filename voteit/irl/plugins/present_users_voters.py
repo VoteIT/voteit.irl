@@ -42,11 +42,10 @@ class ElegibleVoterPNRangeValidator(object):
         err = _("Must be written as 'NN-XX' where N is low nr and X high.")
         if len(parts) != 2:
             raise colander.Invalid(node, err)
-        for x in parts:
-            try:
-                int(x)
-            except:
-                raise colander.Invalid(node, err)
+        try:
+            parts = [int(x) for x in parts]
+        except:
+            raise colander.Invalid(node, err)
         if parts[0] >= parts[1]:
             raise colander.Invalid(node, _("First value must be higher than second"))
 
