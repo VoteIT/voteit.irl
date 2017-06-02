@@ -1,5 +1,7 @@
 #print-friendly {
     font-size: 30pt;
+    padding: 0px;
+    margin: 0px;
 }
 #print-friendly h1 {
     text-align: center;
