@@ -16,11 +16,11 @@
   	<thead>
   		<tr>
         <th>#</th>
-        <th><span i18n:translate="">Users</span> (${len(register['userids'])})</th>
+        <th><span i18n:translate="">Users</span> (${len(userids)})</th>
   		</tr>
     </thead>
     <tbody>
-      <tal:iterate repeat="userid register['userids']">
+      <tal:iterate repeat="userid userids">
         <tr>
           <td tal:content="structure get_pn(userid)"></td>
           <td tal:content="structure request.creators_info((userid,), portrait=False)">User info</td>

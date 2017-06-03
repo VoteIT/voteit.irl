@@ -62,7 +62,8 @@ class ElectoralRegisterView(BaseView):
         id = int(self.request.GET.get('id'))
         response = {}
         response['id'] = id
-        response['register'] = self.electoral_register.registers[id]
+        response['register'] = register = self.electoral_register.registers[id]
+        response['userids'] = sorted(register['userids'], key=lambda x: self._get_pn(x))
         response['get_pn'] = self._get_pn
         return response
 
