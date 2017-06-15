@@ -4,7 +4,6 @@ from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core.schemas.common import strip_and_lowercase
-from voteit.core.validators import multiple_email_validator
 import colander
 import deform
 
@@ -146,7 +145,24 @@ class EmailsMatchesStartAndExistingNumbersValidator(object):
             exc['emails'] = _("The following emails are already assigned to numbers: ${emails}",
                               mapping = {'emails': ", ".join(found)})
             raise exc
-            
+
+
+def multiple_email_w_whitespace_validator(node, value):
+    """ Checks that each line of value is a correct email. Skips whitespace.
+    """
+    validator = colander.Email()
+    invalid = []
+    for email in value.splitlines():
+        if not email:
+            continue
+        try:
+            validator(node, email)
+        except colander.Invalid:
+            invalid.append(email)
+    if invalid:
+        emails = ", ".join(invalid)
+        raise colander.Invalid(node, _(u"The following adresses is invalid: ${emails}", mapping={'emails': emails}))
+
 
 class AttachEmailsToPN(colander.Schema):
     title = _("Attach emails")
@@ -154,19 +170,18 @@ class AttachEmailsToPN(colander.Schema):
                                    title = _("Start at number"))
     validator = emails_matches_start_and_existing_nums
     emails = colander.SchemaNode(colander.String(),
-        title = _(u"add_tickets_emails_titles",
-                  default=u"Email addresses to attach."),
-        description = _(u"attach_emails_description",
-                        default = """Paste a list of email addresses,
-                        one per row, to attach to participant numbers.
-                        They will be attached in sequence starting at the specified start number.
-                        If any of them exist as validated users, the participant numbers will be
-                        assigned to them. If not, numbers will automatically be assigned when an
-                        email address is validated. This is instead of using the code to attach
-                        the number to a user."""),
+        title = _("add_tickets_emails_titles",
+                  default="Email addresses to attach."),
+        description = _("attach_emails_description",
+            default = "Paste a list of email addresses, "
+            "one per row, to attach to participant numbers. "
+            "They will be attached in sequence starting at the specified start number. "
+            "If any of them exist as validated users, the participant numbers will be "
+            " assigned to them. If not, numbers will automatically be assigned when an "
+            " email address is validated. Empty lines will increase number but has no other effect."),
         widget = deform.widget.TextAreaWidget(rows=7, cols=40),
         preparer = strip_and_lowercase,
-        validator = multiple_email_validator,)
+        validator = multiple_email_w_whitespace_validator,)
     create_new = colander.SchemaNode(colander.Bool(),
                                      title = _("Create new tickets if they don't exist"),
                                      default = True,

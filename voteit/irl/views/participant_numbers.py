@@ -94,7 +94,12 @@ class AttachEmailsToPNForm(DefaultEditForm):
         i = start_at
         users = self.root['users']
         auto_claimed = 0
+        empty = 0
         for email in emails:
+            if not email:
+                i += 1
+                empty += 1
+                continue
             self.participant_numbers.attach_email(email, i)
             user = users.get_user_by_email(email, only_validated = True)
             if user:
@@ -103,7 +108,7 @@ class AttachEmailsToPNForm(DefaultEditForm):
                 auto_claimed += 1
             i += 1
         msg = _("<b>${emails_num}</b> attached.",
-                mapping = {'emails_num': len(emails)})
+                mapping = {'emails_num': len(emails)-empty})
         messages.append(translate(msg))
         if auto_claimed:
             msg = _("<b>${num}</b> numbers were auto-claimed by users with validated email addresses.",
