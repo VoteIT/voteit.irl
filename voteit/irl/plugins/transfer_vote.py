@@ -19,7 +19,8 @@ def generic_menu_link(context, request, va, **kw):
     """ This is for simple menu items for the meeting root """
     if security.ROLE_VOTER in request.meeting.local_roles.get(request.authenticated_userid, ()):
         url = request.resource_url(request.meeting, 'transfer_vote')
-        return """<li><a href="%s">%s</a></li>""" % (url, request.localizer.translate(va.title))
+        return """<li><a href="%s">%s</a></li>""" % \
+               (url, request.localizer.translate(va.title))
 
 
 def _convert_to_userid(context, value):

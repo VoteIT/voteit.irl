@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-06-02 18:23+0200\n"
-"PO-Revision-Date: 2017-06-02 18:24+0200\n"
+"POT-Creation-Date: 2017-11-02 21:27+0100\n"
+"PO-Revision-Date: 2017-11-02 21:29+0100\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: sv <LL@li.org>\n"
 "Language: sv\n"
@@ -31,12 +31,12 @@ msgstr ""
 msgid "Your precence is received"
 msgstr "Din närvaro är mottagen"
 
-#: voteit/irl/schemas.py:22
+#: voteit/irl/schemas.py:20
 msgid "<Select>"
 msgstr "<Välj>"
 
 #. Default: Method to select elegible voters
-#: voteit/irl/schemas.py:30
+#: voteit/irl/schemas.py:29
 msgid "elegible_voters_method_name"
 msgstr "Metod för att välja röstberättigade"
 
@@ -46,87 +46,87 @@ msgstr "Metod för att välja röstberättigade"
 msgid "elegible_voters_method_description"
 msgstr "Förändrar rösträtten i enlighet med metodens specifikationer."
 
-#: voteit/irl/schemas.py:51
+#: voteit/irl/schemas.py:54
 msgid "First register"
 msgstr "Första röstlängd"
 
-#: voteit/irl/schemas.py:55
+#: voteit/irl/schemas.py:59
 msgid "Second register"
 msgstr "Andra röstlängd"
 
-#: voteit/irl/schemas.py:77
+#: voteit/irl/schemas.py:81
 msgid "No match - remember that it's case sensitive!"
 msgstr "Matchar inte - kom ihåg att stora eller små bokstäver spelar roll!"
 
-#: voteit/irl/schemas.py:80
+#: voteit/irl/schemas.py:84
 msgid "This number has already been claimed."
 msgstr "Detta nummer har redan tagits."
 
-#: voteit/irl/schemas.py:86
+#: voteit/irl/schemas.py:91
 msgid "Access code for participant number"
 msgstr "Accesskod för deltagarnummer"
 
 #. Default: Enter the code sent to you. It will have the format xxxx-xxxx. Note
 #. that it's case sensitive and can only be used once.
-#: voteit/irl/schemas.py:87
+#: voteit/irl/schemas.py:92
 msgid "enter_token_description"
 msgstr ""
 "Skriv i koden som skickades till dig. Den har formatet xxxx-xxxx. Observera "
 "att den gör skillnad på små och stora bokstäver, och kan bara användas en "
 "gång."
 
-#: voteit/irl/schemas.py:108 voteit/irl/views/participant_numbers.py:180
+#: voteit/irl/schemas.py:114 voteit/irl/views/participant_numbers.py:187
 msgid "Participant number not found"
 msgstr "Deltagarnummer hittades inte"
 
-#: voteit/irl/schemas.py:127
+#: voteit/irl/schemas.py:133
 msgid "Not an existing participant number"
 msgstr "Inte ett existerande deltagarnummer"
 
 #. Default: There are more email addresses than existing participant numbers.
 #. Number ${num} not found. Total emails: ${emails_count}
-#: voteit/irl/schemas.py:139
+#: voteit/irl/schemas.py:145
 msgid "attach_emails_pn_dont_exist_error"
 msgstr ""
 
-#: voteit/irl/schemas.py:146
+#: voteit/irl/schemas.py:153
 #, python-format
 msgid "The following emails are already assigned to numbers: ${emails}"
 msgstr "Följande epostadresser är redan kopplade till nummer: ${emails}"
 
-#: voteit/irl/schemas.py:152 voteit/irl/templates/participant_number_tabs.pt:12
+#: voteit/irl/schemas.py:172
+#, python-format
+msgid "The following adresses is invalid: ${emails}"
+msgstr "Följande adresser är inte giltiga: ${emails}"
+
+#: voteit/irl/schemas.py:177 voteit/irl/templates/participant_number_tabs.pt:12
 msgid "Attach emails"
 msgstr "Lägg till epost"
 
-#: voteit/irl/schemas.py:154
+#: voteit/irl/schemas.py:179
 msgid "Start at number"
 msgstr "Börja på nummer"
 
 #. Default: Email addresses to attach.
-#: voteit/irl/schemas.py:157
+#: voteit/irl/schemas.py:183
 msgid "add_tickets_emails_titles"
 msgstr "Epostadresser att lägga till."
 
-#. Default: Paste a list of email addresses,
-#. one per row, to attach to participant numbers.
-#. They will be attached in sequence starting at the
-#. specified start number.
-#. If any of them exist as validated users, the
-#. participant numbers will be
-#. assigned to them. If not, numbers will automatically
-#. be assigned when an
-#. email address is validated. This is instead of using
-#. the code to attach
-#. the number to a user.
-#: voteit/irl/schemas.py:159
+#. Default: Paste a list of email addresses, one per row, to attach to
+#. participant numbers. They will be attached in sequence starting at the
+#. specified start number. If any of them exist as validated users, the
+#. participant numbers will be assigned to them. If not, numbers will
+#. automatically be assigned when an email address is validated. Empty lines
+#. will increase number but has no other effect.
+#: voteit/irl/schemas.py:185
 msgid "attach_emails_description"
 msgstr ""
 
-#: voteit/irl/schemas.py:171
+#: voteit/irl/schemas.py:199
 msgid "Create new tickets if they don't exist"
 msgstr "Skapa nya biljetter om de inte existerar"
 
-#: voteit/irl/schemas.py:185
+#: voteit/irl/schemas.py:214
 msgid "Anyone registering with participant number will be given these roles"
 msgstr "Alla som registrerar sig med deltagarnummer kommer ges rollerna"
 
@@ -134,14 +134,14 @@ msgstr "Alla som registrerar sig med deltagarnummer kommer ges rollerna"
 #. registration to be bypassed (see below) the roles specified here won't be
 #. added when a meeting number is claimed by someone who's already a part of
 #. the meeting.
-#: voteit/irl/schemas.py:186
+#: voteit/irl/schemas.py:215
 msgid "pn_ap_claimed_roles_description"
 msgstr ""
 "Välj minst en. Notera att om du tillåter användare att gå förbi registrering "
 "av deltagarnummer (se nedan) så kommer de roller du specificerar här inte "
 "att läggas till om de senare registrerar ett deltagarnummer."
 
-#: voteit/irl/schemas.py:195
+#: voteit/irl/schemas.py:226
 msgid "Allow bypass and give access to anyone?"
 msgstr "Tillåt att strunta i registrering och ge tillgång till vem som helst?"
 
@@ -153,7 +153,7 @@ msgstr "Tillåt att strunta i registrering och ge tillgång till vem som helst?"
 #. Viewable for anyone: check view permission
 #. Open for participation from anyone: check all
 #.
-#: voteit/irl/schemas.py:196
+#: voteit/irl/schemas.py:227
 msgid "pn_ap_public_roles_description"
 msgstr ""
 "Om något är ikryssat nedan så kommer alla användare kunna gå förbi "
@@ -161,11 +161,11 @@ msgstr ""
 "specificerar. Några exempel - för möten som är: Stängda: välj inget nedan. "
 "Synliga för alla: välj visa. Öppet att delta för alla: välj allt."
 
-#: voteit/irl/schemas.py:230
+#: voteit/irl/schemas.py:262
 msgid "Assign participant number"
 msgstr "Ställ in deltagarnummer"
 
-#: voteit/irl/schemas.py:233
+#: voteit/irl/schemas.py:265
 msgid "UserID"
 msgstr "AnvändarID"
 
@@ -217,8 +217,8 @@ msgstr ""
 
 #. Default: You're now assigned number ${number}.
 #: voteit/irl/models/participant_number_ap.py:37
-#: voteit/irl/views/participant_numbers.py:143
-#: voteit/irl/views/participant_numbers.py:191
+#: voteit/irl/views/participant_numbers.py:150
+#: voteit/irl/views/participant_numbers.py:198
 msgid "number_now_assigned_notice"
 msgstr "Du har tilldelats nummer ${number}."
 
@@ -294,41 +294,41 @@ msgid "voter_pn_range_desc"
 msgstr ""
 
 #: voteit/irl/plugins/transfer_vote.py:17
-#: voteit/irl/plugins/transfer_vote.py:68
+#: voteit/irl/plugins/transfer_vote.py:69
 msgid "Transfer vote"
 msgstr "För över rösträtt"
 
-#: voteit/irl/plugins/transfer_vote.py:47
+#: voteit/irl/plugins/transfer_vote.py:48
 msgid "No user has that participant number"
 msgstr "Ingen användare har det deltagarnumret"
 
-#: voteit/irl/plugins/transfer_vote.py:49
+#: voteit/irl/plugins/transfer_vote.py:50
 #, python-format
 msgid "${userid} doesn't exist in this meeting."
 msgstr "${userid} finns inte i detta möte."
 
-#: voteit/irl/plugins/transfer_vote.py:52
+#: voteit/irl/plugins/transfer_vote.py:53
 #, python-format
 msgid "${userid} is already a voter."
 msgstr "${userid} har redan rösträtt."
 
-#: voteit/irl/plugins/transfer_vote.py:59
+#: voteit/irl/plugins/transfer_vote.py:60
 msgid "To userid or participant number"
 msgstr "Till användare eller deltagarnummer"
 
-#: voteit/irl/plugins/transfer_vote.py:60
+#: voteit/irl/plugins/transfer_vote.py:61
 msgid "Must be someone who isn't a voter right now."
 msgstr "Måste vara någon som inte har rösträtt just nu."
 
-#: voteit/irl/plugins/transfer_vote.py:73
+#: voteit/irl/plugins/transfer_vote.py:74
 msgid "You're not a voter"
 msgstr "Du har inte rösträtt"
 
-#: voteit/irl/plugins/transfer_vote.py:78
+#: voteit/irl/plugins/transfer_vote.py:79
 msgid "Votes can't be transfered while a poll is open."
 msgstr "Rösträtt kan inte överföras när en omröstning pågår."
 
-#: voteit/irl/plugins/transfer_vote.py:88
+#: voteit/irl/plugins/transfer_vote.py:89
 #, python-format
 msgid "Vote transfered to ${userid}"
 msgstr "Röst överförd till: ${userid}"
@@ -426,11 +426,11 @@ msgstr "Nummer eller AnvändarID"
 msgid "Present users"
 msgstr "Närvarande användare"
 
-#: voteit/irl/templates/meeting_presence_userids.pt:14
+#: voteit/irl/templates/meeting_presence_userids.pt:16
 msgid "Go to elegible voters method"
 msgstr "Gå till metod för röstberättigade"
 
-#: voteit/irl/templates/meeting_presence_userids.pt:20
+#: voteit/irl/templates/meeting_presence_userids.pt:22
 msgid "${count} user(s)"
 msgstr "${count} användare"
 
@@ -482,7 +482,7 @@ msgstr "Ta bort"
 #: voteit/irl/templates/print_discussions.pt:19
 #: voteit/irl/templates/print_proposals.pt:19
 #: voteit/irl/templates/view_electoral_register.pt:35
-#: voteit/irl/views/electoral_register.py:80
+#: voteit/irl/views/electoral_register.py:81
 msgid "Back"
 msgstr "Tillbaka"
 
@@ -495,6 +495,7 @@ msgid "Assign actions"
 msgstr "Lägg till handlingar"
 
 #: voteit/irl/templates/participant_numbers.pt:10
+#: voteit/irl/views/participant_numbers.py:246
 msgid "Participant numbers"
 msgstr "Deltagarnummer"
 
@@ -543,8 +544,8 @@ msgid "Each post will be printed on its own page. This text will be ignored"
 msgstr "Varje inlägg hamnar på sin egen sida. Den här texten kommer inte med."
 
 #: voteit/irl/templates/print_discussions.pt:17
-#: voteit/irl/templates/print_proposals.pt:17 voteit/irl/views/print.py:28
-#: voteit/irl/views/print.py:56
+#: voteit/irl/templates/print_proposals.pt:17 voteit/irl/views/print.py:27
+#: voteit/irl/views/print.py:55
 msgid "Print"
 msgstr "Skriv ut"
 
@@ -632,11 +633,11 @@ msgstr "Röstlängd ${id} ${time}"
 msgid "Users"
 msgstr "Användare"
 
-#: voteit/irl/views/change_owner.py:67
+#: voteit/irl/views/change_owner.py:65
 msgid "Change proposal ownership"
 msgstr "Byt ägare på förslag"
 
-#: voteit/irl/views/change_owner.py:72
+#: voteit/irl/views/change_owner.py:70
 msgid "Change post ownership"
 msgstr "Byt ägare på post"
 
@@ -644,11 +645,11 @@ msgstr "Byt ägare på post"
 msgid "New electoral register added"
 msgstr "Ny röstlängd tillagd"
 
-#: voteit/irl/views/electoral_register.py:79
+#: voteit/irl/views/electoral_register.py:80
 msgid "Diff"
 msgstr "Diff"
 
-#: voteit/irl/views/electoral_register.py:109
+#: voteit/irl/views/electoral_register.py:110
 msgid "Electoral register"
 msgstr "Röstlängd"
 
@@ -714,12 +715,12 @@ msgid "Already registered: ${userid}"
 msgstr "Redan registrerad: ${userid}"
 
 #: voteit/irl/views/participant_callbacks.py:47
-#: voteit/irl/views/participant_numbers.py:45
+#: voteit/irl/views/participant_numbers.py:47
 msgid "End must be higher than start"
 msgstr "Slutnummer måste vara högre än start"
 
 #: voteit/irl/views/participant_callbacks.py:49
-#: voteit/irl/views/participant_numbers.py:47
+#: voteit/irl/views/participant_numbers.py:49
 msgid "Must be an integer value"
 msgstr "Måste vara ett heltal"
 
@@ -746,27 +747,27 @@ msgstr ""
 "Tog bort ${removed} callbacks och skippade ${nonexistent} som inte var "
 "registrerade."
 
-#: voteit/irl/views/participant_numbers.py:50
+#: voteit/irl/views/participant_numbers.py:52
 #, python-format
 msgid "Added ${count} new numbers"
 msgstr "La till ${count} nya nummer"
 
-#: voteit/irl/views/participant_numbers.py:55
+#: voteit/irl/views/participant_numbers.py:57
 #, python-format
 msgid "Removed ${count} numbers"
 msgstr "Tog bort ${count} nummer"
 
-#: voteit/irl/views/participant_numbers.py:91
+#: voteit/irl/views/participant_numbers.py:93
 #, python-format
 msgid "<b>${count}</b> new participant numbers created."
 msgstr "<b>${count}</b> nya deltagarnummer skapade."
 
-#: voteit/irl/views/participant_numbers.py:105
+#: voteit/irl/views/participant_numbers.py:112
 #, python-format
 msgid "<b>${emails_num}</b> attached."
 msgstr "<b>${emails_num}</b> epostadresser tillagda."
 
-#: voteit/irl/views/participant_numbers.py:109
+#: voteit/irl/views/participant_numbers.py:116
 #, python-format
 msgid ""
 "<b>${num}</b> numbers were auto-claimed by users with validated email "
@@ -775,64 +776,68 @@ msgstr ""
 "<b>${num}</b> nummer blev auto-tilldelade användare med validerade e-"
 "postadresser."
 
-#: voteit/irl/views/participant_numbers.py:123
+#: voteit/irl/views/participant_numbers.py:130
 #: voteit/irl/views/participant_numbers.py:212
 msgid "Claim participant number"
 msgstr "Registrera deltagarnummer"
 
 #. Default: You've already been assigned the number ${number} so you don't need
 #. to do anything else.
-#: voteit/irl/views/participant_numbers.py:130
+#: voteit/irl/views/participant_numbers.py:137
 msgid "already_assigned_number_error"
 msgstr "Du har redan fått nummer ${number} så du behöver inte göra något."
 
 #. Default: This user was already assigned number ${number} so that number was
 #. cleared.
-#: voteit/irl/views/participant_numbers.py:184
+#: voteit/irl/views/participant_numbers.py:191
 msgid "participant_number_moved_warning"
 msgstr ""
 "Denna användare var redan registrerad med nummer ${number} så det numret "
 "rensades."
 
-#: voteit/irl/views/participant_numbers.py:202
-msgid "Manage participant numbers"
-msgstr "Hantera deltagarnummer"
-
 #: voteit/irl/views/participant_numbers.py:215
 msgid "Your participant number"
 msgstr "Ditt deltagarnummer"
 
-#: voteit/irl/views/print.py:32
+#: voteit/irl/views/participant_numbers.py:247
+msgid "Needed for physical meetings and speaker lists"
+msgstr "Behövs för fysiska möten och talarlistor"
+
+#: voteit/irl/views/participant_numbers.py:254
+msgid "Manage participant numbers"
+msgstr "Hantera deltagarnummer"
+
+#: voteit/irl/views/print.py:31
 msgid "Select proposals to print"
 msgstr "Välj förslag att skriva ut"
 
 #. Default: Each proposal will be on its own page
-#: voteit/irl/views/print.py:33
+#: voteit/irl/views/print.py:32
 msgid "print_proposals_description"
 msgstr "Varje förslag skrivs ut på en egen sida"
 
-#: voteit/irl/views/print.py:60
+#: voteit/irl/views/print.py:59
 msgid "Select discussion posts to print"
 msgstr "Välj diskussionsinlägg att skriva ut"
 
 #. Default: Each post will be on its own page
-#: voteit/irl/views/print.py:61
+#: voteit/irl/views/print.py:60
 msgid "print_discussion_description"
 msgstr "Varje inlägg skrivs ut på en egen sida"
 
-#: voteit/irl/views/print.py:117
+#: voteit/irl/views/print.py:116
 msgid "Print proposals"
 msgstr "Skriv ut förslag"
 
-#: voteit/irl/views/print.py:126
+#: voteit/irl/views/print.py:125
 msgid "Print discussions"
 msgstr "Skriv ut diskussion"
 
-#: voteit/irl/views/print.py:144
+#: voteit/irl/views/print.py:143
 msgid "Print this proposal"
 msgstr "Skriv ut förslaget"
 
-#: voteit/irl/views/print.py:152
+#: voteit/irl/views/print.py:151
 msgid "Print this post"
 msgstr "Skriv ut inlägget"
 
@@ -882,13 +887,20 @@ msgid "Descision ${num}"
 msgstr "Beslut ${num}"
 
 #: voteit/irl/views/projector.py:186
-msgid "Proposal view for projector"
-msgstr "Förslagsvy för projektor"
+msgid "Projector"
+msgstr "Projektorvy"
 
 #: voteit/irl/views/proposals_unhandled.py:28
 #, python-format
 msgid "Changed ${count} proposals"
 msgstr "Ändrade ${count} förslag"
+
+#: voteit/irl/views/proposals_unhandled.py:34
+msgid "Change to unhandled"
+msgstr "Ändra till ohantera"
+
+#~ msgid "Proposal view for projector"
+#~ msgstr "Förslagsvy för projektor"
 
 #~ msgid "To userid"
 #~ msgstr "Till AnvändarID"
@@ -964,9 +976,6 @@ msgstr "Ändrade ${count} förslag"
 #~ msgstr ""
 #~ "Ingen ny röstlängd behövs. Den senaste har samma innehåll som "
 #~ "förteckningen av användare med rösträtt."
-
-#~ msgid "Projector view"
-#~ msgstr "Projektorvy"
 
 #~ msgid "Active"
 #~ msgstr "Aktiv"
