@@ -182,8 +182,8 @@ class ProjectorView(AgendaItemView):
         return self.request.localizer.translate(title)
 
 
-@view_action('meeting_menu', 'projector',
-             title=_(u"Proposal view for projector"),
+@view_action('agenda_actions', 'projector',
+             title=_("Projector"),
              permission=MODERATE_MEETING)
 def projector_menu_link(context, request, va, **kw):
     """ Visible in the moderator menu, but doesn't work for the meeting root """
@@ -191,7 +191,10 @@ def projector_menu_link(context, request, va, **kw):
         url = request.resource_url(request.meeting, '__projector__', anchor=context.__name__)
     else:
         url = request.resource_url(request.meeting, '__projector__')
-    return """<li><a href="%s"> %s </a></li>""" % (url, request.localizer.translate(va.title))
+    return """<li><a href="{url}" title="{title}">{title}</a></li>""".format(
+        title=request.localizer.translate(va.title),
+        url=url,
+    )
 
 
 def includeme(config):

@@ -54,8 +54,8 @@ class EligibleVotersForm(DefaultEditForm):
         self.flash_messages.add(msg)
 
 
-@view_action('participants_menu', 'update_elegible_voters',
-             title = _(u"Update elegible voters"),
+@view_action('control_panel_poll', 'update_elegible_voters',
+             title = _("Update elegible voters"),
              permission = MODERATE_MEETING)
 def meeting_presence_link(context, request, va, **kw):
     link = request.resource_url(request.meeting, 'update_elegible_voters')

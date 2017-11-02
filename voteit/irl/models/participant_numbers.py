@@ -134,6 +134,13 @@ class ParticipantNumbers(object):
         ticket.email = email
         self.email_to_number[email] = number
 
+    def __nonzero__(self):
+        return True
+    __bool__ = __nonzero__
+
+    def __len__(self):
+        return len(self.tickets)
+
 
 class ParticipantNumberTicket(Persistent):
     number = None

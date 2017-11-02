@@ -67,6 +67,7 @@ def inject_in_meeting_schema(schema, event):
         )
     )
 
+
 def get_valid_range(meeting):
     val = getattr(meeting, 'elegible_voter_pn', None)
     if val is None:

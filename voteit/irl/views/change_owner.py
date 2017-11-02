@@ -1,19 +1,17 @@
 import colander
-import deform
-from pyramid.view import view_config
-from pyramid.httpexceptions import HTTPFound
-from betahaus.viewcomponent.decorators import view_action
-
 from arche.views.base import DefaultEditForm
-from voteit.core.security import MODERATE_MEETING
+from betahaus.viewcomponent.decorators import view_action
+from pyramid.httpexceptions import HTTPFound
+from pyramid.view import view_config
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IDiscussionPost
 from voteit.core.models.interfaces import IProposal
+from voteit.core.security import MODERATE_MEETING
 
 from voteit.irl import _
 from voteit.irl.models.utils import change_ownership
-from voteit.irl.schemas import add_proposals_owner_nodes
 from voteit.irl.schemas import add_discussions_owner_nodes
+from voteit.irl.schemas import add_proposals_owner_nodes
 
 
 class ChangeOwnershipBase(DefaultEditForm):
@@ -63,12 +61,12 @@ class ChangeOwnershipDiscussionPosts(ChangeOwnershipBase):
         return schema
 
 
-@view_action('context_actions', 'change_proposal_owner',
+@view_action('proposal_extras', 'change_proposal_owner',
              title = _(u"Change proposal ownership"),
              permission = MODERATE_MEETING,
              interface = IAgendaItem,
              link = '_proposal_owner')
-@view_action('context_actions', 'change_discussion_owner',
+@view_action('discussion_extras', 'change_discussion_owner',
              title = _(u"Change post ownership"),
              permission = MODERATE_MEETING,
              interface = IAgendaItem,

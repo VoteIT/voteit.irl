@@ -30,15 +30,14 @@ class ProposalsToUnhandledForm(DefaultEditForm):
         return HTTPFound(location = self.request.resource_url(self.context))
 
 
-@view_action('actions_menu', 'adjust_proposals_to_unhandled',
-             title = "Proposals to unhandled",
-             permission = PERM_MANAGE_SYSTEM,
-             priority=10)
+@view_action('control_panel_proposal', 'adjust_proposals_to_unhandled',
+             title = _("Change to unhandled"),
+             permission = PERM_MANAGE_SYSTEM)
 def adjust_proposals_to_unhandled(context, request, va, **kw):
-    if request.meeting:
-        url = request.resource_url(request.meeting, 'adjust_proposals_to_unhandled')
-        return """<li><a href="%s">%s</a></li>""" % (url,
-                                                     request.localizer.translate(va.title))
+    url = request.resource_url(request.meeting, 'adjust_proposals_to_unhandled')
+    return """<li><a href="%s">%s</a></li>""" % (url,
+                                                 request.localizer.translate(va.title))
+
 
 def includeme(config):
     config.scan(__name__)

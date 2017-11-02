@@ -6,9 +6,11 @@ from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render
 from pyramid.view import view_config
-from voteit.core import security
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IUser
+from voteit.core.views.control_panel import control_panel_category
+from voteit.core.views.control_panel import control_panel_link
+from voteit.core import security
 
 from voteit.irl import _
 from voteit.irl.models.interfaces import IParticipantNumbers
@@ -200,13 +202,6 @@ class AssignParticipantNumberForm(DefaultEditForm):
         return HTTPFound(location = self.request.resource_url(self.context, "manage_participant_numbers"))
 
 
-@view_action('settings_menu', 'participant_numbers',
-             permission = security.MODERATE_MEETING)
-def participant_numbers_menu(context, request, va, **kw):
-    return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, "manage_participant_numbers"),
-                                                 request.localizer.translate(_("Manage participant numbers")))
-
-
 @view_action('user_menu', 'claim_participant_number',
              permission = security.VIEW, priority=20)
 def claim_participant_number_menu(context, request, va, **kw):
@@ -235,5 +230,27 @@ def participant_number_info(context, request, va, **kw):
         return render("voteit.irl:templates/user_participant_number_info.pt", response, request = request)
 
 
+def pn_active(context, request, va):
+    participant_numbers = request.registry.queryAdapter(request.meeting, IParticipantNumbers)
+    if participant_numbers:
+        return bool(len(participant_numbers))
+    return False
+
+
 def includeme(config):
     config.scan(__name__)
+    config.add_view_action(
+        control_panel_category,
+        'control_panel', 'pn',
+        panel_group = 'control_panel_pn',
+        title=_("Participant numbers"),
+        description=_("Needed for physical meetings and speaker lists"),
+        permission = security.MODERATE_MEETING,
+        check_active=pn_active
+    )
+    config.add_view_action(
+        control_panel_link,
+        'control_panel_pn', 'participant_numbers',
+        title=_("Manage participant numbers"),
+        view_name='manage_participant_numbers',
+    )

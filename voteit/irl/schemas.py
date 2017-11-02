@@ -1,12 +1,11 @@
+import colander
+import deform
 from arche.validators import existing_userid_or_email
 from six import string_types
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core.schemas.common import strip_and_lowercase
-import colander
-import deform
-
 from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
 from voteit.irl.models.interfaces import IElegibleVotersMethod
@@ -25,11 +24,15 @@ def elegible_voters_method_choices_widget(node, kw):
 
 
 class ElegibleVotersMethodSchema(colander.Schema):
-    method_name = colander.SchemaNode(colander.String(),
-                                 title = _(u"elegible_voters_method_name", default=u"Method to select elegible voters"),
-                                 description = _(u"elegible_voters_method_description",
-                                                 default=u"It will modify the voting permissions accoring to it's specifications."),
-                                 widget = elegible_voters_method_choices_widget,)
+    method_name = colander.SchemaNode(
+        colander.String(),
+        title=_(u"elegible_voters_method_name",
+                default=u"Method to select elegible voters"),
+        description=_(u"elegible_voters_method_description",
+                      default=u"It will modify the voting permissions "
+                              u"accoring to it's specifications."),
+        widget=elegible_voters_method_choices_widget,
+    )
 
 
 @colander.deferred
@@ -46,14 +49,16 @@ def register_diff_choices_widget(node, kw):
 
 
 class ElectoralRegisterDiffSchema(colander.Schema):
-    first = colander.SchemaNode(colander.Int(),
-                                  title = _(u"First register"),
-                                  widget = register_diff_choices_widget,
-                                  )
-    second = colander.SchemaNode(colander.Int(),
-                                  title = _(u"Second register"),
-                                  widget = register_diff_choices_widget,
-                                  )
+    first = colander.SchemaNode(
+        colander.Int(),
+        title=_(u"First register"),
+        widget=register_diff_choices_widget,
+    )
+    second = colander.SchemaNode(
+        colander.Int(),
+        title=_(u"Second register"),
+        widget=register_diff_choices_widget,
+    )
 
 
 @colander.deferred
@@ -80,12 +85,15 @@ class PNTokenValidator(object):
 
 
 class ClaimParticipantNumberSchema(colander.Schema):
-    token = colander.SchemaNode(colander.String(),
-                                validator = deferred_participant_number_token_validator,
-                                title = _("Access code for participant number"),
-                                description = _(u"enter_token_description",
-                                                default = u"Enter the code sent to you. It will have the format xxxx-xxxx. "
-                                                          u"Note that it's case sensitive and can only be used once."))
+    token = colander.SchemaNode(
+        colander.String(),
+        validator=deferred_participant_number_token_validator,
+        title=_("Access code for participant number"),
+        description=_(u"enter_token_description",
+                      default=u"Enter the code sent to you. It will have "
+                              u"the format xxxx-xxxx. "
+                              u"Note that it's case sensitive and can only be used once.")
+    )
 
 
 @colander.deferred
@@ -96,7 +104,6 @@ def deferred_existing_participant_number_validator(node, kw):
 
 
 class ExistingParticipantNumberValidator(object):
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -118,7 +125,7 @@ class EmailsMatchesStartAndExistingNumbersValidator(object):
         self.request = request
 
     def __call__(self, form, values):
-        exc = colander.Invalid(form) #Raised if trouble
+        exc = colander.Invalid(form)  # Raised if trouble
         pns = self.request.registry.getAdapter(self.request.meeting, IParticipantNumbers)
         numbers = tuple(pns.tickets.keys())
         start_at = values['start_at']
@@ -133,17 +140,18 @@ class EmailsMatchesStartAndExistingNumbersValidator(object):
             if email in existing_emails:
                 found.append(email)
             if not values['create_new']:
-                #Check if numbers exist
+                # Check if numbers exist
                 if i not in numbers:
                     exc['emails'] = _("attach_emails_pn_dont_exist_error",
-                                      default = "There are more email addresses than existing participant numbers. "
-                                      "Number ${num} not found. Total emails: ${emails_count}",
-                                      mapping = {'num': i, 'emails_count': len(emails)})
+                                      default="There are more email addresses than "
+                                              "existing participant numbers. "
+                                              "Number ${num} not found. Total emails: ${emails_count}",
+                                      mapping={'num': i, 'emails_count': len(emails)})
                     raise exc
-                i+=1
+                i += 1
         if found:
             exc['emails'] = _("The following emails are already assigned to numbers: ${emails}",
-                              mapping = {'emails': ", ".join(found)})
+                              mapping={'emails': ", ".join(found)})
             raise exc
 
 
@@ -161,31 +169,37 @@ def multiple_email_w_whitespace_validator(node, value):
             invalid.append(email)
     if invalid:
         emails = ", ".join(invalid)
-        raise colander.Invalid(node, _(u"The following adresses is invalid: ${emails}", mapping={'emails': emails}))
+        raise colander.Invalid(node, _(u"The following adresses is invalid: ${emails}",
+                                       mapping={'emails': emails}))
 
 
 class AttachEmailsToPN(colander.Schema):
     title = _("Attach emails")
     start_at = colander.SchemaNode(colander.Int(),
-                                   title = _("Start at number"))
+                                   title=_("Start at number"))
     validator = emails_matches_start_and_existing_nums
-    emails = colander.SchemaNode(colander.String(),
-        title = _("add_tickets_emails_titles",
-                  default="Email addresses to attach."),
-        description = _("attach_emails_description",
-            default = "Paste a list of email addresses, "
-            "one per row, to attach to participant numbers. "
-            "They will be attached in sequence starting at the specified start number. "
-            "If any of them exist as validated users, the participant numbers will be "
-            " assigned to them. If not, numbers will automatically be assigned when an "
-            " email address is validated. Empty lines will increase number but has no other effect."),
-        widget = deform.widget.TextAreaWidget(rows=7, cols=40),
-        preparer = strip_and_lowercase,
-        validator = multiple_email_w_whitespace_validator,)
-    create_new = colander.SchemaNode(colander.Bool(),
-                                     title = _("Create new tickets if they don't exist"),
-                                     default = True,
-                                     missing = False)
+    emails = colander.SchemaNode(
+        colander.String(),
+        title=_("add_tickets_emails_titles",
+                default="Email addresses to attach."),
+        description=_("attach_emails_description",
+                      default="Paste a list of email addresses, "
+                              "one per row, to attach to participant numbers. "
+                              "They will be attached in sequence starting at the specified start number. "
+                              "If any of them exist as validated users, the participant numbers will be "
+                              "assigned to them. If not, numbers will automatically be assigned when an "
+                              "email address is validated. Empty lines will "
+                              "increase number but has no other effect."),
+        widget=deform.widget.TextAreaWidget(rows=7, cols=40),
+        preparer=strip_and_lowercase,
+        validator=multiple_email_w_whitespace_validator,
+    )
+    create_new = colander.SchemaNode(
+        colander.Bool(),
+        title=_("Create new tickets if they don't exist"),
+        default=True,
+        missing=False
+    )
 
 
 def _meeting_roles_minus_moderator():
@@ -197,24 +211,26 @@ def _meeting_roles_minus_moderator():
 class ConfigureParticipantNumberAP(colander.Schema):
     pn_ap_claimed_roles = colander.SchemaNode(
         colander.Set(),
-        title = _(u"Anyone registering with participant number will be given these roles"),
-        description = _(u"pn_ap_claimed_roles_description",
-                        default = u"Picking at least one is required. "
-                            u"Note that if you allow registration to be bypassed (see below) the roles "
-                            u"specified here won't be added when a meeting number is claimed by someone who's already a part of the meeting."),
-        default = [security.ROLE_VIEWER],
-        widget = deform.widget.CheckboxChoiceWidget(values = _meeting_roles_minus_moderator()),
+        title=_(u"Anyone registering with participant number will be given these roles"),
+        description=_(u"pn_ap_claimed_roles_description",
+                      default=u"Picking at least one is required. "
+                              u"Note that if you allow registration to be "
+                              u"bypassed (see below) the roles "
+                              u"specified here won't be added when a meeting number is "
+                              u"claimed by someone who's already a part of the meeting."),
+        default=[security.ROLE_VIEWER],
+        widget=deform.widget.CheckboxChoiceWidget(values=_meeting_roles_minus_moderator()),
     )
     pn_ap_public_roles = colander.SchemaNode(
         colander.Set(),
-        title = _(u"Allow bypass and give access to anyone?"),
-        description = _(u"pn_ap_public_roles_description",
-                        default = u"If anything is checked below, any user will be able to bypass the access form "
-                        u"and immediately gain the roles checked. Some examples - for meetings that are: \n\n"
-                        u"Closed: check nothing below.\n"
-                        u"Viewable for anyone: check view permission\n"
-                        u"Open for participation from anyone: check all\n"),
-        widget = deform.widget.CheckboxChoiceWidget(values = _meeting_roles_minus_moderator()),
+        title=_(u"Allow bypass and give access to anyone?"),
+        description=_(u"pn_ap_public_roles_description",
+                      default=u"If anything is checked below, any user will be able to bypass the access form "
+                              u"and immediately gain the roles checked. Some examples - for meetings that are: \n\n"
+                              u"Closed: check nothing below.\n"
+                              u"Viewable for anyone: check view permission\n"
+                              u"Open for participation from anyone: check all\n"),
+        widget=deform.widget.CheckboxChoiceWidget(values=_meeting_roles_minus_moderator()),
     )
 
 
@@ -226,8 +242,9 @@ def deferred_autocompleting_participant_number_widget(node, kw):
     choices = tuple(pn.number_to_userid.keys())
     return deform.widget.AutocompleteInputWidget(
         size=15,
-        values = choices,
+        values=choices,
         min_length=1)
+
 
 @colander.deferred
 def deferred_pn_from_get(node, kw):
@@ -245,14 +262,14 @@ class AssignParticipantNumber(colander.Schema):
     title = _("Assign participant number")
     userid = colander.SchemaNode(
         colander.String(),
-        title = _(u"UserID"),
-        validator = existing_userid_or_email,
-        widget = deferred_autocompleting_userid_widget,
+        title=_(u"UserID"),
+        validator=existing_userid_or_email,
+        widget=deferred_autocompleting_userid_widget,
     )
     pn = colander.SchemaNode(
         colander.Int(),
-        widget = deform.widget.HiddenWidget(),
-        default = deferred_pn_from_get,
+        widget=deform.widget.HiddenWidget(),
+        default=deferred_pn_from_get,
     )
 
 
@@ -261,12 +278,16 @@ def add_proposals_owner_nodes(schema, proposals):
         name = obj.__name__
         title = obj.get_field_value('aid')
         description = strip_and_truncate(obj.title, limit=150)
-        schema.add(colander.SchemaNode(colander.String(),
-                                       name = name,
-                                       title = title,
-                                       description = description,
-                                       validator = existing_userid_or_email,
-                                       widget = deferred_autocompleting_userid_widget,))
+        schema.add(
+            colander.SchemaNode(
+                colander.String(),
+                name=name,
+                title=title,
+                description=description,
+                validator=existing_userid_or_email,
+                widget=deferred_autocompleting_userid_widget
+            )
+        )
 
 
 def add_discussions_owner_nodes(schema, discussion_posts):
@@ -274,12 +295,16 @@ def add_discussions_owner_nodes(schema, discussion_posts):
         name = obj.__name__
         title = name
         description = strip_and_truncate(obj.title, limit=150)
-        schema.add(colander.SchemaNode(colander.String(),
-                                       name = name,
-                                       title = title,
-                                       description = description,
-                                       validator = existing_userid_or_email,
-                                       widget = deferred_autocompleting_userid_widget,))
+        schema.add(
+            colander.SchemaNode(
+                colander.String(),
+                name=name,
+                title=title,
+                description=description,
+                validator=existing_userid_or_email,
+                widget=deferred_autocompleting_userid_widget,
+            )
+        )
 
 
 def includeme(config):

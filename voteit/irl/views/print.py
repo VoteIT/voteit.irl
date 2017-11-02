@@ -4,7 +4,6 @@ from arche.views.base import BaseForm
 from arche.views.base import BaseView
 from betahaus.viewcomponent import view_action
 from pyramid.httpexceptions import HTTPFound
-from pyramid.traversal import find_interface
 from pyramid.view import view_config
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
@@ -113,7 +112,7 @@ class PrintDiscussionsView(BaseView):
         return response
 
 
-@view_action('context_actions', 'print_proposals',
+@view_action('proposal_extras', 'print_proposals',
              title = _(u"Print proposals"),
              interface = IAgendaItem)
 def print_proposals_action(context, request, va, **kw):
@@ -122,7 +121,7 @@ def print_proposals_action(context, request, va, **kw):
                                                  request.localizer.translate(va.title))
 
 
-@view_action('context_actions', 'print_discussions',
+@view_action('discussion_extras', 'print_discussions',
              title = _(u"Print discussions"),
              interface = IAgendaItem)
 def print_discussions_action(context, request, va, **kw):

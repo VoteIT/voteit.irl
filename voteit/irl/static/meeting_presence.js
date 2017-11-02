@@ -6,7 +6,7 @@ $(document).ready(function() {
   function presence_callback(response) {
     if (typeof response['meeting_presence'] !== 'undefined') {
       if (response['meeting_presence']['status'] == 'open' && $('#meeting-presence-notification').length == 0) {
-        arche.create_flash_message(response['meeting_presence']['msg'], {id: 'meeting-presence-notification', slot: 'fixed-msg-bar', auto_destruct: false, type: 'success'});
+        arche.create_flash_message(response['meeting_presence']['msg'], {id: 'meeting-presence-notification', auto_destruct: false, type: 'success'});
       } 
       if (response['meeting_presence']['status'] == 'closed' && $('#meeting-presence-notification').length != 0) {
         $('#meeting-presence-notification').remove();

@@ -106,8 +106,8 @@ class ElectoralRegisterView(BaseView):
                          'removed_userids': second_reg_users - first_reg_users})
 
 
-@view_action('meeting_menu', 'electoral_register',
-             title = _(u"Electoral register"),
+@view_action('control_panel_poll', 'electoral_register',
+             title = _("Electoral register"),
              link = "electoral_register",
              permission = MODERATE_MEETING)
 def electoral_register_moderator_menu_link(context, request, va, **kw):
