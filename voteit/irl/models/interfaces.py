@@ -7,9 +7,10 @@ class IMeetingPresence(Interface):
         but other systems might store and use the information.
     """
     open = Attribute("Is the process currently open? True or False.")
-    present_userids = Attribute("Set of present userids")
+    present_userids = Attribute("Set of present userids, volatile storage")
     start_time = Attribute("Time when the check was started, or None")
-    end_time = Attribute("Time when the check ended, or None")
+    archive = Attribute("Storage for previous checks")
+    enabled = Attribute("Is this tool enabled for this meeting?")
 
     def __init__(context):
         """ Context to adapt """
@@ -22,6 +23,9 @@ class IMeetingPresence(Interface):
 
     def add(userid):
         """ Add a userid. Only works when the check is open. """
+
+    def archive_current():
+        """ Archive and timestamp the current check."""
 
 
 class IElectoralRegister(Interface):

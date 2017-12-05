@@ -1,5 +1,7 @@
+import colander
 from arche.portlets import PortletType
 from arche.views.base import BaseView
+from arche.views.base import DefaultEditForm
 from betahaus.viewcomponent import view_action
 from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPForbidden
@@ -11,6 +13,8 @@ from voteit.core.helpers import get_meeting_participants
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.security import MODERATE_MEETING
 from voteit.core.security import VIEW
+from voteit.core.views.control_panel import control_panel_category
+from voteit.core.views.control_panel import control_panel_link
 
 from voteit.irl import _
 from voteit.irl.fanstaticlib import meeting_presence_moderator
@@ -64,8 +68,11 @@ class MeetingPresenceView(BaseView):
             self.flash_messages.add(_("Started"), type = 'success')
             self.mp_util.start_check()
         elif action == 'end':
-            self.flash_messages.add(_("Closed"), type = 'warning')
-            self.mp_util.end_check()
+            if self.mp_util.open:
+                self.flash_messages.add(_("Closed"), type = 'warning')
+                self.mp_util.end_check()
+            else:
+                raise HTTPForbidden("No check ongoing")
         else:
             raise HTTPForbidden("No such action %r" % action)
         came_from = self.request.GET.get('came_from', self.request.resource_url(self.request.meeting))
@@ -150,15 +157,71 @@ def meeting_presence_json(context, request, va, **kw):
     response['status'] = 'closed'
     return response
 
+
 @view_action('watcher_json', 'meeting_presence_count')
 def meeting_presence_count_json(context, request, va, **kw):
     """ Return number of users who've registered themselves."""
+    #FIXME: view name
     if request.is_moderator:
         meeting_presence = request.registry.getAdapter(context, IMeetingPresence)
         if meeting_presence.open:
             return len(meeting_presence.present_userids)
 
 
+def meeting_presence_enabled(context, request, va):
+    meeting_presence = request.registry.getAdapter(request.meeting, IMeetingPresence)
+    return meeting_presence.enabled
+
+
+@view_config(context = IMeeting,
+             name = "meeting_presence_settings",
+             renderer = "arche:templates/form.pt",
+             permission = MODERATE_MEETING)
+class MeetingPresenceSettingsForm(DefaultEditForm):
+    type_name = 'Meeting'
+    schema_name = 'meeting_presence_settings'
+    title = _("Meeting presence settings")
+
+    @reify
+    def meeting_presence(self):
+        return self.request.registry.getAdapter(self.request.meeting, IMeetingPresence)
+
+    def appstruct(self):
+        appstruct = {}
+        for field in self.schema.children:
+            if hasattr(self.meeting_presence, field.name):
+                val = getattr(self.meeting_presence, field.name)
+                if val is None:
+                    val = colander.null
+                appstruct[field.name] = val
+        return appstruct
+
+    def save_success(self, appstruct):
+        for (k, v) in appstruct.items():
+            if not hasattr(self.meeting_presence, k):
+                raise AttributeError("IMeetingPresence has no such attr")
+            setattr(self.meeting_presence, k, v)
+        self.flash_messages.add(self.default_success, type='success')
+        return HTTPFound(location=self.request.resource_url(self.context))
+
+
 def includeme(config):
     config.add_portlet(MeetingPresencePortlet)
     config.scan(__name__)
+    config.add_view_action(
+        control_panel_category,
+        'control_panel', 'meeting_presence',
+        panel_group = 'control_panel_meeting_presence',
+        title=_("Meeting presence"),
+        description=_("meeting_presence_cp_description",
+                      default="Check who's present. "
+                              "Can be used as base to distribute voting rights."),
+        permission = MODERATE_MEETING,
+        check_active=meeting_presence_enabled,
+    )
+    config.add_view_action(
+        control_panel_link,
+        'control_panel_meeting_presence', 'settings',
+        title=_("Settings"),
+        view_name='meeting_presence_settings',
+    )

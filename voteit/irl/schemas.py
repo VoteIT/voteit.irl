@@ -307,8 +307,17 @@ def add_discussions_owner_nodes(schema, discussion_posts):
         )
 
 
+class MeetingPresenceSettingsSchema(colander.Schema):
+    enabled = colander.SchemaNode(
+        colander.Bool(),
+        title = _("Make meeting presence check available?"),
+        description = _("Will add the option to the control panel"),
+    )
+
+
 def includeme(config):
     config.add_content_schema('Meeting', ElegibleVotersMethodSchema, 'eligible_voters_method')
     config.add_content_schema('Meeting', AssignParticipantNumber, 'assign_participant_number')
     config.add_content_schema('Meeting', ClaimParticipantNumberSchema, 'claim_participant_number')
     config.add_content_schema('Meeting', AttachEmailsToPN, 'attach_emails_to_pn')
+    config.add_content_schema('Meeting', MeetingPresenceSettingsSchema, 'meeting_presence_settings')

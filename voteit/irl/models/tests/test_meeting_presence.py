@@ -51,11 +51,14 @@ class MeetingPresenceTests(unittest.TestCase):
         obj.start_check()
         self.assertIsInstance(obj.start_time, datetime)
         
-    def test_end_sets_end_time(self):
+    def test_end_creates_archive(self):
         obj = self._cut(self._meeting())
         obj.start_check()
-        self.assertEqual(obj.end_time, None)
         obj.end_check()
-        self.assertIsInstance(obj.end_time, datetime)
+        self.assertEqual(len(obj.archive), 1)
 
-        
+    def test_in(self):
+        obj = self._cut(self._meeting())
+        obj.start_check()
+        obj.add('hi')
+        self.assertTrue('hi' in obj)
