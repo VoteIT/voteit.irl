@@ -2,6 +2,7 @@ from arche.interfaces import ISchemaCreatedEvent
 from arche.schemas import UserSchema
 import colander
 import deform
+from voteit.core.models.interfaces import IMeeting
 
 from voteit.irl import _
 from voteit.irl.models.participant_number_ap import ParticipantNumberAP
@@ -27,14 +28,17 @@ class ParticipantNumberAPWithGender(ParticipantNumberAP):
 
 
 def add_gender_in_profile(schema, event):
-    if event.context.type_name == 'Meeting' and \
-        event.context.access_policy != ParticipantNumberAPWithGender.name:
-        return #Skip in meeting context without this AP
-    schema.add(colander.SchemaNode(colander.String(),
-                                   name = "gender",
-                                   title = _(u"Gender"),
-                                   description = _(u"Used for statistics and perhaps gender based quotas. See meeting for details."),
-                                   widget = deform.widget.RadioChoiceWidget(values = GENDER_VALUES)),)
+    context = getattr(event, 'context', None)
+    if not IMeeting.providedBy(context):
+        return
+    if context.type_name == 'Meeting' and context.access_policy == ParticipantNumberAPWithGender.name:
+        schema.add(colander.SchemaNode(
+            colander.String(),
+            name = "gender",
+            title = _("Gender"),
+            description = _("Used for statistics and perhaps gender based quotas. See meeting for details."),
+            widget = deform.widget.RadioChoiceWidget(values = GENDER_VALUES)),
+        )
 
 
 def includeme(config):
