@@ -28,10 +28,10 @@ class MeetingPresence(object):
     @property
     def present_userids(self):
         try:
-            return self.context._v_meeting_presence_userids
+            return self.context._meeting_presence_userids
         except AttributeError:
-            self.context._v_meeting_presence_userids = OOSet()
-            return self.context._v_meeting_presence_userids
+            self.context._meeting_presence_userids = OOSet()
+            return self.context._meeting_presence_userids
 
     @property
     def enabled(self):
