@@ -24,6 +24,9 @@ class IMeetingPresence(Interface):
     def add(userid):
         """ Add a userid. Only works when the check is open. """
 
+    def remove(userid):
+        """ Remove a userid. Only works when the check is open. """
+
     def archive_current():
         """ Archive and timestamp the current check."""
 

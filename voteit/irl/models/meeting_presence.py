@@ -67,9 +67,15 @@ class MeetingPresence(object):
 
     def add(self, userid):
         if not self.open:
-            raise HTTPForbidden(_(u"Meeting presence check isn't open"))
+            raise HTTPForbidden(_("Meeting presence check isn't open"))
         assert isinstance(userid, basestring)
         self.present_userids.add(userid)
+
+    def remove(self, userid):
+        if not self.open:
+            raise HTTPForbidden(_("Meeting presence check isn't open"))
+        assert isinstance(userid, basestring)
+        self.present_userids.remove(userid)
 
     def archive_current(self):
         if self.open:
