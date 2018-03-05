@@ -141,6 +141,9 @@ class ParticipantNumbers(object):
     def __len__(self):
         return len(self.tickets)
 
+    def __contains__(self, number):
+        return number in self.tickets
+
 
 class ParticipantNumberTicket(Persistent):
     number = None

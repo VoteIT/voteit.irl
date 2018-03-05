@@ -54,6 +54,12 @@ class ParticipantNumbersTests(unittest.TestCase):
         self.assertEqual(len(res), 7)
         self.assertEqual(len(obj.tickets), 10)
 
+    def test_contains(self):
+        obj = self._cut(testing.DummyResource())
+        obj.new_tickets('c', 1)
+        self.assertTrue(1 in obj)
+        self.assertFalse(2 in obj)
+
     def test_claim_ticket(self):
         obj = self._cut(testing.DummyResource())
         obj.new_tickets('c', 0)
