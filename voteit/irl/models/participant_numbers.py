@@ -67,6 +67,12 @@ class ParticipantNumbers(object):
             self.context.__participant_numbers_email_to_number__ = OIBTree()
             return self.context.__participant_numbers_email_to_number__
 
+    def next_free(self):
+        try:
+            return self.tickets.maxKey() + 1
+        except ValueError:
+            return 1
+
     def new_token(self):
         def _token_part():
             return "".join([choice(CHAR_POOL) for x in range(choice(range(4, 5)))])

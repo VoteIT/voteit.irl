@@ -60,6 +60,12 @@ class ParticipantNumbersTests(unittest.TestCase):
         self.assertTrue(1 in obj)
         self.assertFalse(2 in obj)
 
+    def test_next_free(self):
+        obj = self._cut(testing.DummyResource())
+        self.assertEqual(obj.next_free(), 1)
+        obj.new_tickets('c', 100)
+        self.assertEqual(obj.next_free(), 101)
+
     def test_claim_ticket(self):
         obj = self._cut(testing.DummyResource())
         obj.new_tickets('c', 0)
