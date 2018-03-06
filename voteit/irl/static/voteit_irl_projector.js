@@ -32,7 +32,8 @@ var Projector = function() {
     });
     //Select valid
     $('#projector-pool .list-group-item').each(function(i, v) {
-        if ($.inArray( select_tag , $(v).data('tags').split(',') ) > -1) {
+        // note about lowercae: tags are always stored in lowercase!
+        if ($.inArray( select_tag.toLowerCase() , $(v).data('tags').split(',') ) > -1) {
             projector.highlight_proposal($(v), true);
         }
     });
