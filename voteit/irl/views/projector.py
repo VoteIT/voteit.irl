@@ -1,3 +1,6 @@
+import re
+from urllib import urlencode
+
 from betahaus.viewcomponent.decorators import view_action
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.settings import truthy
@@ -5,16 +8,33 @@ from pyramid.traversal import resource_path
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 from repoze.catalog.query import Eq
+from voteit.core.helpers import TAG_PATTERN
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
 from voteit.core.security import VIEW
 from voteit.core.views.agenda_item import AgendaItemView
+
 from voteit.irl import _
 from voteit.irl.fanstaticlib import voteit_irl_projector
-from webhelpers.html.converters import nl2br
-from webhelpers.html.render import sanitize
+
+
+def proj_tags2links(text):
+    """ Transform #tag to a relative link in this context.
+        Not domain name or path will be included - it starts with './'
+    """
+
+    def handle_match(matchobj):
+        matched_dict = matchobj.groupdict()
+        tag = matched_dict['tag']
+        pre = matched_dict['pre']
+        url = u"?%s" % urlencode({'tag': tag.encode('utf-8')})
+        # This should be refactored and handled through javascript
+        return u"""%(pre)s<a href="#" data-tag-filter="%(tag)s">#%(tag)s</a>""" % \
+               {'pre': pre, 'url': url, 'tag': tag}
+
+    return re.sub(TAG_PATTERN, handle_match, text)
 
 
 @view_defaults(context=IMeeting, permission=MODERATE_MEETING)
@@ -98,11 +118,9 @@ class ProjectorView(AgendaItemView):
         query += "workflow_state in any(['published', 'approved', 'denied'])"
         results = []
         for obj in self.catalog_query(query, resolve=True):
-            text = sanitize(obj.text)
-            text = nl2br(text)
             results.append(
                 dict(
-                    text=text,
+                    text=self.request.render_proposal_text(obj, tag_func=proj_tags2links),
                     aid=obj.aid,
                     prop_wf_url=self.request.resource_url(obj, '__change_state_projector__.json'),
                     wf_state=obj.get_workflow_state(),
