@@ -18,7 +18,7 @@ var Projector = function() {
 
   this.linkify = function(text) {
     var insert = '$1<a href="#" data-tag-filter="$2">$2</a>';
-    return text.replace(/(^|\s)(#[a-z\d-]+)/ig, insert);
+    return text.replace(/(^|\s)(#[a-z\d-_]+)/ig, insert);
   }
 
   this.filter_tag = function(event) {
