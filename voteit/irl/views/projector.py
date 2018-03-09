@@ -93,7 +93,7 @@ class ProjectorView(AgendaItemView):
                 _("quickpoll_ongoing_polls_error",
                   default="There are ongoing polls in this agenda item,"
                           "close them first."))
-        title = self.get_quick_poll_title(ai)
+        title = self.get_quick_poll_title()
         proposal_uids = [x.uid for x in proposals]
         if poll_method == 'schulze':
             poll_plugin = 'schulze'
@@ -193,8 +193,8 @@ class ProjectorView(AgendaItemView):
         return {'status': 'success',
                 'state': state}
 
-    def get_quick_poll_title(self, ai):
-        query = Eq('path', resource_path(ai)) & Eq('type_name', 'Poll')
+    def get_quick_poll_title(self):
+        query = Eq('path', resource_path(self.request.meeting)) & Eq('type_name', 'Poll')
         res = self.request.root.catalog.query(query)[0]
         title = _("Descision ${num}", mapping={'num': res.total + 1})
         return self.request.localizer.translate(title)
