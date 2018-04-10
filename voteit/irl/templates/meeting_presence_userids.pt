@@ -12,6 +12,9 @@
 
       <p>
         <a class="btn btn-default"
+           href="${request.resource_url(context, 'check_meeting_presence')}"
+           i18n:translate="">Back to check</a>
+        <a class="btn btn-default"
            href="${request.resource_url(context, 'update_elegible_voters')}"
            i18n:translate="">Go to elegible voters method</a>
       </p>
