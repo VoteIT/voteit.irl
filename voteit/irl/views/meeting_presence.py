@@ -25,6 +25,7 @@ from voteit.irl.models.interfaces import IParticipantNumbers
 class MeetingPresencePortlet(PortletType):
     name = "meeting_presence_portlet"
     title = "Meeting Presence"
+    tpl = "voteit.irl:templates/meeting_presence_portlet.pt"
 
     def __init__(self, portlet):
         self.portlet = portlet
@@ -39,7 +40,7 @@ class MeetingPresencePortlet(PortletType):
             if mp_util.open:
                 meeting_presence_moderator.need()
                 response['participants_count'] = len(get_meeting_participants(context))
-            return render("voteit.irl:templates/meeting_presence.pt",
+            return render(self.tpl,
                           response,
                           request = request)
 
@@ -51,6 +52,16 @@ class MeetingPresenceView(BaseView):
     def mp_util(self):
         """ Note that this only works for IMeeting views. Change this later if we need to update. """
         return self.request.registry.getAdapter(self.context, IMeetingPresence)
+
+    @view_config(name = 'check_meeting_presence',
+                 renderer = 'voteit.irl:templates/meeting_presence.pt',
+                 permission = MODERATE_MEETING)
+    def check_meeting_presence(self):
+        meeting_presence_moderator.need()
+        response = {}
+        if self.mp_util.open:
+            response['participants_count'] = len(get_meeting_participants(self.context))
+        return response
 
     @view_config(name = "meeting_presence.json",
                  permission = MODERATE_MEETING)
@@ -221,7 +232,15 @@ def includeme(config):
     )
     config.add_view_action(
         control_panel_link,
+        'control_panel_meeting_presence', 'check',
+        title=_("Check presence"),
+        view_name='check_meeting_presence',
+        priority=10,
+    )
+    config.add_view_action(
+        control_panel_link,
         'control_panel_meeting_presence', 'settings',
         title=_("Settings"),
         view_name='meeting_presence_settings',
+        priority=20,
     )

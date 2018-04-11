@@ -311,7 +311,6 @@ class MeetingPresenceSettingsSchema(colander.Schema):
     enabled = colander.SchemaNode(
         colander.Bool(),
         title = _("Make meeting presence check available?"),
-        description = _("Will add the option to the control panel"),
     )
 
 

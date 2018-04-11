@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from BTrees.IOBTree import IOBTree
 from BTrees.OOBTree import OOBTree
 from arche.utils import utcnow
