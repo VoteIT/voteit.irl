@@ -21,8 +21,7 @@ from voteit.irl.models.interfaces import IParticipantNumbers
 @view_action('nav_meeting', 'transfer_vote', title=_("Transfer vote"))
 def generic_menu_link(context, request, va, **kw):
     """ This is for simple menu items for the meeting root """
-    # FIXME Check if there are any situations where context will not be Meeting.
-    meeting_presence = IMeetingPresence(context)
+    meeting_presence = IMeetingPresence(request.meeting)
     if meeting_presence.vote_transfer_enabled and \
        security.ROLE_VOTER in request.meeting.local_roles.get(request.authenticated_userid, ()):
         url = request.resource_url(request.meeting, 'transfer_vote')
