@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-04-11 13:04+0200\n"
-"PO-Revision-Date: 2018-04-11 10:45+0200\n"
-"Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
-"Language-Team: sv <LL@li.org>\n"
+"PO-Revision-Date: 2018-04-12 14:25+0000\n"
+"Last-Translator: Weblate Admin <admin@example.com>\n"
+"Language-Team: Swedish <http://example.com/projects/voteit/voteit-irl/sv/>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.16\n"
 "Generated-By: Babel 1.3\n"
-"X-Generator: Poedit 1.8.6\n"
 
 #. Default: VoteIT wasn't able to set you as present. This might be due to
 #. server load, please try again in a short while.
@@ -88,6 +88,8 @@ msgstr "Inte ett existerande deltagarnummer"
 #: voteit/irl/schemas.py:145
 msgid "attach_emails_pn_dont_exist_error"
 msgstr ""
+"Det finns fler e-postadresser än existerande deltagarnummer. Nummer ${num} "
+"hittades inte. Totalt antal e-postadresser: ${emails_count}"
 
 #: voteit/irl/schemas.py:153
 #, python-format
@@ -121,6 +123,12 @@ msgstr "Epostadresser att lägga till."
 #: voteit/irl/schemas.py:185
 msgid "attach_emails_description"
 msgstr ""
+"Klistra in en lista med e-postadresser, en per rad, för att koppla till "
+"deltagarnummer. De kommer att kopplas i ordning, med start från valt nummer. "
+"Om någon av e-postadresserna finns som en validerad användare kommer "
+"deltagarnumret att tilldelas den användaren. Annars kommer deltagarnumret "
+"att tilldelas när e-postadressen validerats av en användare. Tomma rader "
+"ökar på deltagarnumret, men har ingen annan effekt."
 
 #: voteit/irl/schemas.py:199
 msgid "Create new tickets if they don't exist"
@@ -262,7 +270,7 @@ msgstr "Måste vara någon som inte har rösträtt just nu."
 
 #: voteit/irl/plugins/transfer_vote.py:84
 msgid "Vote transfer is not currently enabled."
-msgstr ""
+msgstr "Överför röst är inte aktiverat just nu."
 
 #: voteit/irl/plugins/transfer_vote.py:90
 msgid "You're not a voter"
@@ -279,21 +287,19 @@ msgstr "Röst överförd till: ${userid}"
 
 #: voteit/irl/plugins/transfer_vote.py:112
 msgid "Enable users to transfer votes?"
-msgstr ""
+msgstr "Tillåt användare att föra över rösträtt?"
 
 #: voteit/irl/plugins/transfer_vote.py:113
 msgid "Will add the option to the meeting menu"
-msgstr ""
+msgstr "Lägger till alternativet till mötets meny"
 
 #: voteit/irl/plugins/transfer_vote.py:124
-#, fuzzy
 msgid "Vote transfer settings"
-msgstr "Röst överförd till: ${userid}"
+msgstr "Inställningar för röstöverföring"
 
 #: voteit/irl/plugins/transfer_vote.py:162
-#, fuzzy
 msgid "Vote transfer setting"
-msgstr "Röst överförd till: ${userid}"
+msgstr "Inställning för röstöverföring"
 
 #: voteit/irl/plugins/present_users_voters.py:16
 msgid "Present with participant number in set range"
@@ -325,6 +331,8 @@ msgstr "Spann på röstandes deltagarnummer"
 #: voteit/irl/plugins/present_users_voters.py:60
 msgid "voter_pn_range_desc"
 msgstr ""
+"Skriv nummer som 'NN-NN'. 10-20 betyder att deltagare 10 till och med 20 får "
+"rösträtt om de är markerade som närvarande."
 
 #: voteit/irl/plugins/gender.py:18
 msgid "Female"
