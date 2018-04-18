@@ -87,7 +87,6 @@ class PrintProposalsView(BaseView):
         dt_handler = self.request.dt_handler
         response['proposals'] = [self.context[x] for x in proposal_ids]
         response['now'] = dt_handler.format_dt(dt_handler.utcnow())
-        response['nl2br'] = nl2br
         return response
 
 
