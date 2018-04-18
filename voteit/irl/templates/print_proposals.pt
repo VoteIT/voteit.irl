@@ -25,7 +25,7 @@
     </h1>
     <h3><small>${now}</small></h3>
     <div><i>${structure: request.creators_info(prop.creator, portrait = False, no_tag = True)}</i>
-      ${structure: nl2br(prop.text)}
+      ${structure: request.render_proposal_text(prop)}
     </div>
   </div>
   <div class="page-break"><!-- --></div>
