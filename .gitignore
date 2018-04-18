@@ -6,6 +6,7 @@
 .mr.developer*
 .settings
 .coverage
+.sass-cache
 bin
 include
 lib
