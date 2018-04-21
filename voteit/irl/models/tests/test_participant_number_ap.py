@@ -79,7 +79,6 @@ class ParticipantNumberAPTests(unittest.TestCase):
 def _fixture(config):
     config.testing_securitypolicy(userid = 'jane', permissive = True)
     config.include('voteit.core.models.flash_messages')
-    config.include('voteit.core.models.fanstatic_resources')
     config.include('voteit.irl.models.participant_numbers')
     config.scan('voteit.irl.schemas')
     meeting = Meeting()
