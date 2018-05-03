@@ -35,9 +35,26 @@ body {
 #projector-main .move-left {
     display: none;
 }
-#projector-pool {
-    overflow: scroll;
+.container-fluid .fixed-right {
+    overflow-y: auto;
     position: fixed;
+    float: none;
     top: 60px;
-    bottom: 0px;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 0;
+    padding: 0;
+}
+#projector-pool {
+    padding: 0;
+}
+
+#proposal-filtering {
+    margin-bottom: 4px;
+}
+[data-filter-content] {
+    width: 100%;
+}
+[data-filter-content] input[type="checkbox"] {
+    margin: 0 6px;
 }

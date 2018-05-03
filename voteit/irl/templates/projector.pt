@@ -138,8 +138,18 @@
           <ul id="projector-main" class="list-group"></ul>
         </form>
       </div>
-      <div class="col-xs-2">
-        <ul id="projector-pool" class="list-group">
+      <div class="col-xs-2 fixed-right">
+        <div class="dropdown">
+          <button type="button" id="proposal-filtering" class="btn btn-default btn-group btn-group-justified dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <tal:ts i18n:translate="">Filter proposals</tal:ts> <span class="caret"></span>
+          </button>
+            <ul class="dropdown-menu" data-filter-content="projector-pool" aria-labelledby="proposal-filtering">
+              <li>
+                <input type="checkbox" name="state" id="" checked><label for="">Workflow state</label>
+              </li>
+          </ul>
+        </div>
+        <ul id="projector-pool" class="list-group" >
           <li class="list-group-item hidden" data-uid="" data-state="">
             <a href="#" class="btn btn-xs btn-default move-left">
               <span class="glyphicon glyphicon-chevron-left"></span>
@@ -147,14 +157,8 @@
             <input type="hidden" name="uid" value="" />
             <div class="main-controls pull-right">
               <div class="btn-group" data-wf-controls role="group">
-                <a class="btn btn-default btn-sm" data-wf-state="published" href="">
-                  <span class="text-published glyphicon glyphicon-published"></span>
-                </a>
-                <a class="btn btn-default btn-sm" data-wf-state="approved" href="">
-                  <span class="text-approved glyphicon glyphicon-approved"></span>
-                </a>
-                <a class="btn btn-default btn-sm" data-wf-state="denied" href="">
-                  <span class="text-denied glyphicon glyphicon-denied"></span>
+                <a class="btn btn-default btn-sm active" data-wf-state="" href="">
+                  <span data-state-indicator class="glyphicon"></span>
                 </a>
               </div>
               <a href="#" class="btn btn-sm btn-default move-right">
@@ -172,17 +176,5 @@
       </div>
     </div>
   </div>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    //Load initial content?
-    if (window.location.hash.length > 1) {
-      var url = '${request.resource_url(request.meeting)}' + window.location.hash + '/__ai_contents__.json';
-      url = url.replace('#', '');
-      projector.load_context(url);
-    }
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-</script>
 </body>
 </html>
