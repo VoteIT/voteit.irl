@@ -48,6 +48,7 @@ Projector.prototype = {
                     'label@for': function(a) {
                         return 'filter-state-' + a.item.name;
                     },
+                    '.badge': 'obj.count',
                 }
             }
         };

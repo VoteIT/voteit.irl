@@ -145,7 +145,7 @@
           </button>
             <ul class="dropdown-menu" data-filter-content="projector-pool" aria-labelledby="proposal-filtering">
               <li>
-                <input type="checkbox" name="state" id="" checked><label for="">Workflow state</label>
+                <input type="checkbox" name="state" id="" checked><label for="">Workflow state</label> <span class="badge">0</span>
               </li>
           </ul>
         </div>

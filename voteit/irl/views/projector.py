@@ -1,4 +1,5 @@
 import re
+from collections import Counter
 from urllib import urlencode
 
 from betahaus.viewcomponent.decorators import view_action
@@ -143,15 +144,18 @@ class ProjectorView(AgendaItemView):
         previous_url = ''
         previous_title = getattr(previous_obj, 'title', '')
 
-        active_workflow_states = [r['wf_state'] for r in results]
+        wf_counter = Counter()
+        for r in results:
+            wf_counter[r['wf_state']] += 1
         wf = get_workflow(IProposal, 'Proposal')
         workflow_states = []
         for info in wf._state_info(IProposal):  # Public API goes through permission checker
-            if info['name'] in active_workflow_states:
+            if wf_counter[info['name']]:
                 workflow_states.append({
                     'name': info['name'],
                     'title': self.request.localizer.translate(core_ts(info['title'])),
                     'checked': info['name'] in DEFAULT_CHECKED_WORKFLOW_STATES,
+                    'count': wf_counter[info['name']],
                 })
 
         if previous_obj:
