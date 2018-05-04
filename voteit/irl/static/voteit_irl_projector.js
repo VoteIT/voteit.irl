@@ -2,6 +2,7 @@
 
 function Projector() {
     this.tpl = $('#projector-pool .list-group-item').clone();
+    this.filter_tpl = $('[data-filter-content] li').clone();
     this.tpl.removeClass('hidden');
     $('#projector-pool .list-group-item').remove();
 
@@ -119,6 +120,7 @@ Projector.prototype = {
     reset: function () {
         $('#projector-pool').html(this.tpl);
         $('#projector-main').empty();
+        $('[data-filter-content]').html(this.filter_tpl);
     },
 
     handle_wf_click: function(event) {
