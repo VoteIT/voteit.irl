@@ -115,7 +115,7 @@ class ProjectorView(AgendaItemView):
     def ai_contents(self):
         query = "path == '%s' and " % resource_path(self.context)
         query += "type_name == 'Proposal' and "  #
-        query += "workflow_state in any(['published', 'approved', 'denied'])"
+        query += "workflow_state in any(['published', 'approved', 'denied', 'voting'])"
         results = []
         for obj in self.catalog_query(query, resolve=True):
             results.append(
