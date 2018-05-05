@@ -121,6 +121,7 @@ Projector.prototype = {
         $('#projector-pool').html(this.tpl);
         $('#projector-main').empty();
         $('[data-filter-content]').html(this.filter_tpl);
+        this.update_quick_polls();
     },
 
     handle_wf_click: function(event) {
@@ -149,6 +150,7 @@ Projector.prototype = {
         enable = $(event.currentTarget).hasClass('move-left');
         var elem = $(event.target).parents('.list-group-item');
         this.highlight_proposal(elem, enable);
+        this.update_quick_polls();
     },
 
     highlight_proposal: function (elem, enable) {
@@ -169,6 +171,21 @@ Projector.prototype = {
                 $('#projector-pool').append(elem);
             }
         }
+    },
+
+    update_quick_polls: function() {
+        proposals = $('#projector-main').children().length;
+        $('a[data-proposals-count]').each(function(i, e) {
+            var $elem = $(e);
+            var count = $elem.data('proposals-count').split(':');
+            if (proposals >= parseInt(count[0]) && (count[1] === '' || proposals <= parseInt(count[1]))) {
+                $elem.removeClass('disabled');
+                $elem.attr('tabindex', '');
+            } else {
+                $elem.addClass('disabled');
+                $elem.attr('tabindex', '-1');
+            }
+        });
     },
 
     /* Find all proposals currently placed in the highlighted section and post them */

@@ -58,3 +58,8 @@ body {
 [data-filter-content] input[type="checkbox"] {
     margin: 0 6px;
 }
+
+[role="menuitem"].disabled {
+    pointer-events: none;
+    color: #777;
+}
