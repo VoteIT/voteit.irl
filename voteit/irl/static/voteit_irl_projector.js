@@ -88,7 +88,6 @@ Projector.prototype = {
         $('[data-wf-controls]').each(function(i, e) {
             var $elem = $(e);
             var wf_state = $elem.data('wf-controls');
-            console.log($elem, wf_state);
             $elem.find('[data-wf-state="' + wf_state + '"]').addClass('active');
         });
 
