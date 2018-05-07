@@ -68,12 +68,7 @@ Projector.prototype = {
                     '.@data-state': 'obj.wf_state',
                     '.@data-tags': 'obj.tags',
                     '[data-wf-state]@href': 'obj.prop_wf_url',
-                    '[data-wf-state]@data-wf-state': function(a) {
-                        return a.item['wf_state'];
-                    },
-                    '[data-state-indicator]@class+': function(a) {
-                        return ' glyphicon-' + a.item['wf_state'] + ' text-' + a.item['wf_state'];
-                    }
+                    '[data-wf-controls]@data-wf-controls': 'obj.wf_state',
                 },
                 sort: function(a, b){
                     //Lazy version of ordering
@@ -89,6 +84,13 @@ Projector.prototype = {
         $('#projector-pool').render(response, directive);
         $('[data-filter-content]').render(response, filter_directive);
         $('#navbar-heading').attr('href', response['ai_regular_url']);
+
+        $('[data-wf-controls]').each(function(i, e) {
+            var $elem = $(e);
+            var wf_state = $elem.data('wf-controls');
+            console.log($elem, wf_state);
+            $elem.find('[data-wf-state="' + wf_state + '"]').addClass('active');
+        });
 
         $('[data-nav-ai="previous"]').attr('href', response['previous_url']);
         $('[data-nav-ai="previous"]').attr('title', response['previous_title']);
@@ -126,8 +128,9 @@ Projector.prototype = {
 
     handle_wf_click: function(event) {
         event.preventDefault();
-        var elem = $(event.currentTarget);
-        arche.do_request(elem.attr('href'), {method: 'POST', data: {state: elem.data('wf-state')}})
+        var $elem = $(event.currentTarget);
+        if ($elem.hasClass('active')) { return; }
+        arche.do_request($elem.attr('href'), {method: 'POST', data: {state: $elem.data('wf-state')}})
         .done(function(response) {
             this.handle_wf_response(event, response)
         }.bind(this));

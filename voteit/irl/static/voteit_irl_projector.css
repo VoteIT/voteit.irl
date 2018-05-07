@@ -26,6 +26,16 @@ body {
 #projector-main .proposal-text {
     font-size: 150%;
 }
+#projector-main [data-wf-state="retracted"]:not(.active),
+#projector-main [data-wf-state="unhandled"]:not(.active),
+#projector-main [data-wf-state="voting"]:not(.active) {
+    display: none;
+}
+#projector-main [data-wf-controls="retracted"] a:not(.active),
+#projector-main [data-wf-controls="unhandled"] a:not(.active),
+#projector-main [data-wf-controls="voting"] a:not(.active) {
+    display: none;
+}
 #projector-pool .main-controls [data-wf-state] {
     display: none;
 }

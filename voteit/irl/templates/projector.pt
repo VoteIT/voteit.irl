@@ -149,7 +149,9 @@
           </button>
             <ul class="dropdown-menu" data-filter-content="projector-pool" aria-labelledby="proposal-filtering">
               <li>
-                <input type="checkbox" name="state" id="" checked><label for="">Workflow state</label> <span class="badge">0</span>
+                <input type="checkbox" name="state" id="" checked>
+                <label for="">Workflow state</label>
+                <span class="badge">0</span>
               </li>
           </ul>
         </div>
@@ -161,8 +163,8 @@
             <input type="hidden" name="uid" value="" />
             <div class="main-controls pull-right">
               <div class="btn-group" data-wf-controls role="group">
-                <a class="btn btn-default btn-sm active" data-wf-state="" href="">
-                  <span data-state-indicator class="glyphicon"></span>
+                <a tal:repeat="state ('published', 'approved', 'denied', 'voting', 'retracted', 'unhandled')" class="btn btn-default btn-sm" data-wf-state="${state}" href="">
+                  <span class="text-${state} glyphicon glyphicon-${state}"></span>
                 </a>
               </div>
               <a href="#" class="btn btn-sm btn-default move-right">
