@@ -46,7 +46,7 @@
             <span class="glyphicon glyphicon-star"></span>
             <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu" id="quick-polls">
 
               <li role="presentation" class="dropdown-header">
                 <span i18n:translate="">Multiple proposals (Schulze)</span>
@@ -56,6 +56,7 @@
                 <a role="menuitem"
                    data-quick-poll="schulze"
                    data-reject-prop="false"
+                   data-proposals-count="3:"
                    href="#"
                    i18n:translate="">
                   All highlighted
@@ -66,6 +67,7 @@
                 <a role="menuitem"
                    data-quick-poll="schulze"
                    data-reject-prop="true"
+                   data-proposals-count="2:"
                    href="#"
                    i18n:translate="">
                   All highlighted + Create reject
@@ -82,21 +84,40 @@
                 <a role="menuitem"
                    data-quick-poll="majority"
                    data-reject-prop="false"
+                   data-proposals-count="2:2"
                    href="#"
                    i18n:translate="">
                   2 highlighted
                 </a>
               </li>
               <li role="presentation">
-                <a role="menuitem" tabindex="-1"
+                <a role="menuitem"
                    data-quick-poll="majority"
                    data-reject-prop="true"
+                   data-proposals-count="1:1"
                    href="#"
                    i18n:translate="">
                   1 highlighted + create reject
                 </a>
               </li>
           </ul>
+        </li>
+
+        <li class="dropdown">
+          <a id="proposal-filtering"
+             class="dropdown-toggle"
+             data-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false">
+            <span class="glyphicon glyphicon-filter"></span> <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" data-filter-content="projector-pool" aria-labelledby="proposal-filtering">
+            <li>
+              <input type="checkbox" name="state" id="" checked>
+              <label for="">Workflow state</label>
+              <span class="badge">0</span>
+            </li>
+        </ul>
         </li>
 
         <li class="dropdown">
@@ -113,7 +134,7 @@
                 ${state_titles[state]}
               </li>
               <li role="presentation" tal:repeat="obj agenda_items[state]">
-                <a role="menuitem" tabindex="-1"
+                <a role="menuitem"
                    href="${request.resource_url(obj, '__ai_contents__.json')}">
                   ${obj.title}
                 </a>
@@ -138,8 +159,8 @@
           <ul id="projector-main" class="list-group"></ul>
         </form>
       </div>
-      <div class="col-xs-2">
-        <ul id="projector-pool" class="list-group">
+      <div class="col-xs-2 fixed-right">
+        <ul id="projector-pool" class="list-group" >
           <li class="list-group-item hidden" data-uid="" data-state="">
             <a href="#" class="btn btn-xs btn-default move-left">
               <span class="glyphicon glyphicon-chevron-left"></span>
@@ -147,14 +168,8 @@
             <input type="hidden" name="uid" value="" />
             <div class="main-controls pull-right">
               <div class="btn-group" data-wf-controls role="group">
-                <a class="btn btn-default btn-sm" data-wf-state="published" href="">
-                  <span class="text-published glyphicon glyphicon-published"></span>
-                </a>
-                <a class="btn btn-default btn-sm" data-wf-state="approved" href="">
-                  <span class="text-approved glyphicon glyphicon-approved"></span>
-                </a>
-                <a class="btn btn-default btn-sm" data-wf-state="denied" href="">
-                  <span class="text-denied glyphicon glyphicon-denied"></span>
+                <a tal:repeat="state ('published', 'approved', 'denied', 'voting', 'retracted', 'unhandled')" class="btn btn-default btn-sm" data-wf-state="${state}" href="">
+                  <span class="text-${state} glyphicon glyphicon-${state}"></span>
                 </a>
               </div>
               <a href="#" class="btn btn-sm btn-default move-right">
@@ -172,17 +187,5 @@
       </div>
     </div>
   </div>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    //Load initial content?
-    if (window.location.hash.length > 1) {
-      var url = '${request.resource_url(request.meeting)}' + window.location.hash + '/__ai_contents__.json';
-      url = url.replace('#', '');
-      projector.load_context(url);
-    }
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-</script>
 </body>
 </html>

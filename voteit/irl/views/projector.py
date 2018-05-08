@@ -1,4 +1,5 @@
 import re
+from collections import Counter
 from urllib import urlencode
 
 from betahaus.viewcomponent.decorators import view_action
@@ -8,6 +9,8 @@ from pyramid.traversal import resource_path
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 from repoze.catalog.query import Eq
+from repoze.workflow import get_workflow
+
 from voteit.core.helpers import TAG_PATTERN
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IMeeting
@@ -15,9 +18,12 @@ from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
 from voteit.core.security import VIEW
 from voteit.core.views.agenda_item import AgendaItemView
+from voteit.core import _ as core_ts
 
 from voteit.irl import _
 from voteit.irl.fanstaticlib import voteit_irl_projector
+
+DEFAULT_CHECKED_WORKFLOW_STATES = ('published', 'approved', 'denied')
 
 
 def proj_tags2links(text):
@@ -113,9 +119,8 @@ class ProjectorView(AgendaItemView):
 
     @view_config(context=IAgendaItem, name="__ai_contents__.json", renderer='json')
     def ai_contents(self):
-        query = "path == '%s' and " % resource_path(self.context)
-        query += "type_name == 'Proposal' and "  #
-        query += "workflow_state in any(['published', 'approved', 'denied', 'voting'])"
+        query = Eq('path', resource_path(self.context))
+        query &= Eq('type_name', 'Proposal')
         results = []
         for obj in self.catalog_query(query, resolve=True):
             results.append(
@@ -137,6 +142,20 @@ class ProjectorView(AgendaItemView):
         previous_obj = self.previous_ai()
         previous_url = ''
         previous_title = getattr(previous_obj, 'title', '')
+        wf_counter = Counter()
+        for r in results:
+            wf_counter[r['wf_state']] += 1
+        wf = get_workflow(IProposal, 'Proposal')
+        workflow_states = []
+        for info in wf._state_info(IProposal):  # Public API goes through permission checker
+            if wf_counter[info['name']]:
+                workflow_states.append({
+                    'name': info['name'],
+                    'title': self.request.localizer.translate(core_ts(info['title'])),
+                    'checked': info['name'] in DEFAULT_CHECKED_WORKFLOW_STATES,
+                    'count': wf_counter[info['name']],
+                })
+
         if previous_obj:
             previous_url = self.request.resource_url(previous_obj, '__ai_contents__.json')
         return {'agenda_item': self.context.title,
@@ -144,6 +163,7 @@ class ProjectorView(AgendaItemView):
                                                     anchor=self.context.__name__),
                 'ai_regular_url': self.request.resource_url(self.context),
                 'proposals': results,
+                'workflow_states': workflow_states,
                 'next_url': next_url,
                 'previous_url': previous_url,
                 'next_title': next_title,
