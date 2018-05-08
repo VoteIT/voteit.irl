@@ -62,8 +62,8 @@ body {
 #proposal-filtering {
     margin-bottom: 4px;
 }
-[data-filter-content] {
-    width: 100%;
+[data-filter-content] li {
+    padding-right: 5px;
 }
 [data-filter-content] input[type="checkbox"] {
     margin: 0 6px;

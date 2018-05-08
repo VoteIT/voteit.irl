@@ -112,7 +112,7 @@
             <span class="glyphicon glyphicon-filter"></span> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" data-filter-content="projector-pool" aria-labelledby="proposal-filtering">
-            <li>
+            <li class="text-nowrap">
               <input type="checkbox" name="state" id="" checked>
               <label for="">Workflow state</label>
               <span class="badge">0</span>
