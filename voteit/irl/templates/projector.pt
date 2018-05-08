@@ -104,6 +104,23 @@
         </li>
 
         <li class="dropdown">
+          <a id="proposal-filtering"
+             class="dropdown-toggle"
+             data-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false">
+            <span class="glyphicon glyphicon-filter"></span> <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" data-filter-content="projector-pool" aria-labelledby="proposal-filtering">
+            <li>
+              <input type="checkbox" name="state" id="" checked>
+              <label for="">Workflow state</label>
+              <span class="badge">0</span>
+            </li>
+        </ul>
+        </li>
+
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle"
             data-toggle="dropdown"
             aria-expanded="false">
@@ -143,18 +160,6 @@
         </form>
       </div>
       <div class="col-xs-2 fixed-right">
-        <div class="dropdown">
-          <button type="button" id="proposal-filtering" class="btn btn-default btn-group btn-group-justified dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <tal:ts i18n:translate="">Filter proposals</tal:ts> <span class="caret"></span>
-          </button>
-            <ul class="dropdown-menu" data-filter-content="projector-pool" aria-labelledby="proposal-filtering">
-              <li>
-                <input type="checkbox" name="state" id="" checked>
-                <label for="">Workflow state</label>
-                <span class="badge">0</span>
-              </li>
-          </ul>
-        </div>
         <ul id="projector-pool" class="list-group" >
           <li class="list-group-item hidden" data-uid="" data-state="">
             <a href="#" class="btn btn-xs btn-default move-left">
