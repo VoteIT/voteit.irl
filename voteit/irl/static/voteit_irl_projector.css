@@ -68,6 +68,9 @@ body {
 [data-filter-content] input[type="checkbox"] {
     margin: 0 6px;
 }
+[data-filter-content] label {
+    font-weight: normal;
+}
 
 [role="menuitem"].disabled {
     pointer-events: none;
