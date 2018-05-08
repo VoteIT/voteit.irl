@@ -13,7 +13,7 @@ var main_proposal = {
             } else {
                 $button.removeClass('active');
             }
-            $button.parents('[data-uid]').find('[data-collapsible-text] > span').html(data.new_text);
+            $button.parents('[data-uid]').find('.proposal-text').html(data.new_text);
         });
     }
 };
