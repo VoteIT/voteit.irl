@@ -5,6 +5,7 @@ from six import string_types
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
+from voteit.core.schemas.common import HASHTAG_PATTERN
 from voteit.core.schemas.common import strip_and_lowercase
 from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -314,9 +315,23 @@ class MeetingPresenceSettingsSchema(colander.Schema):
     )
 
 
+class MainProposalsSettingsSchema(colander.Schema):
+    main_proposal_hashtag_name = colander.SchemaNode(
+        colander.String(),
+        title=_('Main proposal hashtag'),
+        description=_('Set to hashtag name (without #) to enable main proposals.'),
+        missing='',
+        validator=colander.Regex(
+            HASHTAG_PATTERN,
+            msg=_('Invalid hashtag format. (Use only a-Z,1-9,_,-)')
+        ),
+    )
+
+
 def includeme(config):
     config.add_content_schema('Meeting', ElegibleVotersMethodSchema, 'eligible_voters_method')
     config.add_content_schema('Meeting', AssignParticipantNumber, 'assign_participant_number')
     config.add_content_schema('Meeting', ClaimParticipantNumberSchema, 'claim_participant_number')
     config.add_content_schema('Meeting', AttachEmailsToPN, 'attach_emails_to_pn')
     config.add_content_schema('Meeting', MeetingPresenceSettingsSchema, 'meeting_presence_settings')
+    config.add_content_schema('Meeting', MainProposalsSettingsSchema, 'main_proposals_settings')

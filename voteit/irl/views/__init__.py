@@ -9,3 +9,4 @@ def includeme(config):
     config.include('.print')
     config.include('.projector')
     config.include('.proposals_unhandled')
+    config.include('.main_proposals')

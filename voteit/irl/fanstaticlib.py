@@ -18,10 +18,12 @@ voteit_irl_projector = Group((voteit_irl_projector_js, voteit_irl_projector_css)
 meeting_presence = Resource(voteit_irl_lib, 'meeting_presence.js', depends = (watcher_js, common_js))
 meeting_presence_moderator = Resource(voteit_irl_lib, 'meeting_presence_moderator.js', depends = (watcher_js, common_js, pure_js))
 voteit_irl_print_css = Resource(voteit_irl_lib, 'print.css', depends = (voteit_main_css,))
+main_proposal = Resource(voteit_irl_lib, 'main_proposal.js', depends=(common_js,))
 
 
 def always_needed(view, event):
     meeting_presence.need()
+    main_proposal.need()
 
 
 def includeme(config):

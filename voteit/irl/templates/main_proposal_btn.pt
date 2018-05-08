@@ -1,0 +1,11 @@
+<span data-like xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="voteit.core">
+  <a href="${request.resource_path(context, '__set_main_proposal__')}"
+    data-main-proposal
+    role="button"
+    class="btn btn-xs btn-default ${active and 'active' or None}">
+    <span class="text-primary">
+      <span class="glyphicon glyphicon-tag"></span>
+      <tal:ts i18n:translate="">Main proposal<tal:ts>
+    </span>
+  </a>
+</span>
