@@ -4,8 +4,8 @@ from arche.validators import existing_userid_or_email
 from six import string_types
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
-from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core.schemas.common import HASHTAG_PATTERN
+from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core.schemas.common import strip_and_lowercase
 from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -311,7 +311,7 @@ def add_discussions_owner_nodes(schema, discussion_posts):
 class MeetingPresenceSettingsSchema(colander.Schema):
     enabled = colander.SchemaNode(
         colander.Bool(),
-        title = _("Make meeting presence check available?"),
+        title=_("Make meeting presence check available?"),
     )
 
 
@@ -319,7 +319,9 @@ class MainProposalsSettingsSchema(colander.Schema):
     main_proposal_hashtag_name = colander.SchemaNode(
         colander.String(),
         title=_('Main proposal hashtag'),
-        description=_('Set to hashtag name (without #) to enable main proposals.'),
+        description=_("main_proposal_hashtag_name_desc",
+                      default="Set to hashtag name (without #) to enable "
+                              "highlighting some proposals as 'main proposals'."),
         missing='',
         validator=colander.Regex(
             HASHTAG_PATTERN,
