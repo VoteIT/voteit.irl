@@ -157,7 +157,7 @@ def includeme(config):
     config.add_schema('Meeting', MeetingVoteTransferSettingsSchema, 'vote_transfer_settings')
     config.add_view_action(
         control_panel_link,
-        'control_panel_meeting_presence', 'vote_transfer_settings',
+        'control_panel_poll', 'vote_transfer_settings',
         title=_("Vote transfer setting"),
         view_name='meeting_vote_transfer_settings',
     )
