@@ -1,16 +1,17 @@
 import colander
+from deform.widget import Select2Widget
 from arche.views.base import DefaultEditForm
 from betahaus.viewcomponent import view_action
 from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPFound
+from pyramid.traversal import find_root
 from pyramid.traversal import resource_path
 from pyramid.view import view_config
 from repoze.catalog.query import Eq
 from voteit.core import security
 from voteit.core.models.interfaces import IMeeting
-from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core.views.control_panel import control_panel_link
 
 from voteit.irl import _
@@ -60,13 +61,32 @@ class ReceivingUserIDValidator(object):
                                            mapping={'userid': value}))
 
 
+@colander.deferred
+def meeting_userids_widget(node, kw):
+    """ An autocompleting widget with the names and userids
+        of all people within the meeting
+    """
+    # Fetch userids
+    context = kw['context']
+    root = find_root(context)
+    choices = [('', _("- select -"))]
+    for (userid, roles) in context.local_roles.items():
+        if security.ROLE_VOTER not in roles:
+            try:
+                title = "%s (%s)" %(root['users'][userid].title, userid)
+            except KeyError:
+                continue
+            choices.append((userid, title))
+    return Select2Widget(values=choices)
+
+
 class TransferVoteSchema(colander.Schema):
     to_userid = colander.SchemaNode(
         colander.String(),
         title=_("To userid or participant number"),
         description=_("Must be someone who isn't a voter right now."),
         validator=ReceivingUserIDValidator,
-        widget=deferred_autocompleting_userid_widget
+        widget=meeting_userids_widget,
     )
 
 
