@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-05-15 16:20+0200\n"
+"POT-Creation-Date: 2018-05-16 10:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -629,6 +629,11 @@ msgstr ""
 
 #: ./voteit/irl/templates/view_electoral_register.pt:19
 msgid "Users"
+msgstr ""
+
+#: ./voteit/irl/templates/main_proposal_btn.pt:11
+#: ./voteit/irl/templates/main_proposal_btn.pt:18
+msgid "Main proposal"
 msgstr ""
 
 #: ./voteit/irl/templates/register_presence_done.pt:7

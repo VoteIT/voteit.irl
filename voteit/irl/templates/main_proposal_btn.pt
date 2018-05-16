@@ -8,13 +8,13 @@
     class="btn btn-xs btn-default ${active and 'active' or None}">
     <span class="text-primary">
       <span class="glyphicon glyphicon-tag"></span>
-      <tal:ts i18n:translate="">Main proposal<tal:ts>
+      <tal:ts i18n:translate="">Main proposal</tal:ts>
     </span>
   </a>
   <button tal:condition="active and not request.is_moderator"
     data-main-proposal
     class="btn btn-xs btn-success disabled">
       <span class="glyphicon glyphicon-tag"></span>
-      <tal:ts i18n:translate="">Main proposal<tal:ts>
+      <tal:ts i18n:translate="">Main proposal</tal:ts>
   </button>
 </span>

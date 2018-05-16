@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-05-15 16:20+0200\n"
-"PO-Revision-Date: 2018-05-15 14:44+0200\n"
+"POT-Creation-Date: 2018-05-16 10:23+0200\n"
+"PO-Revision-Date: 2018-05-16 10:23+0200\n"
 "Last-Translator: Weblate Admin <admin@example.com>\n"
 "Language-Team: Swedish <http://example.com/projects/voteit/voteit-irl/sv/>\n"
 "Language: sv\n"
@@ -669,6 +669,11 @@ msgstr "Röstlängd ${id} ${time}"
 #: voteit/irl/templates/view_electoral_register.pt:19
 msgid "Users"
 msgstr "Användare"
+
+#: voteit/irl/templates/main_proposal_btn.pt:11
+#: voteit/irl/templates/main_proposal_btn.pt:18
+msgid "Main proposal"
+msgstr "Huvudförslag"
 
 #: voteit/irl/templates/register_presence_done.pt:7
 msgid "Done!"
