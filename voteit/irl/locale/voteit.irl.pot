@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-05-25 12:32+0200\n"
+"POT-Creation-Date: 2018-05-25 12:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -502,6 +502,11 @@ msgstr ""
 #: ./voteit/irl/templates/participant_callbacks.pt:79
 #: ./voteit/irl/views/electoral_register.py:81
 msgid "Back"
+msgstr ""
+
+#: ./voteit/irl/templates/main_proposal_btn.pt:11
+#: ./voteit/irl/templates/main_proposal_btn.pt:18
+msgid "Main proposal"
 msgstr ""
 
 #: ./voteit/irl/templates/print_discussions.pt:9

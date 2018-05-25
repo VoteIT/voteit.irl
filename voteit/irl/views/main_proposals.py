@@ -20,7 +20,7 @@ def _check_tag_in_text(tag_name, text):
 
 
 @view_action('metadata_listing', 'main_proposal',
-             permission=security.MODERATE_MEETING,
+             permission=security.VIEW,
              interface=IProposal,
              priority=50)
 def main_property_action(context, request, va, **kw):
