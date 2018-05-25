@@ -83,7 +83,7 @@ def meeting_userids_widget(node, kw):
 class TransferVoteSchema(colander.Schema):
     to_userid = colander.SchemaNode(
         colander.String(),
-        title=_("To userid or participant number"),
+        title=_("To userid"),
         description=_("Must be someone who isn't a voter right now."),
         validator=ReceivingUserIDValidator,
         widget=meeting_userids_widget,

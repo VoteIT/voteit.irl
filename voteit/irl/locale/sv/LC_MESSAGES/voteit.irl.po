@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-05-08 15:44+0200\n"
-"PO-Revision-Date: 2018-05-08 15:46+0200\n"
+"POT-Creation-Date: 2018-05-25 12:32+0200\n"
+"PO-Revision-Date: 2018-05-25 12:33+0200\n"
 "Last-Translator: Weblate Admin <admin@example.com>\n"
 "Language-Team: Swedish <http://example.com/projects/voteit/voteit-irl/sv/>\n"
 "Language: sv\n"
@@ -255,63 +255,67 @@ msgstr ""
 "Skriv nummer som 'NN-NN'. 10-20 betyder att deltagare 10 till och med 20 får "
 "rösträtt om de är markerade som närvarande."
 
-#: voteit/irl/plugins/transfer_vote.py:21
-#: voteit/irl/plugins/transfer_vote.py:75
+#: voteit/irl/plugins/transfer_vote.py:22
+#: voteit/irl/plugins/transfer_vote.py:95
 msgid "Transfer vote"
 msgstr "För över rösträtt"
 
-#: voteit/irl/plugins/transfer_vote.py:54
+#: voteit/irl/plugins/transfer_vote.py:55
 msgid "No user has that participant number"
 msgstr "Ingen användare har det deltagarnumret"
 
-#: voteit/irl/plugins/transfer_vote.py:56
+#: voteit/irl/plugins/transfer_vote.py:57
 #, python-format
 msgid "${userid} doesn't exist in this meeting."
 msgstr "${userid} finns inte i detta möte."
 
-#: voteit/irl/plugins/transfer_vote.py:59
+#: voteit/irl/plugins/transfer_vote.py:60
 #, python-format
 msgid "${userid} is already a voter."
 msgstr "${userid} har redan rösträtt."
 
-#: voteit/irl/plugins/transfer_vote.py:66
-msgid "To userid or participant number"
-msgstr "Till användare eller deltagarnummer"
+#: voteit/irl/plugins/transfer_vote.py:72
+msgid "- select -"
+msgstr "- välj -"
 
-#: voteit/irl/plugins/transfer_vote.py:67
+#: voteit/irl/plugins/transfer_vote.py:86
+msgid "To userid"
+msgstr "Till AnvändarID"
+
+#: voteit/irl/plugins/transfer_vote.py:87
 msgid "Must be someone who isn't a voter right now."
 msgstr "Måste vara någon som inte har rösträtt just nu."
 
-#: voteit/irl/plugins/transfer_vote.py:83
+#: voteit/irl/plugins/transfer_vote.py:103
 msgid "Vote transfer is not currently enabled."
 msgstr "Överför röst är inte aktiverat just nu."
 
-#: voteit/irl/plugins/transfer_vote.py:89
+#: voteit/irl/plugins/transfer_vote.py:109
 msgid "You're not a voter"
 msgstr "Du har inte rösträtt"
 
-#: voteit/irl/plugins/transfer_vote.py:94
+#: voteit/irl/plugins/transfer_vote.py:114
 msgid "Votes can't be transfered while a poll is open."
 msgstr "Rösträtt kan inte överföras när en omröstning pågår."
 
-#: voteit/irl/plugins/transfer_vote.py:104
+#: voteit/irl/plugins/transfer_vote.py:124
 #, python-format
 msgid "Vote transfered to ${userid}"
 msgstr "Röst överförd till: ${userid}"
 
-#: voteit/irl/plugins/transfer_vote.py:111
+#: voteit/irl/plugins/transfer_vote.py:131
 msgid "Enable users to transfer votes?"
 msgstr "Tillåt användare att föra över rösträtt?"
 
-#: voteit/irl/plugins/transfer_vote.py:112
+#: voteit/irl/plugins/transfer_vote.py:132
 msgid "Will add the option to the meeting menu"
 msgstr "Lägger till alternativet till mötets meny"
 
-#: voteit/irl/plugins/transfer_vote.py:123
+#: voteit/irl/plugins/transfer_vote.py:143
 msgid "Vote transfer settings"
 msgstr "Inställningar för röstöverföring"
 
-#: voteit/irl/plugins/transfer_vote.py:161
+#: voteit/irl/plugins/transfer_vote.py:181
 msgid "Vote transfer setting"
 msgstr "Inställning för röstöverföring"
 
@@ -977,6 +981,9 @@ msgstr "Uppdatera röstberättigade"
 msgid "Main proposals"
 msgstr "Huvudförslag"
 
+#~ msgid "To userid or participant number"
+#~ msgstr "Till användare eller deltagarnummer"
+
 #~ msgid "register_meeting_presence_error_notice"
 #~ msgstr ""
 #~ "VoteIT kunde inte sätta dig som närvarande. Det kan bero på hög last på "
@@ -987,9 +994,6 @@ msgstr "Huvudförslag"
 
 #~ msgid "Proposal view for projector"
 #~ msgstr "Förslagsvy för projektor"
-
-#~ msgid "To userid"
-#~ msgstr "Till AnvändarID"
 
 #~ msgid "Quick poll: ${proposals}"
 #~ msgstr "Snabbomröstning: ${proposals}"

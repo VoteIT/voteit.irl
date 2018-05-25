@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-05-08 15:44+0200\n"
+"POT-Creation-Date: 2018-05-25 12:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -227,63 +227,67 @@ msgstr ""
 msgid "voter_pn_range_desc"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:21
-#: ./voteit/irl/plugins/transfer_vote.py:75
+#: ./voteit/irl/plugins/transfer_vote.py:22
+#: ./voteit/irl/plugins/transfer_vote.py:95
 msgid "Transfer vote"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:54
+#: ./voteit/irl/plugins/transfer_vote.py:55
 msgid "No user has that participant number"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:56
+#: ./voteit/irl/plugins/transfer_vote.py:57
 #, python-format
 msgid "${userid} doesn't exist in this meeting."
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:59
+#: ./voteit/irl/plugins/transfer_vote.py:60
 #, python-format
 msgid "${userid} is already a voter."
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:66
-msgid "To userid or participant number"
+#: ./voteit/irl/plugins/transfer_vote.py:72
+msgid "- select -"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:67
+#: ./voteit/irl/plugins/transfer_vote.py:86
+msgid "To userid"
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:87
 msgid "Must be someone who isn't a voter right now."
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:83
+#: ./voteit/irl/plugins/transfer_vote.py:103
 msgid "Vote transfer is not currently enabled."
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:89
+#: ./voteit/irl/plugins/transfer_vote.py:109
 msgid "You're not a voter"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:94
+#: ./voteit/irl/plugins/transfer_vote.py:114
 msgid "Votes can't be transfered while a poll is open."
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:104
+#: ./voteit/irl/plugins/transfer_vote.py:124
 #, python-format
 msgid "Vote transfered to ${userid}"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:111
+#: ./voteit/irl/plugins/transfer_vote.py:131
 msgid "Enable users to transfer votes?"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:112
+#: ./voteit/irl/plugins/transfer_vote.py:132
 msgid "Will add the option to the meeting menu"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:123
+#: ./voteit/irl/plugins/transfer_vote.py:143
 msgid "Vote transfer settings"
 msgstr ""
 
-#: ./voteit/irl/plugins/transfer_vote.py:161
+#: ./voteit/irl/plugins/transfer_vote.py:181
 msgid "Vote transfer setting"
 msgstr ""
 
