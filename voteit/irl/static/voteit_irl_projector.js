@@ -20,7 +20,6 @@ function Projector() {
     $('body').on('click', '[data-quick-poll]', this.quick_poll.bind(this));
     $('body').on('click', '[data-tag-filter]', this.filter_tag.bind(this));
     $('body').on('click', '.move-left,.move-right', this.highlight_proposal_handler.bind(this));
-    $('body').on('click', '.move-left,.move-right', this.highlight_proposal_handler.bind(this));
     $('body').on('click', '[data-filter-content]', function(e) { e.stopPropagation() });
     $('body').on('change', '[data-filter-content] input', this.filterChange.bind(this));
 };
@@ -108,6 +107,7 @@ Projector.prototype = {
 
         $('#navbar-heading').html(response['agenda_item']);
         try { window.history.pushState(null, response['agenda_item'], response['ai_url']); } catch(e) {}
+        voteit.adjust_greedy_element();
     },
 
     handle_ai_menu_click: function (event) {
@@ -143,6 +143,9 @@ Projector.prototype = {
             var controls = elem.parents('[data-wf-controls]');
             $(controls).children('[data-wf-state]').removeClass('active');
             $(controls).children('[data-wf-state="' + response['state'] + '"]').addClass('active')
+            // Why's the state stored several times? FIXME
+            controls.data('wf-controls', response['state']);
+            elem.parents('[data-state]').data('state', response['state']);
         }
     },
 
@@ -153,8 +156,9 @@ Projector.prototype = {
         this.highlight_proposal(elem, enable);
     },
 
-    highlight_proposal: function (elem, enable) {
-        elem.remove()
+    highlight_proposal: function (elem, enable, refilter) {
+        elem.detach();
+        if (typeof refilter === 'undefined') refilter = true;
         if (enable == true) {
             //Enable selection
             $('#projector-main').append(elem);
@@ -171,6 +175,7 @@ Projector.prototype = {
                 $('#projector-pool').append(elem);
             }
         }
+        if (refilter) this.filterChange();
     },
 
     /* Find all proposals currently placed in the highlighted section and post them */
@@ -208,9 +213,10 @@ Projector.prototype = {
         $('#projector-pool .list-group-item').each(function(i, v) {
         // note about lowercae: tags are always stored in lowercase!
             if ($.inArray( select_tag.toLowerCase() , $(v).data('tags').split(',') ) > -1) {
-                projector.highlight_proposal($(v), true);
+                projector.highlight_proposal($(v), true, false);
             }
         });
+        this.filterChange();
     },
 
     filterChange: function() {
@@ -218,6 +224,7 @@ Projector.prototype = {
         $('[data-filter-content] input').each(function(i, e) {
             if (e.checked) { workflow_states.push(e.name); }
         });
+
         $('#projector-pool li').each(function(i, e) {
             $elem = $(e);
             if (workflow_states.indexOf($elem.data('state')) == -1) {

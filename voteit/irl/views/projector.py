@@ -23,7 +23,7 @@ from voteit.core import _ as core_ts
 from voteit.irl import _
 from voteit.irl.fanstaticlib import voteit_irl_projector
 
-DEFAULT_CHECKED_WORKFLOW_STATES = ('published', 'approved', 'denied')
+DEFAULT_CHECKED_WORKFLOW_STATES = ('published',)
 
 
 def proj_tags2links(text):
@@ -148,13 +148,12 @@ class ProjectorView(AgendaItemView):
         wf = get_workflow(IProposal, 'Proposal')
         workflow_states = []
         for info in wf._state_info(IProposal):  # Public API goes through permission checker
-            if wf_counter[info['name']]:
-                workflow_states.append({
-                    'name': info['name'],
-                    'title': self.request.localizer.translate(core_ts(info['title'])),
-                    'checked': info['name'] in DEFAULT_CHECKED_WORKFLOW_STATES,
-                    'count': wf_counter[info['name']],
-                })
+            workflow_states.append({
+                'name': info['name'],
+                'title': self.request.localizer.translate(core_ts(info['title'])),
+                'checked': info['name'] in DEFAULT_CHECKED_WORKFLOW_STATES,
+                'count': wf_counter[info['name']],
+            })
 
         if previous_obj:
             previous_url = self.request.resource_url(previous_obj, '__ai_contents__.json')
