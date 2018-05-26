@@ -184,13 +184,14 @@ Projector.prototype = {
         $('[name="quick-poll-method"]').attr('value', $(event.currentTarget).data('quick-poll'));
         $('[name="reject-prop"]').attr('value', $(event.currentTarget).data('reject-prop'));
         var form = $('#quick-poll');
-        arche.do_request(form.attr('action'), {'method': 'POST', 'data': form.serialize()})
-        .done(function(response) {
+        var request = arche.do_request(form.attr('action'), {'method': 'POST', 'data': form.serialize()});
+        request.done(function(response) {
             arche.load_flash_messages()
             arche.create_flash_message(response['msg'], {'type': 'success', 'auto_destruct': false})
             //FIXME: At least update ai item
-        })
-        .fail(function(jqXHR) {
+        });
+        request.fail(function(jqXHR) {
+            // FIXME This will break if we don't use the built-in exception views in arche
             arche.flash_error(jqXHR);
         });
     },
@@ -207,13 +208,16 @@ Projector.prototype = {
         if (select_tag[0] == '#') select_tag = select_tag.slice(1);
         //Unselect all
         $('#projector-main .list-group-item').each(function(i, v) {
-            projector.highlight_proposal($(v), false);
+            projector.highlight_proposal($(v), false, false);
         });
         //Select valid
         $('#projector-pool .list-group-item').each(function(i, v) {
-        // note about lowercae: tags are always stored in lowercase!
-            if ($.inArray( select_tag.toLowerCase() , $(v).data('tags').split(',') ) > -1) {
-                projector.highlight_proposal($(v), true, false);
+            var v_elem = $(v);
+            // note about lowercae: tags are always stored in lowercase!
+            if ($.inArray( select_tag.toLowerCase() , v_elem.data('tags').split(',') ) > -1) {
+                if (!v_elem.hasClass('hidden')) {
+                    projector.highlight_proposal(v_elem, true, false);
+                }
             }
         });
         this.filterChange();
