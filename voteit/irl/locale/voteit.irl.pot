@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-05-25 12:41+0200\n"
+"POT-Creation-Date: 2018-05-26 15:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -483,7 +483,15 @@ msgstr ""
 msgid "1 highlighted + create reject"
 msgstr ""
 
-#: ./voteit/irl/templates/projector.pt:181
+#: ./voteit/irl/templates/projector.pt:107
+msgid "Closed polls"
+msgstr ""
+
+#: ./voteit/irl/templates/projector.pt:115
+msgid "Show last poll result"
+msgstr ""
+
+#: ./voteit/irl/templates/projector.pt:197
 msgid "by"
 msgstr ""
 
@@ -770,21 +778,25 @@ msgstr ""
 
 #. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
 #. 'Denied'. You may need to reload this page.
-#: ./voteit/irl/views/projector.py:199
+#: ./voteit/irl/views/projector.py:198
 msgid "wrong_initial_state_error"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:210
+#: ./voteit/irl/views/projector.py:209
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:219
+#: ./voteit/irl/views/projector.py:218
 #, python-format
 msgid "Descision ${num}"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:224
+#: ./voteit/irl/views/projector.py:231
+msgid "No closed polls yet"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:235
 msgid "Projector"
 msgstr ""
 

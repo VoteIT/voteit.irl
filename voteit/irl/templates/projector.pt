@@ -100,6 +100,22 @@
                   1 highlighted + create reject
                 </a>
               </li>
+
+              <li role="presentation" class="divider"></li>
+
+              <li role="presentation" class="dropdown-header">
+                <span i18n:translate="">Closed polls</span>
+              </li>
+
+              <li>
+                <a role="menuitem"
+                   data-open-modal
+                   data-modal-dialog-class="modal-lg"
+                   href="${request.resource_url(request.meeting, '__show_last_poll_result__')}"
+                   i18n:translate="">
+                  Show last poll result
+                </a>
+              </li>
           </ul>
         </li>
 

@@ -4,13 +4,14 @@ from urllib import urlencode
 
 from betahaus.viewcomponent.decorators import view_action
 from pyramid.httpexceptions import HTTPForbidden
+from pyramid.httpexceptions import HTTPNotFound
 from pyramid.settings import truthy
 from pyramid.traversal import resource_path
 from pyramid.view import view_config
+from pyramid.view import render_view_to_response
 from pyramid.view import view_defaults
 from repoze.catalog.query import Eq
 from repoze.workflow import get_workflow
-
 from voteit.core.helpers import TAG_PATTERN
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IMeeting
@@ -22,6 +23,7 @@ from voteit.core import _ as core_ts
 
 from voteit.irl import _
 from voteit.irl.fanstaticlib import voteit_irl_projector
+
 
 DEFAULT_CHECKED_WORKFLOW_STATES = ('published',)
 
@@ -217,6 +219,18 @@ class ProjectorView(AgendaItemView):
         res = self.request.root.catalog.query(query)[0]
         title = _("Descision ${num}", mapping={'num': res.total + 1})
         return self.request.localizer.translate(title)
+
+    @view_config(name="__show_last_poll_result__")
+    def show_last_poll_result(self):
+        query = Eq('type_name', 'Poll') & Eq('path', resource_path(self.request.meeting)) & \
+                Eq('workflow_state', ['closed'])
+        docids = self.request.root.catalog.query(query, sort_index='end_time', limit=1, reverse=True)[1]
+        poll = None
+        for poll in self.request.resolve_docids(docids):
+            break
+        if poll:
+            return render_view_to_response(poll, self.request, name='__show_results__')
+        raise HTTPNotFound(_("No closed polls yet"))
 
 
 @view_action('agenda_actions', 'projector',
