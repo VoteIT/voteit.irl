@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import colander
 import deform
 from arche.validators import existing_userid_or_email
@@ -7,6 +8,7 @@ from voteit.core.helpers import strip_and_truncate
 from voteit.core.schemas.common import HASHTAG_PATTERN
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
 from voteit.core.schemas.common import strip_and_lowercase
+
 from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
 from voteit.irl.models.interfaces import IElegibleVotersMethod
@@ -330,6 +332,19 @@ class MainProposalsSettingsSchema(colander.Schema):
     )
 
 
+class PrintBtnSettingsSchema(colander.Schema):
+    print_btn_enabled = colander.SchemaNode(
+        colander.Set(),
+        title=_("Show print button for these content types"),
+        widget=deform.widget.CheckboxChoiceWidget(
+            values=(
+                ('Proposal', _("Proposals")),
+                ('DiscussionPost', _("Discussion post")),
+            )
+        )
+    )
+
+
 def includeme(config):
     config.add_content_schema('Meeting', ElegibleVotersMethodSchema, 'eligible_voters_method')
     config.add_content_schema('Meeting', AssignParticipantNumber, 'assign_participant_number')
@@ -337,3 +352,4 @@ def includeme(config):
     config.add_content_schema('Meeting', AttachEmailsToPN, 'attach_emails_to_pn')
     config.add_content_schema('Meeting', MeetingPresenceSettingsSchema, 'meeting_presence_settings')
     config.add_content_schema('Meeting', MainProposalsSettingsSchema, 'main_proposals_settings')
+    config.add_content_schema('Meeting', PrintBtnSettingsSchema, 'print_btn_settings')

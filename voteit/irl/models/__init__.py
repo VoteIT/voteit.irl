@@ -5,3 +5,4 @@ def includeme(config):
     config.include('.participant_numbers')
     config.include('.participant_callback')
     config.include('.participant_number_ap')
+    config.include('.print')

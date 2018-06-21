@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 import colander
 import deform
 from arche.views.base import BaseForm
 from arche.views.base import BaseView
+from arche.views.base import DefaultEditForm
 from betahaus.viewcomponent import view_action
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
@@ -10,6 +12,8 @@ from voteit.core.helpers import strip_and_truncate
 from voteit.core.models.interfaces import IAgendaItem
 from voteit.core.models.interfaces import IDiscussionPost
 from voteit.core.models.interfaces import IProposal
+from voteit.core.views.control_panel import control_panel_category
+from voteit.core.views.control_panel import control_panel_link
 from webhelpers.html.converters import nl2br
 
 from voteit.irl import _
@@ -138,21 +142,44 @@ _PRINT_BTN = """
 </a>
 """
 
+
 @view_action('metadata_listing', 'print_proposal',
              title = _("Print this proposal"),
              interface = IProposal)
 def print_this_proposal_action(context, request, va, **kw):
-    url = request.resource_url(request.agenda_item, '_print_proposals', query = {'proposal_id': context.__name__})
-    return _PRINT_BTN % (url, request.localizer.translate(va.title))
+    if 'Proposal' in request.meeting.print_btn_enabled:
+        url = request.resource_url(request.agenda_item, '_print_proposals', query = {'proposal_id': context.__name__})
+        return _PRINT_BTN % (url, request.localizer.translate(va.title))
 
 
 @view_action('metadata_listing', 'print_post',
              title = _("Print this post"),
              interface = IDiscussionPost)
 def print_this_post_action(context, request, va, **kw):
-    url = request.resource_url(request.agenda_item, '_print_discussions', query = {'post_id': context.__name__})
-    return _PRINT_BTN % (url, request.localizer.translate(va.title))
+    if 'DiscussionPost' in request.meeting.print_btn_enabled:
+        url = request.resource_url(request.agenda_item, '_print_discussions', query = {'post_id': context.__name__})
+        return _PRINT_BTN % (url, request.localizer.translate(va.title))
+
+
+@view_config(name="print_btn_settings",
+             permission=security.MODERATE_MEETING,
+             renderer="arche:templates/form.pt")
+class MainProposalsSettingsForm(DefaultEditForm):
+    schema_name = 'print_btn_settings'
+    title = _('Print button settings')
 
 
 def includeme(config):
     config.scan(__name__)
+    config.add_view_action(
+        control_panel_category,
+        'control_panel', 'print_',
+             panel_group='control_panel_print_btn_settings',
+             title=_("Print button"),
+    )
+    config.add_view_action(
+        control_panel_link,
+        'control_panel_print_btn_settings', 'settings',
+        title=_("Settings"),
+        view_name='print_btn_settings',
+    )
