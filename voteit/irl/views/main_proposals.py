@@ -35,7 +35,7 @@ def main_property_action(context, request, va, **kw):
 @view_config(name="main_proposals_settings",
              permission=security.MODERATE_MEETING,
              renderer="arche:templates/form.pt")
-class AttachEmailsToPNForm(DefaultEditForm):
+class MainProposalsSettingsForm(DefaultEditForm):
     schema_name = 'main_proposals_settings'
     title = _('Main proposals')
 
