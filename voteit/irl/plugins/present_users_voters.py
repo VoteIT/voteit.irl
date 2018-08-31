@@ -85,5 +85,5 @@ def includeme(config):
     from voteit.irl.schemas import MeetingPresenceSettingsSchema
     config.add_subscriber(inject_in_settings, [MeetingPresenceSettingsSchema, ISchemaCreatedEvent])
     # Add properties
-    from voteit.core.models.meeting import Meeting
-    Meeting.elegible_voter_pn = ""
+    from voteit.irl.models.meeting_presence import MeetingPresence
+    MeetingPresence.elegible_voter_pn = ""
