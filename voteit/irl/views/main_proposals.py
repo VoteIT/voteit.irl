@@ -28,7 +28,7 @@ def main_property_action(context, request, va, **kw):
     if hashtag_name:
         response = {'context': context,
                     # 'main_proposal': main_proposal,
-                    'active': hashtag_name in context.tags}
+                    'active': hashtag_name.lower() in context.tags}
         return render('voteit.irl:templates/main_proposal_btn.pt', response, request=request)
 
 
