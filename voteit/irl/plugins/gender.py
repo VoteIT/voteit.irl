@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from decimal import Decimal
 
 from arche.interfaces import ISchemaCreatedEvent
+from arche.schemas import SiteSettingsSchema
 from arche.schemas import UserSchema
 import colander
 import deform
@@ -14,7 +15,11 @@ from voteit.irl import _
 from voteit.irl.models.participant_number_ap import ParticipantNumberAP
 from voteit.irl.schemas import ClaimParticipantNumberSchema
 
-
+PRONOUN_VALUES = (('she', _('She')),
+                  ('he', _('He')),
+                  ('ze', _('Ze')))
+PRONOUN_NAME_DICT = dict(PRONOUN_VALUES)
+PRONOUN_NAME_DICT[''] = _('Unknown')
 GENDER_VALUES = (('female', _("Female")),
                  ('male', _("Male")),
                  ('other', _("Other")))
@@ -64,11 +69,30 @@ class ParticipantNumberAPWithGender(ParticipantNumberAP):
 def add_gender_in_schema(schema, event):
     schema.add(colander.SchemaNode(
         colander.String(),
-        name = "gender",
-        title = _("Gender"),
-        description = _("Used for statistics and perhaps gender based quotas. See meeting for details."),
-        widget = deform.widget.RadioChoiceWidget(values = GENDER_VALUES)),
+        name="gender",
+        title=_("Gender"),
+        description=_("Used for statistics and perhaps gender based quotas. See meeting for details."),
+        widget=deform.widget.RadioChoiceWidget(values=GENDER_VALUES)),
     )
+    request = getattr(event, 'request', None)
+    if request.root.site_settings.get('pronoun_active'):
+        schema.add(colander.SchemaNode(
+            colander.String(),
+            name="pronoun",
+            title=_("Pronoun"),
+            description=_("Shown in speaker lists."),
+            widget=deform.widget.RadioChoiceWidget(values=PRONOUN_VALUES)),
+        )
+
+
+def pronoun_in_site_settings(schema, event):
+    schema.add(colander.SchemaNode(
+        colander.Boolean(),
+        name="pronoun_active",
+        title=_("Let users select pronoun"),
+        description=_("Pronoun is shown in speaker lists."),
+        widget=deform.widget.CheckboxWidget(),
+        missing=False))
 
 
 def add_gender_in_meeting(schema, event):
@@ -82,12 +106,9 @@ def add_gender_in_meeting(schema, event):
 def includeme(config):
     config.add_subscriber(add_gender_in_meeting, [ClaimParticipantNumberSchema, ISchemaCreatedEvent])
     config.add_subscriber(add_gender_in_schema, [UserSchema, ISchemaCreatedEvent])
+    config.add_subscriber(pronoun_in_site_settings, [SiteSettingsSchema, ISchemaCreatedEvent])
     config.registry.registerAdapter(ParticipantNumberAPWithGender, name=ParticipantNumberAPWithGender.name)
-    #Maybe add attribute to User class
+    # Add attribute to User class
     from voteit.core.models.user import User
-    if not hasattr(User, 'gender'):
-        def _get(self):
-            return self.get_field_value('gender', '')
-        def _set(self, value):
-            self.set_field_value('gender', value)
-        User.gender = property(_get, _set)
+    User.add_field('gender')
+    User.add_field('pronoun')
