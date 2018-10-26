@@ -90,8 +90,7 @@ def pronoun_in_site_settings(schema, event):
         colander.Boolean(),
         name="pronoun_active",
         title=_("Let users select pronoun"),
-        description=_("Pronoun is shown in speaker lists."),
-        widget=deform.widget.CheckboxWidget(),
+        description=_("Pronoun might be shown in different contexts like the speaker list."),
         missing=False))
 
 
