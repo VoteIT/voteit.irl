@@ -41,6 +41,14 @@ class MeetingPresence(object):
         self.context._meeting_presence_enabled = value
 
     @property
+    def settings(self):
+        return getattr(self.context, '_meeting_presence_settings', {})
+    @settings.setter
+    def settings(self, value):
+        assert isinstance(value, dict)
+        self.context._meeting_presence_settings = OOBTree(value)
+
+    @property
     def vote_transfer_enabled(self):
         return getattr(self.context, '_meeting_vote_transfer_enabled', None)
     @vote_transfer_enabled.setter
