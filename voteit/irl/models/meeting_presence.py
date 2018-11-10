@@ -49,13 +49,13 @@ class MeetingPresence(object):
 
     @property
     def start_time(self):
-        return getattr(self.context, '_v_meeting_presence_start_time', None)
+        return getattr(self.context, '_meeting_presence_start_time', None)
     @start_time.setter
     def start_time(self, value):
-        self.context._v_meeting_presence_start_time = value
+        self.context._meeting_presence_start_time = value
     @start_time.deleter
     def start_time(self):
-        delattr(self.context, '_v_meeting_presence_start_time')
+        delattr(self.context, '_meeting_presence_start_time')
 
     @property
     def archive(self):
