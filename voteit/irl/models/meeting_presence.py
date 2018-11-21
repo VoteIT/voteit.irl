@@ -41,6 +41,14 @@ class MeetingPresence(object):
         self.context._meeting_presence_enabled = value
 
     @property
+    def settings(self):
+        return getattr(self.context, '_meeting_presence_settings', {})
+    @settings.setter
+    def settings(self, value):
+        assert isinstance(value, dict)
+        self.context._meeting_presence_settings = OOBTree(value)
+
+    @property
     def vote_transfer_enabled(self):
         return getattr(self.context, '_meeting_vote_transfer_enabled', None)
     @vote_transfer_enabled.setter
@@ -49,13 +57,13 @@ class MeetingPresence(object):
 
     @property
     def start_time(self):
-        return getattr(self.context, '_v_meeting_presence_start_time', None)
+        return getattr(self.context, '_meeting_presence_start_time', None)
     @start_time.setter
     def start_time(self, value):
-        self.context._v_meeting_presence_start_time = value
+        self.context._meeting_presence_start_time = value
     @start_time.deleter
     def start_time(self):
-        delattr(self.context, '_v_meeting_presence_start_time')
+        delattr(self.context, '_meeting_presence_start_time')
 
     @property
     def archive(self):

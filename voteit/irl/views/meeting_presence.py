@@ -198,20 +198,13 @@ class MeetingPresenceSettingsForm(DefaultEditForm):
         return self.request.registry.getAdapter(self.request.meeting, IMeetingPresence)
 
     def appstruct(self):
-        appstruct = {}
-        for field in self.schema.children:
-            if hasattr(self.meeting_presence, field.name):
-                val = getattr(self.meeting_presence, field.name)
-                if val is None:
-                    val = colander.null
-                appstruct[field.name] = val
+        appstruct = dict(self.meeting_presence.settings)
+        appstruct['enabled'] = self.meeting_presence.enabled
         return appstruct
 
     def save_success(self, appstruct):
-        for (k, v) in appstruct.items():
-            if not hasattr(self.meeting_presence, k):
-                raise AttributeError("IMeetingPresence has no such attr")
-            setattr(self.meeting_presence, k, v)
+        self.meeting_presence.enabled = appstruct.pop('enabled', False)
+        self.meeting_presence.settings = appstruct
         self.flash_messages.add(self.default_success, type='success')
         return HTTPFound(location=self.request.resource_url(self.context))
 

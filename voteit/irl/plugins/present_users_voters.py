@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import colander
 from arche.interfaces import ISchemaCreatedEvent
 from pyramid.threadlocal import get_current_request
+from six import string_types
 from voteit.core.views.control_panel import control_panel_link
 
 from voteit.irl import _
@@ -69,14 +70,16 @@ def inject_in_settings(schema, event):
 
 
 def get_valid_range(meeting):
-    val = getattr(meeting, 'elegible_voter_pn', None)
-    if val is None:
+    meeting_presence = IMeetingPresence(meeting, None)
+    if meeting_presence is None:
         return
-    parts = val.split('-')
-    try:
-        return [int(parts[0]), int(parts[1])]
-    except:
-        pass
+    val = meeting_presence.settings.get('elegible_voter_pn', None)
+    if isinstance(val, string_types):
+        parts = val.split('-')
+        try:
+            return [int(parts[0]), int(parts[1])]
+        except:
+            pass
 
 
 def includeme(config):
