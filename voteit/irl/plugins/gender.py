@@ -127,7 +127,7 @@ def add_gender_in_speaker_list_settings(schema, event):
     schema.add(colander.SchemaNode(
         colander.String(),
         name='show_gender_in_speaker_list',
-        tab=_('Gender'),
+        tab=request.localizer.translate(_('Gender')),
         title=title,
         widget=deform.widget.RadioChoiceWidget(values=values),
         default='',
@@ -136,7 +136,7 @@ def add_gender_in_speaker_list_settings(schema, event):
     schema.add(colander.SchemaNode(
         colander.Boolean(),
         name='require_gender_in_speaker_list',
-        tab=_('Gender'),
+        tab=request.localizer.translate(_('Gender')),
         title=_('Require gender to join speaker list'),
         description=_('Users will have to select gender to be able to join a speaker list.'),
         default=False,
