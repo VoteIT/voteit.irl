@@ -72,6 +72,7 @@ def add_gender_in_schema(schema, event):
         name="gender",
         title=_("Gender"),
         description=_("Used for statistics and perhaps gender based quotas. See meeting for details."),
+        missing="",
         widget=deform.widget.RadioChoiceWidget(values=GENDER_VALUES)),
     )
     request = getattr(event, 'request', None)
@@ -81,6 +82,7 @@ def add_gender_in_schema(schema, event):
             name="pronoun",
             title=_("Pronoun"),
             description=_("Shown in speaker lists."),
+            missing="",
             widget=deform.widget.RadioChoiceWidget(values=PRONOUN_VALUES)),
         )
 
