@@ -110,6 +110,9 @@ class MeetingPresence(object):
     def __contains__(self, val):
         return val in self.present_userids
 
+    def __iter__(self):
+        return iter(self.present_userids)
+
 
 def includeme(config):
     config.registry.registerAdapter(MeetingPresence)
