@@ -1,0 +1,20 @@
+{
+  "proposals": [
+    {
+      "uid": "prop1",
+      "aid": "prop-1",
+      "text": "Proposal text",
+      "workflowState": "published",
+      "creator": "Användare (username)",
+      "workflowApi": "#prop1"
+    },
+    {
+      "uid": "prop2",
+      "aid": "prop-2",
+      "text": "Proposal text two",
+      "workflowState": "denied",
+      "creator": "Annan Användare (username-1)",
+      "workflowApi": "#prop2"
+    }
+  ]
+}

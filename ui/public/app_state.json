@@ -1,0 +1,106 @@
+{
+  "meeting": {
+    "href": "#meeting",
+    "title": "Möte",
+    "agenda": [
+      {
+        "name": "one",
+        "title": "Agenda item 1",
+        "workflowState": "upcoming",
+        "href": "#agenda-1",
+        "jsonUrl": "/agenda1.json"
+      },
+      {
+        "name": "two",
+        "title": "Agenda item 2",
+        "workflowState": "ongoing",
+        "href": "#agenda-2",
+        "jsonUrl": "/agenda2.json"
+      }
+    ]
+  },
+  "pollGroups": [
+    {
+      "title": "Flera förslag (Schultze)",
+      "methods": [
+        {
+          "name": "schultze",
+          "title": "Alla markerade",
+          "proposalsMin": 3
+        },
+        {
+          "name": "schultze-reject",
+          "title": "Alla markerade + skapa avslag",
+          "proposalsMin": 2
+        }
+      ]
+    },
+    {
+      "title": "Majoritetsomröstning",
+      "methods": [
+        {
+          "name": "majority",
+          "title": "2 markerade",
+          "proposalsMin": 2,
+          "proposalsMax": 2
+        },
+        {
+          "name": "combined_simple",
+          "title": "Markerade mot avslag",
+          "proposalsMin": 1
+        }
+      ]
+    }
+  ],
+  "ts": {
+    "Ongoing": "Pågående",
+    "Upcoming": "Kommande",
+    "Previous": "Föregående",
+    "Next": "Nästa",
+    "by": "av",
+    "Click menu to select Agenda Item": "Välj dagordningspunkt i menyn",
+    "Closed polls": "Stängda omröstningar",
+    "Show last poll result": "Visa senaste omröstningsresultat"
+  },
+  "proposalWorkflowStates": [
+    {
+      "name": "published",
+      "title": "Publicerad",
+      "checked": true,
+      "quickSelect": true
+    },
+    {
+      "name": "retracted",
+      "title": "Tillbakadragen",
+      "checked": false,
+      "quickSelect": false
+    },
+    {
+      "name": "voting",
+      "title": "Låst för omröstning",
+      "checked": false,
+      "quickSelect": false
+    },
+    {
+      "name": "approved",
+      "title": "Bifallen",
+      "checked": false,
+      "quickSelect": true
+    },
+    {
+      "name": "denied",
+      "title": "Avslaget",
+      "checked": false,
+      "quickSelect": true
+    },
+    {
+      "name": "unhandled",
+      "title": "Ohanterad",
+      "checked": false,
+      "quickSelect": false
+    }
+  ],
+  "api": {
+    "lastPollResult": "#last-poll-result"
+  }
+}
