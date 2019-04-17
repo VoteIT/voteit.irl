@@ -29,7 +29,7 @@
           "proposalsMin": 3
         },
         {
-          "name": "schultze-reject",
+          "name": "schultze_reject",
           "title": "Alla markerade + skapa avslag",
           "proposalsMin": 2
         }
@@ -59,6 +59,7 @@
     "Next": "Nästa",
     "by": "av",
     "Click menu to select Agenda Item": "Välj dagordningspunkt i menyn",
+    "Ongoing polls": "Pågående omröstningar",
     "Closed polls": "Stängda omröstningar",
     "Show last poll result": "Visa senaste omröstningsresultat"
   },
@@ -101,6 +102,8 @@
     }
   ],
   "api": {
-    "lastPollResult": "#last-poll-result"
-  }
+    "latestPollResult": "/latest_poll_result.html",
+    "quickPoll": "/quick_poll.json"
+  },
+  "logo": "http://localhost:6543/voteit_core_static/images/logo.png"
 }

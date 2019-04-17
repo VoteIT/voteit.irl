@@ -16,5 +16,29 @@
       "creator": "Annan Användare (username-1)",
       "workflowApi": "#prop2"
     }
+  ],
+  "pollsOngoing": [
+    {
+      "title": "Omröstning 1",
+      "uid": "123-asdf-312",
+      "votes": 62,
+      "potentialVotes": 134
+    }
+  ],
+  "pollsClosed": [
+    {
+      "title": "Omröstning 0",
+      "uid": "123-asdf-32312",
+      "votes": 104,
+      "potentialVotes": 134,
+      "href": "/latest_poll_result.html"
+    },
+    {
+      "title": "Omröstning 2",
+      "uid": "123-asdf-32312kk",
+      "votes": 124,
+      "potentialVotes": 134,
+      "href": "http://localhost:1234/"
+    }
   ]
 }

@@ -12,6 +12,7 @@
                 </div>
             </div>
         </div>
+        <modal/>
     </div>
 </template>
 
@@ -30,6 +31,13 @@ body
 .fixed-right
     padding-right: 0
     padding-left: 0
+
+#quick-polls
+    .progress
+        margin: 4px 0
+    .progress-bar
+        min-width: 4em
+        min-width: fit-content
 
 #projector-pool
     li
@@ -52,4 +60,8 @@ body
             left: 0
             top: 80%
             background: linear-gradient(rgba(#fff,0), rgba(#fff,1))
+
+#projector-main
+    .proposal-text
+        font-size: 150%
 </style>

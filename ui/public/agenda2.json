@@ -16,5 +16,7 @@
       "creator": "Annan Användare (username-1)",
       "workflowApi": "#prop4"
     }
-  ]
+  ],
+  "pollsOngoing": [],
+  "pollsClosed": []
 }

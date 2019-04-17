@@ -35,11 +35,15 @@ export default {
     state: {
         proposalWorkflowStates: [],
         pollGroups: [],
-        proposalSelection: [],
         proposals: [],
+        proposalSelection: [],  // uids
+        proposalOrder: [],  // uids
+        pollsOngoing: [],
+        pollsClosed: [],
         agendaUrl: null,
         requestActive: false,
-        api: {}
+        api: {},
+        logo: ''
     },
 
     getters: {
@@ -49,7 +53,9 @@ export default {
                 if (state.checked)
                     onStates[state.name] = true;
             });
-            return state.proposals.filter(prop => {
+            return state.proposalOrder.map(uid => {
+                return state.proposals.find(p => p.uid === uid);
+            }).filter(prop => {
                 return prop.workflowState in onStates && !state.proposalSelection.includes(prop.uid);
             });
         },
@@ -63,14 +69,31 @@ export default {
             state.proposalWorkflowStates = data.proposalWorkflowStates;
             state.pollGroups = data.pollGroups;
             state.api = data.api;
+            state.logo = data.logo;
         },
         setAgendaUrl(state, url) {
             state.agendaUrl = url;
             state.proposals = [];
             state.proposalSelection = [];
+            state.proposalOrder = [];
+            state.pollsOngoing = [];
+            state.pollsClosed = [];
         },
-        setProposals(state, proposals) {
-            state.proposals = proposals;
+        loadAgendaItem(state, data) {
+            state.proposals = data.proposals;
+            state.pollsOngoing = data.pollsOngoing;
+            state.pollsClosed = data.pollsClosed;
+
+            // Remove deleted proposals from order and selection
+            const containsFilter = uid => state.proposals.find(p => p.uid === uid) !== undefined;
+            state.proposalOrder = state.proposalOrder.filter(containsFilter);
+            state.proposalSelection = state.proposalSelection.filter(containsFilter);
+
+            // Push new proposals to proposalOrder
+            data.proposals.forEach(proposal => {
+                if (!state.proposalOrder.includes(proposal.uid))
+                    state.proposalOrder.push(proposal.uid);
+            });
         },
         toggleProposalWorkflow(state, name) {
             const wf = state.proposalWorkflowStates.find(state => state.name===name);
@@ -80,8 +103,8 @@ export default {
             proposal.workflowState = workflowState.name;
         },
         downShift(state, proposal) { // Get it?
-            state.proposals.splice(state.proposals.indexOf(proposal), 1);
-            state.proposals.push(proposal);
+            state.proposalOrder.splice(state.proposalOrder.indexOf(proposal.uid), 1);
+            state.proposalOrder.push(proposal.uid);
         },
         selectProposal(state, proposal) {
             state.proposalSelection.unshift(proposal.uid);
@@ -100,7 +123,7 @@ export default {
                 doRequest(state, commit, () => {
                     return $.get(state.agendaUrl)
                     .done(data => {
-                        commit('setProposals', data.proposals);
+                        commit('loadAgendaItem', data);
                     });
                 }, { persist: !polling });
             }

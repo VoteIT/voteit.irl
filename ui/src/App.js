@@ -1,6 +1,5 @@
-import ProjectorNav from './components/ProjectorNav.vue';
-import ProposalSelection from './components/ProposalSelection.vue';
-import ProposalsMain from './components/ProposalsMain.vue';
+import { ProjectorNav, ProposalSelection, ProposalsMain } from './components';
+import { Modal, FlashMessage } from './core_components';
 
 export default {
     name: 'app',
@@ -12,7 +11,9 @@ export default {
     components: {
         ProjectorNav,
         ProposalSelection,
-        ProposalsMain
+        ProposalsMain,
+        Modal,
+        FlashMessage
     },
     created() {
         $.get($('body').data('src'))

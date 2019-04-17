@@ -2,8 +2,7 @@
     <nav class="navbar navbar-static-top navbar-voteit" role="navigation">
         <div class="container-fluid" data-check-greedy>
             <a class="navbar-brand hidden-xs" href="/">
-                <img height="31" width="85" class="voteitlogo"
-                     src="${request.static_url('voteit.core:static/images/logo.png')}" />
+                <img height="31" width="85" class="voteitlogo" :src="logo" />
             </a>
             <a class="navbar-brand greedy"
                id="navbar-heading"
@@ -46,22 +45,37 @@
                             <a v-else-if="item.title"
                                role="menuitem"
                                :href="'#' + item.name"
-                               @click.prevent>
+                               @click.prevent="quickPoll(item)">
                                 {{ item.title }}
                             </a>
                         </li>
 
-                        <li role="presentation" class="dropdown-header">
-                            <span>{{ $t('Closed polls') }}</span>
+                        <li v-if="pollsOngoing.length" role="presentation" class="divider"> </li>
+                        <li v-if="pollsOngoing.length" role="presentation" class="dropdown-header">
+                            <span>{{ $t('Ongoing polls') }}</span>
                         </li>
 
-                        <li>
+                        <li v-for="poll in pollsOngoing" :key="poll.uid">
                             <a role="menuitem"
                                data-open-modal
                                data-modal-dialog-class="modal-lg"
-                               :href="hrefLastPollResult">
-                                {{ $t('Show last poll result') }}
+                               :href="poll.href">
+                                {{ poll.title }}
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success" role="progress-bar" :style="'width: ' + 100 * poll.votes / poll.potentialVotes + '%'">
+                                        {{ poll.votes }} / {{ poll.potentialVotes }}
+                                    </div>
+                                </div>
                             </a>
+                        </li>
+
+                        <li v-if="pollsClosed.length" role="presentation" class="divider"> </li>
+                        <li v-if="pollsClosed.length" role="presentation" class="dropdown-header">
+                            <span>{{ $t('Closed polls') }}</span>
+                        </li>
+
+                        <li v-for="poll in pollsClosed" :key="poll.uid">
+                            <modal-link role="menuitem" :href="poll.href" model-dialog-class="modal-lg" :content="poll.title"/>
                         </li>
                     </ul>
                 </li>
@@ -72,7 +86,7 @@
                        data-toggle="dropdown"
                        aria-haspopup="true"
                        aria-expanded="false">
-                        <span class="glyphicon glyphicon-filter"></span> <span class="caret"></span>
+                        <span class="glyphicon glyphicon-filter"> </span><span class="caret"> </span>
                     </a>
                     <ul class="dropdown-menu" id="proposal-filters" aria-labelledby="proposal-filtering">
                         <li class="text-nowrap" v-for="state in proposalWorkflowStates" :key="state.name" @click.stop :class="{ active: state.checked }">
@@ -121,6 +135,7 @@
         <div class="container container-float-below">
             <div class="float-below" data-flash-slot="voteit-main"></div>
         </div>
+        <flash-messages/>
     </nav>
 </template>
 <script src="./ProjectorNav.js"></script>
