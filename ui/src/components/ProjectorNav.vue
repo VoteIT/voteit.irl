@@ -7,9 +7,11 @@
             <a class="navbar-brand greedy"
                id="navbar-heading"
                :href="currentAgendaItem ? currentAgendaItem.href : href">
-                <span class="hidden-sm hidden-xs">{{ title }}: </span>
                 <span v-if="currentAgendaItem">{{ currentAgendaItem.title }}</span>
-                <span v-else>({{ $t('Click menu to select Agenda Item') }})</span>
+                <span v-else>
+                    <span class="hidden-sm hidden-xs">{{ title }}: </span>
+                    ({{ $t('Click menu to select Agenda Item') }})
+                </span>
             </a>
             <ul class="nav navbar-nav navbar-right">
             <li :class="{disabled: !previousAgendaItem}">
@@ -46,7 +48,7 @@
                                role="menuitem"
                                :href="'#' + item.name"
                                @click.prevent="quickPoll(item)">
-                                {{ item.title }}
+                                {{ item.title }} <span v-if="item.rejectProp">({{ $t('add reject') }})</span>
                             </a>
                         </li>
 
@@ -107,24 +109,24 @@
                     <ul class="dropdown-menu" id="projector-ai-menu">
                         <li role="presentation" class="dropdown-header">
                             <span class="glyphicon glyphicon-ongoing text-ongoing"> </span>
-                            {{ $t('state:ongoing') }}
+                            {{ $t('ongoing') }}
                         </li>
                         <li role="presentation" v-for="ai in agendaStates.ongoing" :key="ai.uid">
                             <a role="menuitem"
-                               @click="loadAgendaItem(ai)"
-                               :href="'#' + ai.uid">
+                               @click.prevent="loadAgendaItem(ai)"
+                               :href="'#' + ai.name">
                                 {{ ai.title }}
                             </a>
                         </li>
                         <li role="presentation" class="divider"> </li>
                         <li role="presentation" class="dropdown-header">
                             <span class="glyphicon glyphicon-upcoming text-upcoming"> </span>
-                            {{ $t('state:ongoing') }}
+                            {{ $t('upcoming') }}
                         </li>
                         <li role="presentation" v-for="ai in agendaStates.upcoming" :key="ai.uid">
                             <a role="menuitem"
-                                @click="loadAgendaItem(ai)"
-                                :href="'#' + ai.uid">
+                                @click.prevent="loadAgendaItem(ai)"
+                                :href="'#' + ai.name">
                                 {{ ai.title }}
                             </a>
                         </li>

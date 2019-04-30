@@ -45,8 +45,8 @@ export default {
             });
             state.loaded = true;
         },
-        setAgendaItem(state, name) {
-            state.currentAgendaItem = state.agenda.find(item => item.name===name);
+        setAgendaItem(state, uid) {
+            state.currentAgendaItem = state.agenda.find(item => item.uid===uid);
         }
     },
 }

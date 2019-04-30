@@ -1,0 +1,22 @@
+{
+  "proposals": [
+    {
+      "uid": "prop3",
+      "aid": "prop-3",
+      "text": "Proposal text three",
+      "workflowState": "published",
+      "creator": "Användare (username)",
+       "workflowApi": "#prop3"
+   },
+    {
+      "uid": "prop4",
+      "aid": "prop-4",
+      "text": "Proposal text four",
+      "workflowState": "unhandled",
+      "creator": "Annan Användare (username-1)",
+      "workflowApi": "#prop4"
+    }
+  ],
+  "pollsOngoing": [],
+  "pollsClosed": []
+}

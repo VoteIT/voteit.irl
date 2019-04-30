@@ -7,7 +7,7 @@
                 <div class="btn-group">
                     <button
                             class="btn btn-default btn-sm"
-                            v-for="state in workflowStates"
+                            v-for="state in allowedWorkflowStates"
                             :key="state.name"
                             :class="{active: state.name === item.workflowState && actions.setWorkflowState}"
                             @click="setWorkflowState(item, state)">
@@ -23,7 +23,7 @@
             {{ $t('by') }}
             <span class="proposal-author">{{ item.creator }}</span>
         </h3>
-        <div class="proposal-text">{{ item.text }}</div>
+        <div class="proposal-text" v-html="item.text"> </div>
     </li>
 </template>
 <script>
@@ -37,6 +37,14 @@ export default {
         setWorkflowState(proposal, workflowState) {
             if (this.actions.setWorkflowState)
                 this.actions.setWorkflowState({ proposal, workflowState })
+        }
+    },
+    computed: {
+        allowedWorkflowStates() {
+            const current = this.workflowStates.find(wf => wf.name === this.item.workflowState);
+            return current.quickSelect ?
+                this.workflowStates :
+                [current];
         }
     }
 }

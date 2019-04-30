@@ -128,18 +128,24 @@ export default {
                 }, { persist: !polling });
             }
         },
-        loadAgendaItem({ state, commit, dispatch }, ai) {
-            if (ai && state.agendaUrl !== ai.jsonUrl) {
-                commit('meeting/setAgendaItem', ai.name, {root: true});
+        loadAgendaItem({ commit, dispatch }, ai) {
+            if (ai) {
+                commit('meeting/setAgendaItem', ai.uid, {root: true});
                 commit('setAgendaUrl', ai.jsonUrl);
                 dispatch('updateAgendaItems');
             }
         },
+        loadAgendaItemByName({ rootState, dispatch }, name) {
+            const ai = rootState.meeting.agenda.find(ai => ai.name === name) || {jsonUrl: null, uid: null};
+            dispatch('loadAgendaItem', ai);
+        },
         setProposalWorkflowState({ state, commit }, { proposal, workflowState }) {
-            if (proposal.workflowState !== workflowState.name) {
+            const current = state.proposalWorkflowStates.find(wf => wf.name === proposal.workflowState);
+            if (current.quickSelect && workflowState.quickSelect && current !== workflowState) {
                 doRequest(state, commit, () => {
                     return $.post(proposal.workflowApi, { state: workflowState.name })
-                    .done(() => {  // FIXME Needs to respond with new proposal data
+                    .done(data => {  // FIXME Needs to respond with new proposal data
+                        const workflowState = state.proposalWorkflowStates.find(wf => wf.name === data.state);
                         commit('setProposalWorkflowState', { proposal, workflowState });
                     })
                 });

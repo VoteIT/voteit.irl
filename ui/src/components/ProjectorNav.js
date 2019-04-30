@@ -10,23 +10,22 @@ export default {
     },
     methods: {
         ...mapMutations('projector', ['toggleProposalWorkflow']),
-        ...mapActions('projector', ['loadAgendaItem', 'updateAgendaItems']),
+        ...mapActions('projector', ['updateAgendaItems']),
         pollAvailable(poll) {
-            if (poll.proposalsMin && this.proposalSelection.length < poll.proposalsMin)
+            const len = poll.rejectProp ? this.proposalSelection.length + 1 : this.proposalSelection.length;
+            if (poll.proposalsMin && len < poll.proposalsMin)
                 return false
-            if (poll.proposalsMax && this.proposalSelection.length > poll.proposalsMax)
+            if (poll.proposalsMax && len > poll.proposalsMax)
                 return false
             return true
-        },
-        openLatestPollResult() {
-
         },
         quickPoll(pollMethod) {
             if (!this.pollAvailable(pollMethod))
                 return;
             $.post(this.api.quickPoll, {
-                method: pollMethod.name,
-                proposals: this.proposalSelection
+                'quick-poll-method': pollMethod.name,
+                'uid': this.proposalSelection,
+                'reject-prop': pollMethod.rejectProp
             })
             .done(response => {
                 this.$root.$emit('flash::display', {
@@ -34,13 +33,28 @@ export default {
                     timeout: null
                 })
             })
-            .fail((err) => {
-                console.log(err)
+            .fail((jqXHR) => {
+                let msg;
+                if (jqXHR.getResponseHeader('content-type') === "application/json" && typeof(jqXHR.responseText) == 'string') {
+                    var parsed = $.parseJSON(jqXHR.responseText);
+                    msg = '<h4>' + parsed.title + '</h4>';
+                    if (parsed.body && parsed.body != parsed.title) {
+                        msg += parsed.body;
+                    } else if (parsed.message != parsed.title) {
+                        msg += parsed.message;
+                    }
+                } else {
+                    msg = '<h4>' + jqXHR.status + ' ' + jqXHR.statusText + '</h4>' + jqXHR.responseText
+                }
                 this.$root.$emit('flash::display', {
-                    content: err.statusText,  // TODO - display whatever error server sends
+                    content: msg,  // TODO - display whatever error server sends
                     type: 'danger'
                 })
             });
+        },
+        loadAgendaItem(ai) {
+            this.$store.dispatch('projector/loadAgendaItem', ai);
+            history.pushState(ai, ai.title, '#' + ai.name);
         }
     },
     computed: {

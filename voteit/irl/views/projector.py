@@ -10,10 +10,11 @@ from pyramid.traversal import resource_path
 from pyramid.view import view_config
 from pyramid.view import render_view_to_response
 from pyramid.view import view_defaults
+from repoze.catalog import query
 from repoze.catalog.query import Eq
 from repoze.workflow import get_workflow
 from voteit.core.helpers import TAG_PATTERN
-from voteit.core.models.interfaces import IAgendaItem
+from voteit.core.models.interfaces import IAgendaItem, IPollPlugin
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
@@ -26,6 +27,34 @@ from voteit.irl.fanstaticlib import voteit_irl_projector
 
 
 DEFAULT_CHECKED_WORKFLOW_STATES = ('published',)
+QUICK_SELECT_WORKFLOW_STATES = ('published', 'approved', 'denied')
+
+JS_TRANSLATIONS = [
+    _("Previous"),
+    _("Next"),
+    _("by"),
+    _("Click menu to select Agenda Item"),
+    _("Ongoing polls"),
+    _("Closed polls"),
+    _("Show last poll result"),
+    _('add reject'),
+]
+
+POLL_GROUPS = [
+    {
+        'title': _('Multiple winners (Schultze)'),
+        'methods': [
+            ('schulze', False),
+            ('schulze', True),  # FIXME Add deny proposal
+        ]
+    }, {
+        'title': _('Majority poll'),
+        'methods': [
+            ('majority_poll', False),
+            ('combined_simple', False),
+        ]
+    }
+]
 
 
 def proj_tags2links(text):
@@ -57,6 +86,77 @@ class ProjectorView(AgendaItemView):
         response['state_titles'] = self.request.get_wf_state_titles(IAgendaItem, 'AgendaItem')
         return response
 
+    def _get_ais(self, *states):
+        ai_query = query.Eq('path', resource_path(self.request.meeting))
+        ai_query &= query.Eq('type_name', 'AgendaItem')
+        if states:
+            ai_query &= query.Any('workflow_state', states)
+        ai_order = self.request.meeting.order
+
+        def _sorter(ai):
+            try:
+                return ai_order.index(ai.__name__)
+            except (ValueError, KeyError):
+                return len(ai_order)
+
+        return sorted(self.catalog_query(ai_query, resolve=True), key=_sorter)
+
+    def _get_workflow_states(self):
+        wf = get_workflow(IProposal, 'Proposal')
+        workflow_states = []
+        for info in wf._state_info(IProposal):  # Public API goes through permission checker
+            name = info['name']
+            workflow_states.append({
+                'name': name,
+                'title': self.request.localizer.translate(core_ts(info['title'])),
+                'checked': name in DEFAULT_CHECKED_WORKFLOW_STATES,
+                'quickSelect': name in QUICK_SELECT_WORKFLOW_STATES,  # Enables projector wf change
+            })
+        return workflow_states
+
+    @view_config(name='__projector_app_state__.json', renderer='json')
+    def app_state(self):
+        ais = self._get_ais('ongoing', 'upcoming')
+        ts = {}
+        for t in JS_TRANSLATIONS:
+            ts[t] = self.request.localizer.translate(t)
+        ts.update(self.request.get_wf_state_titles(IAgendaItem, 'AgendaItem'))
+        poll_methods = dict((x.name, x.factory) for x in self.request.registry.registeredAdapters()
+                            if x.provided == IPollPlugin)
+        poll_groups = [{
+            'title': self.request.localizer.translate(g['title']),
+            'methods': [{
+                'name': m,
+                'title': self.request.localizer.translate(poll_methods[m].title),
+                'proposalsMin': poll_methods[m].proposals_min,
+                'proposalsMax': poll_methods[m].proposals_max,
+                'rejectProp': reject,
+            } for (m, reject) in g['methods'] if m in poll_methods]
+        } for g in POLL_GROUPS]
+        return {
+            'meeting': {
+                'href': self.request.resource_path(self.context),
+                'title': self.context.title,
+                'agenda': [
+                    {
+                        'title': ai.title,
+                        'href': self.request.resource_path(ai),
+                        'workflowState': ai.get_workflow_state(),
+                        'uid': ai.uid,
+                        'jsonUrl': self.request.resource_path(ai, '__content__.json'),
+                        'name': ai.__name__,
+                    } for ai in ais
+                ]
+            },
+            'pollGroups': poll_groups,
+            'ts': ts,
+            'proposalWorkflowStates': self._get_workflow_states(),
+            'api': {
+                'quickPoll': self.request.resource_path(self.context, '__quick_poll__.json'),
+            },
+            'logo': self.request.static_path('voteit.core:static/images/logo.png'),
+        }
+
     @view_config(name='__quick_poll__.json',
                  renderer='json')
     def quick_poll(self):
@@ -70,7 +170,7 @@ class ProjectorView(AgendaItemView):
         reject_prop = self.request.POST.get('reject-prop', None)
         reject_prop = reject_prop in truthy
 
-        for uid in self.request.POST.getall('uid'):
+        for uid in self.request.POST.getall('uid[]'):
             prop = self.resolve_uid(uid=uid)
             proposals.append(prop)
             if ai is None:
@@ -93,9 +193,8 @@ class ProjectorView(AgendaItemView):
         if len(proposals) < 3 and poll_method == 'schulze':
             raise HTTPForbidden(translate(_("Use majority polls for 2 proposals.")))
         # Check if there are other ongoing polls
-        query = Eq('type_name', 'Poll') & Eq('path', resource_path(ai)) & Eq('workflow_state',
-                                                                             'ongoing')
-        res = self.request.root.catalog.query(query)[0]
+        poll_query = Eq('type_name', 'Poll') & Eq('path', resource_path(ai)) & Eq('workflow_state', 'ongoing')
+        res = self.request.root.catalog.query(poll_query)[0]
         if res.total:
             raise HTTPForbidden(
                 _("quickpoll_ongoing_polls_error",
@@ -103,14 +202,14 @@ class ProjectorView(AgendaItemView):
                           "close them first."))
         title = self.get_quick_poll_title()
         proposal_uids = [x.uid for x in proposals]
-        if poll_method == 'schulze':
-            poll_plugin = 'schulze'
-        if poll_method == 'majority':
-            poll_plugin = 'majority_poll'
+        # if poll_method == 'schulze':
+        #     poll_plugin = 'schulze'
+        # if poll_method == 'majority':
+        #     poll_plugin = 'majority_poll'
         poll = factories['Poll'](
             title=title,
             proposals=proposal_uids,
-            poll_plugin=poll_plugin
+            poll_plugin=poll_method
         )
         ai[poll.uid] = poll
         poll.set_workflow_state(self.request, 'upcoming')
@@ -118,6 +217,25 @@ class ProjectorView(AgendaItemView):
         poll_url = '<a href="%s">%s</a>' % (self.request.resource_url(poll), title)
         return {'msg': translate(_("Added and started: ${poll_url}",
                                    {'poll_url': poll_url}))}
+
+    # For new reactive projector
+    @view_config(context=IAgendaItem, name="__content__.json", renderer='json')
+    def ai_content(self):
+        prop_query = Eq('path', resource_path(self.context))
+        prop_query &= Eq('type_name', 'Proposal')
+        proposals = [{
+            'uid': prop.uid,
+            'aid': prop.aid,
+            'text': self.request.render_proposal_text(prop, tag_func=proj_tags2links),
+            'workflowState': prop.get_workflow_state(),
+            'creator': self.request.creators_info(prop.creator, portrait=False, no_tag=True),
+            'workflowApi': self.request.resource_path(prop, '__change_state_projector__.json'),
+        } for prop in self.catalog_query(prop_query, resolve=True)]
+        return {
+            'proposals': proposals,
+            'pollsOngoing': [],
+            'pollsClosed': [],
+        }
 
     @view_config(context=IAgendaItem, name="__ai_contents__.json", renderer='json')
     def ai_contents(self):

@@ -13,10 +13,12 @@ const TranslationPlugin = {
 }
 Vue.use(TranslationPlugin);
 
-new Vue({
-    store,
-    render: h => h(App),
-    data: {
-        ts: {}
-    }
-}).$mount('#app')
+$(() => {
+    new Vue({
+        store,
+        render: h => h(App),
+        data: {
+            ts: {}
+        }
+    }).$mount('#app')
+})
