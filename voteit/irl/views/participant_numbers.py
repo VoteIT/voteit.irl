@@ -1,8 +1,9 @@
-from arche.views.base import BaseView
+from arche.views.base import BaseView, BaseForm
 from arche.views.base import DefaultEditForm
 from betahaus.viewcomponent import view_action
+from deform import Button
 from pyramid.decorator import reify
-from pyramid.httpexceptions import HTTPForbidden
+from pyramid.httpexceptions import HTTPForbidden, HTTPBadRequest
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render
 from pyramid.view import view_config
@@ -14,13 +15,22 @@ from voteit.core import security
 
 from voteit.irl import _
 from voteit.irl.models.interfaces import IParticipantNumbers
+from voteit.irl.models.interfaces import ISelfAssignmentSettings
+from voteit.irl.models.participant_numbers import assign_next_free_pn
 
 
-class ParticipantNumbersView(BaseView):
+class PNViewMixin(object):
 
     @reify
     def participant_numbers(self):
         return self.request.registry.getAdapter(self.context, IParticipantNumbers)
+
+    @reify
+    def self_assignment_settings(self):
+        return self.request.registry.getAdapter(self.context, ISelfAssignmentSettings)
+
+
+class ParticipantNumbersView(BaseView, PNViewMixin):
 
     @view_config(name = "manage_participant_numbers",
                  permission = security.MODERATE_MEETING,
@@ -65,16 +75,12 @@ class ParticipantNumbersView(BaseView):
 @view_config(name = "attach_emails_to_pn",
              permission = security.MODERATE_MEETING,
              renderer = "arche:templates/form.pt")
-class AttachEmailsToPNForm(DefaultEditForm):
+class AttachEmailsToPNForm(DefaultEditForm, PNViewMixin):
     schema_name = 'attach_emails_to_pn'
 
     @property
-    def title(self): #<- This will probably change in arche
+    def title(self):
         return self.schema.title
-
-    @reify
-    def participant_numbers(self):
-        return self.request.registry.getAdapter(self.context, IParticipantNumbers)
 
     def cancel_success(self, *args):
         return HTTPFound(location = self.request.resource_url(self.context, 'manage_participant_numbers'))
@@ -123,7 +129,7 @@ class AttachEmailsToPNForm(DefaultEditForm):
 @view_config(name = "claim_participant_number",
              permission = security.VIEW,
              renderer = "arche:templates/form.pt")
-class ClaimParticipantNumberForm(DefaultEditForm):
+class ClaimParticipantNumberForm(DefaultEditForm, PNViewMixin):
     """ This view is for participants who're already members of this meeting,
         but haven't registered their number yet.
     """
@@ -141,10 +147,6 @@ class ClaimParticipantNumberForm(DefaultEditForm):
             return HTTPFound(location = self.request.resource_url(self.context))
         return super(ClaimParticipantNumberForm, self).__call__()
 
-    @reify
-    def participant_numbers(self):
-        return self.request.registry.getAdapter(self.context, IParticipantNumbers)
-
     def save_success(self, appstruct):
         number = self.participant_numbers.claim_ticket(self.request.authenticated_userid, appstruct['token'])
         msg = _("number_now_assigned_notice",
@@ -157,16 +159,12 @@ class ClaimParticipantNumberForm(DefaultEditForm):
 @view_config(name = "assign_participant_number",
              permission = security.MODERATE_MEETING,
              renderer = "arche:templates/form.pt")
-class AssignParticipantNumberForm(DefaultEditForm):
+class AssignParticipantNumberForm(DefaultEditForm, PNViewMixin):
     schema_name = 'assign_participant_number'
 
     @property
     def title(self):
         return self.schema.title
-
-    @reify
-    def participant_numbers(self):
-        return self.request.registry.getAdapter(self.context, IParticipantNumbers)
 
     def appstruct(self):
         appstruct = {}
@@ -175,7 +173,7 @@ class AssignParticipantNumberForm(DefaultEditForm):
         return appstruct
 
     def save_success(self, appstruct):
-        #Since this is a bit backwards, we need to fetch the token.
+        # Since this is a bit backwards, we need to fetch the token.
         pn = appstruct['pn']
         userid = appstruct['userid']
         found = False
@@ -185,7 +183,7 @@ class AssignParticipantNumberForm(DefaultEditForm):
                 break
         if not found:
             raise HTTPForbidden(_(u"Participant number not found"))
-        #Clear old number?
+        # Clear old number?
         if userid in self.participant_numbers.userid_to_number:
             number = self.participant_numbers.userid_to_number[userid]
             msg = _("participant_number_moved_warning",
@@ -193,7 +191,7 @@ class AssignParticipantNumberForm(DefaultEditForm):
                     mapping = {'number': number})
             self.flash_messages.add(msg, type = 'warning')
             self.participant_numbers.clear_number(number)
-        #Assign
+        # Assign
         number = self.participant_numbers.claim_ticket(userid, token)
         msg = _("number_now_assigned_notice",
                 default = "You're now assigned number ${number}.",
@@ -202,17 +200,86 @@ class AssignParticipantNumberForm(DefaultEditForm):
         return HTTPFound(location = self.request.resource_url(self.context, "manage_participant_numbers"))
 
 
+@view_config(name = "pn_self_assignment_settings",
+             permission = security.MODERATE_MEETING,
+             renderer = "arche:templates/form.pt")
+class PNSelfAssignmentSettingsForm(DefaultEditForm, PNViewMixin):
+    schema_name = 'self_assignment_settings'
+    title = _("Self assignment settings")
+    description = _("Allow participants to assign a number to themselves?")
+
+    def appstruct(self):
+        return dict(self.self_assignment_settings)
+
+    def save_success(self, appstruct):
+        self.self_assignment_settings.update(appstruct)
+        self.flash_messages.add(self.default_success, type='success')
+        return HTTPFound(location = self.request.resource_url(self.context, "manage_participant_numbers"))
+
+
+@view_config(name = "self_claim_participant_number",
+             permission = security.VIEW,
+             renderer = "arche:templates/form.pt")
+class PNSelfClaimForm(DefaultEditForm, PNViewMixin):
+    schema_name = 'self_claim_participant_number'
+
+    @property
+    def title(self):
+        return self.schema.title
+
+    @property
+    def buttons(self):
+        return (Button('assign', _("Assign")), self.button_cancel)
+
+    def assign_success(self, appstruct):
+        start_number = self.self_assignment_settings.get('start_number', None)
+        if not isinstance(start_number, int):
+            self.flash_messages.add(_("Meeting has bad configurartion for participant numbers, contact the moderator.",
+                                      type='danger'))
+            return HTTPFound(location=self.request.resource_url(self.context))
+        new_pn = assign_next_free_pn(self.participant_numbers, self.request.authenticated_userid, start_number)
+        if not new_pn:
+            raise HTTPBadRequest("No number can be assigned.")
+        msg = _("You've been assigned number ${num}", mapping={'num': new_pn})
+        self.flash_messages.add(msg, type='success')
+        return HTTPFound(location = self.request.resource_url(self.context))
+
+
 @view_action('user_menu', 'claim_participant_number',
              permission = security.VIEW, priority=20)
 def claim_participant_number_menu(context, request, va, **kw):
     if request.meeting:
+        translate = request.localizer.translate
         participant_numbers = request.registry.getAdapter(request.meeting, IParticipantNumbers)
         if request.authenticated_userid not in participant_numbers.userid_to_number:
-            return """<li><a href="%s">%s</a></li>""" % (request.resource_url(request.meeting, 'claim_participant_number'),
-                                                         request.localizer.translate(_("Claim participant number")))
+            self_assignment = request.registry.getAdapter(request.meeting, ISelfAssignmentSettings)
+            if self_assignment.enabled:
+                if self_assignment.user_has_required_role(request):
+                    url = request.resource_url(request.meeting, 'self_claim_participant_number')
+                else:
+                    # The current user don't have the required role
+                    role = request.registry.roles.get(self_assignment.required_role, None)
+                    if role:
+                        role_title = translate(role.title)
+                    else:
+                        role_title = self_assignment.required_role
+                    return """<li class="disabled"><a>%s<br/>%s</a></li>""" % (
+                           translate(
+                               _("You lack the role '${role}'",
+                                 mapping={'role': role_title})
+                           ),
+                           translate(
+                               _("which is required to request a participant number.")
+                           ),
+                    )
+
+            else:
+                url = request.resource_url(request.meeting, 'claim_participant_number')
+            return """<li><a href="%s">%s</a></li>""" % (url,
+                                                         translate(_("Claim participant number")))
         else:
             return """<li class="disabled"><a>%s: %s</a></li>""" % (
-                request.localizer.translate(_("Your participant number")),
+                translate(_("Your participant number")),
                 participant_numbers.userid_to_number[request.authenticated_userid]
             )
 
@@ -253,4 +320,10 @@ def includeme(config):
         'control_panel_pn', 'participant_numbers',
         title=_("Manage participant numbers"),
         view_name='manage_participant_numbers',
+    )
+    config.add_view_action(
+        control_panel_link,
+        'control_panel_pn', 'self_assignment_settings',
+        title=_("User self-assignment"),
+        view_name='pn_self_assignment_settings',
     )
