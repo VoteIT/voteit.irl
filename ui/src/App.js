@@ -1,14 +1,14 @@
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 
 import { ProjectorNav, ProposalSelection, ProposalsMain } from './components';
-import { Modal, FlashMessage } from './core_components';
+import { Modal, FlashMessages } from './core_components';
+import { doRequest } from './core_components/utils';
 
 export default {
     name: 'app',
     data() {
         return {
-            ready: false,
-            src: $('body').data('src')
+            ready: false
         };
     },
     components: {
@@ -16,10 +16,10 @@ export default {
         ProposalSelection,
         ProposalsMain,
         Modal,
-        FlashMessage
+        FlashMessages
     },
     created() {
-        $.get(this.src)
+        doRequest($('body').data('src'))
         .done(data => {
             this.$store.commit('meeting/load', data.meeting);
             this.$store.commit('projector/load', data);
@@ -33,8 +33,14 @@ export default {
         window.onpopstate = event => {
             this.loadAgendaItemByName(event.state && event.state.name);
         };
+        $('body').on('click', '[data-tag-filter]', event => {
+            event.preventDefault();
+            const tagName = $(event.currentTarget).data('tagFilter').toLowerCase();
+            this.filterByTag(tagName);
+        });
     },
     methods: {
-        ...mapActions('projector', ['loadAgendaItemByName'])
+        ...mapActions('projector', ['loadAgendaItemByName']),
+        ...mapMutations('projector', ['filterByTag'])
     }
 }

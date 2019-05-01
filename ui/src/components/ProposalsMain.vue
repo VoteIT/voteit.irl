@@ -5,22 +5,20 @@
             :key="item.uid"
             :actions="proposalActions"
             :item="item"
-            :workflowStates="proposalWorkflowStates.filter(wf => wf.quickSelect || wf.name === item.workflowState)"/>
+            quick-select />
     </ul>
 </template>
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 import Proposal from './Proposal.vue';
-
-const noop = ()=>{};
 
 export default {
     data() {
         return {
             proposalActions: {
                 right: this.deselectProposal,
-                setWorkflowState: this.setProposalWorkflowState
+                setWorkflowState: this.setProposalWorkflowState,
             }
         }
     },
@@ -32,8 +30,7 @@ export default {
         ...mapActions('projector', ['setProposalWorkflowState'])
     },
     computed: {
-        ...mapGetters('projector', ['selectedProposals']),
-        ...mapState('projector', ['proposalWorkflowStates'])
+        ...mapGetters('projector', ['selectedProposals'])
     }
 }
 </script>

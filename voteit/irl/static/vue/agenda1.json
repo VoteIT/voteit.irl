@@ -3,10 +3,11 @@
     {
       "uid": "prop1",
       "aid": "prop-1",
-      "text": "Proposal text",
+      "text": "Proposal text <a href=\"#\" data-tag-filter=\"two\">#two</a>,",
       "workflowState": "published",
       "creator": "Användare (username)",
-      "workflowApi": "#prop1"
+      "workflowApi": "#prop1",
+      "tags": ["prop-1" ,"one", "two"]
     },
     {
       "uid": "prop2",
@@ -14,7 +15,8 @@
       "text": "Proposal text two",
       "workflowState": "denied",
       "creator": "Annan Användare (username-1)",
-      "workflowApi": "#prop2"
+      "workflowApi": "#prop2",
+      "tags": ["prop-2", "two"]
     }
   ],
   "pollsOngoing": [

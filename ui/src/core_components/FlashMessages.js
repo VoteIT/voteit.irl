@@ -1,3 +1,5 @@
+import { eventBus } from './utils';
+
 const MESSAGE_DEFAULTS = {
     type: 'success',
     timeout: 3000
@@ -10,7 +12,7 @@ export default {
         }
     },
     created() {
-        this.$root.$on('flash::display', msg => {
+        eventBus.$on('flash::display', msg => {
             msg = $.extend({}, MESSAGE_DEFAULTS, msg);
             if (!msg.id)
                 msg.id = this.messages.length ?

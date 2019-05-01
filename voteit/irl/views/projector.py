@@ -11,7 +11,6 @@ from pyramid.view import view_config
 from pyramid.view import render_view_to_response
 from pyramid.view import view_defaults
 from repoze.catalog import query
-from repoze.catalog.query import Eq
 from repoze.workflow import get_workflow
 from voteit.core.helpers import TAG_PATTERN
 from voteit.core.models.interfaces import IAgendaItem, IPollPlugin
@@ -42,10 +41,10 @@ JS_TRANSLATIONS = [
 
 POLL_GROUPS = [
     {
-        'title': _('Multiple winners (Schultze)'),
-        'methods': [
+        'title': _('Multiple winners (Schulze)'),
+        'methods': [  # params: Poll name and whether to add deny proposal.
             ('schulze', False),
-            ('schulze', True),  # FIXME Add deny proposal
+            ('schulze', True),
         ]
     }, {
         'title': _('Majority poll'),
@@ -193,7 +192,7 @@ class ProjectorView(AgendaItemView):
         if len(proposals) < 3 and poll_method == 'schulze':
             raise HTTPForbidden(translate(_("Use majority polls for 2 proposals.")))
         # Check if there are other ongoing polls
-        poll_query = Eq('type_name', 'Poll') & Eq('path', resource_path(ai)) & Eq('workflow_state', 'ongoing')
+        poll_query = query.Eq('type_name', 'Poll') & query.Eq('path', resource_path(ai)) & query.Eq('workflow_state', 'ongoing')
         res = self.request.root.catalog.query(poll_query)[0]
         if res.total:
             raise HTTPForbidden(
@@ -221,8 +220,19 @@ class ProjectorView(AgendaItemView):
     # For new reactive projector
     @view_config(context=IAgendaItem, name="__content__.json", renderer='json')
     def ai_content(self):
-        prop_query = Eq('path', resource_path(self.context))
-        prop_query &= Eq('type_name', 'Proposal')
+        prop_query = query.Eq('path', resource_path(self.context)) & \
+                     query.Eq('type_name', 'Proposal')
+        poll_query = query.Eq('path', resource_path(self.context)) & \
+                     query.Eq('type_name', 'Poll') & \
+                     query.Eq('workflow_state', ['closed'])
+        closed_polls = [{
+            'href': self.request.resource_path(poll, '__show_results__'),
+            'title': poll.title,
+            'uid': poll.uid,
+            'votes': 1,  # FIXME (Not used yet, anyway...)
+            'potentialVotes': 200,  # FIXME
+        } for poll in self.catalog_query(poll_query, sort_index='end_time', resolve=True)]
+
         proposals = [{
             'uid': prop.uid,
             'aid': prop.aid,
@@ -230,19 +240,20 @@ class ProjectorView(AgendaItemView):
             'workflowState': prop.get_workflow_state(),
             'creator': self.request.creators_info(prop.creator, portrait=False, no_tag=True),
             'workflowApi': self.request.resource_path(prop, '__change_state_projector__.json'),
+            'tags': prop.tags,
         } for prop in self.catalog_query(prop_query, resolve=True)]
         return {
             'proposals': proposals,
             'pollsOngoing': [],
-            'pollsClosed': [],
+            'pollsClosed': closed_polls,
         }
 
     @view_config(context=IAgendaItem, name="__ai_contents__.json", renderer='json')
     def ai_contents(self):
-        query = Eq('path', resource_path(self.context))
-        query &= Eq('type_name', 'Proposal')
+        prop_query = query.Eq('path', resource_path(self.context))
+        prop_query &= query.Eq('type_name', 'Proposal')
         results = []
-        for obj in self.catalog_query(query, resolve=True):
+        for obj in self.catalog_query(prop_query, resolve=True):
             results.append(
                 dict(
                     text=self.request.render_proposal_text(obj, tag_func=proj_tags2links),
@@ -291,8 +302,8 @@ class ProjectorView(AgendaItemView):
     def get_ais(self):
         results = {}
         states = ('ongoing', 'upcoming')
-        query = "path == '%s' and " % resource_path(self.request.meeting)
-        query += "type_name == 'AgendaItem' and "
+        ai_query = "path == '%s' and " % resource_path(self.request.meeting)
+        ai_query += "type_name == 'AgendaItem' and "
         ai_order = self.request.meeting.order
 
         def _sorter(ai):
@@ -302,7 +313,7 @@ class ProjectorView(AgendaItemView):
                 return len(ai_order)
 
         for state in states:
-            squery = "%s workflow_state == '%s'" % (query, state)
+            squery = "%s workflow_state == '%s'" % (ai_query, state)
             results[state] = sorted(self.catalog_query(squery, resolve=True), key=_sorter)
         return results
 
@@ -314,35 +325,31 @@ class ProjectorView(AgendaItemView):
         """
         allowed_states = ('published', 'approved', 'denied')
         transl = self.request.localizer.translate
-        if self.context.get_workflow_state() not in allowed_states:
-            msg = _("wrong_initial_state_error",
-                    default="Proposal wasn't in any of the states "
-                            "'Published', 'Approved' or 'Denied'. "
-                            "You may need to reload this page.")
-            return {'status': 'error',
-                    'type': 'wrong_initial_state',
-                    'msg': transl(msg)}
+        # if self.context.get_workflow_state() not in allowed_states:
+        #     msg = _("wrong_initial_state_error",
+        #             default="Proposal wasn't in any of the states "
+        #                     "'Published', 'Approved' or 'Denied'. "
+        #                     "You may need to reload this page.")
+        #     raise HTTPForbidden(transl(msg))
         state = self.request.POST.get('state')
         if state not in allowed_states:
-            return {'status': 'error',
-                    'type': 'wrong_new_state',
-                    'msg': transl(_("Not allowed to transition to ${state}",
-                                    mapping={'state': state}))}
+            raise HTTPForbidden(transl(_("Not allowed to transition to ${state}",
+                                         mapping={'state': state})))
         self.context.set_workflow_state(self.request, state)
         return {'status': 'success',
                 'state': state}
 
     def get_quick_poll_title(self):
-        query = Eq('path', resource_path(self.request.meeting)) & Eq('type_name', 'Poll')
-        res = self.request.root.catalog.query(query)[0]
+        poll_query = query.Eq('path', resource_path(self.request.meeting)) & query.Eq('type_name', 'Poll')
+        res = self.request.root.catalog.query(poll_query)[0]
         title = _("Descision ${num}", mapping={'num': res.total + 1})
         return self.request.localizer.translate(title)
 
     @view_config(name="__show_last_poll_result__")
     def show_last_poll_result(self):
-        query = Eq('type_name', 'Poll') & Eq('path', resource_path(self.request.meeting)) & \
-                Eq('workflow_state', ['closed'])
-        docids = self.request.root.catalog.query(query, sort_index='end_time', limit=1, reverse=True)[1]
+        poll_query = query.Eq('type_name', 'Poll') & query.Eq('path', resource_path(self.request.meeting)) & \
+                     query.Eq('workflow_state', ['closed'])
+        docids = self.request.root.catalog.query(poll_query, sort_index='end_time', limit=1, reverse=True)[1]
         poll = None
         for poll in self.request.resolve_docids(docids):
             break

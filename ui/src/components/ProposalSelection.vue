@@ -4,8 +4,7 @@
             v-for="item in filteredProposals"
             :key="item.uid"
             :actions="proposalActions"
-            :item="item"
-            :workflowStates="[proposalWorkflowStates.find(wf => wf.name === item.workflowState)]"/>
+            :item="item" />
     </ul>
 </template>
 <script src="./ProposalSelection.js"></script>

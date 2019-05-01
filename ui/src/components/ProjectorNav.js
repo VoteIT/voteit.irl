@@ -1,5 +1,6 @@
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import { ModalLink, FlashMessages } from '../core_components';
+import { flashMessage, doRequest } from '../core_components/utils';
 
 const UPDATE_INTERVAL = 5000;
 
@@ -12,7 +13,8 @@ export default {
         ...mapMutations('projector', ['toggleProposalWorkflow']),
         ...mapActions('projector', ['updateAgendaItems']),
         pollAvailable(poll) {
-            const len = poll.rejectProp ? this.proposalSelection.length + 1 : this.proposalSelection.length;
+            // If a reject proposal is added, that's another proposal. Add one.
+            const len = this.proposalSelection.length + (poll.rejectProp ? 1 : 0);
             if (poll.proposalsMin && len < poll.proposalsMin)
                 return false
             if (poll.proposalsMax && len > poll.proposalsMax)
@@ -22,39 +24,23 @@ export default {
         quickPoll(pollMethod) {
             if (!this.pollAvailable(pollMethod))
                 return;
-            $.post(this.api.quickPoll, {
-                'quick-poll-method': pollMethod.name,
-                'uid': this.proposalSelection,
-                'reject-prop': pollMethod.rejectProp
+            doRequest(this.api.quickPoll, {
+                method: 'POST',
+                data: {
+                    'quick-poll-method': pollMethod.name,
+                    'uid': this.proposalSelection,
+                    'reject-prop': pollMethod.rejectProp
+                }
             })
             .done(response => {
-                this.$root.$emit('flash::display', {
-                    content: response.msg,
-                    timeout: null
-                })
-            })
-            .fail((jqXHR) => {
-                let msg;
-                if (jqXHR.getResponseHeader('content-type') === "application/json" && typeof(jqXHR.responseText) == 'string') {
-                    var parsed = $.parseJSON(jqXHR.responseText);
-                    msg = '<h4>' + parsed.title + '</h4>';
-                    if (parsed.body && parsed.body != parsed.title) {
-                        msg += parsed.body;
-                    } else if (parsed.message != parsed.title) {
-                        msg += parsed.message;
-                    }
-                } else {
-                    msg = '<h4>' + jqXHR.status + ' ' + jqXHR.statusText + '</h4>' + jqXHR.responseText
-                }
-                this.$root.$emit('flash::display', {
-                    content: msg,  // TODO - display whatever error server sends
-                    type: 'danger'
-                })
+                flashMessage(response.msg, { timeout: null });
             });
         },
         loadAgendaItem(ai) {
-            this.$store.dispatch('projector/loadAgendaItem', ai);
-            history.pushState(ai, ai.title, '#' + ai.name);
+            if (ai) {
+                this.$store.dispatch('projector/loadAgendaItem', ai);
+                history.pushState(ai, ai.title, '#' + ai.name);
+            }
         }
     },
     computed: {

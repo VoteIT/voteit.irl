@@ -7,7 +7,7 @@
                 <div class="btn-group">
                     <button
                             class="btn btn-default btn-sm"
-                            v-for="state in allowedWorkflowStates"
+                            v-for="state in workflowStates"
                             :key="state.name"
                             :class="{active: state.name === item.workflowState && actions.setWorkflowState}"
                             @click="setWorkflowState(item, state)">
@@ -19,7 +19,7 @@
             </button>
         </div>
         <h3 class="prop-meta-heading">
-            <strong class="proposal-aid">#{{ item.aid }}</strong>
+            <strong class="proposal-aid"><a href="#" :data-tag-filter="item.aid">#{{ item.aid }}</a></strong>
             {{ $t('by') }}
             <span class="proposal-author">{{ item.creator }}</span>
         </h3>
@@ -27,11 +27,13 @@
     </li>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 export default {
     props: {
         actions: Object,
         item: Object,
-        workflowStates: Array
+        quickSelect: Boolean
     },
     methods: {
         setWorkflowState(proposal, workflowState) {
@@ -40,11 +42,9 @@ export default {
         }
     },
     computed: {
-        allowedWorkflowStates() {
-            const current = this.workflowStates.find(wf => wf.name === this.item.workflowState);
-            return current.quickSelect ?
-                this.workflowStates :
-                [current];
+        ...mapState('projector', ['proposalWorkflowStates']),
+        workflowStates() {
+            return this.proposalWorkflowStates.filter(wf => this.quickSelect && wf.quickSelect || wf.name === this.item.workflowState);
         }
     }
 }

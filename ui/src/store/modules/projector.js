@@ -1,33 +1,4 @@
-// Important! Always return request
-let requestQueue = [];
-let hasOnlineEventListener = false;
-
-function doRequest(state, commit, fn, options) {
-    let { persist, failHard } = options || {};
-    if (navigator.onLine && !state.requestActive) {
-        commit('setRequestActive', true);
-        fn().always(()=> {
-            commit('setRequestActive', false);
-            if (requestQueue.length)
-                doRequest(state, commit, requestQueue.shift(), { failHard: true });
-        })
-    }
-    else {
-        if (!navigator.onLine && !hasOnlineEventListener) {
-            window.addEventListener('online', ()=> {
-                if (requestQueue.length)
-                    doRequest(state, commit, requestQueue.shift(), { failHard: true });
-            });
-            hasOnlineEventListener = true;
-        }
-        if (persist) {
-            requestQueue.push(fn);
-        }
-        else if (failHard) {
-            throw new Error('Request failed!');
-        }
-    }
-}
+import { doRequest } from "src/core_components/utils";
 
 export default {
     namespaced: true,
@@ -114,18 +85,28 @@ export default {
         },
         setRequestActive(state, value) {
             state.requestActive = value;
+        },
+        filterByTag(state, tagName) {
+            let onStates = {};
+            state.proposalWorkflowStates.forEach(state => {
+                if (state.checked)
+                    onStates[state.name] = true;
+            });
+            state.proposalSelection = state.proposals
+                .filter(p => p.tags.indexOf(tagName) !== -1 && p.workflowState in onStates)
+                .map(p => p.uid);
         }
     },
 
     actions: {
         updateAgendaItems({ state, commit }, polling=false) {
+            // If agenda item active.
+            // If polling: only if document is visible.
             if (state.agendaUrl && !(polling && document.hidden)) {
-                doRequest(state, commit, () => {
-                    return $.get(state.agendaUrl)
-                    .done(data => {
-                        commit('loadAgendaItem', data);
-                    });
-                }, { persist: !polling });
+                doRequest(state.agendaUrl, { polling })
+                .done(data => {
+                    commit('loadAgendaItem', data);
+                });
             }
         },
         loadAgendaItem({ commit, dispatch }, ai) {
@@ -141,13 +122,16 @@ export default {
         },
         setProposalWorkflowState({ state, commit }, { proposal, workflowState }) {
             const current = state.proposalWorkflowStates.find(wf => wf.name === proposal.workflowState);
-            if (current.quickSelect && workflowState.quickSelect && current !== workflowState) {
-                doRequest(state, commit, () => {
-                    return $.post(proposal.workflowApi, { state: workflowState.name })
-                    .done(data => {  // FIXME Needs to respond with new proposal data
-                        const workflowState = state.proposalWorkflowStates.find(wf => wf.name === data.state);
-                        commit('setProposalWorkflowState', { proposal, workflowState });
-                    })
+            if (workflowState.quickSelect && current !== workflowState) {
+                doRequest(proposal.workflowApi, {
+                    method: 'POST',
+                    data: {
+                        state: workflowState.name
+                    }
+                })
+                .done(data => {
+                    const workflowState = state.proposalWorkflowStates.find(wf => wf.name === data.state);
+                    commit('setProposalWorkflowState', { proposal, workflowState });
                 });
             }
         }
