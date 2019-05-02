@@ -25,7 +25,7 @@ from voteit.irl import _
 from voteit.irl.fanstaticlib import voteit_irl_projector
 
 
-DEFAULT_CHECKED_WORKFLOW_STATES = ('published',)
+DEFAULT_CHECKED_WORKFLOW_STATES = ('published', 'voting')
 QUICK_SELECT_WORKFLOW_STATES = ('published', 'approved', 'denied')
 
 JS_TRANSLATIONS = [
