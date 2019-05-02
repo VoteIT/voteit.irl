@@ -191,14 +191,6 @@ class ProjectorView(AgendaItemView):
                 translate(_("Majority polls must have exactly 2 proposals in them.")))
         if len(proposals) < 3 and poll_method == 'schulze':
             raise HTTPForbidden(translate(_("Use majority polls for 2 proposals.")))
-        # Check if there are other ongoing polls
-        poll_query = query.Eq('type_name', 'Poll') & query.Eq('path', resource_path(ai)) & query.Eq('workflow_state', 'ongoing')
-        res = self.request.root.catalog.query(poll_query)[0]
-        if res.total:
-            raise HTTPForbidden(
-                _("quickpoll_ongoing_polls_error",
-                  default="There are ongoing polls in this agenda item,"
-                          "close them first."))
         title = self.get_quick_poll_title()
         proposal_uids = [x.uid for x in proposals]
         # if poll_method == 'schulze':
