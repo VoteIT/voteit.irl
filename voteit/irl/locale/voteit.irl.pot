@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-05-01 12:42+0200\n"
+"POT-Creation-Date: 2019-05-02 12:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -510,59 +510,6 @@ msgstr ""
 msgid "Voters"
 msgstr ""
 
-#: ./voteit/irl/templates/projector.pt:20
-msgid "(Click menu to select Agenda Item)"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:25
-msgid "Previous"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:33
-msgid "Next"
-msgstr ""
-
-#. Default: Quickly create a poll
-#: ./voteit/irl/templates/projector.pt:42
-msgid "quick_poll_btn_title"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:52
-msgid "Multiple proposals (Schulze)"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:61
-msgid "All highlighted"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:72
-msgid "All highlighted + Create reject"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:80
-msgid "Majority"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:89
-msgid "2 highlighted"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:99
-msgid "1 highlighted + create reject"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:107
-msgid "Closed polls"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:115
-msgid "Show last poll result"
-msgstr ""
-
-#: ./voteit/irl/templates/projector.pt:197
-msgid "by"
-msgstr ""
-
 #: ./voteit/irl/templates/view_electoral_register.pt:10
 msgid "Electoral register ${id} ${time}"
 msgstr ""
@@ -818,53 +765,83 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:84
-msgid "Reject"
+#: ./voteit/irl/views/projector.py:32
+msgid "Previous"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:89
+#: ./voteit/irl/views/projector.py:33
+msgid "Next"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:34
+msgid "by"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:35
+msgid "Click in menu to select Agenda Item"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:36
+msgid "Ongoing polls"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:37
+msgid "Closed polls"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:38
+msgid "Show last poll result"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:39
+msgid "add reject"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:44
+msgid "Multiple winners (Schulze)"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:50
+msgid "Majority poll"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:187
+#, python-format
+msgid "Reject (for poll ${title})"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:192
 msgid "No proposals"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:92
+#: ./voteit/irl/views/projector.py:195
 msgid "Majority polls must have exactly 2 proposals in them."
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:94
+#: ./voteit/irl/views/projector.py:197
 msgid "Use majority polls for 2 proposals."
 msgstr ""
 
-#. Default: There are ongoing polls in this agenda item,close them first.
-#: ./voteit/irl/views/projector.py:101
-msgid "quickpoll_ongoing_polls_error"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:119
+#: ./voteit/irl/views/projector.py:212
 #, python-format
 msgid "Added and started: ${poll_url}"
 msgstr ""
 
-#. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
-#. 'Denied'. You may need to reload this page.
-#: ./voteit/irl/views/projector.py:200
-msgid "wrong_initial_state_error"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:211
+#: ./voteit/irl/views/projector.py:331
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:220
+#: ./voteit/irl/views/projector.py:340
 #, python-format
 msgid "Descision ${num}"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:233
+#: ./voteit/irl/views/projector.py:353
 msgid "No closed polls yet"
 msgstr ""
 
-#: ./voteit/irl/views/projector.py:237
+#: ./voteit/irl/views/projector.py:357
 msgid "Projector"
 msgstr ""
 

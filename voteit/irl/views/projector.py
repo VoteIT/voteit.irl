@@ -32,7 +32,7 @@ JS_TRANSLATIONS = [
     _("Previous"),
     _("Next"),
     _("by"),
-    _("Click menu to select Agenda Item"),
+    _("Click in menu to select Agenda Item"),
     _("Ongoing polls"),
     _("Closed polls"),
     _("Show last poll result"),
@@ -177,10 +177,14 @@ class ProjectorView(AgendaItemView):
             else:
                 if ai != prop.__parent__:
                     raise HTTPForbidden("Proposals fetched from different agenda items")
+
+        # Poll title might be used by the reject_prop
+        poll_title = self.get_quick_poll_title()
+
         if reject_prop:
             if ai:  # Should be set, otherwise next step will die anyway
                 prop = factories['Proposal'](
-                    text=translate(_("Reject"))
+                    text=translate(_("Reject (for poll ${title})", mapping={'title': poll_title}))
                 )
                 ai[prop.uid] = prop
                 proposals.append(prop)
@@ -191,21 +195,20 @@ class ProjectorView(AgendaItemView):
                 translate(_("Majority polls must have exactly 2 proposals in them.")))
         if len(proposals) < 3 and poll_method == 'schulze':
             raise HTTPForbidden(translate(_("Use majority polls for 2 proposals.")))
-        title = self.get_quick_poll_title()
         proposal_uids = [x.uid for x in proposals]
         # if poll_method == 'schulze':
         #     poll_plugin = 'schulze'
         # if poll_method == 'majority':
         #     poll_plugin = 'majority_poll'
         poll = factories['Poll'](
-            title=title,
+            title=poll_title,
             proposals=proposal_uids,
             poll_plugin=poll_method
         )
         ai[poll.uid] = poll
         poll.set_workflow_state(self.request, 'upcoming')
         poll.set_workflow_state(self.request, 'ongoing')
-        poll_url = '<a href="%s">%s</a>' % (self.request.resource_url(poll), title)
+        poll_url = '<a href="%s">%s</a>' % (self.request.resource_url(poll), poll_title)
         return {'msg': translate(_("Added and started: ${poll_url}",
                                    {'poll_url': poll_url}))}
 

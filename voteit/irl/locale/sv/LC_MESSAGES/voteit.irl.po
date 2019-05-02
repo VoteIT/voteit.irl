@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-05-01 12:42+0200\n"
-"PO-Revision-Date: 2019-05-01 12:52+0200\n"
+"POT-Creation-Date: 2019-05-02 12:46+0200\n"
+"PO-Revision-Date: 2019-05-02 12:46+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: Swedish <http://example.com/projects/voteit/voteit-irl/sv/>\n"
 "Language: sv\n"
@@ -552,61 +552,6 @@ msgstr "Tid"
 msgid "Voters"
 msgstr "Röstberättigade"
 
-#: voteit/irl/templates/projector.pt:20
-msgid "(Click menu to select Agenda Item)"
-msgstr "(Klicka i menyn för att välja dagordningspunk)"
-
-#: voteit/irl/templates/projector.pt:25
-msgid "Previous"
-msgstr "Föregående"
-
-#: voteit/irl/templates/projector.pt:33
-msgid "Next"
-msgstr "Nästa"
-
-#. Default: Quickly create a poll
-#: voteit/irl/templates/projector.pt:42
-msgid "quick_poll_btn_title"
-msgstr ""
-"Snabbskapar omröstning. Majoritetsomröstning för 1-2 förslag, Schulze STV "
-"för 3 eller fler."
-
-#: voteit/irl/templates/projector.pt:52
-msgid "Multiple proposals (Schulze)"
-msgstr "Flera förslag (Schulze)"
-
-#: voteit/irl/templates/projector.pt:61
-msgid "All highlighted"
-msgstr "Alla markerade"
-
-#: voteit/irl/templates/projector.pt:72
-msgid "All highlighted + Create reject"
-msgstr "Alla markerade + Skapa avslag"
-
-#: voteit/irl/templates/projector.pt:80
-msgid "Majority"
-msgstr "Majoritetsomröstning"
-
-#: voteit/irl/templates/projector.pt:89
-msgid "2 highlighted"
-msgstr "2 markerade"
-
-#: voteit/irl/templates/projector.pt:99
-msgid "1 highlighted + create reject"
-msgstr "1 markerad + skapa avslag"
-
-#: voteit/irl/templates/projector.pt:107
-msgid "Closed polls"
-msgstr "Stängda omröstningar"
-
-#: voteit/irl/templates/projector.pt:115
-msgid "Show last poll result"
-msgstr "Visa senaste omröstningsresultat"
-
-#: voteit/irl/templates/projector.pt:197
-msgid "by"
-msgstr "av"
-
 #: voteit/irl/templates/view_electoral_register.pt:10
 msgid "Electoral register ${id} ${time}"
 msgstr "Röstlängd ${id} ${time}"
@@ -873,56 +818,83 @@ msgstr "Närvarokontroll"
 msgid "Settings"
 msgstr "Inställningar"
 
-#: voteit/irl/views/projector.py:84
-msgid "Reject"
-msgstr "Avslag"
+#: voteit/irl/views/projector.py:32
+msgid "Previous"
+msgstr "Föregående"
 
-#: voteit/irl/views/projector.py:89
+#: voteit/irl/views/projector.py:33
+msgid "Next"
+msgstr "Nästa"
+
+#: voteit/irl/views/projector.py:34
+msgid "by"
+msgstr "av"
+
+#: voteit/irl/views/projector.py:35
+msgid "Click in menu to select Agenda Item"
+msgstr "Klicka i menyn för att välja dagordningspunkt"
+
+#: voteit/irl/views/projector.py:36
+msgid "Ongoing polls"
+msgstr "Pågående omröstningar"
+
+#: voteit/irl/views/projector.py:37
+msgid "Closed polls"
+msgstr "Stängda omröstningar"
+
+#: voteit/irl/views/projector.py:38
+msgid "Show last poll result"
+msgstr "Visa senaste omröstningsresultat"
+
+#: voteit/irl/views/projector.py:39
+msgid "add reject"
+msgstr "lägg till avslag"
+
+#: voteit/irl/views/projector.py:44
+msgid "Multiple winners (Schulze)"
+msgstr "Flera vinnare (Schulze)"
+
+#: voteit/irl/views/projector.py:50
+msgid "Majority poll"
+msgstr "Majoritetsomröstning"
+
+#: voteit/irl/views/projector.py:187
+#, python-format
+msgid "Reject (for poll ${title})"
+msgstr "Avslag (för omröstning ${title})"
+
+#: voteit/irl/views/projector.py:192
 msgid "No proposals"
 msgstr "Inga förslag"
 
-#: voteit/irl/views/projector.py:92
+#: voteit/irl/views/projector.py:195
 msgid "Majority polls must have exactly 2 proposals in them."
 msgstr "Majoritetsomröstningar måste ha exakt 2 förslag i sig."
 
-#: voteit/irl/views/projector.py:94
+#: voteit/irl/views/projector.py:197
 msgid "Use majority polls for 2 proposals."
 msgstr "Använd majoritetsomrösting för 2 förslag"
 
-#. Default: There are ongoing polls in this agenda item,close them first.
-#: voteit/irl/views/projector.py:101
-msgid "quickpoll_ongoing_polls_error"
-msgstr ""
-"Det finns pågående omröstningar i dagordningspunkten, avsluta dem först."
-
-#: voteit/irl/views/projector.py:119
+#: voteit/irl/views/projector.py:212
 #, python-format
 msgid "Added and started: ${poll_url}"
 msgstr "Tillagd och startad: ${poll_url}"
 
-#. Default: Proposal wasn't in any of the states 'Published', 'Approved' or
-#. 'Denied'. You may need to reload this page.
-#: voteit/irl/views/projector.py:200
-msgid "wrong_initial_state_error"
-msgstr ""
-"Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
-"'Avslagen'. Du kan behöva ladda om sidan."
-
-#: voteit/irl/views/projector.py:211
+#: voteit/irl/views/projector.py:331
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr "Inte tillåtet att gå till ${state}"
 
-#: voteit/irl/views/projector.py:220
+#: voteit/irl/views/projector.py:340
 #, python-format
 msgid "Descision ${num}"
 msgstr "Beslut ${num}"
 
-#: voteit/irl/views/projector.py:233
+#: voteit/irl/views/projector.py:353
 msgid "No closed polls yet"
 msgstr "Inga stängda omröstningar än"
 
-#: voteit/irl/views/projector.py:237
+#: voteit/irl/views/projector.py:357
 msgid "Projector"
 msgstr "Projektorvy"
 
@@ -1113,6 +1085,32 @@ msgstr "Uppdatera röstberättigade"
 #: voteit/irl/views/main_proposals.py:40 voteit/irl/views/main_proposals.py:77
 msgid "Main proposals"
 msgstr "Huvudförslag"
+
+#~ msgid "quick_poll_btn_title"
+#~ msgstr ""
+#~ "Snabbskapar omröstning. Majoritetsomröstning för 1-2 förslag, Schulze STV "
+#~ "för 3 eller fler."
+
+#~ msgid "All highlighted"
+#~ msgstr "Alla markerade"
+
+#~ msgid "All highlighted + Create reject"
+#~ msgstr "Alla markerade + Skapa avslag"
+
+#~ msgid "2 highlighted"
+#~ msgstr "2 markerade"
+
+#~ msgid "1 highlighted + create reject"
+#~ msgstr "1 markerad + skapa avslag"
+
+#~ msgid "quickpoll_ongoing_polls_error"
+#~ msgstr ""
+#~ "Det finns pågående omröstningar i dagordningspunkten, avsluta dem först."
+
+#~ msgid "wrong_initial_state_error"
+#~ msgstr ""
+#~ "Förslaget var inte i någon av tillstånden 'Publicerad', 'Bifallen' eller "
+#~ "'Avslagen'. Du kan behöva ladda om sidan."
 
 #~ msgid "You have to select gender to join a speaker list."
 #~ msgstr "Du behöver ange kön för att sätta upp dig på talarlistan."
