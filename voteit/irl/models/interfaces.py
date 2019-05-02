@@ -1,3 +1,4 @@
+from pyramid.interfaces import IDict
 from zope.interface import Interface
 from zope.interface import Attribute
 
@@ -123,6 +124,21 @@ class IParticipantNumbers(Interface):
 
     def attach_email(email, number):
         """ Attach an email address to this number.
+        """
+
+
+class ISelfAssignmentSettings(IDict):
+    """ Mostly a settings storage dict that annotates meetings.
+    """
+    enabled = Attribute("Is this thing on?")
+
+    def required_role():
+        """ Returns required role. In case something is wrong with configuration it will return None.
+            The minimum required role is role:View.
+        """
+
+    def user_has_required_role(request):
+        """ Check if the current user has the required role.
         """
 
 

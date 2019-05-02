@@ -2,12 +2,14 @@
 import colander
 import deform
 from arche.validators import existing_userid_or_email
+from pyramid.traversal import find_root
 from six import string_types
 from voteit.core import security
 from voteit.core.helpers import strip_and_truncate
 from voteit.core.schemas.common import HASHTAG_PATTERN
 from voteit.core.schemas.common import deferred_autocompleting_userid_widget
-from voteit.core.schemas.common import strip_and_lowercase
+from voteit.core.schemas.common import prepare_emails_from_text
+from voteit.core.security import STANDARD_ROLES
 
 from voteit.irl import _
 from voteit.irl.models.interfaces import IElectoralRegister
@@ -36,6 +38,25 @@ class ElegibleVotersMethodSchema(colander.Schema):
                               u"accoring to it's specifications."),
         widget=elegible_voters_method_choices_widget,
     )
+
+
+@colander.deferred
+def meeting_userids_widget(node, kw):
+    """ An autocompleting widget with the names and userids
+        of all people within the meeting
+    """
+    # Fetch userids
+    context = kw['context']
+    root = find_root(context)
+    choices = [('', _("- select -"))]
+    for (userid, roles) in context.local_roles.items():
+        if security.ROLE_VOTER not in roles:
+            try:
+                title = "%s (%s)" %(root['users'][userid].title, userid)
+            except KeyError:
+                continue
+            choices.append((userid, title))
+    return deform.widget.Select2Widget(values=choices)
 
 
 @colander.deferred
@@ -81,10 +102,10 @@ class PNTokenValidator(object):
     def __call__(self, node, value):
         participant_numbers = self.request.registry.getAdapter(self.context, IParticipantNumbers)
         if value not in participant_numbers.token_to_number:
-            raise colander.Invalid(node, _(u"No match - remember that it's case sensitive!"))
+            raise colander.Invalid(node, _("No match - remember that it's case sensitive!"))
         number = participant_numbers.token_to_number[value]
         if participant_numbers.tickets[number].claimed:
-            raise colander.Invalid(node, _(u"This number has already been claimed."))
+            raise colander.Invalid(node, _("This number has already been claimed."))
 
 
 class ClaimParticipantNumberSchema(colander.Schema):
@@ -92,10 +113,10 @@ class ClaimParticipantNumberSchema(colander.Schema):
         colander.String(),
         validator=deferred_participant_number_token_validator,
         title=_("Access code for participant number"),
-        description=_(u"enter_token_description",
-                      default=u"Enter the code sent to you. It will have "
-                              u"the format xxxx-xxxx. "
-                              u"Note that it's case sensitive and can only be used once.")
+        description=_("enter_token_description",
+                      default="Enter the code sent to you. It will have "
+                              "the format xxxx-xxxx. "
+                              "Note that it's case sensitive and can only be used once.")
     )
 
 
@@ -114,7 +135,7 @@ class ExistingParticipantNumberValidator(object):
     def __call__(self, node, value):
         pn = self.request.registry.getAdapter(self.context, IParticipantNumbers)
         if value not in pn.number_to_userid.keys():
-            raise colander.Invalid(node, _(u"Participant number not found"))
+            raise colander.Invalid(node, _("Participant number not found"))
 
 
 @colander.deferred
@@ -172,7 +193,7 @@ def multiple_email_w_whitespace_validator(node, value):
             invalid.append(email)
     if invalid:
         emails = ", ".join(invalid)
-        raise colander.Invalid(node, _(u"The following adresses is invalid: ${emails}",
+        raise colander.Invalid(node, _("The following adresses is invalid: ${emails}",
                                        mapping={'emails': emails}))
 
 
@@ -194,7 +215,7 @@ class AttachEmailsToPN(colander.Schema):
                               "email address is validated. Empty lines will "
                               "increase number but has no other effect."),
         widget=deform.widget.TextAreaWidget(rows=7, cols=40),
-        preparer=strip_and_lowercase,
+        preparer=prepare_emails_from_text,
         validator=multiple_email_w_whitespace_validator,
     )
     create_new = colander.SchemaNode(
@@ -205,35 +226,59 @@ class AttachEmailsToPN(colander.Schema):
     )
 
 
-def _meeting_roles_minus_moderator():
-    roles = dict(security.MEETING_ROLES)
-    del roles[security.ROLE_MODERATOR]
-    return roles.items()
+class PNSelfAssignmentSettingsSchema(colander.Schema):
+    enabled = colander.SchemaNode(
+        colander.Bool(),
+        title=_("Enable self assignment for users within this meeting?"),
+        description=_("pnself_enabled_description",
+                      default="The option will be visible in the user profile menu for anyone who "
+                              "has no number assigned.")
+    )
+    require_role = colander.SchemaNode(
+        colander.String(),
+        title=_("Require this role to claim a participant number."),
+        widget=deform.widget.SelectWidget(values=security.STANDARD_ROLES),
+        validator=colander.OneOf([x[0] for x in security.STANDARD_ROLES])
+    )
+    start_number = colander.SchemaNode(
+        colander.Int(),
+        title=_("Start assigning at this number"),
+        default=100,
+        valdator=colander.Range(min=1),
+        description=_("pnself_start_number_description",
+                      default="It's good practice to make sure that no manually "
+                              "added participant numbers exist above this number.")
+    )
+
+
+class SelfClaimPNForm(colander.Schema):
+    title = _("Assign a participant number?")
+    description = _("It will enable you to use for instance speaker lists.")
 
 
 class ConfigureParticipantNumberAP(colander.Schema):
     pn_ap_claimed_roles = colander.SchemaNode(
         colander.Set(),
-        title=_(u"Anyone registering with participant number will be given these roles"),
-        description=_(u"pn_ap_claimed_roles_description",
-                      default=u"Picking at least one is required. "
-                              u"Note that if you allow registration to be "
-                              u"bypassed (see below) the roles "
-                              u"specified here won't be added when a meeting number is "
-                              u"claimed by someone who's already a part of the meeting."),
+        title=_("Anyone registering with participant number will be given these roles"),
+        description=_("pn_ap_claimed_roles_description",
+                      default="Picking at least one is required. "
+                              "Note that if you allow registration to be "
+                              "bypassed (see below) the roles "
+                              "specified here won't be added when a meeting number is "
+                              "claimed by someone who's already a part of the meeting."),
         default=[security.ROLE_VIEWER],
-        widget=deform.widget.CheckboxChoiceWidget(values=_meeting_roles_minus_moderator()),
+        widget=deform.widget.CheckboxChoiceWidget(values=STANDARD_ROLES),
     )
     pn_ap_public_roles = colander.SchemaNode(
         colander.Set(),
-        title=_(u"Allow bypass and give access to anyone?"),
-        description=_(u"pn_ap_public_roles_description",
-                      default=u"If anything is checked below, any user will be able to bypass the access form "
-                              u"and immediately gain the roles checked. Some examples - for meetings that are: \n\n"
-                              u"Closed: check nothing below.\n"
-                              u"Viewable for anyone: check view permission\n"
-                              u"Open for participation from anyone: check all\n"),
-        widget=deform.widget.CheckboxChoiceWidget(values=_meeting_roles_minus_moderator()),
+        title=_("Allow bypass and give access to anyone?"),
+        description=_("pn_ap_public_roles_description",
+                      default="If anything is checked below, any user will be able to bypass the access form "
+                              "and immediately gain the roles checked. Some examples - for meetings that are: \n\n"
+                              "Closed: check nothing below.\n"
+                              "Viewable for anyone: check view permission\n"
+                              "Open for participation from anyone: check all\n"),
+        widget=deform.widget.CheckboxChoiceWidget(values=STANDARD_ROLES),
     )
 
 
@@ -265,9 +310,9 @@ class AssignParticipantNumber(colander.Schema):
     title = _("Assign participant number")
     userid = colander.SchemaNode(
         colander.String(),
-        title=_(u"UserID"),
+        title=_("UserID"),
         validator=existing_userid_or_email,
-        widget=deferred_autocompleting_userid_widget,
+        widget=meeting_userids_widget,
     )
     pn = colander.SchemaNode(
         colander.Int(),
@@ -346,10 +391,12 @@ class PrintBtnSettingsSchema(colander.Schema):
 
 
 def includeme(config):
-    config.add_content_schema('Meeting', ElegibleVotersMethodSchema, 'eligible_voters_method')
-    config.add_content_schema('Meeting', AssignParticipantNumber, 'assign_participant_number')
-    config.add_content_schema('Meeting', ClaimParticipantNumberSchema, 'claim_participant_number')
-    config.add_content_schema('Meeting', AttachEmailsToPN, 'attach_emails_to_pn')
-    config.add_content_schema('Meeting', MeetingPresenceSettingsSchema, 'meeting_presence_settings')
-    config.add_content_schema('Meeting', MainProposalsSettingsSchema, 'main_proposals_settings')
-    config.add_content_schema('Meeting', PrintBtnSettingsSchema, 'print_btn_settings')
+    config.add_schema('Meeting', ElegibleVotersMethodSchema, 'eligible_voters_method')
+    config.add_schema('Meeting', AssignParticipantNumber, 'assign_participant_number')
+    config.add_schema('Meeting', ClaimParticipantNumberSchema, 'claim_participant_number')
+    config.add_schema('Meeting', AttachEmailsToPN, 'attach_emails_to_pn')
+    config.add_schema('Meeting', PNSelfAssignmentSettingsSchema, 'self_assignment_settings')
+    config.add_schema('Meeting', SelfClaimPNForm, 'self_claim_participant_number')
+    config.add_schema('Meeting', MeetingPresenceSettingsSchema, 'meeting_presence_settings')
+    config.add_schema('Meeting', MainProposalsSettingsSchema, 'main_proposals_settings')
+    config.add_schema('Meeting', PrintBtnSettingsSchema, 'print_btn_settings')

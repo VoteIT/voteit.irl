@@ -1,4 +1,3 @@
-import colander
 from arche.portlets import PortletType
 from arche.views.base import BaseView
 from arche.views.base import DefaultEditForm
