@@ -1,10 +1,10 @@
 <template>
     <nav class="navbar navbar-static-top navbar-voteit" role="navigation">
-        <div class="container-fluid" data-check-greedy>
+        <div class="container-fluid">
             <a class="navbar-brand hidden-xs" href="/">
                 <img height="31" width="85" class="voteitlogo" :src="logo" />
             </a>
-            <a class="navbar-brand greedy"
+            <a class="navbar-brand"
                id="navbar-heading"
                :href="currentAgendaItem ? currentAgendaItem.href : href">
                 <span v-if="currentAgendaItem">{{ currentAgendaItem.title }}</span>
@@ -13,21 +13,21 @@
                     ({{ $t('Click menu to select Agenda Item') }})
                 </span>
             </a>
-            <ul class="nav navbar-nav navbar-right">
-            <li :class="{disabled: !previousAgendaItem}">
-                <a href="#"
-                   :title="$t('Previous')"
-                   @click.prevent="loadAgendaItem(previousAgendaItem)">
-                    <span class="glyphicon glyphicon-chevron-left"> </span>
-                </a>
-            </li>
-            <li :class="{disabled: !nextAgendaItem}">
-                <a href="#"
-                   :title="$t('Next')"
-                   @click.prevent="loadAgendaItem(nextAgendaItem)">
-                    <span class="glyphicon glyphicon-chevron-right"> </span>
-                </a>
-            </li>
+            <ul class="nav navbar-nav navbar-right" id="navbar-controls">
+                <li :class="{disabled: !previousAgendaItem}">
+                    <a href="#"
+                    :title="$t('Previous')"
+                    @click.prevent="loadAgendaItem(previousAgendaItem)">
+                        <span class="glyphicon glyphicon-chevron-left"> </span>
+                    </a>
+                </li>
+                <li :class="{disabled: !nextAgendaItem}">
+                    <a href="#"
+                    :title="$t('Next')"
+                    @click.prevent="loadAgendaItem(nextAgendaItem)">
+                        <span class="glyphicon glyphicon-chevron-right"> </span>
+                    </a>
+                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle"
                        title="Quickly create a poll"
@@ -150,4 +150,15 @@
     label
         padding: 3px 5px
         font-weight: normal
+
+.navbar
+    .container-fluid
+        display: flex
+        #navbar-heading
+            flex: 1 1 auto
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
+        #navbar-controls
+            flex: 0 0 auto
 </style>

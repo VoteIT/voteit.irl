@@ -5,7 +5,7 @@
     "agenda": [
       {
         "uid": "one",
-        "title": "Agenda item 1",
+        "title": "Agenda item 1, but with a very long title - so long it should not fit ever...",
         "workflowState": "upcoming",
         "href": "#agenda-1",
         "name": "agenda-1",
@@ -104,7 +104,8 @@
     }
   ],
   "api": {
-    "quickPoll": "/quick_poll.json"
+    "quickPoll": "/quick_poll.json",
+    "pollIntervalTime": 3
   },
   "logo": "http://localhost:6543/voteit_core_static/images/logo.png"
 }
