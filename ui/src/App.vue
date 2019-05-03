@@ -29,8 +29,14 @@ body
         margin-right: .4rem
 
 .fixed-right
-    padding-right: 0
-    padding-left: 0
+    overflow-y: auto
+    position: fixed
+    float: none
+    top: 70px
+    right: 0
+    bottom: 0
+    margin-bottom: 0
+    padding: 0
 
 #quick-polls
     .progress
