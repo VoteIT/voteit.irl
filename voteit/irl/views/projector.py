@@ -55,6 +55,8 @@ POLL_GROUPS = [
     }
 ]
 
+POLL_INTERVAL_TIME = 3  # Time in seconds. Maybe should be a setting?
+
 
 def proj_tags2links(text):
     """ Transform #tag to a relative link in this context.
@@ -127,8 +129,8 @@ class ProjectorView(AgendaItemView):
             'methods': [{
                 'name': m,
                 'title': self.request.localizer.translate(poll_methods[m].title),
-                'proposalsMin': poll_methods[m].proposals_min,
-                'proposalsMax': poll_methods[m].proposals_max,
+                'proposalsMin': getattr(poll_methods[m], 'proposals_min', 1),
+                'proposalsMax': getattr(poll_methods[m], 'proposals_max', None),
                 'rejectProp': reject,
             } for (m, reject) in g['methods'] if m in poll_methods]
         } for g in POLL_GROUPS]
@@ -152,6 +154,7 @@ class ProjectorView(AgendaItemView):
             'proposalWorkflowStates': self._get_workflow_states(),
             'api': {
                 'quickPoll': self.request.resource_path(self.context, '__quick_poll__.json'),
+                'pollIntervalTime': POLL_INTERVAL_TIME,
             },
             'logo': self.request.static_path('voteit.core:static/images/logo.png'),
         }
@@ -209,8 +212,22 @@ class ProjectorView(AgendaItemView):
         poll.set_workflow_state(self.request, 'upcoming')
         poll.set_workflow_state(self.request, 'ongoing')
         poll_url = '<a href="%s">%s</a>' % (self.request.resource_url(poll), poll_title)
-        return {'msg': translate(_("Added and started: ${poll_url}",
-                                   {'poll_url': poll_url}))}
+        return {
+            'msg': translate(_("Added and started: ${poll_url}",
+                               {'poll_url': poll_url})),
+            'proposals': [self.serialize_proposal(prop) for prop in proposals],
+        }
+
+    def serialize_proposal(self, prop):
+        return {
+            'uid': prop.uid,
+            'aid': prop.aid,
+            'text': self.request.render_proposal_text(prop, tag_func=proj_tags2links),
+            'workflowState': prop.get_workflow_state(),
+            'creator': self.request.creators_info(prop.creator, portrait=False, no_tag=True),
+            'workflowApi': self.request.resource_path(prop, '__change_state_projector__.json'),
+            'tags': prop.tags,
+        }
 
     # For new reactive projector
     @view_config(context=IAgendaItem, name="__content__.json", renderer='json')
@@ -228,17 +245,8 @@ class ProjectorView(AgendaItemView):
             'potentialVotes': 200,  # FIXME
         } for poll in self.catalog_query(poll_query, sort_index='end_time', resolve=True)]
 
-        proposals = [{
-            'uid': prop.uid,
-            'aid': prop.aid,
-            'text': self.request.render_proposal_text(prop, tag_func=proj_tags2links),
-            'workflowState': prop.get_workflow_state(),
-            'creator': self.request.creators_info(prop.creator, portrait=False, no_tag=True),
-            'workflowApi': self.request.resource_path(prop, '__change_state_projector__.json'),
-            'tags': prop.tags,
-        } for prop in self.catalog_query(prop_query, resolve=True)]
         return {
-            'proposals': proposals,
+            'proposals': [self.serialize_proposal(prop) for prop in self.catalog_query(prop_query, resolve=True)],
             'pollsOngoing': [],
             'pollsClosed': closed_polls,
         }

@@ -1,4 +1,4 @@
-import { doRequest } from "src/core_components/utils";
+import { requests } from "src/core_components/utils";
 
 export default {
     namespaced: true,
@@ -80,8 +80,21 @@ export default {
         selectProposal(state, proposal) {
             state.proposalSelection.unshift(proposal.uid);
         },
+        selectProposals(state, proposals) {
+            state.proposalSelection = proposals.map(p => p.uid);
+        },
         deselectProposal(state, proposal) {
             state.proposalSelection.splice(state.proposalSelection.indexOf(proposal.uid), 1);
+        },
+        updateProposals(state, proposals) {
+            proposals.forEach(incoming => {
+                const prop = state.proposals.find(p => p.uid === incoming.uid);
+                if (prop !== undefined) {
+                    Object.assign(prop, incoming);
+                } else {
+                    state.proposals.push(incoming);
+                }
+            });
         },
         setRequestActive(state, value) {
             state.requestActive = value;
@@ -103,7 +116,7 @@ export default {
             // If agenda item active.
             // If polling: only if document is visible.
             if (state.agendaUrl && !(polling && document.hidden)) {
-                doRequest(state.agendaUrl, { polling })
+                requests.get(state.agendaUrl, { polling })
                 .done(data => {
                     commit('loadAgendaItem', data);
                 });
@@ -123,11 +136,8 @@ export default {
         setProposalWorkflowState({ state, commit }, { proposal, workflowState }) {
             const current = state.proposalWorkflowStates.find(wf => wf.name === proposal.workflowState);
             if (workflowState.quickSelect && current !== workflowState) {
-                doRequest(proposal.workflowApi, {
-                    method: 'POST',
-                    data: {
-                        state: workflowState.name
-                    }
+                requests.post(proposal.workflowApi, {
+                    state: workflowState.name
                 })
                 .done(data => {
                     const workflowState = state.proposalWorkflowStates.find(wf => wf.name === data.state);

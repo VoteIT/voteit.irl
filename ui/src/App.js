@@ -2,7 +2,7 @@ import { mapActions, mapMutations } from 'vuex';
 
 import { ProjectorNav, ProposalSelection, ProposalsMain } from './components';
 import { Modal, FlashMessages } from './core_components';
-import { doRequest } from './core_components/utils';
+import { requests } from './core_components/utils';
 
 export default {
     name: 'app',
@@ -19,7 +19,7 @@ export default {
         FlashMessages
     },
     created() {
-        doRequest($('body').data('src'))
+        requests.get($('body').data('src'))
         .done(data => {
             this.$store.commit('meeting/load', data.meeting);
             this.$store.commit('projector/load', data);

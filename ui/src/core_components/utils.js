@@ -1,10 +1,64 @@
 import Vue from 'vue';
 
-let requestActive = false,
-    requestQueue = [],
-    hasOnlineEventListener = false;
 
-const doRequest = (url, settings) => {
+class Requests {
+    constructor() {
+        this.requestActive = false;
+        this.requestQueue = [];
+
+        window.addEventListener('online', ()=> {
+            if (this.requestQueue.length)
+                this.request(this.requestQueue.shift());
+        });
+    }
+
+    request(url, settings) {
+        settings = settings || {};
+        if (typeof url === 'object')
+            settings = url;
+        else
+            settings.url = url;
+
+        if (this.requestActive || !navigator.onLine) {
+            settings.deferred = $.Deferred();
+            if (!settings.polling)
+                this.requestQueue.push(settings);
+            return settings.deferred;
+        }
+        else {
+            this.requestActive = true;
+            return $.ajax(settings)
+            .done((data, textStatus, jqXHR) => {
+                if (settings.deferred)
+                    settings.deferred.resolve(data, textStatus, jqXHR);
+            })
+            .fail((jqXHR, textStatus, errorThrown) => {
+                if (settings.deferred)
+                    settings.deferred.reject(jqXHR, textStatus, errorThrown);
+            })
+            .always(() => {
+                this.requestActive = false;
+                if (this.requestQueue.length)
+                    this.request(this.requestQueue.shift());
+            })
+        }
+    }
+
+    get(url, settings) {
+        settings = settings || {};
+        return this.request(url, settings);
+    }
+
+    post(url, data, settings) {
+        settings = settings || {};
+        settings.method = 'POST';
+        settings.data = data;
+        return this.request(url, settings);
+    }
+}
+const requests = new Requests();
+
+/* const doRequest = (url, settings) => {
     settings = settings || {};
     if (typeof url === 'object')
         settings = url;
@@ -38,7 +92,7 @@ const doRequest = (url, settings) => {
         }
     }
 }
-
+ */
 const eventBus = new Vue();
 
 const flashMessage = (content, options) => {
@@ -70,5 +124,6 @@ export {
     eventBus,
     flashError,
     flashMessage,
-    doRequest
+//    doRequest,
+    requests
 }

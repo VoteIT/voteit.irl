@@ -1,8 +1,6 @@
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import { ModalLink, FlashMessages } from '../core_components';
-import { flashMessage, doRequest } from '../core_components/utils';
-
-const UPDATE_INTERVAL = 5000;
+import { flashMessage, requests } from '../core_components/utils';
 
 export default {
     components: {
@@ -10,7 +8,7 @@ export default {
         FlashMessages
     },
     methods: {
-        ...mapMutations('projector', ['toggleProposalWorkflow']),
+        ...mapMutations('projector', ['toggleProposalWorkflow', 'updateProposals', 'selectProposals']),
         ...mapActions('projector', ['updateAgendaItems']),
         pollAvailable(poll) {
             // If a reject proposal is added, that's another proposal. Add one.
@@ -24,16 +22,15 @@ export default {
         quickPoll(pollMethod) {
             if (!this.pollAvailable(pollMethod))
                 return;
-            doRequest(this.api.quickPoll, {
-                method: 'POST',
-                data: {
-                    'quick-poll-method': pollMethod.name,
-                    'uid': this.proposalSelection,
-                    'reject-prop': pollMethod.rejectProp
-                }
+            requests.post(this.api.quickPoll, {
+                'quick-poll-method': pollMethod.name,
+                'uid': this.proposalSelection,
+                'reject-prop': pollMethod.rejectProp
             })
-            .done(response => {
-                flashMessage(response.msg, { timeout: null });
+            .done(data => {
+                flashMessage(data.msg, { timeout: null });
+                this.updateProposals(data.proposals);
+                this.selectProposals(data.proposals);
             });
         },
         loadAgendaItem(ai) {
@@ -60,6 +57,6 @@ export default {
         }
     },
     created() {
-        setInterval(() => this.updateAgendaItems(true), UPDATE_INTERVAL);
+        setInterval(() => this.updateAgendaItems(true), this.api.pollIntervalTime * 1000);
     }
 }
