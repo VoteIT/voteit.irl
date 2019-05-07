@@ -16,22 +16,21 @@
             <ul class="nav navbar-nav navbar-right" id="navbar-controls">
                 <li :class="{disabled: !previousAgendaItem}">
                     <a href="#"
-                    :title="$t('Previous')"
+                    :title="previousAgendaItem ? previousAgendaItem.title : $t('Previous')"
                     @click.prevent="loadAgendaItem(previousAgendaItem)">
                         <span class="glyphicon glyphicon-chevron-left"> </span>
                     </a>
                 </li>
                 <li :class="{disabled: !nextAgendaItem}">
                     <a href="#"
-                    :title="$t('Next')"
+                    :title="nextAgendaItem ? nextAgendaItem.title : $t('Next')"
                     @click.prevent="loadAgendaItem(nextAgendaItem)">
                         <span class="glyphicon glyphicon-chevron-right"> </span>
                     </a>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle"
-                       title="Quickly create a poll"
-                       i18n:attributes="title quick_poll_btn_title;"
+                       :title="$t('Quickly create a poll')"
                        data-toggle="dropdown"
                        aria-expanded="false">
                         <span class="glyphicon glyphicon-star"> </span>
@@ -59,8 +58,7 @@
 
                         <li v-for="poll in pollsOngoing" :key="poll.uid">
                             <a role="menuitem"
-                               data-open-modal
-                               data-modal-dialog-class="modal-lg"
+                               @click.prevent="openPoll(poll)"
                                :href="poll.href">
                                 {{ poll.title }}
                                 <div class="progress">
@@ -77,7 +75,11 @@
                         </li>
 
                         <li v-for="poll in pollsClosed" :key="poll.uid">
-                            <modal-link role="menuitem" :href="poll.href" model-dialog-class="modal-lg" :content="poll.title"/>
+                            <a role="menuitem"
+                               @click.prevent="openPoll(poll)"
+                               :href="poll.href">
+                                {{ poll.title }}
+                            </a>
                         </li>
                     </ul>
                 </li>
@@ -161,4 +163,9 @@
             text-overflow: ellipsis
         #navbar-controls
             flex: 0 0 auto
+
+    a[role="checkbox"]
+        opacity: .2
+        &[aria-checked]
+            opacity: 1
 </style>

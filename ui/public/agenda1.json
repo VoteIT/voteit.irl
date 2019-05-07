@@ -19,28 +19,49 @@
       "tags": ["prop-2", "two"]
     }
   ],
-  "pollsOngoing": [
+  "polls": [
     {
       "title": "Omröstning 1",
       "uid": "123-asdf-312",
-      "votes": 62,
-      "potentialVotes": 134
-    }
-  ],
-  "pollsClosed": [
+      "votes": 64,
+      "potentialVotes": 134,
+      "workflowState": "ongoing",
+      "api": "/poll_closed.json",
+      "href": "/latest_poll_result.html"
+    },
     {
       "title": "Omröstning 0",
       "uid": "123-asdf-32312",
       "votes": 104,
       "potentialVotes": 134,
-      "href": "/latest_poll_result.html"
+      "href": "/latest_poll_result.html",
+      "workflowState": "closed"
     },
     {
       "title": "Omröstning 2",
       "uid": "123-asdf-32312kk",
       "votes": 124,
       "potentialVotes": 134,
-      "href": "http://localhost:1234/"
+      "href": "http://localhost:1234/",
+      "workflowState": "closed"
+    }
+  ],
+  "agenda": [
+    {
+      "uid": "one",
+      "title": "Agenda item 1, but with a very long title - so long it should not fit ever...",
+      "workflowState": "upcoming",
+      "href": "#agenda-1",
+      "name": "agenda-1",
+      "jsonUrl": "/agenda1.json"
+    },
+    {
+      "uid": "two",
+      "title": "Agenda item 2",
+      "workflowState": "ongoing",
+      "href": "#agenda-2",
+      "name": "agenda-2",
+      "jsonUrl": "/agenda2.json"
     }
   ]
 }

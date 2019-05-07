@@ -1,6 +1,7 @@
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
-import { ModalLink, FlashMessages } from '../core_components';
-import { flashMessage, requests } from '../core_components/utils';
+import { ModalLink, FlashMessages } from 'arche';
+import { flashMessage, requests, eventBus } from 'arche/utils';
+import PollModal from 'components/PollModal.vue';
 
 export default {
     components: {
@@ -8,10 +9,10 @@ export default {
         FlashMessages
     },
     methods: {
-        ...mapMutations('projector', ['toggleProposalWorkflow', 'updateProposals', 'selectProposals']),
+        ...mapMutations('projector', ['toggleProposalWorkflow', 'updateProposals', 'selectProposals', 'setOpenPollUid']),
         ...mapActions('projector', ['updateAgendaItems']),
         pollAvailable(poll) {
-            // If a reject proposal is added, that's another proposal. Add one.
+            // If a reject proposal is added, that's another proposal. +1
             const len = this.proposalSelection.length + (poll.rejectProp ? 1 : 0);
             if (poll.proposalsMin && len < poll.proposalsMin)
                 return false
@@ -38,13 +39,21 @@ export default {
                 this.$store.dispatch('projector/loadAgendaItem', ai);
                 history.pushState(ai, ai.title, '#' + ai.name);
             }
+        },
+        openPoll(poll) {
+            this.setOpenPollUid(poll.uid);
+            eventBus.$emit('modal::open', {
+                component: PollModal,
+                modelDialogClass: "modal-lg"
+            });
         }
     },
     computed: {
-        ...mapState('meeting', ['href', 'title', 'agenda', 'currentAgendaItem', 'hrefLastPollResult']),
-        ...mapGetters('meeting', ['agendaStates', 'previousAgendaItem', 'nextAgendaItem']),
+        ...mapState('meeting', ['href', 'title', 'agenda', 'hrefLastPollResult']),
+        ...mapGetters('meeting', ['agendaStates', 'previousAgendaItem', 'nextAgendaItem', 'currentAgendaItem']),
         ...mapState('projector', ['proposalWorkflowStates', 'pollGroups', 'proposalSelection', 'proposals',
-                                  'api', 'logo', 'pollsOngoing', 'pollsClosed']),
+                                  'api', 'logo']),
+        ...mapGetters('projector', ['pollsOngoing', 'pollsClosed']),
         pollList() {
             let list = [];
             this.pollGroups.forEach((group,i) => {
@@ -56,7 +65,9 @@ export default {
             return list;
         }
     },
+/*
     created() {
         setInterval(() => this.updateAgendaItems(true), this.api.pollIntervalTime * 1000);
     }
+*/
 }

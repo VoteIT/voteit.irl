@@ -1,8 +1,9 @@
 <template>
-    <a :role="role" @click.prevent="openModal" :href="href" v-html="content">
-    </a>
+    <a :role="role" @click.prevent="openModal" :href="href" v-html="content"/>
 </template>
 <script>
+import { eventBus } from 'arche/utils';
+
 export default {
     props: {
         href: String,
@@ -12,7 +13,7 @@ export default {
     },
     methods: {
         openModal() {
-            this.$root.$emit('modal::open', {
+            eventBus.$emit('modal::open', {
                 modelDialogClass: this.modelDialogClass,
                 href: this.href
             });

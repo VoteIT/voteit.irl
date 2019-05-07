@@ -17,6 +17,23 @@
       "workflowApi": "#prop4"
     }
   ],
-  "pollsOngoing": [],
-  "pollsClosed": []
+  "polls": [],
+  "agenda": [
+    {
+      "uid": "one",
+      "title": "Agenda item 1, but with a very long title - so long it should not fit ever...",
+      "workflowState": "upcoming",
+      "href": "#agenda-1",
+      "name": "agenda-1",
+      "jsonUrl": "/agenda1.json"
+    },
+    {
+      "uid": "two",
+      "title": "Agenda item 2",
+      "workflowState": "ongoing",
+      "href": "#agenda-2",
+      "name": "agenda-2",
+      "jsonUrl": "/agenda2.json"
+    }
+  ]
 }

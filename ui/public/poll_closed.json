@@ -1,0 +1,9 @@
+{
+  "title": "Omröstning 1",
+  "uid": "123-asdf-312",
+  "votes": 124,
+  "potentialVotes": 134,
+  "workflowState": "closed",
+  "api": "/poll_closed.json",
+  "href": "/latest_poll_result.html"
+}

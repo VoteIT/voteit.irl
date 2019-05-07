@@ -1,8 +1,8 @@
 import { mapActions, mapMutations } from 'vuex';
 
-import { ProjectorNav, ProposalSelection, ProposalsMain } from './components';
-import { Modal, FlashMessages } from './core_components';
-import { requests } from './core_components/utils';
+import { ProjectorNav, ProposalSelection, ProposalsMain } from 'components';
+import { Modal, FlashMessages } from 'arche';
+import { requests } from 'arche/utils';
 
 export default {
     name: 'app',

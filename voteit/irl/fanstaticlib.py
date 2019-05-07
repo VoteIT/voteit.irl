@@ -23,6 +23,7 @@ voteit_irl_print_css = Resource(voteit_irl_lib, 'print.css', depends = (voteit_m
 main_proposal = Resource(voteit_irl_lib, 'main_proposal.js', depends=(common_js,))
 
 
+# Every resource needs (path, file_ending, depends)
 def dynamic_generator(*resources):
     for (path, extension, depends) in resources:
         for (dirpath, dirnames, filenames) in os.walk(os.path.join(voteit_irl_lib.path, path)):
@@ -32,8 +33,8 @@ def dynamic_generator(*resources):
 
 
 dynamic_resources = dynamic_generator(
-    ('vue/js', '.js', (common_js,)),
-    ('vue/css', '.css', (voteit_main_css,))
+    ('vue/js', '.js', None),
+    ('vue/css', '.css', None)
 )
 voteit_irl_projector = Group(dynamic_resources)
 

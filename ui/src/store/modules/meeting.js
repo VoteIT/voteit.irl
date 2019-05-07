@@ -6,7 +6,8 @@ const AGENDA_STATES = [
 ]
 
 const getRelativeAgendaItem = (state, position) => {
-    const index = state.agenda.indexOf(state.currentAgendaItem) + position;
+    const ai = state.agenda.find(ai => ai.uid === state.currentAgendaItemUid);
+    const index = state.agenda.indexOf(ai) + position;
     if (-1 < index && index < state.agenda.length)
         return state.agenda[index];
 }
@@ -18,7 +19,7 @@ export default {
         title: '',
         href: '',
         agenda: [],
-        currentAgendaItem: undefined,
+        currentAgendaItemUid: undefined,
         loaded: false
     },
 
@@ -33,6 +34,9 @@ export default {
         previousAgendaItem(state) {
             return getRelativeAgendaItem(state, -1);
         },
+        currentAgendaItem(state) {
+            return state.agenda.find(ai => ai.uid === state.currentAgendaItemUid);
+        },
         nextAgendaItem(state) {
             return getRelativeAgendaItem(state, 1);
         },
@@ -45,8 +49,11 @@ export default {
             });
             state.loaded = true;
         },
+        setAgenda(state, agenda) {
+            state.agenda = agenda;
+        },
         setAgendaItem(state, uid) {
-            state.currentAgendaItem = state.agenda.find(item => item.uid===uid);
+            state.currentAgendaItemUid = uid;
         }
     },
 }

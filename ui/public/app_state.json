@@ -81,7 +81,7 @@
     {
       "name": "voting",
       "title": "Låst för omröstning",
-      "checked": false,
+      "checked": true,
       "quickSelect": false
     },
     {

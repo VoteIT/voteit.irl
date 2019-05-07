@@ -1,4 +1,4 @@
-import { requests } from "src/core_components/utils";
+import { requests, polling } from "arche/utils";
 
 export default {
     namespaced: true,
@@ -9,12 +9,12 @@ export default {
         proposals: [],
         proposalSelection: [],  // uids
         proposalOrder: [],  // uids
-        pollsOngoing: [],
-        pollsClosed: [],
+        polls: [],
         agendaUrl: null,
         requestActive: false,
         api: {},
-        logo: ''
+        logo: '',
+        openPollUid: null,
     },
 
     getters: {
@@ -32,6 +32,15 @@ export default {
         },
         selectedProposals(state) {
             return state.proposalSelection.map(uid => state.proposals.find(prop => prop.uid === uid));
+        },
+        pollsOngoing(state) {
+            return state.polls.filter(p => p.workflowState === 'ongoing');
+        },
+        pollsClosed(state) {
+            return state.polls.filter(p => p.workflowState === 'closed');
+        },
+        openPoll(state) {
+            return state.polls.find(p => p.uid === state.openPollUid);
         }
     },
 
@@ -47,13 +56,13 @@ export default {
             state.proposals = [];
             state.proposalSelection = [];
             state.proposalOrder = [];
-            state.pollsOngoing = [];
-            state.pollsClosed = [];
+            state.polls = [];
         },
         loadAgendaItem(state, data) {
+            // To reset projector (I.E. if current Agenda Item is gone)
+            data = data || { proposals: [], pollsOngoing: [], pollsClosed: [] }
             state.proposals = data.proposals;
-            state.pollsOngoing = data.pollsOngoing;
-            state.pollsClosed = data.pollsClosed;
+            state.polls = data.polls;
 
             // Remove deleted proposals from order and selection
             const containsFilter = uid => state.proposals.find(p => p.uid === uid) !== undefined;
@@ -87,6 +96,8 @@ export default {
             state.proposalSelection.splice(state.proposalSelection.indexOf(proposal.uid), 1);
         },
         updateProposals(state, proposals) {
+            // For state changes to a subset of proposals, i.e. with quickPoll.
+            // Can add proposals, but not remove.
             proposals.forEach(incoming => {
                 const prop = state.proposals.find(p => p.uid === incoming.uid);
                 if (prop !== undefined) {
@@ -108,40 +119,72 @@ export default {
             state.proposalSelection = state.proposals
                 .filter(p => p.tags.indexOf(tagName) !== -1 && p.workflowState in onStates)
                 .map(p => p.uid);
+        },
+        setOpenPollUid(state, uid) {
+            state.openPollUid = uid;
+        },
+        updatePoll(state, data) {
+            const poll = state.polls.find(p => p.uid === data.uid);
+            if (poll)
+                Object.assign(poll, data);
         }
     },
 
     actions: {
-        updateAgendaItems({ state, commit }, polling=false) {
-            // If agenda item active.
-            // If polling: only if document is visible.
-            if (state.agendaUrl && !(polling && document.hidden)) {
-                requests.get(state.agendaUrl, { polling })
-                .done(data => {
-                    commit('loadAgendaItem', data);
-                });
+        loadAgendaItem({ state, commit }, ai) {
+            if (state.agendaUrl) {
+                polling.clearService(state.agendaUrl);
             }
-        },
-        loadAgendaItem({ commit, dispatch }, ai) {
-            if (ai) {
-                commit('meeting/setAgendaItem', ai.uid, {root: true});
-                commit('setAgendaUrl', ai.jsonUrl);
-                dispatch('updateAgendaItems');
+            ai = ai || {jsonUrl: null, uid: null};
+            commit('meeting/setAgendaItem', ai.uid, {root: true});
+            commit('setAgendaUrl', ai.jsonUrl);
+            if (ai.jsonUrl) {
+                polling.addService(
+                    ai.jsonUrl,
+                    state.api.pollIntervalTime * 1000, 
+                    data => {
+                        // This function is called on poll requests done().
+                        // Update meeting agenda first.
+                        commit('meeting/setAgenda', data.agenda, { root: true });
+                        // Check if current ai in incoming agenda.
+                        if (data.agenda.find(newAi => newAi.uid === ai.uid)) {
+                            commit('loadAgendaItem', data);
+                        }
+                        else {
+                            // If current AI is not in incoming list it will reset view and stop polling.
+                            commit('loadAgendaItem');
+                            polling.clearService(ai.jsonUrl);
+                        }
+                    }
+                );
             }
         },
         loadAgendaItemByName({ rootState, dispatch }, name) {
-            const ai = rootState.meeting.agenda.find(ai => ai.name === name) || {jsonUrl: null, uid: null};
+            // Used for loading agenda item from url hash string
+            const ai = rootState.meeting.agenda.find(ai => ai.name === name);
             dispatch('loadAgendaItem', ai);
         },
         setProposalWorkflowState({ state, commit }, { proposal, workflowState }) {
+            // Change proposal workflow, i.e. set proposal to approved, denied, published.
             const current = state.proposalWorkflowStates.find(wf => wf.name === proposal.workflowState);
             if (workflowState.quickSelect && current !== workflowState) {
+                // TODO: Lock proposal controls during request.
                 requests.post(proposal.workflowApi, {
                     state: workflowState.name
                 })
                 .done(data => {
                     const workflowState = state.proposalWorkflowStates.find(wf => wf.name === data.state);
                     commit('setProposalWorkflowState', { proposal, workflowState });
+                });
+            }
+        },
+        closePoll({ state, commit }, uid) {
+            // TODO Send to backend
+            const poll = state.polls.find(p => p.uid === uid);
+            if (poll) {
+                requests.post(poll.api, { state: 'closed' })
+                .done(data => {
+                    commit('updatePoll', data)
                 });
             }
         }
