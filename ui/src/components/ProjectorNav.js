@@ -1,6 +1,6 @@
 import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import { ModalLink, FlashMessages } from 'arche';
-import { flashMessage, requests, eventBus } from 'arche/utils';
+import { requests, modal } from 'arche/utils';
 import PollModal from 'components/PollModal.vue';
 
 export default {
@@ -9,7 +9,7 @@ export default {
         FlashMessages
     },
     methods: {
-        ...mapMutations('projector', ['toggleProposalWorkflow', 'updateProposals', 'selectProposals', 'setOpenPollUid']),
+        ...mapMutations('projector', ['toggleProposalWorkflow', 'updateProposals', 'selectProposals', 'setOpenPollUid', 'updatePoll']),
         ...mapActions('projector', ['updateAgendaItems']),
         pollAvailable(poll) {
             // If a reject proposal is added, that's another proposal. +1
@@ -29,9 +29,10 @@ export default {
                 'reject-prop': pollMethod.rejectProp
             })
             .done(data => {
-                flashMessage(data.msg, { timeout: null });
                 this.updateProposals(data.proposals);
                 this.selectProposals(data.proposals);
+                this.updatePoll(data.poll);
+                this.openPoll(data.poll);
             });
         },
         loadAgendaItem(ai) {
@@ -42,10 +43,10 @@ export default {
         },
         openPoll(poll) {
             this.setOpenPollUid(poll.uid);
-            eventBus.$emit('modal::open', {
+            modal.open({
                 component: PollModal,
                 modelDialogClass: "modal-lg"
-            });
+            })
         }
     },
     computed: {
@@ -65,9 +66,4 @@ export default {
             return list;
         }
     },
-/*
-    created() {
-        setInterval(() => this.updateAgendaItems(true), this.api.pollIntervalTime * 1000);
-    }
-*/
 }

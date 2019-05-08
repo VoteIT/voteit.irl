@@ -1,3 +1,31 @@
 {
-  "message": "Tillagd och startad: <a href=\"#some_poll\">Beslut 8</a>"
+  "proposals": [
+    {
+      "uid": "prop1",
+      "aid": "prop-1",
+      "text": "Proposal text <a href=\"#\" data-tag-filter=\"two\">#two</a>,",
+      "workflowState": "voting",
+      "creator": "Användare (username)",
+      "workflowApi": "#prop1",
+      "tags": ["prop-1" ,"one", "two"]
+    },
+    {
+      "uid": "prop2",
+      "aid": "prop-2",
+      "text": "Proposal text two",
+      "workflowState": "voting",
+      "creator": "Annan Användare (username-1)",
+      "workflowApi": "#prop2",
+      "tags": ["prop-2", "two"]
+    }
+  ],
+  "poll": {
+      "title": "Omröstning 1",
+      "uid": "123-asdf-312",
+      "votes": 64,
+      "potentialVotes": 134,
+      "workflowState": "ongoing",
+      "api": "/poll_closed.json",
+      "href": "/latest_poll_result.html"
+    }
 }

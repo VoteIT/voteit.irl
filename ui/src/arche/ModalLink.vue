@@ -2,7 +2,7 @@
     <a :role="role" @click.prevent="openModal" :href="href" v-html="content"/>
 </template>
 <script>
-import { eventBus } from 'arche/utils';
+import { modal } from 'arche/utils';
 
 export default {
     props: {
@@ -13,10 +13,7 @@ export default {
     },
     methods: {
         openModal() {
-            eventBus.$emit('modal::open', {
-                modelDialogClass: this.modelDialogClass,
-                href: this.href
-            });
+            modal.open(this.href, { modelDialogClass: this.modelDialogClass });
         }
     }
 }

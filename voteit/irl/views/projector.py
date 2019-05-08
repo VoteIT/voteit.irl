@@ -198,10 +198,6 @@ class ProjectorView(AgendaItemView):
         if len(proposals) < 3 and poll_method == 'schulze':
             raise HTTPForbidden(translate(_("Use majority polls for 2 proposals.")))
         proposal_uids = [x.uid for x in proposals]
-        # if poll_method == 'schulze':
-        #     poll_plugin = 'schulze'
-        # if poll_method == 'majority':
-        #     poll_plugin = 'majority_poll'
         poll = factories['Poll'](
             title=poll_title,
             proposals=proposal_uids,
@@ -210,10 +206,8 @@ class ProjectorView(AgendaItemView):
         ai[poll.uid] = poll
         poll.set_workflow_state(self.request, 'upcoming')
         poll.set_workflow_state(self.request, 'ongoing')
-        poll_url = '<a href="%s">%s</a>' % (self.request.resource_url(poll), poll_title)
         return {
-            'msg': translate(_("Added and started: ${poll_url}",
-                               {'poll_url': poll_url})),
+            'poll': self.serialize_poll(poll),
             'proposals': [self.serialize_proposal(prop) for prop in proposals],
         }
 

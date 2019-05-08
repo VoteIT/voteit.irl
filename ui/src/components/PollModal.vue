@@ -2,7 +2,7 @@
     <div v-if="result">
         <div class="modal-content" v-html="result"></div>
     </div>
-    <div v-else class="modal-content">
+    <div v-else class="modal-content" id="poll-modal">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" :aria-label="$t('Close')">
                 <span aria-hidden="true">&times;</span>
@@ -67,3 +67,8 @@ export default {
     }
 }
 </script>
+<style lang="sass">
+#poll-modal
+    .progress-bar
+        min-width: fit-content
+</style>

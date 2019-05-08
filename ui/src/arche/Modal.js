@@ -25,7 +25,6 @@ export default {
     created() {
         eventBus.$on('modal::open', options => {
             this.component = null;
-            this.componentData = undefined;
 
             options = $.extend({}, MODAL_DEFAULTS, options);
             this.content = options.content;

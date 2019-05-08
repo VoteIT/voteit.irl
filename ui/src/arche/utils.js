@@ -150,6 +150,23 @@ const flashMessage = (content, options) => {
     eventBus.$emit('flash::display', options);
 }
 
+const modal = {
+    // Open has two signatures.
+    // Call with (href, params) or (params).
+    open(href, params) {
+        if (typeof href === 'object')
+            params = href;
+        else {
+            params = params || {};
+            params.href = href;
+        }
+        eventBus.$emit('modal::open', params);
+    },
+    close() {
+        eventBus.$emit('modal::close');
+    }
+};
+
 const flashError = jqXHR => {
     let msg = '';
     if (jqXHR.getResponseHeader('content-type') === "application/json" && typeof(jqXHR.responseText) == 'string') {
@@ -174,5 +191,6 @@ export {
     flashError,
     flashMessage,
     requests,
-    polling
+    polling,
+    modal
 }

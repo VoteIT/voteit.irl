@@ -87,7 +87,7 @@ export default {
             state.proposalOrder.push(proposal.uid);
         },
         selectProposal(state, proposal) {
-            state.proposalSelection.unshift(proposal.uid);
+            state.proposalSelection.push(proposal.uid);
         },
         selectProposals(state, proposals) {
             state.proposalSelection = proposals.map(p => p.uid);
@@ -127,6 +127,8 @@ export default {
             const poll = state.polls.find(p => p.uid === data.uid);
             if (poll)
                 Object.assign(poll, data);
+            else
+                state.polls.push(data);
         }
     },
 
