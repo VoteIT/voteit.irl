@@ -240,16 +240,12 @@ class ProjectorView(AgendaItemView):
             'uid': poll.uid,
             'workflowState': workflow_state,
         }
-        if workflow_state in ('ongoing', 'closed'):
-            data['votes'] = len(poll)
-            if workflow_state == 'ongoing':
-                data.update({
-                    'votes': len(poll),
-                    'api': self.request.resource_path(poll, '__projector_workflow__.json'),
-                    'potentialVotes': self.voter_count,
-                })
-            else:
-                data['potentialVotes'] = len(poll.voters_mark_closed)
+        if workflow_state == 'ongoing':
+            data.update({
+                'votes': len(poll),
+                'api': self.request.resource_path(poll, '__projector_workflow__.json'),
+                'potentialVotes': self.voter_count,
+            })
         return data
 
     @view_config(context=IPoll, name="__projector_workflow__.json", renderer='json')
