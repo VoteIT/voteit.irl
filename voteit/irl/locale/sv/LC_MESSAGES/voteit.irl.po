@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: voteit.irl 0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-05-13 14:38+0200\n"
-"PO-Revision-Date: 2019-05-13 14:38+0200\n"
+"POT-Creation-Date: 2019-05-13 14:41+0200\n"
+"PO-Revision-Date: 2019-05-13 14:41+0200\n"
 "Last-Translator: Robin Harms Oredsson <robin@betahaus.net>\n"
 "Language-Team: Swedish <http://example.com/projects/voteit/voteit-irl/sv/>\n"
 "Language: sv\n"
@@ -826,46 +826,50 @@ msgstr "lägg till avslag"
 msgid "votes"
 msgstr "röster"
 
-#: voteit/irl/views/projector.py:48
+#: voteit/irl/views/projector.py:44
+msgid "Ongoing"
+msgstr "Pågående"
+
+#: voteit/irl/views/projector.py:49
 msgid "Multiple winners (Schulze)"
 msgstr "Flera vinnare (Schulze)"
 
-#: voteit/irl/views/projector.py:54
+#: voteit/irl/views/projector.py:55
 msgid "Majority poll"
 msgstr "Majoritetsomröstning"
 
-#: voteit/irl/views/projector.py:191
+#: voteit/irl/views/projector.py:192
 #, python-format
 msgid "Reject (for poll ${title})"
 msgstr "Avslag (för omröstning ${title})"
 
-#: voteit/irl/views/projector.py:196
+#: voteit/irl/views/projector.py:197
 msgid "No proposals"
 msgstr "Inga förslag"
 
-#: voteit/irl/views/projector.py:199
+#: voteit/irl/views/projector.py:200
 msgid "Majority polls must have exactly 2 proposals in them."
 msgstr "Majoritetsomröstningar måste ha exakt 2 förslag i sig."
 
-#: voteit/irl/views/projector.py:201
+#: voteit/irl/views/projector.py:202
 msgid "Use majority polls for 2 proposals."
 msgstr "Använd majoritetsomrösting för 2 förslag"
 
-#: voteit/irl/views/projector.py:253 voteit/irl/views/projector.py:356
+#: voteit/irl/views/projector.py:254 voteit/irl/views/projector.py:357
 #, python-format
 msgid "Not allowed to transition to ${state}"
 msgstr "Inte tillåtet att gå till ${state}"
 
-#: voteit/irl/views/projector.py:365
+#: voteit/irl/views/projector.py:366
 #, python-format
 msgid "Descision ${num}"
 msgstr "Beslut ${num}"
 
-#: voteit/irl/views/projector.py:378
+#: voteit/irl/views/projector.py:379
 msgid "No closed polls yet"
 msgstr "Inga avslutade omröstningar än"
 
-#: voteit/irl/views/projector.py:382
+#: voteit/irl/views/projector.py:383
 msgid "Projector"
 msgstr "Projektorvy"
 

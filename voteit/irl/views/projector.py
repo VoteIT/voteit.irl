@@ -41,6 +41,7 @@ JS_TRANSLATIONS = [
     _("Show last poll result"),
     _('add reject'),
     _('votes'),
+    _('Ongoing'),
 ]
 
 POLL_GROUPS = [
