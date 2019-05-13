@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div>
-                <button class="btn btn-primary" @click="closePoll(poll.uid)">{{ $t('Stäng omröstning') }}</button>
+                <button class="btn btn-sm btn-primary" @click="closePoll(poll.uid)">{{ $t('Close poll') }}</button>
             </div>
         </div>
     </div>

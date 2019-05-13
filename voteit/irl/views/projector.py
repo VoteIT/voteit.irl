@@ -37,6 +37,7 @@ JS_TRANSLATIONS = [
     _("Click in menu to select Agenda Item"),
     _("Ongoing polls"),
     _("Closed polls"),
+    _("Close poll"),
     _("Show last poll result"),
     _('add reject'),
 ]

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-05-02 12:46+0200\n"
+"POT-Creation-Date: 2019-05-13 14:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -211,238 +211,27 @@ msgstr ""
 msgid "Discussion post"
 msgstr ""
 
-#: ./voteit/irl/plugins/gender.py:18
-msgid "She"
+#: ./voteit/irl/templates/print_discussions.pt:9
+msgid "${num} selected discussion post(s)"
 msgstr ""
 
-#: ./voteit/irl/plugins/gender.py:19
-msgid "He"
+#: ./voteit/irl/templates/print_discussions.pt:13
+msgid "Each post will be printed on its own page. This text will be ignored"
 msgstr ""
 
-#: ./voteit/irl/plugins/gender.py:20
-msgid "Ze"
+#: ./voteit/irl/templates/print_discussions.pt:17
+#: ./voteit/irl/templates/print_proposals.pt:17 ./voteit/irl/views/print.py:31
+#: ./voteit/irl/views/print.py:59
+msgid "Print"
 msgstr ""
 
-#: ./voteit/irl/plugins/gender.py:22 ./voteit/irl/plugins/gender.py:27
-msgid "Unknown"
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:23
-msgid "Female"
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:24
-msgid "Male"
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:25
-msgid "Other"
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:58
-msgid "Participant number registration with gender"
-msgstr ""
-
-#. Default: Same as participant number, but this also requires gender to be
-#. specified.
-#: ./voteit/irl/plugins/gender.py:59
-msgid "participant_number_ap_with_gender_required_description"
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:73
-msgid "Gender"
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:74
-msgid ""
-"Used for statistics and perhaps gender based quotas. See meeting for details."
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:83
-msgid "Pronoun"
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:84
-msgid "Shown in speaker lists."
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:94
-msgid "Let users select pronoun"
-msgstr ""
-
-#: ./voteit/irl/plugins/gender.py:95
-msgid "Pronoun might be shown in different contexts like the speaker list."
-msgstr ""
-
-#: ./voteit/irl/plugins/present_users_voters.py:17
-msgid "Present with participant number in set range"
-msgstr ""
-
-#. Default: Will remove voting permission for anyone not set as present. Users
-#. without a participant number will be ignored, or if they're outside of the
-#. setting. (See the control panel)
-#: ./voteit/irl/plugins/present_users_voters.py:18
-msgid "present_with_pn_voters_description"
-msgstr ""
-
-#: ./voteit/irl/plugins/present_users_voters.py:45
-msgid "Must be written as 'NN-XX' where N is low nr and X high."
-msgstr ""
-
-#: ./voteit/irl/plugins/present_users_voters.py:53
-msgid "First value must be higher than second"
-msgstr ""
-
-#: ./voteit/irl/plugins/present_users_voters.py:60
-msgid "Voter participant number range"
-msgstr ""
-
-#. Default: Write number as 'NN-NN', i.e. 10-20 means that 10 to and including
-#. 20 will be voters if they're marked as present.
-#: ./voteit/irl/plugins/present_users_voters.py:61
-msgid "voter_pn_range_desc"
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:26
-#: ./voteit/irl/plugins/transfer_vote.py:68
-msgid "Transfer vote"
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:45
-#, python-format
-msgid "${userid} doesn't exist in this meeting."
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:48
-#, python-format
-msgid "${userid} is already a voter."
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:55
-msgid "To userid"
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:56
-msgid "Must be someone who isn't a voter right now."
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:72
-msgid "Vote transfer is not currently enabled."
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:75
-msgid "You're not a voter"
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:80
-msgid "Votes can't be transfered while a poll is open."
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:89
-#, python-format
-msgid "Vote transfered to ${userid}"
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:96
-msgid "Enable users to transfer votes?"
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:97
-msgid "Will add the option to the users profile menu."
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:108
-msgid "Vote transfer settings"
-msgstr ""
-
-#: ./voteit/irl/plugins/transfer_vote.py:123
-msgid "Vote transfer setting"
-msgstr ""
-
-#: ./voteit/irl/models/meeting_presence.py:85
-#: ./voteit/irl/models/meeting_presence.py:91
-msgid "Meeting presence check isn't open"
-msgstr ""
-
-#. Default: Some callbacks for the UserId '${userid}' failed. Contact the
-#. moderator about this. The ones that failed were: ${callback_errors}
-#: ./voteit/irl/models/participant_callback.py:64
-msgid "could_not_execute_callback_error"
-msgstr ""
-
-#: ./voteit/irl/models/participant_callback.py:126
-msgid "Allow to vote"
-msgstr ""
-
-#: ./voteit/irl/models/participant_callback.py:134
-msgid "Allow to discuss"
-msgstr ""
-
-#: ./voteit/irl/models/participant_callback.py:142
-msgid "Allow to propose"
-msgstr ""
-
-#: ./voteit/irl/models/participant_number_ap.py:12
-msgid "Participant number registration"
-msgstr ""
-
-#. Default: If participant numbers are enabled for this meeting, use this
-#. policy to allow meeting access through registration of a participant number.
-#: ./voteit/irl/models/participant_number_ap.py:13
-msgid "participant_number_ap_description"
-msgstr ""
-
-#. Default: Enter your code to claim your participant number and all
-#. permissions associated with it. If you're not supposed to have a participant
-#. number, you're allowed to proceed by clicking 'Request access'.
-#: ./voteit/irl/models/participant_number_ap.py:21
-msgid "token_validator_description_when_ok_without"
-msgstr ""
-
-#. Default: You're now assigned number ${number}.
-#: ./voteit/irl/models/participant_number_ap.py:37
-#: ./voteit/irl/views/participant_numbers.py:152
-#: ./voteit/irl/views/participant_numbers.py:196
-msgid "number_now_assigned_notice"
-msgstr ""
-
-#. Default: You've been given access to the meeting without a participant
-#. number.
-#: ./voteit/irl/models/participant_number_ap.py:43
-msgid "access_without_pn_notice"
-msgstr ""
-
-#: ./voteit/irl/templates/meeting_presence_portlet.pt:10
-#: ./voteit/irl/templates/meeting_presence.pt:11
-msgid "Presence check"
-msgstr ""
-
-#: ./voteit/irl/templates/meeting_presence_portlet.pt:23
-#: ./voteit/irl/templates/meeting_presence.pt:24
-msgid "Start check"
-msgstr ""
-
-#: ./voteit/irl/templates/meeting_presence_portlet.pt:29
-#: ./voteit/irl/templates/meeting_presence.pt:30
-msgid "End check"
-msgstr ""
-
-#: ./voteit/irl/templates/meeting_presence_portlet.pt:33
-#: ./voteit/irl/templates/meeting_presence.pt:34
-msgid "View"
-msgstr ""
-
-#: ./voteit/irl/templates/meeting_presence_portlet.pt:43
-#: ./voteit/irl/templates/meeting_presence.pt:44
-msgid "Number or UserID"
-msgstr ""
-
-#: ./voteit/irl/templates/participant_number_tabs.pt:9
-msgid "Manage/List"
-msgstr ""
-
-#: ./voteit/irl/templates/participant_number_tabs.pt:15
-msgid "Assign actions"
+#: ./voteit/irl/templates/print_discussions.pt:19
+#: ./voteit/irl/templates/view_electoral_register.pt:35
+#: ./voteit/irl/templates/participant_callbacks.pt:79
+#: ./voteit/irl/templates/print_proposals.pt:19
+#: ./voteit/irl/templates/participant_numbers.pt:63
+#: ./voteit/irl/views/electoral_register.py:81
+msgid "Back"
 msgstr ""
 
 #: ./voteit/irl/templates/meeting_presence_userids.pt:11
@@ -459,6 +248,54 @@ msgstr ""
 
 #: ./voteit/irl/templates/meeting_presence_userids.pt:25
 msgid "${count} user(s)"
+msgstr ""
+
+#: ./voteit/irl/templates/view_electoral_register.pt:10
+msgid "Electoral register ${id} ${time}"
+msgstr ""
+
+#: ./voteit/irl/templates/view_electoral_register.pt:19
+msgid "Users"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_callbacks.pt:10
+msgid "Participant callbacks"
+msgstr ""
+
+#. Default: This is an advanced feature that attaches callback code to an event
+#. that fires when a user claims a participant number. Don't touch this unless
+#. you know what you're doing.
+#: ./voteit/irl/templates/participant_callbacks.pt:14
+msgid "callback_code_explanation"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_callbacks.pt:45
+#: ./voteit/irl/templates/participant_numbers.pt:22
+msgid "Claimed by"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_callbacks.pt:60
+msgid "Execute callbacks for existing users (recommended)"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_callbacks.pt:64
+#: ./voteit/irl/templates/participant_numbers.pt:52
+msgid "Start"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_callbacks.pt:67
+#: ./voteit/irl/templates/participant_numbers.pt:54
+msgid "End"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_callbacks.pt:73
+#: ./voteit/irl/templates/participant_numbers.pt:57
+msgid "Add"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_callbacks.pt:76
+#: ./voteit/irl/templates/participant_numbers.pt:60
+msgid "Remove"
 msgstr ""
 
 #: ./voteit/irl/templates/electoral_register.pt:11
@@ -510,48 +347,80 @@ msgstr ""
 msgid "Voters"
 msgstr ""
 
-#: ./voteit/irl/templates/view_electoral_register.pt:10
-msgid "Electoral register ${id} ${time}"
-msgstr ""
-
-#: ./voteit/irl/templates/view_electoral_register.pt:19
-msgid "Users"
-msgstr ""
-
-#: ./voteit/irl/templates/view_electoral_register.pt:35
-#: ./voteit/irl/templates/print_discussions.pt:19
-#: ./voteit/irl/templates/participant_numbers.pt:63
-#: ./voteit/irl/templates/print_proposals.pt:19
-#: ./voteit/irl/templates/participant_callbacks.pt:79
-#: ./voteit/irl/views/electoral_register.py:81
-msgid "Back"
-msgstr ""
-
 #: ./voteit/irl/templates/main_proposal_btn.pt:11
 #: ./voteit/irl/templates/main_proposal_btn.pt:18
 msgid "Main proposal"
 msgstr ""
 
-#: ./voteit/irl/templates/print_discussions.pt:9
-msgid "${num} selected discussion post(s)"
+#: ./voteit/irl/templates/user_participant_number_info.pt:4
+msgid "Participant number:"
 msgstr ""
 
-#: ./voteit/irl/templates/print_discussions.pt:13
-msgid "Each post will be printed on its own page. This text will be ignored"
+#: ./voteit/irl/templates/meeting_presence_portlet.pt:10
+#: ./voteit/irl/templates/meeting_presence.pt:11
+msgid "Presence check"
 msgstr ""
 
-#: ./voteit/irl/templates/print_discussions.pt:17
-#: ./voteit/irl/templates/print_proposals.pt:17 ./voteit/irl/views/print.py:31
-#: ./voteit/irl/views/print.py:59
-msgid "Print"
+#: ./voteit/irl/templates/meeting_presence_portlet.pt:23
+#: ./voteit/irl/templates/meeting_presence.pt:24
+msgid "Start check"
 msgstr ""
 
-#: ./voteit/irl/templates/register_presence.pt:11
-msgid "I'm here!"
+#: ./voteit/irl/templates/meeting_presence_portlet.pt:29
+#: ./voteit/irl/templates/meeting_presence.pt:30
+msgid "End check"
 msgstr ""
 
-#: ./voteit/irl/templates/register_presence.pt:14
-msgid "Click to confirm your status as present."
+#: ./voteit/irl/templates/meeting_presence_portlet.pt:33
+#: ./voteit/irl/templates/meeting_presence.pt:34
+msgid "View"
+msgstr ""
+
+#: ./voteit/irl/templates/meeting_presence_portlet.pt:43
+#: ./voteit/irl/templates/meeting_presence.pt:44
+msgid "Number or UserID"
+msgstr ""
+
+#: ./voteit/irl/templates/diff_electoral_register.pt:16
+msgid "Comparing ${first} and ${second}"
+msgstr ""
+
+#: ./voteit/irl/templates/diff_electoral_register.pt:23
+msgid "${count} added in ${first}"
+msgstr ""
+
+#: ./voteit/irl/templates/diff_electoral_register.pt:35
+#: ./voteit/irl/templates/diff_electoral_register.pt:54
+msgid "(No change)"
+msgstr ""
+
+#: ./voteit/irl/templates/diff_electoral_register.pt:42
+msgid "${count} removed in ${first}"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_number_tabs.pt:9
+msgid "Manage/List"
+msgstr ""
+
+#: ./voteit/irl/templates/participant_number_tabs.pt:15
+msgid "Assign actions"
+msgstr ""
+
+#: ./voteit/irl/templates/print_proposals.pt:9
+msgid "${num} selected proposal(s)"
+msgstr ""
+
+#: ./voteit/irl/templates/print_proposals.pt:13
+msgid ""
+"Each proposal will be printed on its own page. This text will be ignored"
+msgstr ""
+
+#: ./voteit/irl/templates/register_presence_done.pt:7
+msgid "Done!"
+msgstr ""
+
+#: ./voteit/irl/templates/register_presence_done.pt:9
+msgid "You've confirmed your presence."
 msgstr ""
 
 #: ./voteit/irl/templates/participant_numbers.pt:10
@@ -575,11 +444,6 @@ msgstr ""
 msgid "Claimed"
 msgstr ""
 
-#: ./voteit/irl/templates/participant_numbers.pt:22
-#: ./voteit/irl/templates/participant_callbacks.pt:45
-msgid "Claimed by"
-msgstr ""
-
 #: ./voteit/irl/templates/participant_numbers.pt:23
 msgid "Created by"
 msgstr ""
@@ -596,85 +460,65 @@ msgstr ""
 msgid "ticket_creation_help"
 msgstr ""
 
-#: ./voteit/irl/templates/participant_numbers.pt:52
-#: ./voteit/irl/templates/participant_callbacks.pt:64
-msgid "Start"
+#: ./voteit/irl/templates/register_presence.pt:11
+msgid "I'm here!"
 msgstr ""
 
-#: ./voteit/irl/templates/participant_numbers.pt:54
-#: ./voteit/irl/templates/participant_callbacks.pt:67
-msgid "End"
+#: ./voteit/irl/templates/register_presence.pt:14
+msgid "Click to confirm your status as present."
 msgstr ""
 
-#: ./voteit/irl/templates/participant_numbers.pt:57
-#: ./voteit/irl/templates/participant_callbacks.pt:73
-msgid "Add"
+#. Default: Some callbacks for the UserId '${userid}' failed. Contact the
+#. moderator about this. The ones that failed were: ${callback_errors}
+#: ./voteit/irl/models/participant_callback.py:64
+msgid "could_not_execute_callback_error"
 msgstr ""
 
-#: ./voteit/irl/templates/participant_numbers.pt:60
-#: ./voteit/irl/templates/participant_callbacks.pt:76
-msgid "Remove"
+#: ./voteit/irl/models/participant_callback.py:126
+msgid "Allow to vote"
 msgstr ""
 
-#: ./voteit/irl/templates/user_participant_number_info.pt:4
-msgid "Participant number:"
+#: ./voteit/irl/models/participant_callback.py:134
+msgid "Allow to discuss"
 msgstr ""
 
-#: ./voteit/irl/templates/print_proposals.pt:9
-msgid "${num} selected proposal(s)"
+#: ./voteit/irl/models/participant_callback.py:142
+msgid "Allow to propose"
 msgstr ""
 
-#: ./voteit/irl/templates/print_proposals.pt:13
-msgid ""
-"Each proposal will be printed on its own page. This text will be ignored"
+#: ./voteit/irl/models/meeting_presence.py:85
+#: ./voteit/irl/models/meeting_presence.py:91
+msgid "Meeting presence check isn't open"
 msgstr ""
 
-#: ./voteit/irl/templates/participant_callbacks.pt:10
-msgid "Participant callbacks"
+#: ./voteit/irl/models/participant_number_ap.py:12
+msgid "Participant number registration"
 msgstr ""
 
-#. Default: This is an advanced feature that attaches callback code to an event
-#. that fires when a user claims a participant number. Don't touch this unless
-#. you know what you're doing.
-#: ./voteit/irl/templates/participant_callbacks.pt:14
-msgid "callback_code_explanation"
+#. Default: If participant numbers are enabled for this meeting, use this
+#. policy to allow meeting access through registration of a participant number.
+#: ./voteit/irl/models/participant_number_ap.py:13
+msgid "participant_number_ap_description"
 msgstr ""
 
-#: ./voteit/irl/templates/participant_callbacks.pt:60
-msgid "Execute callbacks for existing users (recommended)"
+#. Default: Enter your code to claim your participant number and all
+#. permissions associated with it. If you're not supposed to have a participant
+#. number, you're allowed to proceed by clicking 'Request access'.
+#: ./voteit/irl/models/participant_number_ap.py:21
+msgid "token_validator_description_when_ok_without"
 msgstr ""
 
-#: ./voteit/irl/templates/register_presence_done.pt:7
-msgid "Done!"
+#. Default: You're now assigned number ${number}.
+#: ./voteit/irl/models/participant_number_ap.py:37
+#: ./voteit/irl/views/participant_numbers.py:152
+#: ./voteit/irl/views/participant_numbers.py:196
+msgid "number_now_assigned_notice"
 msgstr ""
 
-#: ./voteit/irl/templates/register_presence_done.pt:9
-msgid "You've confirmed your presence."
-msgstr ""
-
-#: ./voteit/irl/templates/diff_electoral_register.pt:16
-msgid "Comparing ${first} and ${second}"
-msgstr ""
-
-#: ./voteit/irl/templates/diff_electoral_register.pt:23
-msgid "${count} added in ${first}"
-msgstr ""
-
-#: ./voteit/irl/templates/diff_electoral_register.pt:35
-#: ./voteit/irl/templates/diff_electoral_register.pt:54
-msgid "(No change)"
-msgstr ""
-
-#: ./voteit/irl/templates/diff_electoral_register.pt:42
-msgid "${count} removed in ${first}"
-msgstr ""
-
-#: ./voteit/irl/views/change_owner.py:65
-msgid "Change proposal ownership"
-msgstr ""
-
-#: ./voteit/irl/views/change_owner.py:70
-msgid "Change post ownership"
+#. Default: You've been given access to the meeting without a participant
+#. number.
+#: ./voteit/irl/models/participant_number_ap.py:43
+msgid "access_without_pn_notice"
 msgstr ""
 
 #: ./voteit/irl/views/participant_callbacks.py:47
@@ -707,142 +551,12 @@ msgid ""
 "registered."
 msgstr ""
 
-#: ./voteit/irl/views/meeting_presence.py:78
-msgid "Started"
+#: ./voteit/irl/views/change_owner.py:65
+msgid "Change proposal ownership"
 msgstr ""
 
-#: ./voteit/irl/views/meeting_presence.py:82
-msgid "Closed"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:100
-msgid "You're now set as present"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:110
-msgid "Check not open"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:123
-#, python-format
-msgid "No user with number: '${num}'"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:131
-#, python-format
-msgid "User not found: '${userid}'"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:139
-#, python-format
-msgid "Added ${userid}"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:142
-#, python-format
-msgid "Already registered: ${userid}"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:193
-msgid "Meeting presence settings"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:218
-msgid "Meeting presence"
-msgstr ""
-
-#. Default: Check who's present. Can be used as base to distribute voting
-#. rights.
-#: ./voteit/irl/views/meeting_presence.py:219
-msgid "meeting_presence_cp_description"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:228
-msgid "Check presence"
-msgstr ""
-
-#: ./voteit/irl/views/meeting_presence.py:235 ./voteit/irl/views/print.py:183
-msgid "Settings"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:32
-msgid "Previous"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:33
-msgid "Next"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:34
-msgid "by"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:35
-msgid "Click in menu to select Agenda Item"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:36
-msgid "Ongoing polls"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:37
-msgid "Closed polls"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:38
-msgid "Show last poll result"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:39
-msgid "add reject"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:44
-msgid "Multiple winners (Schulze)"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:50
-msgid "Majority poll"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:187
-#, python-format
-msgid "Reject (for poll ${title})"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:192
-msgid "No proposals"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:195
-msgid "Majority polls must have exactly 2 proposals in them."
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:197
-msgid "Use majority polls for 2 proposals."
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:212
-#, python-format
-msgid "Added and started: ${poll_url}"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:331
-#, python-format
-msgid "Not allowed to transition to ${state}"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:340
-#, python-format
-msgid "Descision ${num}"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:353
-msgid "No closed polls yet"
-msgstr ""
-
-#: ./voteit/irl/views/projector.py:357
-msgid "Projector"
+#: ./voteit/irl/views/change_owner.py:70
+msgid "Change post ownership"
 msgstr ""
 
 #: ./voteit/irl/views/electoral_register.py:47
@@ -855,57 +569,6 @@ msgstr ""
 
 #: ./voteit/irl/views/electoral_register.py:110
 msgid "Electoral register"
-msgstr ""
-
-#: ./voteit/irl/views/print.py:35
-msgid "Select proposals to print"
-msgstr ""
-
-#. Default: Each proposal will be on its own page
-#: ./voteit/irl/views/print.py:36
-msgid "print_proposals_description"
-msgstr ""
-
-#: ./voteit/irl/views/print.py:63
-msgid "Select discussion posts to print"
-msgstr ""
-
-#. Default: Each post will be on its own page
-#: ./voteit/irl/views/print.py:64
-msgid "print_discussion_description"
-msgstr ""
-
-#: ./voteit/irl/views/print.py:119
-msgid "Print proposals"
-msgstr ""
-
-#: ./voteit/irl/views/print.py:128
-msgid "Print discussions"
-msgstr ""
-
-#: ./voteit/irl/views/print.py:147
-msgid "Print this proposal"
-msgstr ""
-
-#: ./voteit/irl/views/print.py:156
-msgid "Print this post"
-msgstr ""
-
-#: ./voteit/irl/views/print.py:169
-msgid "Print button settings"
-msgstr ""
-
-#: ./voteit/irl/views/print.py:178
-msgid "Print button"
-msgstr ""
-
-#: ./voteit/irl/views/proposals_unhandled.py:28
-#, python-format
-msgid "Changed ${count} proposals"
-msgstr ""
-
-#: ./voteit/irl/views/proposals_unhandled.py:34
-msgid "Change to unhandled"
 msgstr ""
 
 #: ./voteit/irl/views/participant_numbers.py:62
@@ -1023,7 +686,343 @@ msgstr ""
 msgid "Update elegible voters"
 msgstr ""
 
+#: ./voteit/irl/views/print.py:35
+msgid "Select proposals to print"
+msgstr ""
+
+#. Default: Each proposal will be on its own page
+#: ./voteit/irl/views/print.py:36
+msgid "print_proposals_description"
+msgstr ""
+
+#: ./voteit/irl/views/print.py:63
+msgid "Select discussion posts to print"
+msgstr ""
+
+#. Default: Each post will be on its own page
+#: ./voteit/irl/views/print.py:64
+msgid "print_discussion_description"
+msgstr ""
+
+#: ./voteit/irl/views/print.py:119
+msgid "Print proposals"
+msgstr ""
+
+#: ./voteit/irl/views/print.py:128
+msgid "Print discussions"
+msgstr ""
+
+#: ./voteit/irl/views/print.py:147
+msgid "Print this proposal"
+msgstr ""
+
+#: ./voteit/irl/views/print.py:156
+msgid "Print this post"
+msgstr ""
+
+#: ./voteit/irl/views/print.py:169
+msgid "Print button settings"
+msgstr ""
+
+#: ./voteit/irl/views/print.py:178
+msgid "Print button"
+msgstr ""
+
+#: ./voteit/irl/views/print.py:183 ./voteit/irl/views/meeting_presence.py:235
+msgid "Settings"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:34
+msgid "Previous"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:35
+msgid "Next"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:36
+msgid "by"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:37
+msgid "Click in menu to select Agenda Item"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:38
+msgid "Ongoing polls"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:39
+msgid "Closed polls"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:40
+msgid "Close poll"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:41
+msgid "Show last poll result"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:42
+msgid "add reject"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:47
+msgid "Multiple winners (Schulze)"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:53
+msgid "Majority poll"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:190
+#, python-format
+msgid "Reject (for poll ${title})"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:195
+msgid "No proposals"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:198
+msgid "Majority polls must have exactly 2 proposals in them."
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:200
+msgid "Use majority polls for 2 proposals."
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:252 ./voteit/irl/views/projector.py:355
+#, python-format
+msgid "Not allowed to transition to ${state}"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:364
+#, python-format
+msgid "Descision ${num}"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:377
+msgid "No closed polls yet"
+msgstr ""
+
+#: ./voteit/irl/views/projector.py:381
+msgid "Projector"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:78
+msgid "Started"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:82
+msgid "Closed"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:100
+msgid "You're now set as present"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:110
+msgid "Check not open"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:123
+#, python-format
+msgid "No user with number: '${num}'"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:131
+#, python-format
+msgid "User not found: '${userid}'"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:139
+#, python-format
+msgid "Added ${userid}"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:142
+#, python-format
+msgid "Already registered: ${userid}"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:193
+msgid "Meeting presence settings"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:218
+msgid "Meeting presence"
+msgstr ""
+
+#. Default: Check who's present. Can be used as base to distribute voting
+#. rights.
+#: ./voteit/irl/views/meeting_presence.py:219
+msgid "meeting_presence_cp_description"
+msgstr ""
+
+#: ./voteit/irl/views/meeting_presence.py:228
+msgid "Check presence"
+msgstr ""
+
 #: ./voteit/irl/views/main_proposals.py:40
 #: ./voteit/irl/views/main_proposals.py:77
 msgid "Main proposals"
+msgstr ""
+
+#: ./voteit/irl/views/proposals_unhandled.py:28
+#, python-format
+msgid "Changed ${count} proposals"
+msgstr ""
+
+#: ./voteit/irl/views/proposals_unhandled.py:34
+msgid "Change to unhandled"
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:26
+#: ./voteit/irl/plugins/transfer_vote.py:68
+msgid "Transfer vote"
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:45
+#, python-format
+msgid "${userid} doesn't exist in this meeting."
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:48
+#, python-format
+msgid "${userid} is already a voter."
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:55
+msgid "To userid"
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:56
+msgid "Must be someone who isn't a voter right now."
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:72
+msgid "Vote transfer is not currently enabled."
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:75
+msgid "You're not a voter"
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:80
+msgid "Votes can't be transfered while a poll is open."
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:89
+#, python-format
+msgid "Vote transfered to ${userid}"
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:96
+msgid "Enable users to transfer votes?"
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:97
+msgid "Will add the option to the users profile menu."
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:108
+msgid "Vote transfer settings"
+msgstr ""
+
+#: ./voteit/irl/plugins/transfer_vote.py:123
+msgid "Vote transfer setting"
+msgstr ""
+
+#: ./voteit/irl/plugins/present_users_voters.py:17
+msgid "Present with participant number in set range"
+msgstr ""
+
+#. Default: Will remove voting permission for anyone not set as present. Users
+#. without a participant number will be ignored, or if they're outside of the
+#. setting. (See the control panel)
+#: ./voteit/irl/plugins/present_users_voters.py:18
+msgid "present_with_pn_voters_description"
+msgstr ""
+
+#: ./voteit/irl/plugins/present_users_voters.py:45
+msgid "Must be written as 'NN-XX' where N is low nr and X high."
+msgstr ""
+
+#: ./voteit/irl/plugins/present_users_voters.py:53
+msgid "First value must be higher than second"
+msgstr ""
+
+#: ./voteit/irl/plugins/present_users_voters.py:60
+msgid "Voter participant number range"
+msgstr ""
+
+#. Default: Write number as 'NN-NN', i.e. 10-20 means that 10 to and including
+#. 20 will be voters if they're marked as present.
+#: ./voteit/irl/plugins/present_users_voters.py:61
+msgid "voter_pn_range_desc"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:18
+msgid "She"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:19
+msgid "He"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:20
+msgid "Ze"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:22 ./voteit/irl/plugins/gender.py:27
+msgid "Unknown"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:23
+msgid "Female"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:24
+msgid "Male"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:25
+msgid "Other"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:58
+msgid "Participant number registration with gender"
+msgstr ""
+
+#. Default: Same as participant number, but this also requires gender to be
+#. specified.
+#: ./voteit/irl/plugins/gender.py:59
+msgid "participant_number_ap_with_gender_required_description"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:73
+msgid "Gender"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:74
+msgid ""
+"Used for statistics and perhaps gender based quotas. See meeting for details."
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:83
+msgid "Pronoun"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:84
+msgid "Shown in speaker lists."
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:94
+msgid "Let users select pronoun"
+msgstr ""
+
+#: ./voteit/irl/plugins/gender.py:95
+msgid "Pronoun might be shown in different contexts like the speaker list."
 msgstr ""
