@@ -40,6 +40,7 @@ JS_TRANSLATIONS = [
     _("Close poll"),
     _("Show last poll result"),
     _('add reject'),
+    _('votes'),
 ]
 
 POLL_GROUPS = [
