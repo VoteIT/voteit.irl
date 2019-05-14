@@ -93,6 +93,9 @@ export default {
 #poll-modal
     .progress-bar
         min-width: fit-content
-    .dropdown-menu .glyphicon
-        margin-right: 5px
+    .btn-group
+        .glyphicon
+            margin-right: 5px
+        .caret
+            margin-left: 5px
 </style>
