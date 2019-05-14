@@ -19,7 +19,7 @@ export default {
             $(this.$el).modal(params);
         },
         close() {
-            $(this.$el).modal({ show: false });
+            $(this.$el).modal('hide');
         }
     },
     created() {

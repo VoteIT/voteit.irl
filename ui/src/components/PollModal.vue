@@ -21,15 +21,35 @@
                     {{ poll.votes }} / {{ poll.potentialVotes }} <span class="sr-only">{{ $t('votes') }}</span>
                 </div>
             </div>
-            <div>
-                <button class="btn btn-sm btn-primary" @click="closePoll(poll.uid)">{{ $t('Close poll') }}</button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="text-ongoing">
+                        <span class="glyphicon glyphicon-ongoing"></span>
+                        <span>{{ $t('Ongoing') }}</span>
+                        <span class="caret"></span>
+                    </span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="#cancelPoll" @click.prevent="setPollWorkflowState({ poll, workflowState: 'canceled' })">
+                            <span class="glyphicon glyphicon-canceled text-canceled"></span>
+                            <span>{{ $t('Canceled') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#closePoll" @click.prevent="setPollWorkflowState({ poll, workflowState: 'closed' })">
+                            <span class="glyphicon glyphicon-closed text-closed"></span>
+                            <span>{{ $t('Closed') }}</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { requests } from 'arche/utils';
+import { requests, modal } from 'arche/utils';
 
 export default {
     data() {
@@ -42,7 +62,7 @@ export default {
             this.getResult(this.poll.href);
     },
     methods: {
-        ...mapActions('projector', ['closePoll']),
+        ...mapActions('projector', ['setPollWorkflowState']),
         getResult(href) {
             requests.get(href)
             .done(data => {
@@ -63,6 +83,8 @@ export default {
         pollState(state) {
             if (state === 'closed')
                 this.getResult(this.openPoll.href);
+            if (state === 'canceled')
+                modal.close();
         }
     }
 }
@@ -71,4 +93,6 @@ export default {
 #poll-modal
     .progress-bar
         min-width: fit-content
+    .dropdown-menu .glyphicon
+        margin-right: 5px
 </style>

@@ -247,7 +247,7 @@ class ProjectorView(AgendaItemView):
 
     @view_config(context=IPoll, name="__projector_workflow__.json", renderer='json')
     def set_poll_workflow(self):
-        allowed_states = ('closed',)
+        allowed_states = ('closed', 'canceled')
         transl = self.request.localizer.translate
         state = self.request.POST.get('state')
         if state not in allowed_states:

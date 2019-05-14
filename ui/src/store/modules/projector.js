@@ -180,15 +180,12 @@ export default {
                 });
             }
         },
-        closePoll({ state, commit }, uid) {
+        setPollWorkflowState({ commit }, { poll, workflowState }) {
             // TODO Send to backend
-            const poll = state.polls.find(p => p.uid === uid);
-            if (poll) {
-                requests.post(poll.api, { state: 'closed' })
-                .done(data => {
-                    commit('updatePoll', data)
-                });
-            }
+            requests.post(poll.api, { state: workflowState })
+            .done(data => {
+                commit('updatePoll', data)
+            });
         }
     }
 }
