@@ -1,6 +1,4 @@
 import re
-from collections import Counter
-from random import randint
 from urllib import urlencode
 
 from betahaus.viewcomponent.decorators import view_action
@@ -41,7 +39,9 @@ JS_TRANSLATIONS = [
     _("Show last poll result"),
     _('add reject'),
     _('votes'),
-    _('Ongoing'),
+    core_ts('Ongoing'),
+    core_ts('Closed'),
+    core_ts('Canceled'),
 ]
 
 POLL_GROUPS = [
