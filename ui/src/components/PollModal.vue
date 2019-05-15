@@ -7,9 +7,9 @@
             <button type="button" class="close" data-dismiss="modal" :aria-label="$t('Close')">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title">{{ poll.title }} <small>({{ $t('Ongoing') }})</small></h4>
+            <h4 class="modal-title">{{ poll.title }} <small>({{ $t(poll.workflowState) }})</small></h4>
         </div>
-        <div class="modal-body" v-if="poll.workflowState === 'ongoing'">
+        <div class="modal-body">
             <div class="progress">
                 <div
                     class="progress-bar progress-bar-success progress-bar-striped active"
@@ -25,21 +25,15 @@
                 <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <span class="text-ongoing">
                         <span class="glyphicon glyphicon-ongoing"></span>
-                        <span>{{ $t('Ongoing') }}</span>
+                        <span>{{ $t($t(poll.workflowState)) }}</span>
                         <span class="caret"></span>
                     </span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li>
-                        <a href="#cancelPoll" @click.prevent="setPollWorkflowState({ poll, workflowState: 'canceled' })">
-                            <span class="glyphicon glyphicon-canceled text-canceled"></span>
-                            <span>{{ $t('Canceled') }}</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#closePoll" @click.prevent="setPollWorkflowState({ poll, workflowState: 'closed' })">
-                            <span class="glyphicon glyphicon-closed text-closed"></span>
-                            <span>{{ $t('Closed') }}</span>
+                    <li v-for="state in ['canceled', 'closed']" :key="state">
+                        <a :href="'#' + state" @click.prevent="setPollWorkflowState({ poll, workflowState: state })">
+                            <span :class="'glyphicon glyphicon-' + state + ' text-' + state"></span>
+                            <span>{{ $t(state) }}</span>
                         </a>
                     </li>
                 </ul>

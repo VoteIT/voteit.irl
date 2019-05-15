@@ -39,9 +39,7 @@ JS_TRANSLATIONS = [
     _("Show last poll result"),
     _('add reject'),
     _('votes'),
-    core_ts('Ongoing'),
-    core_ts('Closed'),
-    core_ts('Canceled'),
+    core_ts('Close'),
 ]
 
 POLL_GROUPS = [
@@ -127,12 +125,17 @@ class ProjectorView(AgendaItemView):
             })
         return workflow_states
 
-    @view_config(name='__projector_app_state__.json', renderer='json')
-    def app_state(self):
+    def get_translation_strings(self):
+        # type: () -> dict
         ts = {}
         for t in JS_TRANSLATIONS:
             ts[t] = self.request.localizer.translate(t)
         ts.update(self.request.get_wf_state_titles(IAgendaItem, 'AgendaItem'))
+        ts.update(self.request.get_wf_state_titles(IPoll, 'Poll'))
+        return ts
+
+    @view_config(name='__projector_app_state__.json', renderer='json')
+    def app_state(self):
         poll_methods = dict((x.name, x.factory) for x in self.request.registry.registeredAdapters()
                             if x.provided == IPollPlugin)
         poll_groups = [{
@@ -152,7 +155,7 @@ class ProjectorView(AgendaItemView):
                 'agenda': [self.serialize_ai(ai) for ai in self._get_ais('ongoing', 'upcoming', 'closed')],
             },
             'pollGroups': poll_groups,
-            'ts': ts,
+            'ts': self.get_translation_strings(),
             'proposalWorkflowStates': self._get_workflow_states(),
             'api': {
                 'quickPoll': self.request.resource_path(self.context, '__quick_poll__.json'),
