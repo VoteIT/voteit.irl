@@ -1,8 +1,9 @@
-import { mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex'
+import $ from 'jquery'
 
-import { ProjectorNav, ProposalSelection, ProposalsMain } from 'components';
-import { Modal, FlashMessages } from 'arche';
-import { requests } from 'arche/utils';
+import { ProjectorNav, ProposalSelection, ProposalsMain } from 'components'
+import { Modal, FlashMessages } from 'arche'
+import { requests } from 'arche/utils'
 
 export default {
     name: 'app',

@@ -14,9 +14,6 @@ from voteit.core.fanstaticlib import watcher_js
 
 voteit_irl_lib = Library('voteit_irl', 'static')
 
-# voteit_irl_projector_js = Resource(voteit_irl_lib, 'voteit_irl_projector.js', depends = (common_js, pure_js))
-# voteit_irl_projector_css = Resource(voteit_irl_lib, 'voteit_irl_projector.css', depends = (voteit_main_css,))
-# voteit_irl_projector = Group((voteit_irl_projector_js, voteit_irl_projector_css))
 meeting_presence = Resource(voteit_irl_lib, 'meeting_presence.js', depends = (watcher_js, common_js))
 meeting_presence_moderator = Resource(voteit_irl_lib, 'meeting_presence_moderator.js', depends = (watcher_js, common_js, pure_js))
 voteit_irl_print_css = Resource(voteit_irl_lib, 'print.css', depends = (voteit_main_css,))
@@ -24,19 +21,27 @@ main_proposal = Resource(voteit_irl_lib, 'main_proposal.js', depends=(common_js,
 
 
 # Every resource needs (path, file_ending, depends)
-def dynamic_generator(*resources):
+def dynamic_generator(library, *resources):
     for (path, extension, depends) in resources:
         for (dirpath, dirnames, filenames) in os.walk(os.path.join(voteit_irl_lib.path, path)):
             for fn in filenames:
                 if fn.endswith(extension):
-                    yield Resource(voteit_irl_lib, os.path.join(path, fn), depends=depends)
+                    yield Resource(library, os.path.join(path, fn), depends=depends)
 
 
-dynamic_resources = dynamic_generator(
-    ('vue/js', '.js', None),
-    ('vue/css', '.css', None)
-)
-voteit_irl_projector = Group(dynamic_resources)
+# dynamic_resources = dynamic_generator(
+#     voteit_irl_lib,
+#     ('vue/js', '.js', None),
+#     ('vue/css', '.css', None)
+# )
+# voteit_irl_projector = Group(dynamic_resources)
+
+voteit_irl_projector_vendor_js = Resource(voteit_irl_lib, 'vue/js/vendor_chunks.js')
+voteit_irl_projector_vendor_css = Resource(voteit_irl_lib, 'vue/css/vendor_chunks.css')
+voteit_irl_projector = Group((
+    Resource(voteit_irl_lib, 'vue/js/bundle.js', depends=(voteit_irl_projector_vendor_js,)),
+    Resource(voteit_irl_lib, 'vue/css/bundle.css', depends=(voteit_irl_projector_vendor_css,)),
+))
 
 
 def always_needed(view, event):

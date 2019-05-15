@@ -23,8 +23,8 @@
             </div>
             <div class="btn-group">
                 <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <span class="text-ongoing">
-                        <span class="glyphicon glyphicon-ongoing"></span>
+                    <span :class="'text-' + poll.workflowState">
+                        <span :class="'glyphicon glyphicon-' + poll.workflowState"></span>
                         <span>{{ $t($t(poll.workflowState)) }}</span>
                         <span class="caret"></span>
                     </span>

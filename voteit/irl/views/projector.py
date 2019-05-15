@@ -2,6 +2,7 @@ import re
 from urllib import urlencode
 
 from betahaus.viewcomponent.decorators import view_action
+from fanstatic import clear_needed
 from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPNotFound
@@ -84,6 +85,7 @@ class ProjectorView(AgendaItemView):
                  renderer='voteit.irl:templates/projector.pt',
                  permission=VIEW)
     def main_view(self):
+        clear_needed()
         voteit_irl_projector.need()
         return {}
 

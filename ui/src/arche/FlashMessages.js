@@ -1,4 +1,5 @@
-import { eventBus } from './utils';
+import { eventBus } from './utils'
+import $ from 'jquery'
 
 const MESSAGE_DEFAULTS = {
     type: 'success',
