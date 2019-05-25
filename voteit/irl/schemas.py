@@ -50,12 +50,11 @@ def meeting_userids_widget(node, kw):
     root = find_root(context)
     choices = [('', _("- select -"))]
     for (userid, roles) in context.local_roles.items():
-        if security.ROLE_VOTER not in roles:
-            try:
-                title = "%s (%s)" %(root['users'][userid].title, userid)
-            except KeyError:
-                continue
-            choices.append((userid, title))
+        try:
+            title = "%s (%s)" %(root['users'][userid].title, userid)
+        except KeyError:
+            continue
+        choices.append((userid, title))
     return deform.widget.Select2Widget(values=choices)
 
 
