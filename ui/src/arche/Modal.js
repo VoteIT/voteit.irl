@@ -1,5 +1,4 @@
 import { eventBus, requests } from 'arche/utils'
-import $ from 'jquery'
 
 const MODAL_DEFAULTS = {
     backdrop: true,

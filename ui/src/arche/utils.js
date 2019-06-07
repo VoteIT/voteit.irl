@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import $ from 'jquery';
 
 /*
  *  Requests class makes sure requests done with each instance is performed serially.

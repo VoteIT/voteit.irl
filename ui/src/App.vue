@@ -19,7 +19,6 @@
 <script src="./App.js"></script>
 
 <style lang="sass">
-@import ../node_modules/bootstrap/dist/css/bootstrap.css
 @import ../../../voteit.core/voteit/core/scss/main
 
 body

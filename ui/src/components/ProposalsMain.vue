@@ -1,5 +1,5 @@
 <template>
-    <ul id="projector-main" class="list-group">
+    <ul id="projector-main" class="list-group" v-if="selectedProposals.length">
         <proposal
             v-for="item in selectedProposals"
             :key="item.uid"
@@ -7,6 +7,11 @@
             :item="item"
             quick-select />
     </ul>
+    <div v-else-if="nextTagInOrder" id="projector-action-centered">
+        <button class="btn btn-lg" @click="filterByTag(nextTagInOrder)">
+            {{ $t('Next') }}: <strong>#{{ nextTagInOrder }}</strong>
+        </button>
+    </div>
 </template>
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
@@ -26,11 +31,16 @@ export default {
         Proposal
     },
     methods: {
-        ...mapMutations('projector', ['deselectProposal']),
+        ...mapMutations('projector', ['deselectProposal', 'filterByTag']),
         ...mapActions('projector', ['setProposalWorkflowState'])
     },
     computed: {
-        ...mapGetters('projector', ['selectedProposals'])
+        ...mapGetters('projector', ['selectedProposals', 'nextTagInOrder'])
     }
 }
 </script>
+<style lang="sass">
+#projector-action-centered
+    padding-top: 60px
+    text-align: center
+</style>

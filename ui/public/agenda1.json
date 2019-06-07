@@ -19,6 +19,7 @@
       "tags": ["prop-2", "two"]
     }
   ],
+  "tagOrder": ["one", "two"],
   "polls": [
     {
       "title": "Omröstning 1",

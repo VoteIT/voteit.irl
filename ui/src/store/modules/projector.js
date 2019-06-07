@@ -9,6 +9,7 @@ export default {
         proposals: [],
         proposalSelection: [],  // uids
         proposalOrder: [],  // uids
+        tagOrder: [],  // If backends provides this, it can be used to select all proposals for next tag in order.
         polls: [],
         agendaUrl: null,
         requestActive: false,
@@ -41,6 +42,13 @@ export default {
         },
         openPoll(state) {
             return state.polls.find(p => p.uid === state.openPollUid);
+        },
+        nextTagInOrder(state) {
+            for (var i=0; i < state.tagOrder.length; i++) {
+                const tag = state.tagOrder[i];
+                if (state.proposals.find(p => (p.workflowState === 'published') && p.tags.includes(tag)))
+                    return tag;
+            }
         }
     },
 
@@ -63,6 +71,7 @@ export default {
             data = data || { proposals: [], pollsOngoing: [], pollsClosed: [] }
             state.proposals = data.proposals;
             state.polls = data.polls;
+            state.tagOrder = data.tagOrder || [];  // May not be provided
 
             // Remove deleted proposals from order and selection
             const containsFilter = uid => state.proposals.find(p => p.uid === uid) !== undefined;

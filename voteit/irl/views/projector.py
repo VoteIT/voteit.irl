@@ -2,7 +2,6 @@ import re
 from urllib import urlencode
 
 from betahaus.viewcomponent.decorators import view_action
-from fanstatic import clear_needed
 from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPNotFound
@@ -85,7 +84,6 @@ class ProjectorView(AgendaItemView):
                  renderer='voteit.irl:templates/projector.pt',
                  permission=VIEW)
     def main_view(self):
-        clear_needed()
         voteit_irl_projector.need()
         return {}
 
@@ -269,79 +267,13 @@ class ProjectorView(AgendaItemView):
         poll_query = path_query & query.Eq('type_name', 'Poll') & query.Any('workflow_state', ('ongoing', 'closed'))
 
         return {
+            # TODO: Order proposals if there is a tagOrder.
             'proposals': [self.serialize_proposal(prop) for prop in self.catalog_query(prop_query, resolve=True)],
             'polls':  [self.serialize_poll(poll) for poll in self.catalog_query(poll_query, sort_index='created', resolve=True)],
-            'agenda': [self.serialize_ai(ai) for ai in self._get_ais('ongoing', 'upcoming', 'closed')]
+            'agenda': [self.serialize_ai(ai) for ai in self._get_ais('ongoing', 'upcoming', 'closed')],
+            # TODO: Return list of tagnames in correct order.
+            # 'tagOrder': ['stycke-1', 'stycke-2']
         }
-
-    # @view_config(context=IAgendaItem, name="__ai_contents__.json", renderer='json')
-    # def ai_contents(self):
-    #     prop_query = query.Eq('path', resource_path(self.context))
-    #     prop_query &= query.Eq('type_name', 'Proposal')
-    #     results = []
-    #     for obj in self.catalog_query(prop_query, resolve=True):
-    #         results.append(
-    #             dict(
-    #                 text=self.request.render_proposal_text(obj, tag_func=proj_tags2links),
-    #                 aid=obj.aid,
-    #                 prop_wf_url=self.request.resource_url(obj, '__change_state_projector__.json'),
-    #                 wf_state=obj.get_workflow_state(),
-    #                 uid=obj.uid,
-    #                 creator=self.request.creators_info(obj.creator, portrait=False, no_tag=True),
-    #                 tags=obj.tags,
-    #             )
-    #         )
-    #     next_obj = self.next_ai()
-    #     next_url = ''
-    #     next_title = getattr(next_obj, 'title', '')
-    #     if next_obj:
-    #         next_url = self.request.resource_url(next_obj, '__ai_contents__.json')
-    #     previous_obj = self.previous_ai()
-    #     previous_url = ''
-    #     previous_title = getattr(previous_obj, 'title', '')
-    #     wf_counter = Counter()
-    #     for r in results:
-    #         wf_counter[r['wf_state']] += 1
-    #     wf = get_workflow(IProposal, 'Proposal')
-    #     workflow_states = []
-    #     for info in wf._state_info(IProposal):  # Public API goes through permission checker
-    #         workflow_states.append({
-    #             'name': info['name'],
-    #             'title': self.request.localizer.translate(core_ts(info['title'])),
-    #             'checked': info['name'] in DEFAULT_CHECKED_WORKFLOW_STATES,
-    #             'count': wf_counter[info['name']],
-    #         })
-    #
-    #     if previous_obj:
-    #         previous_url = self.request.resource_url(previous_obj, '__ai_contents__.json')
-    #     return {'agenda_item': self.context.title,
-    #             'ai_url': self.request.resource_url(self.request.meeting, '__projector__',
-    #                                                 anchor=self.context.__name__),
-    #             'ai_regular_url': self.request.resource_url(self.context),
-    #             'proposals': results,
-    #             'workflow_states': workflow_states,
-    #             'next_url': next_url,
-    #             'previous_url': previous_url,
-    #             'next_title': next_title,
-    #             'previous_title': previous_title}
-
-    # def get_ais(self):
-    #     results = {}
-    #     states = ('ongoing', 'upcoming')
-    #     ai_query = "path == '%s' and " % resource_path(self.request.meeting)
-    #     ai_query += "type_name == 'AgendaItem' and "
-    #     ai_order = self.request.meeting.order
-    #
-    #     def _sorter(ai):
-    #         try:
-    #             return ai_order.index(ai.__name__)
-    #         except (ValueError, KeyError):
-    #             return len(ai_order)
-    #
-    #     for state in states:
-    #         squery = "%s workflow_state == '%s'" % (ai_query, state)
-    #         results[state] = sorted(self.catalog_query(squery, resolve=True), key=_sorter)
-    #     return results
 
     @view_config(context=IProposal, name="__change_state_projector__.json", renderer='json')
     def change_state_projector(self):

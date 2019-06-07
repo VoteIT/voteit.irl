@@ -1,6 +1,4 @@
 import { mapActions, mapMutations } from 'vuex'
-import $ from 'jquery'
-
 import { ProjectorNav, ProposalSelection, ProposalsMain } from 'components'
 import { Modal, FlashMessages } from 'arche'
 import { requests } from 'arche/utils'

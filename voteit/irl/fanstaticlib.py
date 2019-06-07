@@ -21,26 +21,19 @@ main_proposal = Resource(voteit_irl_lib, 'main_proposal.js', depends=(common_js,
 
 
 # Every resource needs (path, file_ending, depends)
-def dynamic_generator(library, *resources):
-    for (path, extension, depends) in resources:
-        for (dirpath, dirnames, filenames) in os.walk(os.path.join(voteit_irl_lib.path, path)):
-            for fn in filenames:
-                if fn.endswith(extension):
-                    yield Resource(library, os.path.join(path, fn), depends=depends)
+# def dynamic_generator(library, *resources):
+#     for (path, extension, depends) in resources:
+#         for (dirpath, dirnames, filenames) in os.walk(os.path.join(voteit_irl_lib.path, path)):
+#             for fn in filenames:
+#                 if fn.endswith(extension):
+#                     yield Resource(library, os.path.join(path, fn), depends=depends)
 
-
-# dynamic_resources = dynamic_generator(
-#     voteit_irl_lib,
-#     ('vue/js', '.js', None),
-#     ('vue/css', '.css', None)
-# )
-# voteit_irl_projector = Group(dynamic_resources)
 
 voteit_irl_projector_vendor_js = Resource(voteit_irl_lib, 'vue/js/vendor_chunks.js')
-voteit_irl_projector_vendor_css = Resource(voteit_irl_lib, 'vue/css/vendor_chunks.css')
+# voteit_irl_projector_vendor_css = Resource(voteit_irl_lib, 'vue/css/vendor_chunks.css')
 voteit_irl_projector = Group((
     Resource(voteit_irl_lib, 'vue/js/bundle.js', depends=(voteit_irl_projector_vendor_js,)),
-    Resource(voteit_irl_lib, 'vue/css/bundle.css', depends=(voteit_irl_projector_vendor_css,)),
+    Resource(voteit_irl_lib, 'vue/css/bundle.css'),  # , depends=(voteit_irl_projector_vendor_css,)),
 ))
 
 
