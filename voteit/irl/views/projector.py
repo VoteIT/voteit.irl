@@ -265,10 +265,9 @@ class ProjectorView(AgendaItemView):
         path_query = query.Eq('path', resource_path(self.context))
         prop_query = path_query & query.Eq('type_name', 'Proposal')
         poll_query = path_query & query.Eq('type_name', 'Poll') & query.Any('workflow_state', ('ongoing', 'closed'))
-
         return {
             # TODO: Order proposals if there is a tagOrder.
-            'proposals': [self.serialize_proposal(prop) for prop in self.catalog_query(prop_query, resolve=True)],
+            'proposals': [self.serialize_proposal(prop) for prop in self.catalog_query(prop_query, resolve=True, sort_index='created')],
             'polls':  [self.serialize_poll(poll) for poll in self.catalog_query(poll_query, sort_index='created', resolve=True)],
             'agenda': [self.serialize_ai(ai) for ai in self._get_ais('ongoing', 'upcoming', 'closed')],
             # TODO: Return list of tagnames in correct order.
