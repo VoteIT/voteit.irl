@@ -2,14 +2,17 @@ import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 import { ModalLink, FlashMessages } from 'arche';
 import { requests, modal } from 'arche/utils';
 import PollModal from 'components/PollModal.vue';
+import Proposal from './Proposal.vue';
+
 
 export default {
     components: {
         ModalLink,
-        FlashMessages
+        FlashMessages,
+        Proposal
     },
     methods: {
-        ...mapMutations('projector', ['toggleProposalWorkflow', 'updateProposals', 'selectProposals', 'setOpenPollUid', 'updatePoll']),
+        ...mapMutations('projector', ['toggleProposalWorkflow', 'updateProposals', 'selectProposals', 'setOpenPollUid', 'updatePoll', 'filterByTag']),
         ...mapActions('projector', ['updateAgendaItems']),
         pollAvailable(poll) {
             // If a reject proposal is added, that's another proposal. +1
@@ -54,7 +57,8 @@ export default {
         ...mapGetters('meeting', ['agendaStates', 'previousAgendaItem', 'nextAgendaItem', 'currentAgendaItem']),
         ...mapState('projector', ['proposalWorkflowStates', 'pollGroups', 'proposalSelection', 'proposals',
                                   'api', 'logo']),
-        ...mapGetters('projector', ['pollsOngoing', 'pollsClosed']),
+        ...mapGetters('projector', ['pollsOngoing', 'pollsClosed', 'selectedProposals', 'nextTagInOrder']),
+
         pollList() {
             let list = [];
             this.pollGroups.forEach((group,i) => {

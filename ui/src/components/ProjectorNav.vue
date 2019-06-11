@@ -14,20 +14,14 @@
                 </span>
             </a>
             <ul class="nav navbar-nav navbar-right" id="navbar-controls">
-                <li :class="{disabled: !previousAgendaItem}">
-                    <a href="#"
-                    :title="previousAgendaItem ? previousAgendaItem.title : $t('Previous')"
-                    @click.prevent="loadAgendaItem(previousAgendaItem)">
-                        <span class="glyphicon glyphicon-chevron-left"> </span>
+
+                <li v-if="nextTagInOrder">
+                    <a href="#" @click.prevent="filterByTag(nextTagInOrder)"
+                    :title="'#'+nextTagInOrder">
+                    <span class="glyphicon glyphicon-tags"> </span>
                     </a>
                 </li>
-                <li :class="{disabled: !nextAgendaItem}">
-                    <a href="#"
-                    :title="nextAgendaItem ? nextAgendaItem.title : $t('Next')"
-                    @click.prevent="loadAgendaItem(nextAgendaItem)">
-                        <span class="glyphicon glyphicon-chevron-right"> </span>
-                    </a>
-                </li>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle"
                        :title="$t('Quickly create a poll')"
@@ -99,6 +93,22 @@
                             <span class="badge">{{ proposals.filter(p=>p.workflowState === state.name).length }}</span>
                         </li>
                     </ul>
+                </li>
+
+
+                <li :class="{disabled: !previousAgendaItem}">
+                    <a href="#"
+                    :title="previousAgendaItem ? previousAgendaItem.title : $t('Previous')"
+                    @click.prevent="loadAgendaItem(previousAgendaItem)">
+                        <span class="glyphicon glyphicon-chevron-left"> </span>
+                    </a>
+                </li>
+                <li :class="{disabled: !nextAgendaItem}">
+                    <a href="#"
+                    :title="nextAgendaItem ? nextAgendaItem.title : $t('Next')"
+                    @click.prevent="loadAgendaItem(nextAgendaItem)">
+                        <span class="glyphicon glyphicon-chevron-right"> </span>
+                    </a>
                 </li>
 
                 <li class="dropdown">
