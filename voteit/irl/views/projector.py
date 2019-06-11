@@ -13,7 +13,10 @@ from pyramid.view import view_defaults
 from repoze.catalog import query
 from repoze.workflow import get_workflow
 from voteit.core.helpers import TAG_PATTERN
-from voteit.core.models.interfaces import IAgendaItem, IPollPlugin, IPoll
+from voteit.core.models.interfaces import IAgendaItem
+from voteit.core.models.interfaces import IDiffText
+from voteit.core.models.interfaces import IPollPlugin
+from voteit.core.models.interfaces import IPoll
 from voteit.core.models.interfaces import IMeeting
 from voteit.core.models.interfaces import IProposal
 from voteit.core.security import MODERATE_MEETING
@@ -103,14 +106,13 @@ class ProjectorView(AgendaItemView):
         if states:
             ai_query &= query.Any('workflow_state', states)
         ai_order = self.request.meeting.order
-
         def _sorter(ai):
             try:
                 return ai_order.index(ai.__name__)
             except (ValueError, KeyError):
                 return len(ai_order)
 
-        return sorted(self.catalog_query(ai_query, resolve=True), key=_sorter)
+        return sorted(self.catalog_query(ai_query, resolve=True, perm=None), key=_sorter)
 
     def _get_workflow_states(self):
         wf = get_workflow(IProposal, 'Proposal')
@@ -265,13 +267,18 @@ class ProjectorView(AgendaItemView):
         path_query = query.Eq('path', resource_path(self.context))
         prop_query = path_query & query.Eq('type_name', 'Proposal')
         poll_query = path_query & query.Eq('type_name', 'Poll') & query.Any('workflow_state', ('ongoing', 'closed'))
+        diff_text = IDiffText(self.context, None)
+        tag_order = []
+        if diff_text:
+            paragraphs = diff_text.get_paragraphs()
+            if paragraphs:
+                for i in range(1, len(paragraphs) + 1):
+                    tag_order.append("%s-%s" % (diff_text.hashtag, i))
         return {
-            # TODO: Order proposals if there is a tagOrder.
-            'proposals': [self.serialize_proposal(prop) for prop in self.catalog_query(prop_query, resolve=True, sort_index='created')],
-            'polls':  [self.serialize_poll(poll) for poll in self.catalog_query(poll_query, sort_index='created', resolve=True)],
+            'proposals': [self.serialize_proposal(x) for x in self.catalog_query(prop_query, resolve=True, perm=None, sort_index='created')],
+            'polls':  [self.serialize_poll(poll) for poll in self.catalog_query(poll_query, sort_index='created', resolve=True, perm=None)],
             'agenda': [self.serialize_ai(ai) for ai in self._get_ais('ongoing', 'upcoming', 'closed')],
-            # TODO: Return list of tagnames in correct order.
-            # 'tagOrder': ['stycke-1', 'stycke-2']
+            'tagOrder': tag_order,  # Javascript names? :P
         }
 
     @view_config(context=IProposal, name="__change_state_projector__.json", renderer='json')
@@ -282,12 +289,6 @@ class ProjectorView(AgendaItemView):
         """
         allowed_states = ('published', 'approved', 'denied')
         transl = self.request.localizer.translate
-        # if self.context.get_workflow_state() not in allowed_states:
-        #     msg = _("wrong_initial_state_error",
-        #             default="Proposal wasn't in any of the states "
-        #                     "'Published', 'Approved' or 'Denied'. "
-        #                     "You may need to reload this page.")
-        #     raise HTTPForbidden(transl(msg))
         state = self.request.POST.get('state')
         if state not in allowed_states:
             raise HTTPForbidden(transl(_("Not allowed to transition to ${state}",
