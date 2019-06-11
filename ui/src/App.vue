@@ -19,7 +19,6 @@
 <script src="./App.js"></script>
 
 <style lang="sass">
-@import ../../../voteit.core/voteit/core/scss/main
 
 body
     padding: 0

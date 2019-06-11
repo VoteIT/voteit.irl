@@ -87,9 +87,4 @@ export default {
 #poll-modal
     .progress-bar
         min-width: fit-content
-    .btn-group
-        .glyphicon
-            margin-right: 5px
-        .caret
-            margin-left: 5px
 </style>
