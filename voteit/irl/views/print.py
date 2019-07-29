@@ -41,7 +41,8 @@ class PrintProposalsForm(BaseForm):
                 colander.Bool(),
                 name=prop.__name__,
                 title=prop.get_field_value('aid'),
-                description=prop.title
+                default=True,
+                description=self.request.render_proposal_text(prop, tag_func=lambda x: x, diff_brief=False),
             ))
         return schema
 
