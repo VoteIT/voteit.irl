@@ -26,6 +26,12 @@ GENDER_VALUES = (('female', _("Female")),
 GENDER_NAME_DICT = dict(GENDER_VALUES)
 GENDER_NAME_DICT[''] = _('Unknown')
 
+GENDER_DISPLAY_TYPES = (
+    ("", _("Don't display")),
+    ("gender", _("Gender")),
+    ("pronoun", _("Pronoun")),
+)
+
 
 class GenderStatistics(object):
     def __init__(self):
@@ -104,6 +110,18 @@ def add_gender_in_meeting(schema, event):
         add_gender_in_schema(schema, event)
 
 
+def add_show_gender_in_speaker_list(schema, event):
+    """ This will only be activated if voteit.debate is detected on include."""
+    schema.add(colander.SchemaNode(
+        colander.String(),
+        name="show_gender_in_speaker_list",
+        title=_("Show gender in speaker lists?"),
+        description=_("It will only work if the chosen speaker list system supports this."),
+        missing="",
+        widget=deform.widget.RadioChoiceWidget(values=GENDER_DISPLAY_TYPES)),
+    )
+
+
 def includeme(config):
     config.add_subscriber(add_gender_in_meeting, [ClaimParticipantNumberSchema, ISchemaCreatedEvent])
     config.add_subscriber(add_gender_in_schema, [UserSchema, ISchemaCreatedEvent])
@@ -113,3 +131,12 @@ def includeme(config):
     from voteit.core.models.user import User
     User.add_field('gender')
     User.add_field('pronoun')
+
+    try:
+        from voteit.debate.schemas import SpeakerListSettingsSchema
+        include_show_gender = True
+    except ImportError:
+        # Skipping inclusion
+        include_show_gender = False
+    if include_show_gender:
+        config.add_subscriber(add_show_gender_in_speaker_list, [SpeakerListSettingsSchema, ISchemaCreatedEvent])
