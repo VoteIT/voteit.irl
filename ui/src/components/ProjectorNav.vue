@@ -87,10 +87,13 @@
                         <span class="glyphicon glyphicon-filter"> </span><span class="caret"> </span>
                     </a>
                     <ul class="dropdown-menu" id="proposal-filters" aria-labelledby="proposal-filtering">
+
                         <li class="text-nowrap" v-for="state in proposalWorkflowStates" :key="state.name" @click.stop :class="{ active: state.checked }">
-                            <input type="checkbox" :id="state.name" :checked="state.checked" @change.prevent="toggleProposalWorkflow(state.name)" />
-                            <label :for="state.name">{{ state.title }}</label>
-                            <span class="badge">{{ proposals.filter(p=>p.workflowState === state.name).length }}</span>
+                            <a>
+                                <input type="checkbox" :id="state.name" :checked="state.checked" @change.prevent="toggleProposalWorkflow(state.name)" />
+                                <label :for="state.name">{{ state.title }}</label>
+                                <span class="badge">{{ proposals.filter(p=>p.workflowState === state.name).length }}</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
