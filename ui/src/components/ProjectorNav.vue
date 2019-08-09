@@ -1,11 +1,8 @@
 <template>
     <nav class="navbar navbar-static-top navbar-voteit" role="navigation">
         <div class="container-fluid">
-            <a class="navbar-brand hidden-xs" href="/">
-                <img height="31" width="85" class="voteitlogo" :src="logo" />
-            </a>
-            <a class="navbar-brand"
-               id="navbar-heading"
+            <a class="voteit-logo-nav" :href="currentAgendaItem ? currentAgendaItem.href : href"></a>
+            <a class="voteit-nav-header"
                :href="currentAgendaItem ? currentAgendaItem.href : href">
                 <span v-if="currentAgendaItem">{{ currentAgendaItem.title }}</span>
                 <span v-else>
@@ -169,7 +166,7 @@
 .navbar
     .container-fluid
         display: flex
-        #navbar-heading
+        .voteit-nav-header
             flex: 1 1 auto
             white-space: nowrap
             overflow: hidden
