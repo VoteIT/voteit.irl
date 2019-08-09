@@ -22,6 +22,7 @@
 
 body
     padding: 0
+    margin-top: 70px
 
 .proposal
     .btn-group
