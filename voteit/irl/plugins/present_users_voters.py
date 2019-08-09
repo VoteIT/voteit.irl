@@ -4,7 +4,6 @@ import colander
 from arche.interfaces import ISchemaCreatedEvent
 from pyramid.threadlocal import get_current_request
 from six import string_types
-from voteit.core.views.control_panel import control_panel_link
 
 from voteit.irl import _
 from voteit.irl.models.elegible_voters_method import ElegibleVotersMethod
