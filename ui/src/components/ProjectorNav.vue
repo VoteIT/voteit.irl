@@ -1,8 +1,10 @@
 <template>
-    <nav class="navbar navbar-static-top navbar-voteit" role="navigation">
+
+    <nav id="fixed-top-nav" class="navbar-fixed-top" role="navigation">
+
         <div class="container-fluid">
             <a class="voteit-logo-nav" :href="currentAgendaItem ? currentAgendaItem.href : href"></a>
-            <a class="voteit-nav-header"
+            <a class="text-overflow voteit-nav-header"
                :href="currentAgendaItem ? currentAgendaItem.href : href">
                 <span v-if="currentAgendaItem">{{ currentAgendaItem.title }}</span>
                 <span v-else>
@@ -10,7 +12,8 @@
                     ({{ $t('Click menu to select Agenda Item') }})
                 </span>
             </a>
-            <ul class="nav navbar-nav navbar-right" id="navbar-controls">
+
+            <ul class="nav voteit-nav navbar-right" id="navbar-controls">
 
                 <li v-if="nextTagInOrder">
                     <a href="#" @click.prevent="filterByTag(nextTagInOrder)"
@@ -95,7 +98,6 @@
                     </ul>
                 </li>
 
-
                 <li :class="{disabled: !previousAgendaItem}">
                     <a href="#"
                     :title="previousAgendaItem ? previousAgendaItem.title : $t('Previous')"
@@ -164,16 +166,6 @@
         font-weight: normal
 
 .navbar
-    .container-fluid
-        display: flex
-        .voteit-nav-header
-            flex: 1 1 auto
-            white-space: nowrap
-            overflow: hidden
-            text-overflow: ellipsis
-        #navbar-controls
-            flex: 0 0 auto
-
     a[role="checkbox"]
         opacity: .2
         &[aria-checked]
