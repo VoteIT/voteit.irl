@@ -17,7 +17,7 @@ class MakePresentUsersVoters(ElegibleVotersMethod):
     description = _("present_with_pn_voters_description",
                     default="Will remove voting permission for anyone not set as present. "
                             "Users without a participant number will be ignored, or if "
-                            "they're outside of the setting. (See the control panel)")
+                            "they're outside of the setting. (See the control panel under meeting presence)")
 
     def get_voters(self, request=None, **kw):
         if request is None:
