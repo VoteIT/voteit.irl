@@ -49,13 +49,6 @@ class MeetingPresence(object):
         self.context._meeting_presence_settings = OOBTree(value)
 
     @property
-    def vote_transfer_enabled(self):
-        return getattr(self.context, '_meeting_vote_transfer_enabled', None)
-    @vote_transfer_enabled.setter
-    def vote_transfer_enabled(self, value):
-        self.context._meeting_vote_transfer_enabled = value
-
-    @property
     def start_time(self):
         return getattr(self.context, '_meeting_presence_start_time', None)
     @start_time.setter

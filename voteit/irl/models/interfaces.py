@@ -12,7 +12,6 @@ class IMeetingPresence(Interface):
     start_time = Attribute("Time when the check was started, or None")
     archive = Attribute("Storage for previous checks")
     enabled = Attribute("Is this tool enabled for this meeting?")
-    vote_transfer_enabled = Attribute("Is vote transfers enabled for this meeting?")
 
     def __init__(context):
         """ Context to adapt """
