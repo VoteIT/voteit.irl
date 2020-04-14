@@ -22,6 +22,7 @@ from voteit.irl.models.interfaces import IParticipantNumbers
 
 
 class MeetingPresencePortlet(PortletType):
+    # This is deprecated an shouldn't be used
     name = "meeting_presence_portlet"
     title = "Meeting Presence"
     tpl = "voteit.irl:templates/meeting_presence_portlet.pt"
