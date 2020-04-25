@@ -108,4 +108,4 @@ class MeetingPresence(object):
 
 
 def includeme(config):
-    config.registry.registerAdapter(MeetingPresence)
+    config.registry.registerAdapter(MeetingPresence, provided=IMeetingPresence)

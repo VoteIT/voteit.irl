@@ -254,6 +254,6 @@ def auto_claim_pn_when_email_validated(event):
 
 
 def includeme(config):
-    config.registry.registerAdapter(ParticipantNumbers)
-    config.registry.registerAdapter(SelfAssignmentSettings)
+    config.registry.registerAdapter(ParticipantNumbers, provided=IParticipantNumbers)
+    config.registry.registerAdapter(SelfAssignmentSettings, provided=ISelfAssignmentSettings)
     config.add_subscriber(auto_claim_pn_when_email_validated, IEmailValidatedEvent)

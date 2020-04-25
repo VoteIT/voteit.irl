@@ -1,5 +1,6 @@
 from pyramid.httpexceptions import HTTPFound
 from voteit.core.models.access_policy import AccessPolicy
+from voteit.core.models.interfaces import IAccessPolicy
 
 from voteit.irl.models.interfaces import IParticipantNumbers
 from voteit.irl import _
@@ -50,4 +51,4 @@ class ParticipantNumberAP(AccessPolicy):
 
 
 def includeme(config):
-    config.registry.registerAdapter(ParticipantNumberAP, name = ParticipantNumberAP.name)
+    config.registry.registerAdapter(ParticipantNumberAP, name=ParticipantNumberAP.name, provided=IAccessPolicy)

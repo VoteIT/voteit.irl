@@ -56,4 +56,4 @@ class ElectoralRegister(object):
         return self.current['userids'] != self.currently_set_voters()
 
 def includeme(config):
-    config.registry.registerAdapter(ElectoralRegister)
+    config.registry.registerAdapter(ElectoralRegister, provided=IElectoralRegister)

@@ -150,9 +150,10 @@ def execute_callers_on_number_claimed(event):
     callbacks = request.registry.getAdapter(event.meeting, IParticipantCallbacks)
     callbacks.execute_callbacks_for(event.number, event.userid, request = request)
 
+
 def includeme(config):
-    config.registry.registerAdapter(ParticipantCallbacks)
-    config.registry.registerAdapter(AssignVoterRole, name = AssignVoterRole.name)
-    config.registry.registerAdapter(AssignDiscussionRole, name = AssignDiscussionRole.name)
-    config.registry.registerAdapter(AssignProposeRole, name = AssignProposeRole.name)
+    config.registry.registerAdapter(ParticipantCallbacks, provided=IParticipantCallbacks)
+    config.registry.registerAdapter(AssignVoterRole, name=AssignVoterRole.name, provided=IParticipantCallback)
+    config.registry.registerAdapter(AssignDiscussionRole, name=AssignDiscussionRole.name, provided=IParticipantCallback)
+    config.registry.registerAdapter(AssignProposeRole, name=AssignProposeRole.name, provided=IParticipantCallback)
     config.add_subscriber(execute_callers_on_number_claimed, IParticipantNumberClaimed)
